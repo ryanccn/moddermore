@@ -21,6 +21,11 @@ export interface ModList {
   mods: Mod[];
 }
 
+export interface ModListPartial {
+  title: string;
+  mods: Mod[];
+}
+
 export interface RichModList {
   id: string;
   created_at: string;

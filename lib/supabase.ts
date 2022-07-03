@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
+import { randomBytes } from 'crypto';
 
-import type { Mod, ModList } from './extra.types';
+import type { Mod, ModList, ModListPartial } from './extra.types';
 import type { definitions } from './supabase.types';
 
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -41,4 +42,19 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
   nt.mods = dt.mods as Mod[];
 
   return nt;
+};
+
+export const createList = async (list: ModListPartial): Promise<string> => {
+  const id = randomBytes(5).toString('hex');
+
+  await db
+    .insert({
+      id,
+      mods: list.mods,
+      created_at: new Date().toISOString(),
+      title: list.title,
+    })
+    .throwOnError();
+
+  return id;
 };
