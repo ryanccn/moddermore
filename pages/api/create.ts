@@ -1,4 +1,5 @@
-import { NextApiHandler } from 'next';
+import type { NextApiHandler } from 'next';
+
 import { z } from 'zod';
 import { createList } from '~/lib/supabase';
 
@@ -8,6 +9,7 @@ const modZod = z.object({
     z.literal('curseforge'),
     z.literal('github'),
   ]),
+
   id: z.string(),
 });
 
