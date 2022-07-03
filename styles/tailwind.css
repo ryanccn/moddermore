@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply antialiased tracking-tight;
+  }
+}
+
+@layer components {
+  .layout {
+    @apply mx-auto max-w-prose py-40;
+  }
+}
