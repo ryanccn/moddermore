@@ -8,12 +8,20 @@
   }
 
   body {
-    @apply antialiased tracking-tight;
+    @apply antialiased tracking-tight overflow-y-scroll;
   }
 }
 
 @layer components {
+  .title {
+    @apply text-4xl font-bold mb-10;
+  }
+
   .layout {
     @apply mx-auto max-w-prose py-40;
+  }
+
+  .moddermore.input {
+    @apply px-3 py-2 bg-gray-100 rounded focus:outline-none focus:ring transition-shadow;
   }
 }

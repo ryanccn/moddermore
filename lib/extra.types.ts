@@ -1,4 +1,5 @@
 export type ModProvider = 'modrinth' | 'curseforge' | 'github';
+export type ModLoader = 'quilt' | 'fabric' | 'forge';
 
 export interface Mod {
   provider: ModProvider;
@@ -14,15 +15,18 @@ export interface RichMod {
   id: string;
 }
 
+export interface ModListPartial {
+  title: string;
+  gameVersion: string;
+  modloader: ModLoader;
+  mods: Mod[];
+}
 export interface ModList {
   id: string;
   created_at: string;
   title: string;
-  mods: Mod[];
-}
-
-export interface ModListPartial {
-  title: string;
+  gameVersion: string;
+  modloader: ModLoader;
   mods: Mod[];
 }
 
@@ -30,5 +34,7 @@ export interface RichModList {
   id: string;
   created_at: string;
   title: string;
+  gameVersion: string;
+  modloader: ModLoader;
   mods: RichMod[];
 }

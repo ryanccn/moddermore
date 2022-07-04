@@ -16,7 +16,7 @@ interface Props {
 const ListPage: NextPage<Props> = ({ data }) => {
   return (
     <div className="layout">
-      <h1 className="text-2xl font-bold mb-10">{data.title}</h1>
+      <h1 className="title">{data.title}</h1>
       <ul className="grid grid-cols-2 gap-2">
         {data.mods.map((mod) => (
           <li key={mod.id}>

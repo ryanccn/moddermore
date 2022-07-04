@@ -15,10 +15,17 @@ const modZod = z.object({
 
 const modListPartialZod = z.object({
   title: z.string(),
+  gameVersion: z.string(),
+  modloader: z.string(),
   mods: z.array(modZod),
 });
 
 const h: NextApiHandler = async (req, res) => {
+  if (req.method !== 'POST') {
+    res.status(400).json({ error: 'Not a good method.' });
+    return;
+  }
+
   const reqDataParse = modListPartialZod.safeParse(req.body);
 
   if (!reqDataParse.success) {
