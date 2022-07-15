@@ -23,4 +23,7 @@ jobs:
           plugin_lines: yes
           plugin_followup: yes
           plugin_licenses: yes
+          plugin_licenses_setup: yarn install --frozen-lockfile
           plugin_licenses_ratio: yes
+          plugin_languages: yes
+          plugin_contributors: yes
