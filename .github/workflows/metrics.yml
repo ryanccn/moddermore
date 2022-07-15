@@ -1,0 +1,26 @@
+name: Metrics
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: lowlighter/metrics@latest
+        with:
+          template: repository
+          filename: .github/metrics.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          user: ryanccn
+          repo: moddermore
+          plugin_lines: yes
+          plugin_followup: yes
+          plugin_licenses: yes
+          plugin_licenses_ratio: yes
