@@ -22,7 +22,7 @@ const NewList: NextPage = () => {
 
     setSubmitting(true);
 
-    fetch('/api/create', {
+    fetch('/api/new', {
       method: 'POST',
       body: JSON.stringify({ title: title, mods: inputMods }),
       headers: { 'content-type': 'application/json' },
@@ -39,14 +39,16 @@ const NewList: NextPage = () => {
   return (
     <div className="layout">
       <form
-        className="flex flex-col space-y-2 items-start"
+        className="flex flex-col space-y-4 items-start"
         onSubmit={submitHandle}
       >
         <input
           name="title"
           value={title}
-          className="title focus:outline-none"
+          type="text"
+          className="title focus:outline-none focus:ring-0"
           placeholder="Enter the title..."
+          required
           onChange={(e) => {
             setTitle(e.target.value);
           }}
@@ -61,7 +63,7 @@ const NewList: NextPage = () => {
               <select
                 name={`mod-${idx}-provider`}
                 value={inputMods[idx].provider}
-                className="moddermore input"
+                className="moddermore-input"
                 onChange={(e) => {
                   const newMod = [...inputMods];
                   newMod[idx].provider = e.target.value as ModProvider;
@@ -76,8 +78,10 @@ const NewList: NextPage = () => {
               <input
                 name={`mod-${idx}-id`}
                 value={inputMods[idx].id}
-                className="moddermore input flex-grow"
+                type="text"
+                className="moddermore-input flex-grow"
                 placeholder="ID of the mod"
+                required
                 onChange={(e) => {
                   const newMod = [...inputMods];
                   newMod[idx].id = e.target.value;
@@ -111,7 +115,7 @@ const NewList: NextPage = () => {
 
         <button
           type="submit"
-          className="text-white !mt-14 bg-indigo-500 hover:bg-indigo-400 rounded-md transition-all flex space-x-3 justify-center items-center py-3 px-4 font-medium text-sm focus:outline-none focus:ring disabled:opacity-75"
+          className="text-white !mt-14 bg-indigo-500 hover:bg-indigo-400 rounded-md transition-all flex space-x-3 justify-center items-center py-3 px-4 font-medium text-sm disabled:opacity-75"
           disabled={submitting}
         >
           <UploadIcon className="block w-5 h-5" />

@@ -10,6 +10,13 @@
   body {
     @apply antialiased tracking-tight overflow-y-scroll;
   }
+
+  input,
+  button,
+  textarea,
+  select {
+    @apply focus:outline-none focus:ring focus:ring-blue-400/50;
+  }
 }
 
 @layer components {
@@ -21,7 +28,11 @@
     @apply mx-auto max-w-prose py-40;
   }
 
-  .moddermore.input {
-    @apply px-3 py-2 bg-gray-100 rounded focus:outline-none focus:ring transition-shadow;
+  :not(select).moddermore-input {
+    @apply px-3 py-2 bg-gray-100 rounded shadow-sm;
+  }
+
+  select.moddermore-input {
+    @apply form-select border-none bg-gray-100 rounded shadow-sm;
   }
 }

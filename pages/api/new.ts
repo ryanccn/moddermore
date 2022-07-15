@@ -10,13 +10,17 @@ const modZod = z.object({
     z.literal('github'),
   ]),
 
-  id: z.string(),
+  id: z.string().min(1, 'Fill in the mod ID!'),
 });
 
 const modListPartialZod = z.object({
-  title: z.string(),
-  gameVersion: z.string(),
-  modloader: z.string(),
+  title: z.string().min(1, 'Fill in a title!'),
+  gameVersion: z.string().min(2, 'Fill in a valid game version!'),
+  modloader: z.union([
+    z.literal('quilt'),
+    z.literal('fabric'),
+    z.literal('forge'),
+  ]),
   mods: z.array(modZod),
 });
 
@@ -29,7 +33,10 @@ const h: NextApiHandler = async (req, res) => {
   const reqDataParse = modListPartialZod.safeParse(req.body);
 
   if (!reqDataParse.success) {
-    res.status(400).json({ error: 'Bad request!' });
+    res.status(400).json({
+      error: 'Bad request!',
+      more: reqDataParse.error.formErrors.fieldErrors,
+    });
     return;
   }
 

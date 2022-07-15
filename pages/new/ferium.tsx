@@ -21,7 +21,7 @@ const FeriumImportPage: NextPage = () => {
 
     setSubmitting(true);
 
-    fetch('/api/create', {
+    fetch('/api/new', {
       method: 'POST',
       body: JSON.stringify({
         title: title,
@@ -43,14 +43,16 @@ const FeriumImportPage: NextPage = () => {
   return (
     <div className="layout">
       <form
-        className="flex flex-col space-y-2 items-start"
+        className="flex flex-col space-y-4 items-start"
         onSubmit={submitHandle}
       >
         <input
           name="title"
           value={title}
-          className="title focus:outline-none"
+          type="text"
+          className="title focus:outline-none focus:ring-0"
           placeholder="Enter the title..."
+          required
           onChange={(e) => {
             setTitle(e.target.value);
           }}
@@ -59,8 +61,10 @@ const FeriumImportPage: NextPage = () => {
         <input
           name="game-version"
           value={gameVersion}
-          className="moddermore input"
+          type="text"
+          className="moddermore-input"
           placeholder="Game version (e.g. 1.18.2)"
+          required
           onChange={(e) => {
             setGameVersion(e.target.value);
           }}
@@ -69,7 +73,7 @@ const FeriumImportPage: NextPage = () => {
         <select
           name="modloader"
           value={modLoader}
-          className="moddermore input"
+          className="moddermore-input"
           onChange={(e) => {
             setModLoader(e.target.value as ModLoader);
           }}
@@ -82,8 +86,9 @@ const FeriumImportPage: NextPage = () => {
         <textarea
           name="ferium-copy-paste"
           value={feriumCopyPaste}
-          className="moddermore input font-mono w-full min-h-[10rem] resize-y"
+          className="moddermore-input font-mono w-full min-h-[10rem] resize-y"
           placeholder="Paste the output of `ferium list` here."
+          required
           onChange={(e) => {
             setFeriumCopyPaste(e.target.value);
           }}
@@ -91,7 +96,7 @@ const FeriumImportPage: NextPage = () => {
 
         <button
           type="submit"
-          className="text-white !mt-14 bg-indigo-500 hover:bg-indigo-400 rounded-md transition-all flex space-x-3 justify-center items-center py-3 px-4 font-medium text-sm focus:outline-none focus:ring disabled:opacity-75"
+          className="text-white !mt-14 bg-indigo-500 hover:bg-indigo-400 rounded-md transition-all flex space-x-3 justify-center items-center py-3 px-4 font-medium text-sm disabled:opacity-75 shadow-sm"
           disabled={submitting}
         >
           <UploadIcon className="block w-5 h-5" />
