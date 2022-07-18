@@ -46,7 +46,7 @@ const NewList: NextPage = () => {
           name="title"
           value={title}
           type="text"
-          className="title focus:outline-none focus:ring-0"
+          className="title w-full focus:outline-none focus:ring-0"
           placeholder="Enter the title..."
           required
           onChange={(e) => {
@@ -57,7 +57,7 @@ const NewList: NextPage = () => {
         {inputMods.map((_, idx) => {
           return (
             <div
-              className="w-full bg-transparent hover:bg-gray-50 transition-colors rounded-md flex items-center space-x-2 p-5"
+              className="w-full bg-transparent hover:bg-zinc-50 transition-colors rounded-md flex items-center space-x-2 p-5"
               key={`mod-form-group-${idx}`}
             >
               <select
@@ -104,7 +104,7 @@ const NewList: NextPage = () => {
 
         <button
           type="button"
-          className="bg-gray-50 hover:bg-gray-100 rounded-md transition-all w-full flex space-x-3 justify-center items-center py-2 px-3 focus:outline-none focus:ring"
+          className="bg-zinc-50 hover:bg-zinc-100 rounded-md transition-all w-full flex space-x-3 justify-center items-center py-2 px-3 focus:outline-none focus:ring"
           onClick={() => {
             setInputMods([...inputMods, { id: '', provider: 'modrinth' }]);
           }}

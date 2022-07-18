@@ -50,7 +50,7 @@ const FeriumImportPage: NextPage = () => {
           name="title"
           value={title}
           type="text"
-          className="title focus:outline-none focus:ring-0"
+          className="title bg-transparent w-full focus:outline-none focus:ring-0"
           placeholder="Enter the title..."
           required
           onChange={(e) => {

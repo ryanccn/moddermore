@@ -20,6 +20,8 @@ export interface paths {
           created_at?: parameters["rowFilter.mod_lists.created_at"];
           mods?: parameters["rowFilter.mod_lists.mods"];
           title?: parameters["rowFilter.mod_lists.title"];
+          game_version?: parameters["rowFilter.mod_lists.game_version"];
+          modloader?: parameters["rowFilter.mod_lists.modloader"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -74,6 +76,8 @@ export interface paths {
           created_at?: parameters["rowFilter.mod_lists.created_at"];
           mods?: parameters["rowFilter.mod_lists.mods"];
           title?: parameters["rowFilter.mod_lists.title"];
+          game_version?: parameters["rowFilter.mod_lists.game_version"];
+          modloader?: parameters["rowFilter.mod_lists.modloader"];
         };
         header: {
           /** Preference */
@@ -92,6 +96,8 @@ export interface paths {
           created_at?: parameters["rowFilter.mod_lists.created_at"];
           mods?: parameters["rowFilter.mod_lists.mods"];
           title?: parameters["rowFilter.mod_lists.title"];
+          game_version?: parameters["rowFilter.mod_lists.game_version"];
+          modloader?: parameters["rowFilter.mod_lists.modloader"];
         };
         body: {
           /** mod_lists */
@@ -130,6 +136,10 @@ export interface definitions {
      * @default
      */
     title: string;
+    /** Format: text */
+    game_version: string;
+    /** Format: text */
+    modloader: string;
   };
 }
 
@@ -176,6 +186,10 @@ export interface parameters {
   "rowFilter.mod_lists.mods": string;
   /** Format: text */
   "rowFilter.mod_lists.title": string;
+  /** Format: text */
+  "rowFilter.mod_lists.game_version": string;
+  /** Format: text */
+  "rowFilter.mod_lists.modloader": string;
 }
 
 export interface operations {}

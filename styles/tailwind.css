@@ -5,10 +5,12 @@
 @layer base {
   html {
     @apply scroll-smooth;
+    color-scheme: dark light;
   }
 
   body {
     @apply antialiased tracking-tight overflow-y-scroll;
+    @apply bg-white dark:bg-zinc-900;
   }
 
   input,
@@ -29,10 +31,10 @@
   }
 
   :not(select).moddermore-input {
-    @apply px-3 py-2 bg-gray-100 rounded shadow-sm;
+    @apply px-3 py-2 bg-zinc-100 dark:bg-zinc-900 rounded shadow-sm w-full;
   }
 
   select.moddermore-input {
-    @apply form-select border-none bg-gray-100 rounded shadow-sm;
+    @apply form-select border-none bg-zinc-100 dark:bg-zinc-900 rounded shadow-sm;
   }
 }
