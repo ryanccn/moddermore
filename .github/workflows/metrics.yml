@@ -2,7 +2,7 @@ name: Metrics
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -20,6 +20,7 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN }}
           user: ryanccn
           repo: moddermore
+          committer_message: 'chore(readme): update metrics'
           plugin_lines: yes
           plugin_followup: yes
           plugin_licenses: yes
