@@ -7,6 +7,8 @@ import { getInfo as getModrinthInfo } from '~/lib/modrinth';
 import { getInfo as getCurseForgeInfo } from '~/lib/curseforge';
 import { providerFormat } from '~/lib/providerFormat';
 
+import pLimit from 'p-limit';
+
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import Spinner from '~/components/Spinner';
@@ -90,15 +92,21 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     mods: [],
   };
 
-  for (const boringMod of data.mods) {
-    if (boringMod.provider === 'modrinth') {
-      const info = await getModrinthInfo(boringMod.id);
-      if (info) newData.mods.push(info);
-    } else if (boringMod.provider === 'curseforge') {
-      const info = await getCurseForgeInfo(boringMod.id);
-      if (info) newData.mods.push(info);
-    }
-  }
+  const lim = pLimit(4);
+
+  await Promise.all(
+    data.mods.map((boringMod) =>
+      lim(async () => {
+        if (boringMod.provider === 'modrinth') {
+          const info = await getModrinthInfo(boringMod.id);
+          if (info) newData.mods.push(info);
+        } else if (boringMod.provider === 'curseforge') {
+          const info = await getCurseForgeInfo(boringMod.id);
+          if (info) newData.mods.push(info);
+        }
+      })
+    )
+  );
 
   return { props: { data: newData }, revalidate: 30 };
 };

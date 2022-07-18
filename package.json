@@ -27,6 +27,7 @@
     "eslint": "8.18.0",
     "eslint-config-next": "12.2.0",
     "openapi-typescript": "^5.4.0",
+    "p-limit": "^4.0.0",
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.12",
