@@ -1,6 +1,6 @@
-import type { RichMod } from './extra.types';
+import type { RichMod } from "./extra.types";
 
-type Side = 'required' | 'optional' | 'unsupported';
+type Side = "required" | "optional" | "unsupported";
 
 interface NetworkResult {
   slug: string;
@@ -9,7 +9,7 @@ interface NetworkResult {
   categories: string[];
   client_side: Side;
   server_side: Side;
-  project_type: 'mod' | 'modpack';
+  project_type: "mod" | "modpack";
   downloads: number;
   icon_url: string | null;
   id: string;
@@ -29,7 +29,7 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
     id,
     href: `https://modrinth.com/mod/${id}`,
     iconUrl: data.icon_url ?? undefined,
-    provider: 'modrinth',
+    provider: "modrinth",
     name: data.title,
     description: data.description,
   };

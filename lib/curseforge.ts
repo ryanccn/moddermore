@@ -1,4 +1,4 @@
-import type { RichMod } from './extra.types';
+import type { RichMod } from "./extra.types";
 
 // type Side = 'required' | 'optional' | 'unsupported';
 
@@ -139,10 +139,10 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
   // console.log(process.env);
 
   const API_KEY = process.env.CURSEFORGE_API_KEY;
-  if (!API_KEY) throw new Error('No CURSEFORGE_API_KEY defined!');
+  if (!API_KEY) throw new Error("No CURSEFORGE_API_KEY defined!");
 
   const res = await fetch(`https://api.curseforge.com/v1/mods/${id}`, {
-    headers: { 'x-api-key': API_KEY },
+    headers: { "x-api-key": API_KEY },
   });
 
   if (res.status === 404) {
@@ -155,7 +155,7 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
     id,
     href: `https://curseforge.com/minecraft/mc-mods/${data.slug}`,
     iconUrl: data.logo.thumbnailUrl ?? undefined,
-    provider: 'curseforge',
+    provider: "curseforge",
     name: data.name,
     description: data.summary,
   };

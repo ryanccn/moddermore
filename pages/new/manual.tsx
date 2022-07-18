@@ -39,14 +39,14 @@ const NewList: NextPage = () => {
   return (
     <div className="layout">
       <form
-        className="flex flex-col space-y-4 items-start"
+        className="flex flex-col items-start space-y-4"
         onSubmit={submitHandle}
       >
         <input
           name="title"
           value={title}
           type="text"
-          className="title w-full focus:outline-none focus:ring-0"
+          className="title w-full bg-transparent focus:outline-none"
           placeholder="Enter the title..."
           required
           onChange={(e) => {
@@ -57,7 +57,7 @@ const NewList: NextPage = () => {
         {inputMods.map((_, idx) => {
           return (
             <div
-              className="w-full bg-transparent hover:bg-zinc-50 transition-colors rounded-md flex items-center space-x-2 p-5"
+              className="flex w-full items-center space-x-2 rounded-md bg-transparent p-5 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800"
               key={`mod-form-group-${idx}`}
             >
               <select
@@ -89,14 +89,14 @@ const NewList: NextPage = () => {
                 }}
               />
               <button
-                className="inline-block p-1 text-red-500 hover:text-white hover:bg-red-400 rounded-full"
+                className="inline-block rounded-full p-1 text-red-500 hover:bg-red-400 hover:text-white"
                 onClick={() => {
                   const newMod = [...inputMods];
                   newMod.splice(idx, 1);
                   setInputMods(newMod);
                 }}
               >
-                <XIcon className="w-4 h-4" />
+                <XIcon className="h-4 w-4" />
               </button>
             </div>
           );
@@ -104,21 +104,21 @@ const NewList: NextPage = () => {
 
         <button
           type="button"
-          className="bg-zinc-50 hover:bg-zinc-100 rounded-md transition-all w-full flex space-x-3 justify-center items-center py-2 px-3 focus:outline-none focus:ring"
+          className="flex w-full items-center justify-center space-x-3 rounded-md bg-zinc-50 py-2 px-3 transition-all hover:bg-zinc-100 focus:outline-none focus:ring dark:bg-zinc-800 dark:hover:bg-zinc-700"
           onClick={() => {
             setInputMods([...inputMods, { id: '', provider: 'modrinth' }]);
           }}
         >
-          <PlusIcon className="block w-5 h-5" />
+          <PlusIcon className="block h-5 w-5" />
           <span>Add mod</span>
         </button>
 
         <button
           type="submit"
-          className="text-white !mt-14 bg-indigo-500 hover:bg-indigo-400 rounded-md transition-all flex space-x-3 justify-center items-center py-3 px-4 font-medium text-sm disabled:opacity-75"
+          className="!mt-14 flex items-center justify-center space-x-3 rounded-md bg-indigo-500 py-3 px-4 text-sm font-medium text-white transition-all hover:bg-indigo-400 disabled:opacity-75"
           disabled={submitting}
         >
-          <UploadIcon className="block w-5 h-5" />
+          <UploadIcon className="block h-5 w-5" />
           <span>Submit</span>
         </button>
       </form>

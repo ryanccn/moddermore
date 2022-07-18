@@ -43,14 +43,14 @@ const FeriumImportPage: NextPage = () => {
   return (
     <div className="layout">
       <form
-        className="flex flex-col space-y-4 items-start"
+        className="flex flex-col items-start space-y-4"
         onSubmit={submitHandle}
       >
         <input
           name="title"
           value={title}
           type="text"
-          className="title bg-transparent w-full focus:outline-none focus:ring-0"
+          className="title w-full bg-transparent focus:outline-none"
           placeholder="Enter the title..."
           required
           onChange={(e) => {
@@ -86,7 +86,7 @@ const FeriumImportPage: NextPage = () => {
         <textarea
           name="ferium-copy-paste"
           value={feriumCopyPaste}
-          className="moddermore-input font-mono w-full min-h-[10rem] resize-y"
+          className="moddermore-input min-h-[10rem] w-full resize-y font-mono"
           placeholder="Paste the output of `ferium list` here."
           required
           onChange={(e) => {
@@ -96,10 +96,10 @@ const FeriumImportPage: NextPage = () => {
 
         <button
           type="submit"
-          className="text-white !mt-14 bg-indigo-500 hover:bg-indigo-400 rounded-md transition-all flex space-x-3 justify-center items-center py-3 px-4 font-medium text-sm disabled:opacity-75 shadow-sm"
+          className="!mt-14 flex items-center justify-center space-x-3 rounded-md bg-indigo-500 py-3 px-4 text-sm font-medium text-white shadow-sm transition-all hover:bg-indigo-400 disabled:opacity-75"
           disabled={submitting}
         >
-          <UploadIcon className="block w-5 h-5" />
+          <UploadIcon className="block h-5 w-5" />
           <span>Submit</span>
         </button>
       </form>

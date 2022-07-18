@@ -1,5 +1,5 @@
-export type ModProvider = 'modrinth' | 'curseforge' | 'github';
-export type ModLoader = 'quilt' | 'fabric' | 'forge';
+export type ModProvider = "modrinth" | "curseforge" | "github";
+export type ModLoader = "quilt" | "fabric" | "forge";
 
 export interface Mod {
   provider: ModProvider;
