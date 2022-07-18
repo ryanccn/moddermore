@@ -9,6 +9,7 @@ import { providerFormat } from '~/lib/providerFormat';
 
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
+import Spinner from '~/components/Spinner';
 
 interface Props {
   data: RichModList;
@@ -19,10 +20,13 @@ const ListPage: NextPage<Props> = ({ data }) => {
 
   if (router.isFallback) {
     return (
-      <div className="grid w-screen h-screen place-items-center">
-        <div className="flex flex-col space-y-2 items-center">
-          <h2 className="font-medium">Fetching data...</h2>
-          <h3>(this only happens once)</h3>
+      <div className="grid min-w-screen min-h-screen place-items-center">
+        <div className="flex flex-col space-y-1 items-center">
+          <Spinner className="mb-4" />
+          <h2 className="text-lg font-medium">Fetching data...</h2>
+          <h3 className="text-zinc-800 dark:text-zinc-200">
+            (this only happens once)
+          </h3>
         </div>
       </div>
     );
@@ -31,23 +35,21 @@ const ListPage: NextPage<Props> = ({ data }) => {
   return (
     <div className="layout">
       <h1 className="title">{data.title}</h1>
-      <ul className="grid grid-cols-2 gap-2">
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {data.mods.map((mod) => (
           <li key={mod.id}>
             <a
-              className="flex space-x-4 p-4 bg-transparent hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-sm"
+              className="group flex space-x-4 p-4 bg-transparent hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors rounded-sm"
               href={mod.href}
             >
               {mod.iconUrl && (
-                <div className="shrink-0">
-                  <Image
-                    width={64}
-                    height={64}
-                    src={mod.iconUrl}
-                    alt={`Icon of ${mod.name}`}
-                    className="rounded-md"
-                  />
-                </div>
+                <Image
+                  width={64}
+                  height={64}
+                  src={mod.iconUrl}
+                  alt={`Icon of ${mod.name}`}
+                  className="rounded-md w-[64px] h-[64px] opacity-75 group-hover:opacity-100 transition-opacity"
+                />
               )}
               <div className="flex flex-col space-y-1">
                 <h2 className="text-xl font-semibold">{mod.name}</h2>

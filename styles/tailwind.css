@@ -9,7 +9,7 @@
   }
 
   body {
-    @apply antialiased tracking-tight overflow-y-scroll;
+    @apply overflow-y-scroll;
     @apply bg-white dark:bg-zinc-900;
   }
 
@@ -27,7 +27,7 @@
   }
 
   .layout {
-    @apply mx-auto max-w-prose py-40;
+    @apply mx-auto max-w-[75ch] py-40;
   }
 
   :not(select).moddermore-input {
@@ -36,5 +36,21 @@
 
   select.moddermore-input {
     @apply form-select border-none bg-zinc-100 dark:bg-zinc-900 rounded shadow-sm;
+  }
+
+  @keyframes spin-fast {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-fast {
+    animation: spin-fast 0.25s linear infinite;
+  }
+
+  /* temporary, this */
+  .closed-beta-contact > a {
+    @apply font-medium;
+    @apply text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition-colors;
   }
 }
