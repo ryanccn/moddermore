@@ -20,8 +20,8 @@ const ListPage: NextPage<Props> = ({ data }) => {
 
   if (router.isFallback) {
     return (
-      <div className="grid min-w-screen min-h-screen place-items-center">
-        <div className="flex flex-col space-y-1 items-center">
+      <div className="min-w-screen grid min-h-screen place-items-center">
+        <div className="flex flex-col items-center space-y-1">
           <Spinner className="mb-4" />
           <h2 className="text-lg font-medium">Fetching data...</h2>
           <h3 className="text-zinc-800 dark:text-zinc-200">
@@ -35,11 +35,11 @@ const ListPage: NextPage<Props> = ({ data }) => {
   return (
     <div className="layout">
       <h1 className="title">{data.title}</h1>
-      <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+      <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
         {data.mods.map((mod) => (
           <li key={mod.id}>
             <a
-              className="group flex space-x-4 p-4 bg-transparent hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors rounded-sm"
+              className="group flex space-x-4 rounded-sm bg-transparent p-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800"
               href={mod.href}
             >
               {mod.iconUrl && (
@@ -48,7 +48,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
                   height={64}
                   src={mod.iconUrl}
                   alt={`Icon of ${mod.name}`}
-                  className="rounded-md w-[64px] h-[64px] opacity-75 group-hover:opacity-100 transition-opacity"
+                  className="h-[64px] w-[64px] rounded-md opacity-80 transition-opacity group-hover:opacity-100"
                 />
               )}
               <div className="flex flex-col space-y-1">
@@ -60,7 +60,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
                       : mod.description}
                   </h3>
                 )}
-                <h3 className="text-zinc-600 dark:text-zinc-400 text-xs font-medium">
+                <h3 className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
                   {providerFormat(mod.provider)}
                 </h3>
               </div>
