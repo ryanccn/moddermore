@@ -6,6 +6,7 @@ import PlusIcon from '@heroicons/react/solid/PlusIcon';
 import XIcon from '@heroicons/react/solid/XIcon';
 import UploadIcon from '@heroicons/react/outline/UploadIcon';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 const NewList: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -38,6 +39,9 @@ const NewList: NextPage = () => {
 
   return (
     <div className="layout">
+      <Head>
+        <title>Manual creation / Moddermore</title>
+      </Head>
       <form
         className="flex flex-col items-start space-y-4"
         onSubmit={submitHandle}

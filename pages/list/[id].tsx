@@ -29,7 +29,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
   return (
     <div className="layout">
       <Head>
-        <title>{`${data.title} - Moddermore`}</title>
+        <title>{`${data.title} / Moddermore`}</title>
       </Head>
 
       <h1 className="title">{data.title}</h1>

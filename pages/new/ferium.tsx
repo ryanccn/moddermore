@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { parseFerium } from '~/lib/ferium';
 
 import type { ModLoader } from '~/lib/extra.types';
+import Head from 'next/head';
 
 const FeriumImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -42,6 +43,9 @@ const FeriumImportPage: NextPage = () => {
 
   return (
     <div className="layout">
+      <Head>
+        <title>Ferium import / Moddermore</title>
+      </Head>
       <form
         className="flex flex-col items-start space-y-4"
         onSubmit={submitHandle}

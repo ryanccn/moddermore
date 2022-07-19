@@ -1,8 +1,12 @@
 import type { NextPage } from 'next';
+import Head from 'next/head';
 
 const Home: NextPage = () => {
   return (
     <div className="min-w-screen grid min-h-screen place-items-center">
+      <Head>
+        <title>Moddermore is in closed beta!</title>
+      </Head>
       <div className="flex max-w-prose flex-col items-center space-y-4 text-center">
         <p className="text-xl font-semibold">
           This website is currently in closed beta.
