@@ -9,9 +9,11 @@ import { providerFormat } from '~/lib/providerFormat';
 
 import pLimit from 'p-limit';
 
+import Head from 'next/head';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
-import Spinner from '~/components/Spinner';
+
+import FullLoadingScreen from '~/components/FullLoadingScreen';
 
 interface Props {
   data: RichModList;
@@ -21,21 +23,15 @@ const ListPage: NextPage<Props> = ({ data }) => {
   const router = useRouter();
 
   if (router.isFallback) {
-    return (
-      <div className="min-w-screen grid min-h-screen place-items-center">
-        <div className="flex flex-col items-center space-y-1">
-          <Spinner className="mb-4" />
-          <h2 className="text-lg font-medium">Fetching data...</h2>
-          <h3 className="text-zinc-800 dark:text-zinc-200">
-            (this only happens once)
-          </h3>
-        </div>
-      </div>
-    );
+    return <FullLoadingScreen />;
   }
 
   return (
     <div className="layout">
+      <Head>
+        <title>{`${data.title} - Moddermore`}</title>
+      </Head>
+
       <h1 className="title">{data.title}</h1>
       <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
         {data.mods.map((mod) => (

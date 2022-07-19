@@ -13,15 +13,19 @@
     @apply bg-white dark:bg-zinc-900;
   }
 
-  input,
-  button,
-  textarea,
-  select {
-    @apply focus:outline-none focus:ring focus:ring-indigo-400/50;
+  ::selection {
+    @apply bg-indigo-500 text-white;
   }
 }
 
 @layer components {
+  input,
+  button,
+  textarea,
+  select {
+    @apply focus:outline-none focus:ring focus:ring-indigo-400/60;
+  }
+
   .title {
     @apply mb-10 text-4xl font-bold;
   }
@@ -36,6 +40,10 @@
 
   select.moddermore-input {
     @apply form-select rounded border-none bg-zinc-100 shadow-sm dark:bg-zinc-800;
+  }
+
+  button[type='submit'] {
+    @apply !mt-14 flex items-center justify-center space-x-3 rounded-md bg-indigo-500 py-3 px-4 text-sm font-medium text-white transition-all hover:bg-indigo-400 disabled:opacity-75;
   }
 
   @keyframes spin-fast {

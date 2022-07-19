@@ -16,7 +16,8 @@
     "next": "12.2.0",
     "next-plausible": "^3.2.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "use-elapsed-time": "^3.0.4"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^1.35.4",

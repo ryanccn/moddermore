@@ -50,7 +50,7 @@ const FeriumImportPage: NextPage = () => {
           name="title"
           value={title}
           type="text"
-          className="title w-full bg-transparent focus:outline-none"
+          className="title w-full bg-transparent focus:outline-none focus:ring-0"
           placeholder="Enter the title..."
           required
           onChange={(e) => {
@@ -94,11 +94,7 @@ const FeriumImportPage: NextPage = () => {
           }}
         />
 
-        <button
-          type="submit"
-          className="!mt-14 flex items-center justify-center space-x-3 rounded-md bg-indigo-500 py-3 px-4 text-sm font-medium text-white shadow-sm transition-all hover:bg-indigo-400 disabled:opacity-75"
-          disabled={submitting}
-        >
+        <button type="submit" disabled={submitting}>
           <UploadIcon className="block h-5 w-5" />
           <span>Submit</span>
         </button>
