@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-  "/": {
+  '/': {
     get: {
       responses: {
         /** OK */
@@ -12,38 +12,38 @@ export interface paths {
       };
     };
   };
-  "/mod_lists": {
+  '/mod_lists': {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.mod_lists.id"];
-          created_at?: parameters["rowFilter.mod_lists.created_at"];
-          mods?: parameters["rowFilter.mod_lists.mods"];
-          title?: parameters["rowFilter.mod_lists.title"];
-          game_version?: parameters["rowFilter.mod_lists.game_version"];
-          modloader?: parameters["rowFilter.mod_lists.modloader"];
+          id?: parameters['rowFilter.mod_lists.id'];
+          created_at?: parameters['rowFilter.mod_lists.created_at'];
+          mods?: parameters['rowFilter.mod_lists.mods'];
+          title?: parameters['rowFilter.mod_lists.title'];
+          game_version?: parameters['rowFilter.mod_lists.game_version'];
+          modloader?: parameters['rowFilter.mod_lists.modloader'];
           /** Filtering Columns */
-          select?: parameters["select"];
+          select?: parameters['select'];
           /** Ordering */
-          order?: parameters["order"];
+          order?: parameters['order'];
           /** Limiting and Pagination */
-          offset?: parameters["offset"];
+          offset?: parameters['offset'];
           /** Limiting and Pagination */
-          limit?: parameters["limit"];
+          limit?: parameters['limit'];
         };
         header: {
           /** Limiting and Pagination */
-          Range?: parameters["range"];
+          Range?: parameters['range'];
           /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
+          'Range-Unit'?: parameters['rangeUnit'];
           /** Preference */
-          Prefer?: parameters["preferCount"];
+          Prefer?: parameters['preferCount'];
         };
       };
       responses: {
         /** OK */
         200: {
-          schema: definitions["mod_lists"][];
+          schema: definitions['mod_lists'][];
         };
         /** Partial Content */
         206: unknown;
@@ -53,15 +53,15 @@ export interface paths {
       parameters: {
         body: {
           /** mod_lists */
-          mod_lists?: definitions["mod_lists"];
+          mod_lists?: definitions['mod_lists'];
         };
         query: {
           /** Filtering Columns */
-          select?: parameters["select"];
+          select?: parameters['select'];
         };
         header: {
           /** Preference */
-          Prefer?: parameters["preferReturn"];
+          Prefer?: parameters['preferReturn'];
         };
       };
       responses: {
@@ -72,16 +72,16 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.mod_lists.id"];
-          created_at?: parameters["rowFilter.mod_lists.created_at"];
-          mods?: parameters["rowFilter.mod_lists.mods"];
-          title?: parameters["rowFilter.mod_lists.title"];
-          game_version?: parameters["rowFilter.mod_lists.game_version"];
-          modloader?: parameters["rowFilter.mod_lists.modloader"];
+          id?: parameters['rowFilter.mod_lists.id'];
+          created_at?: parameters['rowFilter.mod_lists.created_at'];
+          mods?: parameters['rowFilter.mod_lists.mods'];
+          title?: parameters['rowFilter.mod_lists.title'];
+          game_version?: parameters['rowFilter.mod_lists.game_version'];
+          modloader?: parameters['rowFilter.mod_lists.modloader'];
         };
         header: {
           /** Preference */
-          Prefer?: parameters["preferReturn"];
+          Prefer?: parameters['preferReturn'];
         };
       };
       responses: {
@@ -92,20 +92,20 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.mod_lists.id"];
-          created_at?: parameters["rowFilter.mod_lists.created_at"];
-          mods?: parameters["rowFilter.mod_lists.mods"];
-          title?: parameters["rowFilter.mod_lists.title"];
-          game_version?: parameters["rowFilter.mod_lists.game_version"];
-          modloader?: parameters["rowFilter.mod_lists.modloader"];
+          id?: parameters['rowFilter.mod_lists.id'];
+          created_at?: parameters['rowFilter.mod_lists.created_at'];
+          mods?: parameters['rowFilter.mod_lists.mods'];
+          title?: parameters['rowFilter.mod_lists.title'];
+          game_version?: parameters['rowFilter.mod_lists.game_version'];
+          modloader?: parameters['rowFilter.mod_lists.modloader'];
         };
         body: {
           /** mod_lists */
-          mod_lists?: definitions["mod_lists"];
+          mod_lists?: definitions['mod_lists'];
         };
         header: {
           /** Preference */
-          Prefer?: parameters["preferReturn"];
+          Prefer?: parameters['preferReturn'];
         };
       };
       responses: {
@@ -148,17 +148,17 @@ export interface parameters {
    * @description Preference
    * @enum {string}
    */
-  preferParams: "params=single-object";
+  preferParams: 'params=single-object';
   /**
    * @description Preference
    * @enum {string}
    */
-  preferReturn: "return=representation" | "return=minimal" | "return=none";
+  preferReturn: 'return=representation' | 'return=minimal' | 'return=none';
   /**
    * @description Preference
    * @enum {string}
    */
-  preferCount: "count=none";
+  preferCount: 'count=none';
   /** @description Filtering Columns */
   select: string;
   /** @description On Conflict */
@@ -177,19 +177,19 @@ export interface parameters {
   /** @description Limiting and Pagination */
   limit: string;
   /** @description mod_lists */
-  "body.mod_lists": definitions["mod_lists"];
+  'body.mod_lists': definitions['mod_lists'];
   /** Format: text */
-  "rowFilter.mod_lists.id": string;
+  'rowFilter.mod_lists.id': string;
   /** Format: timestamp with time zone */
-  "rowFilter.mod_lists.created_at": string;
+  'rowFilter.mod_lists.created_at': string;
   /** Format: json */
-  "rowFilter.mod_lists.mods": string;
+  'rowFilter.mod_lists.mods': string;
   /** Format: text */
-  "rowFilter.mod_lists.title": string;
+  'rowFilter.mod_lists.title': string;
   /** Format: text */
-  "rowFilter.mod_lists.game_version": string;
+  'rowFilter.mod_lists.game_version': string;
   /** Format: text */
-  "rowFilter.mod_lists.modloader": string;
+  'rowFilter.mod_lists.modloader': string;
 }
 
 export interface operations {}

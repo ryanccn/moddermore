@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
   return (
@@ -8,9 +8,9 @@ const Home: NextPage = () => {
           This website is currently in closed beta.
         </p>
         <p className="closed-beta-contact">
-          Contact the author of this website at Twitter{" "}
+          Contact the author of this website at Twitter{' '}
           <a href="https://twitter.com/RyanCaoDev">@RyanCaoDev</a> or Discord
-          server{" "}
+          server{' '}
           <a href="https://discord.gg/hUANJjEfTK">discord.gg/hUANJjEfTK</a> to
           get access.
         </p>
