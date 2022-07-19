@@ -46,6 +46,14 @@
     @apply !mt-14 flex items-center justify-center space-x-3 rounded-md bg-indigo-500 py-3 px-4 text-sm font-medium text-white transition-all hover:bg-indigo-400 disabled:opacity-75;
   }
 
+  .data-list {
+    @apply mb-8 space-y-1 text-zinc-700 dark:text-zinc-300;
+  }
+
+  .data-list strong {
+    @apply font-medium text-black dark:text-white;
+  }
+
   @keyframes spin-fast {
     to {
       transform: rotate(360deg);
