@@ -98,7 +98,11 @@ const FeriumImportPage: NextPage = () => {
           }}
         />
 
-        <button type="submit" disabled={submitting}>
+        <button
+          type="submit"
+          className="primaryish-button !mt-14"
+          disabled={submitting}
+        >
           <UploadIcon className="block h-5 w-5" />
           <span>Submit</span>
         </button>

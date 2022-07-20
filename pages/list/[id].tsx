@@ -11,9 +11,11 @@ import pLimit from 'p-limit';
 
 import Head from 'next/head';
 import Image from 'next/future/image';
+
 import { useRouter } from 'next/router';
 
 import FullLoadingScreen from '~/components/FullLoadingScreen';
+import CreateBanner from '~/components/CreateBanner';
 
 interface Props {
   data: RichModList;
@@ -77,6 +79,8 @@ const ListPage: NextPage<Props> = ({ data }) => {
           </li>
         ))}
       </ul>
+
+      <CreateBanner />
     </div>
   );
 };
