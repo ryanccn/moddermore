@@ -8,7 +8,7 @@ export const providerFormat = (prov: ModProvider) => {
   return 'Unknown';
 };
 
-export const modLoaderFormat = (loader: ModLoader) => {
+export const loaderFormat = (loader: ModLoader) => {
   if (loader === 'fabric') return 'Fabric';
   else if (loader === 'forge') return 'Forge';
   else if (loader === 'quilt') return 'Quilt';

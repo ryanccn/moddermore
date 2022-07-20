@@ -5,7 +5,7 @@ import type { RichModList } from '~/lib/extra.types';
 
 import { getInfo as getModrinthInfo } from '~/lib/modrinth';
 import { getInfo as getCurseForgeInfo } from '~/lib/curseforge';
-import { modLoaderFormat, providerFormat } from '~/lib/strings';
+import { loaderFormat, providerFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
 
@@ -39,7 +39,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
       <div className="data-list">
         <p>
           For Minecraft <strong>{data.gameVersion}</strong> with{' '}
-          <strong>{modLoaderFormat(data.modloader)}</strong>
+          <strong>{loaderFormat(data.modloader)}</strong>
         </p>
         <p>
           Created on <strong>{new Date(data.created_at).toDateString()}</strong>
