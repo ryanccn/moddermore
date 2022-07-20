@@ -54,6 +54,12 @@
     @apply font-medium text-black dark:text-white;
   }
 
+  .new-card {
+    @apply bg-zinc-100 p-4 dark:bg-zinc-800;
+    @apply flex flex-col items-center space-y-2;
+    @apply rounded text-xl font-semibold;
+  }
+
   @keyframes spin-fast {
     to {
       transform: rotate(360deg);
