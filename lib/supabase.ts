@@ -14,20 +14,19 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 const supabaseClient = createClient(supabaseUrl, supabaseKey);
-type supabaseTypes = definitions;
-const db = supabaseClient.from<supabaseTypes['mod_lists']>('mod_lists');
+const db = supabaseClient.from<definitions['mod_lists']>('mod_lists');
 
 export const getCount = async (): Promise<number> => {
   const count = await db
-    .select('id', { count: 'exact' })
-    .throwOnError()
+    .select('id', { count: 'exact', head: true })
+    .throwOnError(true)
     .then((res) => res.count);
 
   return count ?? 0;
 };
 
 export const getSpecificList = async (id: string): Promise<ModList | null> => {
-  const ret = await db.select('*').eq('id', id).throwOnError();
+  const ret = await db.select('*').eq('id', id).throwOnError(true);
 
   if (!ret.data || ret.data.length === 0) {
     return null;
@@ -58,7 +57,7 @@ export const createList = async (list: ModListPartial): Promise<string> => {
       modloader: list.modloader,
       title: list.title,
     })
-    .throwOnError();
+    .throwOnError(true);
 
   return id;
 };

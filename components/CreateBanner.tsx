@@ -16,7 +16,7 @@ export default function CreateBanner() {
       className={clsx([
         'fixed bottom-0 mx-auto mb-4 flex w-full max-w-[75ch] items-center justify-between bg-zinc-50/80 p-4 px-6 backdrop-blur-md dark:bg-zinc-800/80',
         'transform-gpu transition-transform',
-        hide ? 'translate-y-full' : 'translate-y-0',
+        hide ? 'translate-y-[calc(100%_+_1rem)]' : 'translate-y-0',
       ])}
     >
       <span>Want your own list just like this?</span>
