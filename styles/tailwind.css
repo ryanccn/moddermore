@@ -19,6 +19,7 @@
 }
 
 @layer components {
+  a,
   input,
   button,
   textarea,
