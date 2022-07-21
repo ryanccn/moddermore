@@ -71,8 +71,8 @@ export const parseModFolder = async ({
   const mods = Object.keys(zipFile.files).filter(
     (name) =>
       name.endsWith('.jar') &&
-      !name.includes('__MACOSX') &&
-      !name.includes('.old')
+      !name.includes('__MACOSX') && // some macOS zip stuff
+      !name.includes('.old') // ferium
   );
 
   let ret: (RichMod | null)[] = [];
@@ -82,10 +82,12 @@ export const parseModFolder = async ({
     const mod = mods[modIdx];
 
     try {
+      const modFile = await zipFile.files[mod].async('arraybuffer');
+
       ret = [
         ...ret,
         await parseMod({
-          f: await zipFile.files[mod].async('arraybuffer'),
+          f: modFile,
           gameVersion,
           loader,
           setProgress,

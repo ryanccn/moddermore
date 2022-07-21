@@ -4,9 +4,9 @@ const ProgressOverlay = ({ value, max }: { value: number; max: number }) => {
       <div className="flex flex-col items-center space-y-6 rounded-lg bg-zinc-100 p-8 dark:bg-zinc-800">
         <div className="h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
           <div
-            className="h-2.5 rounded-full bg-indigo-600"
+            className="h-full rounded-full bg-indigo-600"
             style={{ width: `${(value / max) * 100}%` }}
-          ></div>
+          />
         </div>
         <h2 className="text-lg font-medium">
           Searching for mods... ({value} / {max})

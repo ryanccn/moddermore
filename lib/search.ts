@@ -208,11 +208,11 @@ export const search = async ({
         : -1;
 
     const data = await fetch(
-      `https://api.curseforge.com/v1/mods/search?gameId=432&searchFilter=${encodeURIComponent(
+      `https://api.curseforge.com/v1/mods/search?gameId=432&classId=6&pageSize=10&sortField=2&sortOrder=desc&searchFilter=${encodeURIComponent(
         query
       )}&modLoaderType=${modLoaderTypeCringe}&gameVersion=${encodeURIComponent(
         gameVersion
-      )}&classId=6&pageSize=10&sortField=2&sortOrder=desc`,
+      )}`,
       { headers: { 'x-api-key': API_KEY } }
     ).then(async (r) => {
       if (!r.ok) throw new Error(await r.text());

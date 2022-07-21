@@ -29,7 +29,7 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
 
   return {
     id,
-    href: `https://modrinth.com/mod/${id}`,
+    href: `https://modrinth.com/mod/${data.slug}`,
     iconUrl: data.icon_url ?? undefined,
     provider: 'modrinth',
     name: data.title,
