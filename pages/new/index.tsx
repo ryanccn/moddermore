@@ -2,7 +2,11 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { TerminalIcon, ArchiveIcon } from '@heroicons/react/outline';
+import {
+  TerminalIcon,
+  ArchiveIcon,
+  FolderIcon,
+} from '@heroicons/react/outline';
 
 const NewIndex: NextPage = () => {
   return (
@@ -16,6 +20,12 @@ const NewIndex: NextPage = () => {
           <a className="new-card">
             <TerminalIcon className="block h-10 w-10 stroke-[1.5]" />
             <span>Ferium</span>
+          </a>
+        </Link>
+        <Link href="/new/folder">
+          <a className="new-card">
+            <FolderIcon className="block h-10 w-10 stroke-[1.5]" />
+            <span>ZIP archive</span>
           </a>
         </Link>
         <Link href="/new/manual">
