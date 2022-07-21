@@ -13,10 +13,22 @@ const Home: NextPage = () => {
         </p>
         <p className="closed-beta-contact">
           Contact the author of this website at Twitter{' '}
-          <a href="https://twitter.com/RyanCaoDev">@RyanCaoDev</a> or Discord
-          server{' '}
-          <a href="https://discord.gg/hUANJjEfTK">discord.gg/hUANJjEfTK</a> to
-          get access.
+          <a
+            href="https://twitter.com/RyanCaoDev"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            @RyanCaoDev
+          </a>{' '}
+          or Discord server{' '}
+          <a
+            href="https://discord.gg/hUANJjEfTK"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            discord.gg/hUANJjEfTK
+          </a>{' '}
+          to get access.
         </p>
       </div>
     </div>

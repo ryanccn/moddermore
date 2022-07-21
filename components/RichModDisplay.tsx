@@ -54,6 +54,8 @@ export default function RichModDisplay({ data, onClick }: Props) {
     <a
       className="group flex space-x-4 rounded-sm bg-transparent p-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800"
       href={data.href}
+      target="_blank"
+      rel="noreferrer noopener"
     >
       <SomeDetails data={data} />
     </a>
