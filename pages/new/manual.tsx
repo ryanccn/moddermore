@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { type FormEventHandler, useState } from 'react';
-import type { Mod, ModProvider } from '~/lib/extra.types';
+import type { Mod, ModLoader, ModProvider } from '~/lib/extra.types';
 
 import PlusIcon from '@heroicons/react/solid/PlusIcon';
 import XIcon from '@heroicons/react/solid/XIcon';
@@ -10,6 +10,8 @@ import Head from 'next/head';
 
 const NewList: NextPage = () => {
   const [title, setTitle] = useState('');
+  const [gameVersion, setGameVersion] = useState('');
+  const [modLoader, setModLoader] = useState<ModLoader>('fabric');
   const [inputMods, setInputMods] = useState<Mod[]>([
     { id: '', provider: 'modrinth' },
   ]);
@@ -25,7 +27,12 @@ const NewList: NextPage = () => {
 
     fetch('/api/new', {
       method: 'POST',
-      body: JSON.stringify({ title: title, mods: inputMods }),
+      body: JSON.stringify({
+        title: title,
+        mods: inputMods,
+        gameVersion,
+        modloader: modLoader,
+      }),
       headers: { 'content-type': 'application/json' },
     }).then(async (r) => {
       if (!r.ok) {
@@ -57,6 +64,31 @@ const NewList: NextPage = () => {
             setTitle(e.target.value);
           }}
         />
+
+        <input
+          name="game-version"
+          value={gameVersion}
+          type="text"
+          className="moddermore-input"
+          placeholder="Game version (e.g. 1.18.2)"
+          required
+          onChange={(e) => {
+            setGameVersion(e.target.value);
+          }}
+        />
+
+        <select
+          name="modloader"
+          value={modLoader}
+          className="moddermore-input"
+          onChange={(e) => {
+            setModLoader(e.target.value as ModLoader);
+          }}
+        >
+          <option value="quilt">Quilt</option>
+          <option value="fabric">Fabric</option>
+          <option value="forge">Forge</option>
+        </select>
 
         {inputMods.map((_, idx) => {
           return (
