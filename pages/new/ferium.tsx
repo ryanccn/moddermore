@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
 import { type FormEventHandler, useState } from 'react';
 
-import UploadIcon from '@heroicons/react/outline/UploadIcon';
 import { useRouter } from 'next/router';
 
 import { parseFerium } from '~/lib/ferium';
@@ -9,7 +8,8 @@ import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader } from '~/lib/extra.types';
 
 import Head from 'next/head';
-import BackToNewButton from '~/components/BackToNewButton';
+import BackLink from '~/components/BackLink';
+import NewSubmitButton from '~/components/NewSubmitButton';
 
 const FeriumImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -50,7 +50,7 @@ const FeriumImportPage: NextPage = () => {
         <title>Ferium import / Moddermore</title>
       </Head>
 
-      <BackToNewButton />
+      <BackLink href="/new" />
 
       <form
         className="flex flex-col items-start space-y-4"
@@ -110,14 +110,7 @@ const FeriumImportPage: NextPage = () => {
           }}
         />
 
-        <button
-          type="submit"
-          className="primaryish-button !mt-14"
-          disabled={submitting}
-        >
-          <UploadIcon className="block h-5 w-5" />
-          <span>Submit</span>
-        </button>
+        <NewSubmitButton disabled={submitting} />
       </form>
     </div>
   );

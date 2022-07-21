@@ -5,13 +5,12 @@ import type { RichMod, ModLoader } from '~/lib/extra.types';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import { search } from '~/lib/search';
 
-import UploadIcon from '@heroicons/react/outline/UploadIcon';
-
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import RichModDisplay from '~/components/RichModDisplay';
-import BackToNewButton from '~/components/BackToNewButton';
+import BackLink from '~/components/BackLink';
+import NewSubmitButton from '~/components/NewSubmitButton';
 
 const NewList: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -70,7 +69,7 @@ const NewList: NextPage = () => {
         <title>Manual creation / Moddermore</title>
       </Head>
 
-      <BackToNewButton />
+      <BackLink href="/new" />
 
       <form
         className="flex flex-col items-start space-y-4"
@@ -194,73 +193,7 @@ const NewList: NextPage = () => {
           ))}
         </ul>
 
-        {/* {inputMods.map((_, idx) => {
-          return (
-            <div
-              className="flex w-full items-center space-x-2 rounded-md bg-transparent p-5 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800"
-              key={`mod-form-group-${idx}`}
-            >
-              <select
-                name={`mod-${idx}-provider`}
-                value={inputMods[idx].provider}
-                className="moddermore-input"
-                onChange={(e) => {
-                  const newMod = [...inputMods];
-                  newMod[idx].provider = e.target.value as ModProvider;
-                  setInputMods(newMod);
-                }}
-              >
-                <option value="modrinth">Modrinth</option>
-                <option value="curseforge">CurseForge</option>
-                <option value="github">GitHub</option>
-              </select>
-
-              <input
-                name={`mod-${idx}-id`}
-                value={inputMods[idx].id}
-                type="text"
-                className="moddermore-input flex-grow"
-                placeholder="ID of the mod"
-                required
-                onChange={(e) => {
-                  const newMod = [...inputMods];
-                  newMod[idx].id = e.target.value;
-                  setInputMods(newMod);
-                }}
-              />
-              <button
-                className="inline-block rounded-full p-1 text-red-500 hover:bg-red-400 hover:text-white"
-                onClick={() => {
-                  const newMod = [...inputMods];
-                  newMod.splice(idx, 1);
-                  setInputMods(newMod);
-                }}
-              >
-                <XIcon className="h-4 w-4" />
-              </button>
-            </div>
-          );
-        })}
-
-        <button
-          type="button"
-          className="flex w-full items-center justify-center space-x-3 rounded-md bg-zinc-50 py-2 px-3 transition-all hover:bg-zinc-100 focus:outline-none focus:ring dark:bg-zinc-800 dark:hover:bg-zinc-700"
-          onClick={() => {
-            setInputMods([...inputMods, { id: '', provider: 'modrinth' }]);
-          }}
-        >
-          <PlusIcon className="block h-5 w-5" />
-          <span>Add mod</span>
-        </button> */}
-
-        <button
-          type="submit"
-          className="primaryish-button !mt-14"
-          disabled={submitting}
-        >
-          <UploadIcon className="block h-5 w-5" />
-          <span>Submit</span>
-        </button>
+        <NewSubmitButton disabled={submitting} />
       </form>
     </div>
   );

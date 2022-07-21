@@ -7,6 +7,7 @@ import {
   ArchiveIcon,
   FolderIcon,
 } from '@heroicons/react/outline';
+import BackLink from '~/components/BackLink';
 
 const NewIndex: NextPage = () => {
   return (
@@ -14,6 +15,8 @@ const NewIndex: NextPage = () => {
       <Head>
         <title>New list / Moddermore</title>
       </Head>
+
+      <BackLink href="/" />
       <h1 className="title">Create a new list</h1>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Link href="/new/ferium">

@@ -5,18 +5,16 @@ import type { RichModList } from '~/lib/extra.types';
 
 import { getInfo as getModrinthInfo } from '~/lib/modrinth';
 import { getInfo as getCurseForgeInfo } from '~/lib/curseforge';
-import { loaderFormat, providerFormat } from '~/lib/strings';
+import { loaderFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
-
-import Head from 'next/head';
-// import Image from 'next/future/image';
-
 import { useRouter } from 'next/router';
 
+import Head from 'next/head';
 import FullLoadingScreen from '~/components/FullLoadingScreen';
 import CreateBanner from '~/components/CreateBanner';
 import RichModDisplay from '~/components/RichModDisplay';
+import BackLink from '~/components/BackLink';
 
 interface Props {
   data: RichModList;
@@ -34,6 +32,8 @@ const ListPage: NextPage<Props> = ({ data }) => {
       <Head>
         <title>{`${data.title} / Moddermore`}</title>
       </Head>
+
+      <BackLink href="/" />
 
       <h1 className="title">{data.title}</h1>
 
