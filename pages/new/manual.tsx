@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
-import { type FormEventHandler, useState, useEffect, useCallback } from 'react';
-import type { RichMod, ModLoader, ModProvider } from '~/lib/extra.types';
+import { type FormEventHandler, useState, useCallback } from 'react';
+import type { RichMod, ModLoader } from '~/lib/extra.types';
 
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import { search } from '~/lib/search';
@@ -9,8 +9,9 @@ import UploadIcon from '@heroicons/react/outline/UploadIcon';
 
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-// import { DebounceInput } from 'react-debounce-input';
+
 import RichModDisplay from '~/components/RichModDisplay';
+import BackToNewButton from '~/components/BackToNewButton';
 
 const NewList: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -68,6 +69,8 @@ const NewList: NextPage = () => {
       <Head>
         <title>Manual creation / Moddermore</title>
       </Head>
+
+      <BackToNewButton />
 
       <form
         className="flex flex-col items-start space-y-4"

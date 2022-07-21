@@ -9,6 +9,7 @@ import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader } from '~/lib/extra.types';
 
 import Head from 'next/head';
+import BackToNewButton from '~/components/BackToNewButton';
 
 const FeriumImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -48,6 +49,9 @@ const FeriumImportPage: NextPage = () => {
       <Head>
         <title>Ferium import / Moddermore</title>
       </Head>
+
+      <BackToNewButton />
+
       <form
         className="flex flex-col items-start space-y-4"
         onSubmit={submitHandle}

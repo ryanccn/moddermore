@@ -32,7 +32,7 @@
   }
 
   .layout {
-    @apply mx-auto my-40 max-w-[75ch] px-6;
+    @apply mx-auto my-40 flex max-w-[75ch] flex-col px-6;
   }
 
   :not(select).moddermore-input {
