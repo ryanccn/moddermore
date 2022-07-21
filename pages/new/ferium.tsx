@@ -3,14 +3,16 @@ import { type FormEventHandler, useState } from 'react';
 
 import UploadIcon from '@heroicons/react/outline/UploadIcon';
 import { useRouter } from 'next/router';
-import { parseFerium } from '~/lib/ferium';
 
+import { parseFerium } from '~/lib/ferium';
+import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader } from '~/lib/extra.types';
+
 import Head from 'next/head';
 
 const FeriumImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
-  const [gameVersion, setGameVersion] = useState('');
+  const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
   const [modLoader, setModLoader] = useState<ModLoader>('fabric');
   const [feriumCopyPaste, setFeriumCopyPaste] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -62,30 +64,36 @@ const FeriumImportPage: NextPage = () => {
           }}
         />
 
-        <input
-          name="game-version"
-          value={gameVersion}
-          type="text"
-          className="moddermore-input"
-          placeholder="Game version (e.g. 1.18.2)"
-          required
-          onChange={(e) => {
-            setGameVersion(e.target.value);
-          }}
-        />
+        <div className="flex items-center space-x-4">
+          <select
+            name="game-version"
+            value={gameVersion}
+            className="moddermore-input"
+            required
+            onChange={(e) => {
+              setGameVersion(e.target.value);
+            }}
+          >
+            {minecraftVersions.map((v) => (
+              <option value={v} key={v}>
+                {v}
+              </option>
+            ))}
+          </select>
 
-        <select
-          name="modloader"
-          value={modLoader}
-          className="moddermore-input"
-          onChange={(e) => {
-            setModLoader(e.target.value as ModLoader);
-          }}
-        >
-          <option value="quilt">Quilt</option>
-          <option value="fabric">Fabric</option>
-          <option value="forge">Forge</option>
-        </select>
+          <select
+            name="modloader"
+            value={modLoader}
+            className="moddermore-input"
+            onChange={(e) => {
+              setModLoader(e.target.value as ModLoader);
+            }}
+          >
+            <option value="quilt">Quilt</option>
+            <option value="fabric">Fabric</option>
+            <option value="forge">Forge</option>
+          </select>
+        </div>
 
         <textarea
           name="ferium-copy-paste"

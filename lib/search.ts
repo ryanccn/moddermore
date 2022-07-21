@@ -195,8 +195,8 @@ export const search = async ({
       iconUrl: rawMod.icon_url,
     }));
   } else if (platform === 'curseforge') {
-    const API_KEY = process.env.CURSEFORGE_API_KEY;
-    if (!API_KEY) throw new Error('No CURSEFORGE_API_KEY defined!');
+    const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
+    if (!API_KEY) throw new Error('No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!');
 
     const modLoaderTypeCringe =
       loader === 'forge'
@@ -212,7 +212,7 @@ export const search = async ({
         query
       )}&modLoaderType=${modLoaderTypeCringe}&gameVersion=${encodeURIComponent(
         gameVersion
-      )}&classId=6&pageSize=10`,
+      )}&classId=6&pageSize=10&sortField=2&sortOrder=desc`,
       { headers: { 'x-api-key': API_KEY } }
     ).then(async (r) => {
       if (!r.ok) throw new Error(await r.text());

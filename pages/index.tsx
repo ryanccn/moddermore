@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 const Home: NextPage = () => {
   return (
-    <div className="min-w-screen grid min-h-screen place-items-center">
+    <div className="min-w-screen grid min-h-screen place-items-center px-4">
       <Head>
         <title>Moddermore is in closed beta!</title>
       </Head>

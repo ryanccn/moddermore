@@ -17,6 +17,7 @@
     "next": "12.2.2",
     "next-plausible": "^3.2.0",
     "react": "18.2.0",
+    "react-debounce-input": "^3.3.0",
     "react-dom": "18.2.0",
     "use-elapsed-time": "^3.0.4"
   },

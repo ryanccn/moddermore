@@ -10,7 +10,7 @@ import { loaderFormat, providerFormat } from '~/lib/strings';
 import pLimit from 'p-limit';
 
 import Head from 'next/head';
-import Image from 'next/future/image';
+// import Image from 'next/future/image';
 
 import { useRouter } from 'next/router';
 
@@ -49,7 +49,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
 
       <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
         {data.mods.map((mod) => (
-          <li key={mod.id}>
+          <li className="block" key={mod.id}>
             <RichModDisplay data={mod} />
           </li>
         ))}

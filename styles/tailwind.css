@@ -40,7 +40,7 @@
   }
 
   select.moddermore-input {
-    @apply form-select rounded border-none bg-zinc-100 shadow-sm dark:bg-zinc-800;
+    @apply form-select block rounded border-none bg-zinc-100 shadow-sm dark:bg-zinc-800;
   }
 
   .primaryish-button {

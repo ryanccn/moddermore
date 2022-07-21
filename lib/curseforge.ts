@@ -128,8 +128,8 @@ interface NetworkResult {
 }
 
 export const getInfo = async (id: string): Promise<RichMod | null> => {
-  const API_KEY = process.env.CURSEFORGE_API_KEY;
-  if (!API_KEY) throw new Error('No CURSEFORGE_API_KEY defined!');
+  const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
+  if (!API_KEY) throw new Error('No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!');
 
   const res = await fetch(`https://api.curseforge.com/v1/mods/${id}`, {
     headers: { 'x-api-key': API_KEY },
