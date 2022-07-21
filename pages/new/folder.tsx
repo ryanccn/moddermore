@@ -4,18 +4,20 @@ import { type FormEventHandler, useState } from 'react';
 import UploadIcon from '@heroicons/react/outline/UploadIcon';
 import { useRouter } from 'next/router';
 
-import { parseFerium } from '~/lib/ferium';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader } from '~/lib/extra.types';
 
 import Head from 'next/head';
 import { parseModFolder } from '~/lib/parseModFolder';
+import ProgressOverlay from '~/components/ProgressOverlay';
 
 const FeriumImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
   const [modZipFile, setModZipFile] = useState<File | null>(null);
   const [modLoader, setModLoader] = useState<ModLoader>('fabric');
+
+  const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
@@ -32,6 +34,7 @@ const FeriumImportPage: NextPage = () => {
       f: aaa,
       gameVersion,
       loader: modLoader as ModLoader,
+      setProgress,
     }).then((r) => r.filter(Boolean));
 
     fetch('/api/new', {
@@ -124,6 +127,7 @@ const FeriumImportPage: NextPage = () => {
           <span>Submit</span>
         </button>
       </form>
+      {submitting && <ProgressOverlay {...progress} />}
     </div>
   );
 };

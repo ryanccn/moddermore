@@ -7,6 +7,7 @@ interface InputData {
   f: ArrayBuffer;
   gameVersion: string;
   loader: ModLoader;
+  setProgress: (arg0: { value: number; max: number }) => void;
 }
 
 const matchName = (a: string, b: string) => {
@@ -60,7 +61,12 @@ export const parseMod = async ({ f, gameVersion, loader }: InputData) => {
   return searchResult;
 };
 
-export const parseModFolder = async ({ f, gameVersion, loader }: InputData) => {
+export const parseModFolder = async ({
+  f,
+  gameVersion,
+  loader,
+  setProgress,
+}: InputData) => {
   const zipFile = await loadAsync(f);
   const mods = Object.keys(zipFile.files).filter(
     (name) =>
@@ -69,11 +75,12 @@ export const parseModFolder = async ({ f, gameVersion, loader }: InputData) => {
       !name.includes('.old')
   );
 
-  console.log({ mods });
-
   let ret: (RichMod | null)[] = [];
+  setProgress({ value: 0, max: mods.length });
 
-  for (const mod of mods) {
+  for (let modIdx = 0; modIdx < mods.length; modIdx++) {
+    const mod = mods[modIdx];
+
     try {
       ret = [
         ...ret,
@@ -81,11 +88,14 @@ export const parseModFolder = async ({ f, gameVersion, loader }: InputData) => {
           f: await zipFile.files[mod].async('arraybuffer'),
           gameVersion,
           loader,
+          setProgress,
         }),
       ];
     } catch (e) {
       console.error(e);
     }
+
+    setProgress({ value: modIdx + 1, max: mods.length });
   }
 
   return ret;
