@@ -2,9 +2,13 @@ const { withPlausibleProxy } = require('next-plausible');
 
 const csp = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval';
+  script-src 'self' 'unsafe-eval' 'unsafe-inline';
   style-src 'self' 'unsafe-inline';
+  img-src * blob: data:;
+  child-src 'none';
+  media-src 'none';
   font-src 'self';
+  connect-src *;
 `;
 
 const securityHeaders = [
@@ -14,7 +18,7 @@ const securityHeaders = [
   },
   {
     key: 'Strict-Transport-Security',
-    value: 'max-age=63072000; includeSubDomains; preload',
+    value: 'max-age=63072000',
   },
   {
     key: 'X-XSS-Protection',
@@ -22,7 +26,7 @@ const securityHeaders = [
   },
   {
     key: 'X-Frame-Options',
-    value: 'SAMEORIGIN',
+    value: 'DENY',
   },
   {
     key: 'Permissions-Policy',
