@@ -5,7 +5,7 @@ import type { RichModList } from '~/lib/extra.types';
 
 import { getInfo as getModrinthInfo } from '~/lib/modrinth';
 import { getInfo as getCurseForgeInfo } from '~/lib/curseforge';
-import { modLoaderFormat, providerFormat } from '~/lib/strings';
+import { loaderFormat, providerFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
 
@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 
 import FullLoadingScreen from '~/components/FullLoadingScreen';
 import CreateBanner from '~/components/CreateBanner';
+import RichModDisplay from '~/components/RichModDisplay';
 
 interface Props {
   data: RichModList;
@@ -39,7 +40,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
       <div className="data-list">
         <p>
           For Minecraft <strong>{data.gameVersion}</strong> with{' '}
-          <strong>{modLoaderFormat(data.modloader)}</strong>
+          <strong>{loaderFormat(data.modloader)}</strong>
         </p>
         <p>
           Created on <strong>{new Date(data.created_at).toDateString()}</strong>
@@ -49,33 +50,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
       <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
         {data.mods.map((mod) => (
           <li key={mod.id}>
-            <a
-              className="group flex space-x-4 rounded-sm bg-transparent p-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800"
-              href={mod.href}
-            >
-              {mod.iconUrl && (
-                <Image
-                  width={64}
-                  height={64}
-                  src={mod.iconUrl}
-                  alt={`Icon of ${mod.name}`}
-                  className="h-[64px] w-[64px] rounded-md opacity-80 transition-opacity group-hover:opacity-100"
-                />
-              )}
-              <div className="flex flex-col space-y-1">
-                <h2 className="text-xl font-semibold">{mod.name}</h2>
-                {mod.description && (
-                  <h3 className="text-sm text-zinc-800 dark:text-zinc-200">
-                    {mod.description.length > 25
-                      ? mod.description.substring(0, 24) + '...'
-                      : mod.description}
-                  </h3>
-                )}
-                <h3 className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                  {providerFormat(mod.provider)}
-                </h3>
-              </div>
-            </a>
+            <RichModDisplay data={mod} />
           </li>
         ))}
       </ul>

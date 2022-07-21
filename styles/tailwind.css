@@ -19,6 +19,7 @@
 }
 
 @layer components {
+  a,
   input,
   button,
   textarea,
@@ -56,7 +57,7 @@
   }
 
   .new-card {
-    @apply bg-zinc-100 p-4 dark:bg-zinc-800;
+    @apply bg-zinc-100 p-5 dark:bg-zinc-800;
     @apply flex flex-col items-center space-y-2;
     @apply rounded text-xl font-semibold;
   }

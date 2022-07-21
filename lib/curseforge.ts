@@ -128,8 +128,6 @@ interface NetworkResult {
 }
 
 export const getInfo = async (id: string): Promise<RichMod | null> => {
-  // console.log(process.env);
-
   const API_KEY = process.env.CURSEFORGE_API_KEY;
   if (!API_KEY) throw new Error('No CURSEFORGE_API_KEY defined!');
 
