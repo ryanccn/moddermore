@@ -1,23 +1,41 @@
-import type { NextApiHandler } from 'next';
+export const config = {
+  runtime: 'experimental-edge',
+};
 
-const h: NextApiHandler = async (req, res) => {
-  const originalURL = req.query.original;
+const h = async (req: Request) => {
+  const originalURL = new URL(req.url).searchParams.get('url');
 
-  if (!originalURL || typeof originalURL !== 'string') {
-    res.status(404).json({ error: 'what?' });
-    return;
+  if (!originalURL) {
+    return new Response("didn't provide anything", {
+      status: 404,
+      headers: { 'content-type': 'text/plain' },
+    });
   }
 
   if (!new URL(originalURL).hostname.includes('forgecdn.net')) {
-    res.status(400).json({ error: 'not forgecdn.net, go away' });
-    return;
+    return new Response('only forgecdn.net links work', {
+      status: 400,
+      headers: { 'content-type': 'text/plain' },
+    });
   }
 
   const proxiedResp = await fetch(originalURL);
 
-  res.setHeader('cache-control', 's-maxage=60, stale-while-revalidate=3600');
-  res.setHeader('content-type', proxiedResp.headers.get('content-type') ?? '');
-  res.end(await proxiedResp.blob().then((blob) => blob.arrayBuffer()));
+  if (!proxiedResp.ok) {
+    return new Response(proxiedResp.body, {
+      status: proxiedResp.status,
+      headers: {
+        'content-type': proxiedResp.headers.get('content-type') ?? '',
+      },
+    });
+  }
+
+  return new Response(proxiedResp.body, {
+    headers: {
+      'cache-control': 's-maxage=3600, stale-while-revalidate=3600',
+      'content-type': proxiedResp.headers.get('content-type') ?? '',
+    },
+  });
 };
 
 export default h;

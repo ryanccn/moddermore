@@ -89,7 +89,7 @@ export const getCFDownload = async ({
   return [
     {
       name: latest.fileName,
-      url: `/api/cursed?original=${encodeURIComponent(latest.downloadUrl)}`,
+      url: `/api/cursed?url=${encodeURIComponent(latest.downloadUrl)}`,
       type: 'direct',
     },
   ];
