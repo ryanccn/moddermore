@@ -151,7 +151,9 @@ const FeriumImportPage: NextPage = () => {
         <NewSubmitButton disabled={submitting} />
       </form>
 
-      {submitting && <ProgressOverlay {...progress} />}
+      {submitting && (
+        <ProgressOverlay label="Searching for mods..." {...progress} />
+      )}
     </div>
   );
 };
