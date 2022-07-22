@@ -12,6 +12,8 @@ import ProgressOverlay from '~/components/ProgressOverlay';
 import BackLink from '~/components/BackLink';
 import NewSubmitButton from '~/components/NewSubmitButton';
 
+import { CloudUploadIcon } from '@heroicons/react/outline';
+
 const FeriumImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
@@ -60,13 +62,13 @@ const FeriumImportPage: NextPage = () => {
   return (
     <div className="layout">
       <Head>
-        <title>Ferium import / Moddermore</title>
+        <title>Import from folder / Moddermore</title>
       </Head>
 
       <BackLink href="/new" />
 
       <form
-        className="flex flex-col items-start space-y-4"
+        className="flex flex-col items-start space-y-6"
         onSubmit={submitHandle}
       >
         <input
@@ -115,16 +117,36 @@ const FeriumImportPage: NextPage = () => {
           </select>
         </div>
 
-        <input
-          name="mod-zip"
-          type="file"
-          className="moddermore-input"
-          aria-label="Upload a ZIP file containing mods"
-          required
-          onChange={(e) => {
-            setModZipFile(e.target.files?.item(0) ?? null);
-          }}
-        />
+        <h2 className="!mt-12 text-sm font-bold uppercase text-zinc-800 dark:text-zinc-200">
+          .zip file containing mods
+        </h2>
+
+        <div className="!mt-3 flex items-center space-x-4">
+          <label>
+            <div
+              role="button"
+              className="primaryish-button flex cursor-auto hover:cursor-pointer"
+            >
+              <CloudUploadIcon className="block h-5 w-5" />
+              <span>Choose file</span>
+            </div>
+
+            <input
+              name="mod-zip"
+              type="file"
+              className="sr-only"
+              accept=".zip"
+              required
+              onChange={(e) => {
+                setModZipFile(e.target.files?.item(0) ?? null);
+              }}
+            />
+          </label>
+
+          {modZipFile && (
+            <span className="text-lg font-medium">{modZipFile.name}</span>
+          )}
+        </div>
 
         <NewSubmitButton disabled={submitting} />
       </form>

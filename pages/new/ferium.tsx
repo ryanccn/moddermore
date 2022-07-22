@@ -53,7 +53,7 @@ const FeriumImportPage: NextPage = () => {
       <BackLink href="/new" />
 
       <form
-        className="flex flex-col items-start space-y-4"
+        className="flex flex-col items-start space-y-6"
         onSubmit={submitHandle}
       >
         <input

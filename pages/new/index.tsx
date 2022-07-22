@@ -28,7 +28,7 @@ const NewIndex: NextPage = () => {
         <Link href="/new/folder">
           <a className="new-card">
             <FolderIcon className="block h-10 w-10 stroke-[1.5]" />
-            <span>ZIP archive</span>
+            <span>Folder</span>
           </a>
         </Link>
         <Link href="/new/manual">
