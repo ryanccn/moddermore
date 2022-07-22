@@ -3,7 +3,7 @@ import { type FormEventHandler, useState, useCallback } from 'react';
 import type { RichMod, ModLoader } from '~/lib/extra.types';
 
 import minecraftVersions from '~/lib/minecraftVersions.json';
-import { search } from '~/lib/search';
+import { search } from '~/lib/import/search';
 
 import { useRouter } from 'next/router';
 import Head from 'next/head';

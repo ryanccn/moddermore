@@ -1,4 +1,4 @@
-import type { RichMod } from './extra.types';
+import type { RichMod } from '../extra.types';
 
 type Side = 'required' | 'optional' | 'unsupported';
 

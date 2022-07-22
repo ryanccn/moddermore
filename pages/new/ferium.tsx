@@ -3,7 +3,7 @@ import { type FormEventHandler, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
-import { parseFerium } from '~/lib/ferium';
+import { parseFerium } from '~/lib/import/ferium';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader } from '~/lib/extra.types';
 

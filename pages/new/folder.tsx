@@ -3,7 +3,7 @@ import { type FormEventHandler, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
-import { parseModFolder } from '~/lib/parseModFolder';
+import { parseModFolder } from '~/lib/import/parseModFolder';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader } from '~/lib/extra.types';
 

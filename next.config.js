@@ -50,7 +50,10 @@ const securityHeaders = [
 const nextConfig = withPlausibleProxy()({
   reactStrictMode: true,
   images: { domains: ['cdn.modrinth.com', 'media.forgecdn.net'] },
+
   async headers() {
+    if (process.env.NODE_ENV === 'development') return [];
+
     return [
       {
         source: '/:path*',
@@ -58,6 +61,7 @@ const nextConfig = withPlausibleProxy()({
       },
     ];
   },
+
   experimental: {
     images: {
       allowFutureImage: true,

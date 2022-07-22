@@ -3,11 +3,16 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { getSpecificList } from '~/lib/supabase';
 import type { RichModList } from '~/lib/extra.types';
 
-import { getInfo as getModrinthInfo } from '~/lib/modrinth';
-import { getInfo as getCurseForgeInfo } from '~/lib/curseforge';
+import { getInfo as getModrinthInfo } from '~/lib/metadata/modrinth';
+import { getInfo as getCurseForgeInfo } from '~/lib/metadata/curseforge';
+import { getDownloadURLs } from '~/lib/export';
 import { loaderFormat } from '~/lib/strings';
 
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
+
 import pLimit from 'p-limit';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import Head from 'next/head';
@@ -15,6 +20,9 @@ import FullLoadingScreen from '~/components/FullLoadingScreen';
 import CreateBanner from '~/components/CreateBanner';
 import RichModDisplay from '~/components/RichModDisplay';
 import BackLink from '~/components/BackLink';
+import { FolderDownloadIcon } from '@heroicons/react/outline';
+import ProgressOverlay from '~/components/ProgressOverlay';
+import { Mutex, Semaphore } from 'async-mutex';
 
 interface Props {
   data: RichModList;
@@ -22,6 +30,61 @@ interface Props {
 
 const ListPage: NextPage<Props> = ({ data }) => {
   const router = useRouter();
+
+  const [status, setStatus] = useState<'idle' | 'resolving' | 'downloading'>(
+    'idle'
+  );
+  const [progress, setProgress] = useState({ value: 0, max: 0 });
+
+  const downloadExport = async () => {
+    setProgress({ value: 0, max: data.mods.length });
+    setStatus('resolving');
+    const urls = await getDownloadURLs(data, setProgress);
+    setStatus('downloading');
+    setProgress({ value: 0, max: data.mods.length });
+
+    const zipfile = new JSZip();
+    const modFolder = zipfile.folder('mods');
+
+    if (!modFolder) {
+      throw new Error('f');
+    }
+
+    const lim = pLimit(4);
+
+    const mutex = new Mutex();
+    const prog = { a: 0 };
+
+    await Promise.all(
+      urls.map((downloadData) =>
+        lim(async () => {
+          if ('error' in downloadData) return;
+          const fileContents = await fetch(downloadData.url).then((r) =>
+            r.blob()
+          );
+
+          modFolder.file(downloadData.name, fileContents);
+
+          if (downloadData.type === 'direct') {
+            const release = await mutex.acquire();
+
+            prog.a++;
+            setProgress({
+              value: Math.max(prog.a, data.mods.length), // FIXME
+              max: data.mods.length,
+            });
+
+            release();
+          }
+        })
+      )
+    );
+
+    const zipBlob = await zipfile.generateAsync({ type: 'blob' });
+    saveAs(zipBlob, `${data.title}.zip`);
+
+    setStatus('idle');
+  };
 
   if (router.isFallback) {
     return <FullLoadingScreen />;
@@ -47,6 +110,13 @@ const ListPage: NextPage<Props> = ({ data }) => {
         </p>
       </div>
 
+      <div className="spaec-x-4 flex">
+        <button className="primaryish-button mb-16" onClick={downloadExport}>
+          <FolderDownloadIcon className="block h-5 w-5" />
+          <span>Export</span>
+        </button>
+      </div>
+
       <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
         {data.mods.map((mod) => (
           <li className="block" key={mod.id}>
@@ -56,6 +126,17 @@ const ListPage: NextPage<Props> = ({ data }) => {
       </ul>
 
       <CreateBanner />
+
+      {status !== 'idle' && (
+        <ProgressOverlay
+          label={
+            status === 'downloading'
+              ? 'Downloading mods...'
+              : 'Resolving mods...'
+          }
+          {...progress}
+        />
+      )}
     </div>
   );
 };

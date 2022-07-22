@@ -14,18 +14,20 @@
   "dependencies": {
     "@heroicons/react": "^1.0.6",
     "@radix-ui/react-portal": "^1.0.0",
+    "async-mutex": "^0.3.2",
     "clsx": "^1.2.1",
+    "file-saver": "^2.0.5",
     "jszip": "^3.10.0",
     "next": "12.2.2",
     "next-plausible": "^3.2.0",
     "react": "18.2.0",
-    "react-debounce-input": "^3.3.0",
     "react-dom": "18.2.0",
     "use-elapsed-time": "^3.0.4"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^1.35.4",
     "@tailwindcss/forms": "^0.5.2",
+    "@types/file-saver": "^2.0.5",
     "@types/node": "18.0.6",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",

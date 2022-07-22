@@ -1,7 +1,7 @@
 import { loadAsync } from 'jszip';
 import { search } from './search';
 
-import type { ModLoader, RichMod } from './extra.types';
+import type { ModLoader, RichMod } from '../extra.types';
 
 interface InputData {
   f: ArrayBuffer;
