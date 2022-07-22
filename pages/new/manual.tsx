@@ -81,6 +81,7 @@ const NewList: NextPage = () => {
           type="text"
           className="title w-full bg-transparent focus:outline-none focus:ring-0"
           placeholder="Enter the title..."
+          aria-label="Title of the mod list"
           required
           onChange={(e) => {
             setTitle(e.target.value);
@@ -92,6 +93,7 @@ const NewList: NextPage = () => {
             name="game-version"
             value={gameVersion}
             className="moddermore-input"
+            aria-label="Game version"
             required
             onChange={(e) => {
               setGameVersion(e.target.value);
@@ -108,6 +110,7 @@ const NewList: NextPage = () => {
             name="modloader"
             value={modLoader}
             className="moddermore-input"
+            aria-label="Mod loader"
             onChange={(e) => {
               setModLoader(e.target.value as ModLoader);
             }}
@@ -124,6 +127,7 @@ const NewList: NextPage = () => {
               name="searchProvider"
               value={searchProvider}
               className="moddermore-input flex-grow-0"
+              aria-label="Select a provider to search from"
               onChange={(e) => {
                 setSearchProvider(e.target.value);
               }}
@@ -137,8 +141,9 @@ const NewList: NextPage = () => {
               name="search-bar"
               className="moddermore-input flex-grow"
               placeholder="Search for mods"
+              role="search"
+              aria-label="Search for mods"
               minLength={1}
-              // debounceTimeout={1000}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -182,7 +187,7 @@ const NewList: NextPage = () => {
           )}
         </div>
 
-        <h2 className="text-sm font-bold uppercase text-zinc-600 dark:text-zinc-300">
+        <h2 className="!mt-12 text-sm font-bold uppercase text-zinc-800 dark:text-zinc-200">
           Added mods
         </h2>
         <ul>

@@ -1,4 +1,4 @@
-import { CloudIcon, PlusCircleIcon } from '@heroicons/react/outline';
+import { PlusCircleIcon } from '@heroicons/react/outline';
 import type { NextPage } from 'next';
 
 import Head from 'next/head';

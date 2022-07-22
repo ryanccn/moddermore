@@ -75,6 +75,7 @@ const FeriumImportPage: NextPage = () => {
           type="text"
           className="title w-full bg-transparent focus:outline-none focus:ring-0"
           placeholder="Enter the title..."
+          aria-label="Title of the mod list"
           required
           onChange={(e) => {
             setTitle(e.target.value);
@@ -86,6 +87,7 @@ const FeriumImportPage: NextPage = () => {
             name="game-version"
             value={gameVersion}
             className="moddermore-input"
+            aria-label="Game version"
             required
             onChange={(e) => {
               setGameVersion(e.target.value);
@@ -102,6 +104,7 @@ const FeriumImportPage: NextPage = () => {
             name="modloader"
             value={modLoader}
             className="moddermore-input"
+            aria-label="Mod loader"
             onChange={(e) => {
               setModLoader(e.target.value as ModLoader);
             }}
@@ -116,6 +119,7 @@ const FeriumImportPage: NextPage = () => {
           name="mod-zip"
           type="file"
           className="moddermore-input"
+          aria-label="Upload a ZIP file containing mods"
           required
           onChange={(e) => {
             setModZipFile(e.target.files?.item(0) ?? null);

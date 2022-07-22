@@ -3,8 +3,6 @@ import type { RichMod } from '~/lib/extra.types';
 import Image from 'next/future/image';
 import { providerFormat } from '~/lib/strings';
 
-// import PlusIcon from '@heroicons/react/solid/PlusIcon';
-
 function SomeDetails({ data }: { data: RichMod }) {
   return (
     <>

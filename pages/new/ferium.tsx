@@ -62,6 +62,7 @@ const FeriumImportPage: NextPage = () => {
           type="text"
           className="title w-full bg-transparent focus:outline-none focus:ring-0"
           placeholder="Enter the title..."
+          aria-label="Title of the mod list"
           required
           onChange={(e) => {
             setTitle(e.target.value);
@@ -73,6 +74,7 @@ const FeriumImportPage: NextPage = () => {
             name="game-version"
             value={gameVersion}
             className="moddermore-input"
+            aria-label="Game version"
             required
             onChange={(e) => {
               setGameVersion(e.target.value);
@@ -89,6 +91,7 @@ const FeriumImportPage: NextPage = () => {
             name="modloader"
             value={modLoader}
             className="moddermore-input"
+            aria-label="Mod loader"
             onChange={(e) => {
               setModLoader(e.target.value as ModLoader);
             }}
@@ -104,6 +107,7 @@ const FeriumImportPage: NextPage = () => {
           value={feriumCopyPaste}
           className="moddermore-input min-h-[10rem] w-full resize-y font-mono"
           placeholder="Paste the output of `ferium list` here."
+          aria-label="The output of `ferium list`"
           required
           onChange={(e) => {
             setFeriumCopyPaste(e.target.value);

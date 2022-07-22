@@ -14,7 +14,8 @@ export default function FullLoadingScreen() {
       <div className="flex flex-col items-center space-y-1">
         <Spinner className="mb-4" />
         <h2 className="text-lg font-medium">
-          Fetching data... {elapsedTime.toFixed(1)}s
+          <span>Fetching data...</span>{' '}
+          <span role="timer">{elapsedTime.toFixed(1)}s</span>
         </h2>
         <h3 className="text-zinc-800 dark:text-zinc-200">
           (this only happens once, don&apos;t worry)
