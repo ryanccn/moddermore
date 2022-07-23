@@ -70,7 +70,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
 
             prog.a++;
             setProgress({
-              value: Math.max(prog.a, data.mods.length), // FIXME
+              value: Math.min(prog.a, data.mods.length), // FIXME
               max: data.mods.length,
             });
 
