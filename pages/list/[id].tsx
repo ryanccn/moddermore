@@ -1,7 +1,7 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 
 import { getSpecificList } from '~/lib/supabase';
-import type { RichModList } from '~/lib/extra.types';
+import type { RichModList } from '~/types/moddermore';
 
 import { getInfo as getModrinthInfo } from '~/lib/metadata/modrinth';
 import { getInfo as getCurseForgeInfo } from '~/lib/metadata/curseforge';

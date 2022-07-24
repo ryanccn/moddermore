@@ -1,4 +1,4 @@
-import type { RichModList } from '../extra.types';
+import type { RichModList } from '~/types/moddermore';
 import type { Download, DownloadError } from './types';
 
 import { getCFDownload } from './curseforge';

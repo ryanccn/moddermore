@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { type FormEventHandler, useState, useCallback } from 'react';
-import type { RichMod, ModLoader } from '~/lib/extra.types';
+import type { RichMod, ModLoader } from '~/types/moddermore';
 
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import { search } from '~/lib/import/search';

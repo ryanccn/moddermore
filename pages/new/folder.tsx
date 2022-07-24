@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 import { parseModFolder } from '~/lib/import/parseModFolder';
 import minecraftVersions from '~/lib/minecraftVersions.json';
-import type { ModLoader } from '~/lib/extra.types';
+import type { ModLoader } from '~/types/moddermore';
 
 import Head from 'next/head';
 import ProgressOverlay from '~/components/ProgressOverlay';
@@ -34,9 +34,7 @@ const FeriumImportPage: NextPage = () => {
     if (!aaa) throw aaa;
 
     const parsedMods = await parseModFolder({
-      f: aaa,
-      gameVersion,
-      loader: modLoader as ModLoader,
+      f: new Uint8Array(aaa),
       setProgress,
     }).then((r) => r.filter(Boolean));
 

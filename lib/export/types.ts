@@ -1,4 +1,4 @@
-import { ModLoader } from '../extra.types';
+import type { ModLoader } from '~/types/moddermore';
 
 export interface ProviderSpecificOptions {
   id: string;

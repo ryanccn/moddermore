@@ -1,8 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 import { randomBytes } from 'crypto';
 
-import type { Mod, ModList, ModListPartial, ModLoader } from './extra.types';
-import type { definitions } from './supabase.types';
+import type {
+  Mod,
+  ModList,
+  ModListPartial,
+  ModLoader,
+} from '~/types/moddermore';
+import type { definitions } from '~/types/supabase';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;

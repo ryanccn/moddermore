@@ -1,4 +1,4 @@
-import type { RichMod } from '~/lib/extra.types';
+import type { RichMod } from '~/types/moddermore';
 
 import Image from 'next/future/image';
 import { providerFormat } from '~/lib/strings';

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 import { parseFerium } from '~/lib/import/ferium';
 import minecraftVersions from '~/lib/minecraftVersions.json';
-import type { ModLoader } from '~/lib/extra.types';
+import type { ModLoader } from '~/types/moddermore';
 
 import Head from 'next/head';
 import BackLink from '~/components/BackLink';

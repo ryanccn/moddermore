@@ -1,4 +1,4 @@
-import type { Mod, ModProvider } from '../extra.types';
+import type { Mod, ModProvider } from '~/types/moddermore';
 
 export const parseFerium = (str: string) => {
   const lines = str.split('\n').filter(Boolean);

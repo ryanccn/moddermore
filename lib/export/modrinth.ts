@@ -1,46 +1,12 @@
+import type { ModrinthVersion } from '~/types/modrinth';
 import type {
   Download,
   ExportReturnData,
   ProviderSpecificOptions,
 } from './types';
 
-interface Version {
-  name: string;
-  version_number: string;
-  changelog: string | null;
-  dependencies:
-    | {
-        version_id: string;
-        project_id: string;
-        dependency_type: string;
-      }[]
-    | null;
-
-  game_versions: string[];
-  version_type: string;
-  loaders: string[];
-  featured: boolean;
-
-  id: string;
-  project_id: string;
-  author_id: string;
-  date_published: string;
-  downloads: number;
-
-  files: {
-    hashes: {
-      sha512: string;
-      sha1: string;
-    };
-    url: string;
-    filename: string;
-    primary: boolean;
-    size: number;
-  }[];
-}
-
 const getObjFromVersion = (
-  v: Version,
+  v: ModrinthVersion,
   type: 'direct' | 'dependency'
 ): Download => {
   const primary = v.files.filter((f) => f.primary)[0] ?? v.files[0];
@@ -64,7 +30,7 @@ export const getModrinthDownload = async ({
     return [{ error: 'notfound' }];
   }
 
-  const data = (await res.json()) as Version[];
+  const data = (await res.json()) as ModrinthVersion[];
 
   // a weird fallback mechanism thing
 
@@ -88,7 +54,7 @@ export const getModrinthDownload = async ({
       if (dep.version_id) {
         const v = (await fetch(
           `https://api.modrinth.com/v2/version/${dep.version_id}`
-        ).then((r) => r.json())) as Version;
+        ).then((r) => r.json())) as ModrinthVersion;
 
         ret.push(getObjFromVersion(v, 'dependency'));
       } else {

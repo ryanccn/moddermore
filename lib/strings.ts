@@ -1,4 +1,4 @@
-import type { ModLoader, ModProvider } from './extra.types';
+import type { ModLoader, ModProvider } from '~/types/moddermore';
 
 export const providerFormat = (prov: ModProvider) => {
   if (prov === 'curseforge') return 'CurseForge';

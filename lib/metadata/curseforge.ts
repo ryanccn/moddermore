@@ -1,131 +1,7 @@
-import type { RichMod } from '../extra.types';
+import type { CurseForgeProject } from '~/types/curseforge';
+import type { RichMod } from '~/types/moddermore';
 
 // type Side = 'required' | 'optional' | 'unsupported';
-
-interface NetworkResult {
-  id: number;
-  gameId: number;
-  name: string;
-  slug: string;
-
-  links: {
-    websiteUrl: string;
-    wikiUrl: string;
-    issuesUrl: string;
-    sourceUrl: string;
-  };
-
-  summary: string;
-  status: number;
-  downloadCount: number;
-  isFeatured: boolean;
-  primaryCategoryId: number;
-
-  categories: {
-    id: number;
-    gameId: number;
-    name: string;
-    slug: string;
-    url: string;
-    iconUrl: string;
-    dateModified: string;
-    isClass: boolean;
-    classId: number;
-    parentCategoryId: number;
-    displayIndex: number;
-  }[];
-
-  classId: number;
-  authors: {
-    id: number;
-    name: string;
-    url: string;
-  }[];
-
-  logo: {
-    id: number;
-    modId: number;
-    title: string;
-    description: string;
-    thumbnailUrl: string;
-    url: string;
-  };
-
-  screenshots: {
-    id: number;
-    modId: number;
-    title: string;
-    description: string;
-    thumbnailUrl: string;
-    url: string;
-  }[];
-
-  mainFileId: number;
-
-  latestFiles: {
-    id: number;
-    gameId: number;
-    modId: number;
-    isAvailable: boolean;
-    displayName: string;
-    fileName: string;
-    releaseType: number;
-    fileStatus: number;
-
-    hashes: {
-      value: string;
-      algo: number;
-    }[];
-
-    fileDate: string;
-    fileLength: number;
-    downloadCount: number;
-    downloadUrl: string;
-    gameVersions: string[];
-
-    sortableGameVersions: {
-      gameVersionName: string;
-      gameVersionPadded: string;
-      gameVersion: string;
-      gameVersionReleaseDate: string;
-      gameVersionTypeId: number;
-    }[];
-
-    dependencies: {
-      modId: number;
-      relationType: number;
-    }[];
-
-    exposeAsAlternative: boolean;
-    parentProjectFileId: number;
-    alternateFileId: number;
-    isServerPack: boolean;
-    serverPackFileId: number;
-    fileFingerprint: number;
-    modules: {
-      name: string;
-      fingerprint: number;
-    }[];
-  }[];
-
-  latestFilesIndexes: {
-    gameVersion: string;
-    fileId: number;
-    filename: string;
-    releaseType: 1;
-    gameVersionTypeId: number;
-    modLoader: number;
-  }[];
-
-  dateCreated: string;
-  dateModified: string;
-  dateReleased: string;
-
-  allowModDistribution: boolean;
-  gamePopularityRank: number;
-  isAvailable: boolean;
-  thumbsUpCount: number;
-}
 
 export const getInfo = async (id: string): Promise<RichMod | null> => {
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
@@ -135,11 +11,13 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
     headers: { 'x-api-key': API_KEY },
   });
 
-  if (res.status === 404) {
+  if (!res.ok) {
     return null;
   }
 
-  const data = (await res.json().then((json) => json.data)) as NetworkResult;
+  const data = (await res
+    .json()
+    .then((json) => json.data)) as CurseForgeProject;
 
   return {
     id,
