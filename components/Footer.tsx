@@ -8,9 +8,15 @@ export default function Footer() {
       >
         Code open source under AGPLv3 license
       </a>
-      <p>
-        Revision {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ?? 'unknown'}
-      </p>
+      {typeof process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA !== 'undefined' && (
+        <a
+          href={`https://github.com/ryanccn/moddermore/commit/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Revision {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}
+        </a>
+      )}
     </div>
   );
 }
