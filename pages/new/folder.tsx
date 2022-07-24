@@ -11,7 +11,7 @@ import Head from 'next/head';
 import ProgressOverlay from '~/components/ProgressOverlay';
 import BackLink from '~/components/BackLink';
 import NewSubmitButton from '~/components/NewSubmitButton';
-
+import Footer from '~/components/Footer';
 import { CloudUploadIcon } from '@heroicons/react/outline';
 
 const FeriumImportPage: NextPage = () => {
@@ -152,6 +152,8 @@ const FeriumImportPage: NextPage = () => {
       {submitting && (
         <ProgressOverlay label="Searching for mods..." {...progress} />
       )}
+
+      <Footer />
     </div>
   );
 };

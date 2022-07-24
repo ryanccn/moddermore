@@ -63,6 +63,14 @@
     @apply transition-shadow;
   }
 
+  .moddermore-footer {
+    @apply mt-4 flex w-full flex-col items-center space-y-1 py-16;
+  }
+  .moddermore-footer > p,
+  .moddermore-footer > a {
+    @apply text-sm font-normal text-zinc-500 transition-colors hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200;
+  }
+
   @keyframes spin-fast {
     to {
       transform: rotate(360deg);
@@ -71,11 +79,5 @@
 
   .animate-spin-fast {
     animation: spin-fast 0.25s linear infinite;
-  }
-
-  /* temporary, this */
-  .closed-beta-contact > a {
-    @apply font-medium;
-    @apply text-indigo-400 transition-colors hover:text-indigo-500 dark:hover:text-indigo-300;
   }
 }

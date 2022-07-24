@@ -8,13 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write ./**/*.{ts,tsx,css}",
-    "utils:supabase": "openapi-typescript https://iommmesnpuybirhnppwj.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvbW1tZXNucHV5YmlyaG5wcHdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTY2Njk0MjYsImV4cCI6MTk3MjI0NTQyNn0.Qk69qur4iyo9NvmtIWXomNqq0Pd90O6rxX0RxM5SgEU --output lib/supabase.types.ts",
+    "utils:supabase": "openapi-typescript 'https://iommmesnpuybirhnppwj.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvbW1tZXNucHV5YmlyaG5wcHdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTY2Njk0MjYsImV4cCI6MTk3MjI0NTQyNn0.Qk69qur4iyo9NvmtIWXomNqq0Pd90O6rxX0RxM5SgEU' --output 'types/supabase.ts' && prettier --write 'types/supabase.ts'",
     "utils:minecraftVersions": "node scripts/updateVersions.cjs"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
     "@radix-ui/react-portal": "^1.0.0",
-    "async-mutex": "^0.3.2",
     "clsx": "^1.2.1",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.0",

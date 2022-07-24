@@ -8,6 +8,7 @@ import {
   FolderIcon,
 } from '@heroicons/react/outline';
 import BackLink from '~/components/BackLink';
+import Footer from '~/components/Footer';
 
 const NewIndex: NextPage = () => {
   return (
@@ -38,6 +39,8 @@ const NewIndex: NextPage = () => {
           </a>
         </Link>
       </div>
+
+      <Footer />
     </div>
   );
 };

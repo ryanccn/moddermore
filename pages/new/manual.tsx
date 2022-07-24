@@ -11,6 +11,7 @@ import Head from 'next/head';
 import RichModDisplay from '~/components/RichModDisplay';
 import BackLink from '~/components/BackLink';
 import NewSubmitButton from '~/components/NewSubmitButton';
+import Footer from '~/components/Footer';
 
 const NewList: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -200,6 +201,8 @@ const NewList: NextPage = () => {
 
         <NewSubmitButton disabled={submitting} />
       </form>
+
+      <Footer />
     </div>
   );
 };

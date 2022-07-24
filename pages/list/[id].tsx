@@ -12,17 +12,17 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
 import pLimit from 'p-limit';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import Head from 'next/head';
 import FullLoadingScreen from '~/components/FullLoadingScreen';
 import CreateBanner from '~/components/CreateBanner';
 import RichModDisplay from '~/components/RichModDisplay';
-import BackLink from '~/components/BackLink';
-import { FolderDownloadIcon } from '@heroicons/react/outline';
 import ProgressOverlay from '~/components/ProgressOverlay';
-import { Mutex, Semaphore } from 'async-mutex';
+import BackLink from '~/components/BackLink';
+import Footer from '~/components/Footer';
+import { FolderDownloadIcon } from '@heroicons/react/outline';
 
 interface Props {
   data: RichModList;
@@ -52,7 +52,6 @@ const ListPage: NextPage<Props> = ({ data }) => {
 
     const lim = pLimit(4);
 
-    const mutex = new Mutex();
     const prog = { a: 0 };
 
     await Promise.all(
@@ -66,15 +65,11 @@ const ListPage: NextPage<Props> = ({ data }) => {
           modFolder.file(downloadData.name, fileContents);
 
           if (downloadData.type === 'direct') {
-            const release = await mutex.acquire();
-
             prog.a++;
             setProgress({
               value: Math.min(prog.a, data.mods.length), // FIXME
               max: data.mods.length,
             });
-
-            release();
           }
         })
       )
@@ -137,6 +132,8 @@ const ListPage: NextPage<Props> = ({ data }) => {
           {...progress}
         />
       )}
+
+      <Footer />
     </div>
   );
 };

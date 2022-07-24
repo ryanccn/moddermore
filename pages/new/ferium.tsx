@@ -10,6 +10,7 @@ import type { ModLoader } from '~/types/moddermore';
 import Head from 'next/head';
 import BackLink from '~/components/BackLink';
 import NewSubmitButton from '~/components/NewSubmitButton';
+import Footer from '~/components/Footer';
 
 const FeriumImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -116,6 +117,8 @@ const FeriumImportPage: NextPage = () => {
 
         <NewSubmitButton disabled={submitting} />
       </form>
+
+      <Footer />
     </div>
   );
 };
