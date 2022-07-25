@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="moddermore-footer">
+    <footer className="moddermore-footer">
       <a
         href="https://github.com/ryanccn/moddermore"
         target="_blank"
@@ -17,6 +17,6 @@ export default function Footer() {
           Revision {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}
         </a>
       )}
-    </div>
+    </footer>
   );
 }

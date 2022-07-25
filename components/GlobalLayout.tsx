@@ -25,7 +25,7 @@ export default function GlobalLayout({
         <title>{titleSuffix ? `${title} / Moddermore` : title}</title>
       </Head>
 
-      <div className="mb-28 flex items-center justify-between px-6 py-4 shadow-sm">
+      <nav className="mb-28 flex items-center justify-between px-6 py-4 shadow-sm">
         <div className="flex items-center space-x-2">
           <Link href="/">
             <a className="text-2xl font-bold">Moddermore</a>
@@ -39,12 +39,12 @@ export default function GlobalLayout({
             </a>
           </Link>
         </div>
-      </div>
+      </nav>
 
-      <div className="layout">
+      <main className="layout">
         {displayTitle && <h1 className="title">{title}</h1>}
         {children}
-      </div>
+      </main>
 
       <Footer />
     </>
