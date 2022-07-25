@@ -37,7 +37,9 @@ const ListPage: NextPage<Props> = ({ data }) => {
   const downloadExport = async () => {
     setProgress({ value: 0, max: data.mods.length });
     setStatus('resolving');
+
     const urls = await getDownloadURLs(data, setProgress);
+
     setStatus('downloading');
     setProgress({ value: 0, max: data.mods.length });
 
