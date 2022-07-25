@@ -3,8 +3,10 @@ import { loadAsync } from 'jszip';
 import type { ModrinthVersion } from '~/types/modrinth';
 import type { CurseForgeVersion } from '~/types/curseforge';
 import type { Mod } from '~/types/moddermore';
+import type { Dispatch, SetStateAction } from 'react';
 
 import { curseforgeHash, modrinthHash } from './hash';
+import pLimit from 'p-limit';
 
 interface CurseForgeSpecialtyResponse {
   data: {
@@ -19,7 +21,12 @@ interface CurseForgeSpecialtyResponse {
 
 interface InputData {
   f: Uint8Array;
-  setProgress: (arg0: { value: number; max: number }) => void;
+  setProgress: Dispatch<
+    SetStateAction<{
+      value: number;
+      max: number;
+    }>
+  >;
 }
 
 export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
@@ -70,18 +77,22 @@ export const parseModFolder = async ({ f, setProgress }: InputData) => {
   let ret: (Mod | null)[] = [];
   setProgress({ value: 0, max: mods.length });
 
-  for (let modIdx = 0; modIdx < mods.length; modIdx++) {
-    const mod = mods[modIdx];
+  const resolveLimit = pLimit(4);
 
-    try {
-      const modFile = await zipFile.files[mod].async('uint8array');
-      ret = [...ret, await parseMod(modFile)];
-    } catch (e) {
-      console.error(e);
-    }
+  await Promise.all(
+    mods.map((mod) =>
+      resolveLimit(async () => {
+        try {
+          const modFile = await zipFile.files[mod].async('uint8array');
+          ret = [...ret, await parseMod(modFile)];
+        } catch (e) {
+          console.error(e);
+        }
 
-    setProgress({ value: modIdx + 1, max: mods.length });
-  }
+        setProgress((oldVal) => ({ value: oldVal.value + 1, max: oldVal.max }));
+      })
+    )
+  );
 
   return ret;
 };
