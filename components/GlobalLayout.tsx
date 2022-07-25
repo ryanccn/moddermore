@@ -25,13 +25,13 @@ export default function GlobalLayout({
         <title>{titleSuffix ? `${title} / Moddermore` : title}</title>
       </Head>
 
-      <div className="mb-28 flex justify-between px-6 py-4 shadow-sm">
-        <div className="flex space-x-2">
+      <div className="mb-28 flex items-center justify-between px-6 py-4 shadow-sm">
+        <div className="flex items-center space-x-2">
           <Link href="/">
             <a className="text-2xl font-bold">Moddermore</a>
           </Link>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex items-center space-x-2">
           <Link href="/new">
             <a className="primaryish-button">
               <PlusIcon className="block h-5 w-5" />
