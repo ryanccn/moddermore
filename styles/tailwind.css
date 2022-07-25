@@ -23,7 +23,7 @@
   input,
   button,
   textarea,
-  select {
+  select:not(.moddermore-input) {
     @apply focus:outline-none focus:ring focus:ring-indigo-400/60;
   }
 
@@ -41,6 +41,7 @@
 
   select.moddermore-input {
     @apply form-select block rounded border-none bg-zinc-100 shadow-sm dark:bg-zinc-800;
+    @apply focus:outline-none focus:ring focus:ring-indigo-400/60;
   }
 
   .primaryish-button {
