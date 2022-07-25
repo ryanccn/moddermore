@@ -32,8 +32,6 @@ export const getModrinthDownload = async ({
 
   const data = (await res.json()) as ModrinthVersion[];
 
-  // a weird fallback mechanism thing
-
   let latest = data.filter((v) => v.version_type === 'release')[0];
   if (!latest) {
     latest = data.filter((v) => v.version_type === 'beta')[0];
@@ -42,7 +40,28 @@ export const getModrinthDownload = async ({
     latest = data.filter((v) => v.version_type === 'alpha')[0];
   }
 
-  if (!latest) return [{ error: 'notfound' }];
+  if (!latest && loader === 'quilt') {
+    const res = await fetch(
+      `https://api.modrinth.com/v2/project/${id}/version?loaders=["fabric"]&game_versions=["${gameVersion}"]`,
+      {
+        headers: { 'User-Agent': 'Moddermore/noversion' },
+      }
+    );
+
+    const data = (await res.json()) as ModrinthVersion[];
+
+    latest = data.filter((v) => v.version_type === 'release')[0];
+    if (!latest) {
+      latest = data.filter((v) => v.version_type === 'beta')[0];
+    }
+    if (!latest) {
+      latest = data.filter((v) => v.version_type === 'alpha')[0];
+    }
+  }
+
+  if (!latest) {
+    return [{ error: 'notfound' }];
+  }
 
   const ret = [];
   ret.push(getObjFromVersion(latest, 'direct'));

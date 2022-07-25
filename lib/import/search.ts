@@ -28,7 +28,13 @@ export const search = async ({
       `https://api.modrinth.com/v2/search?query=${encodeURIComponent(
         query
       )}&facets=${encodeURIComponent(
-        `[["project_type:mod"],["versions:${gameVersion}"],["categories:${loader}"]]`
+        JSON.stringify([
+          [`project_type:mod`],
+          [`versions:${gameVersion}`],
+          loader === 'quilt'
+            ? ['categories:fabric', 'categories:quilt']
+            : [`categories:${loader}`],
+        ])
       )}`
     ).then(async (r) => {
       if (!r.ok) throw new Error(await r.text());
