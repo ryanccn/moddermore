@@ -19,6 +19,8 @@ jobs:
           user: ryanccn
           repo: moddermore
           committer_message: 'chore(readme): update metrics'
+          base: activity, community, repositories, metadata
+          base_indepth: yes
           plugin_lines: yes
           plugin_followup: yes
           plugin_licenses: yes
