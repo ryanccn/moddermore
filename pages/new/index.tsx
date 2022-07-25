@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import Link from 'next/link';
 
 import {
@@ -7,18 +6,11 @@ import {
   ArchiveIcon,
   FolderIcon,
 } from '@heroicons/react/outline';
-import BackLink from '~/components/BackLink';
-import Footer from '~/components/Footer';
+import GlobalLayout from '~/components/GlobalLayout';
 
 const NewIndex: NextPage = () => {
   return (
-    <div className="layout">
-      <Head>
-        <title>New list / Moddermore</title>
-      </Head>
-
-      <BackLink href="/" />
-      <h1 className="title">Create a new list</h1>
+    <GlobalLayout title="Create a new list">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Link href="/new/ferium">
           <a className="new-card">
@@ -39,9 +31,7 @@ const NewIndex: NextPage = () => {
           </a>
         </Link>
       </div>
-
-      <Footer />
-    </div>
+    </GlobalLayout>
   );
 };
 

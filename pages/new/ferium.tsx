@@ -7,10 +7,8 @@ import { parseFerium } from '~/lib/import/ferium';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader } from '~/types/moddermore';
 
-import Head from 'next/head';
-import BackLink from '~/components/BackLink';
+import GlobalLayout from '~/components/GlobalLayout';
 import NewSubmitButton from '~/components/NewSubmitButton';
-import Footer from '~/components/Footer';
 
 const FeriumImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -46,13 +44,7 @@ const FeriumImportPage: NextPage = () => {
   };
 
   return (
-    <div className="layout">
-      <Head>
-        <title>Ferium import / Moddermore</title>
-      </Head>
-
-      <BackLink href="/new" />
-
+    <GlobalLayout title="Ferium import" displayTitle={false}>
       <form
         className="flex flex-col items-start space-y-6"
         onSubmit={submitHandle}
@@ -117,9 +109,7 @@ const FeriumImportPage: NextPage = () => {
 
         <NewSubmitButton disabled={submitting} />
       </form>
-
-      <Footer />
-    </div>
+    </GlobalLayout>
   );
 };
 

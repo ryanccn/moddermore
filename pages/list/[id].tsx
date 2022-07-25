@@ -15,13 +15,11 @@ import pLimit from 'p-limit';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import Head from 'next/head';
+import GlobalLayout from '~/components/GlobalLayout';
 import FullLoadingScreen from '~/components/FullLoadingScreen';
 import CreateBanner from '~/components/CreateBanner';
 import RichModDisplay from '~/components/RichModDisplay';
 import ProgressOverlay from '~/components/ProgressOverlay';
-import BackLink from '~/components/BackLink';
-import Footer from '~/components/Footer';
 import { FolderDownloadIcon } from '@heroicons/react/outline';
 
 interface Props {
@@ -52,8 +50,6 @@ const ListPage: NextPage<Props> = ({ data }) => {
 
     const lim = pLimit(4);
 
-    const prog = { a: 0 };
-
     await Promise.all(
       urls.map((downloadData) =>
         lim(async () => {
@@ -65,11 +61,10 @@ const ListPage: NextPage<Props> = ({ data }) => {
           modFolder.file(downloadData.name, fileContents);
 
           if (downloadData.type === 'direct') {
-            prog.a++;
-            setProgress({
-              value: Math.min(prog.a, data.mods.length), // FIXME
-              max: data.mods.length,
-            });
+            setProgress((old) => ({
+              value: old.value + 1,
+              max: old.max,
+            }));
           }
         })
       )
@@ -86,15 +81,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
   }
 
   return (
-    <div className="layout">
-      <Head>
-        <title>{`${data.title} / Moddermore`}</title>
-      </Head>
-
-      <BackLink href="/" />
-
-      <h1 className="title">{data.title}</h1>
-
+    <GlobalLayout title={data.title}>
       <div className="data-list">
         <p>
           For Minecraft <strong>{data.gameVersion}</strong> with{' '}
@@ -132,9 +119,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
           {...progress}
         />
       )}
-
-      <Footer />
-    </div>
+    </GlobalLayout>
   );
 };
 

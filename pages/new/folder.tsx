@@ -7,11 +7,9 @@ import { parseModFolder } from '~/lib/import/parseModFolder';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader } from '~/types/moddermore';
 
-import Head from 'next/head';
+import GlobalLayout from '~/components/GlobalLayout';
 import ProgressOverlay from '~/components/ProgressOverlay';
-import BackLink from '~/components/BackLink';
 import NewSubmitButton from '~/components/NewSubmitButton';
-import Footer from '~/components/Footer';
 import { CloudUploadIcon } from '@heroicons/react/outline';
 
 const FeriumImportPage: NextPage = () => {
@@ -58,13 +56,7 @@ const FeriumImportPage: NextPage = () => {
   };
 
   return (
-    <div className="layout">
-      <Head>
-        <title>Import from folder / Moddermore</title>
-      </Head>
-
-      <BackLink href="/new" />
-
+    <GlobalLayout title="Import from folder" displayTitle={false}>
       <form
         className="flex flex-col items-start space-y-6"
         onSubmit={submitHandle}
@@ -152,9 +144,7 @@ const FeriumImportPage: NextPage = () => {
       {submitting && (
         <ProgressOverlay label="Searching for mods..." {...progress} />
       )}
-
-      <Footer />
-    </div>
+    </GlobalLayout>
   );
 };
 

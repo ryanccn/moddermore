@@ -1,23 +1,24 @@
 import { PlusCircleIcon } from '@heroicons/react/outline';
 import type { NextPage } from 'next';
 
-import Head from 'next/head';
 import Link from 'next/link';
-import Footer from '~/components/Footer';
+
+import GlobalLayout from '~/components/GlobalLayout';
 
 const Home: NextPage = () => {
   return (
-    <div className="layout">
-      <Head>
-        <title>Moddermore</title>
-      </Head>
-
-      <div className="flex min-h-screen flex-col items-start">
-        <div className="mb-40 flex flex-col space-y-3">
-          <h2 className="text-4xl font-semibold">
-            Share the mods you use with anyone!
+    <GlobalLayout title="Moddermore" titleSuffix={false} displayTitle={false}>
+      <div className="flex flex-col items-start">
+        <div className="mb-32 flex flex-col">
+          <h2 className="mb-4 text-4xl font-bold">Moddermore</h2>
+          <h2 className="mb-10 text-3xl font-semibold">
+            Share the mods you use with anyone
           </h2>
-          <h2 className="text-6xl font-bold">Moddermore</h2>
+          <h3 className="text-lg font-medium">
+            Moddermore supports mods from both Modrinth and CurseForge. You can
+            import either manually, from Ferium, or from a folder of mod files.
+            Exports are also available for download via ZIPs or .mrpacks (WIP).
+          </h3>
         </div>
 
         <Link href="/new">
@@ -27,9 +28,7 @@ const Home: NextPage = () => {
           </a>
         </Link>
       </div>
-
-      <Footer />
-    </div>
+    </GlobalLayout>
   );
 };
 

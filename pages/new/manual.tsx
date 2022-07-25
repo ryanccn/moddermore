@@ -6,12 +6,10 @@ import minecraftVersions from '~/lib/minecraftVersions.json';
 import { search } from '~/lib/import/search';
 
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 
+import GlobalLayout from '~/components/GlobalLayout';
 import RichModDisplay from '~/components/RichModDisplay';
-import BackLink from '~/components/BackLink';
 import NewSubmitButton from '~/components/NewSubmitButton';
-import Footer from '~/components/Footer';
 
 const NewList: NextPage = () => {
   const [title, setTitle] = useState('');
@@ -65,13 +63,7 @@ const NewList: NextPage = () => {
   }, [searchProvider, searchQuery, modLoader, gameVersion]);
 
   return (
-    <div className="layout">
-      <Head>
-        <title>Manual creation / Moddermore</title>
-      </Head>
-
-      <BackLink href="/new" />
-
+    <GlobalLayout title="Manual creation" displayTitle={false}>
       <form
         className="flex flex-col items-start space-y-6"
         onSubmit={submitHandle}
@@ -201,9 +193,7 @@ const NewList: NextPage = () => {
 
         <NewSubmitButton disabled={submitting} />
       </form>
-
-      <Footer />
-    </div>
+    </GlobalLayout>
   );
 };
 
