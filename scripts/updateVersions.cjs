@@ -1,11 +1,15 @@
-const { fetch } = require('cross-fetch');
 const { format } = require('prettier');
 const { writeFile } = require('fs/promises');
 
 (async () => {
   const res = await fetch(
-    'https://launchermeta.mojang.com/mc/game/version_manifest.json'
+    'https://piston-meta.mojang.com/mc/game/version_manifest.json'
   );
+
+  if (!res.ok) {
+    console.error('Failed to fetch version manifest!');
+    process.exit(1);
+  }
 
   const data = await res.json();
 
