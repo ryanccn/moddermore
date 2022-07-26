@@ -148,11 +148,12 @@ const ListPage: NextPage<Props> = ({ data }) => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  if (!params || typeof params.id !== 'string') throw new Error('bruh');
+  if (!params || !params.id || typeof params.id !== 'string')
+    throw new Error('invalid parameter');
 
   const data = await getSpecificList(params.id);
   if (!data) {
-    console.error('not found', data);
+    console.error('not found', { id: params.id, data });
     return { notFound: true, revalidate: 1 };
   }
 

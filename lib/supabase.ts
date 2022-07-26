@@ -18,20 +18,21 @@ if (!supabaseUrl || !supabaseKey) {
   );
 }
 
-const supabaseClient = createClient(supabaseUrl, supabaseKey);
+const supabaseClient = createClient(supabaseUrl, supabaseKey, {
+  shouldThrowOnError: true,
+});
 const db = supabaseClient.from<definitions['mod_lists']>('mod_lists');
 
 export const getCount = async (): Promise<number> => {
   const count = await db
     .select('id', { count: 'exact', head: true })
-    .throwOnError(true)
     .then((res) => res.count);
 
   return count ?? 0;
 };
 
 export const getSpecificList = async (id: string): Promise<ModList | null> => {
-  const ret = await db.select('*').eq('id', id).throwOnError(true);
+  const ret = await db.select('*').eq('id', id);
 
   if (!ret.data || ret.data.length === 0) {
     return null;
@@ -53,16 +54,14 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
 export const createList = async (list: ModListPartial): Promise<string> => {
   const id = randomBytes(5).toString('hex');
 
-  await db
-    .insert({
-      id,
-      mods: list.mods,
-      created_at: new Date().toISOString(),
-      game_version: list.gameVersion,
-      modloader: list.modloader,
-      title: list.title,
-    })
-    .throwOnError(true);
+  await db.insert({
+    id,
+    mods: list.mods,
+    created_at: new Date().toISOString(),
+    game_version: list.gameVersion,
+    modloader: list.modloader,
+    title: list.title,
+  });
 
   return id;
 };
