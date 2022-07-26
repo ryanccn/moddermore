@@ -183,7 +183,7 @@ const NewList: NextPage = () => {
         <h2 className="!mt-12 text-sm font-bold uppercase text-zinc-800 dark:text-zinc-200">
           Added mods
         </h2>
-        <ul>
+        <ul className="flex w-full flex-col space-y-2">
           {inputMods.map((mod) => (
             <li key={mod.id}>
               <RichModDisplay data={mod} />
