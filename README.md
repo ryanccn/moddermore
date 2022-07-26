@@ -12,7 +12,7 @@ Share the mods you use with anyone.
   - Manual (built-in!) search
 - Export to
   - Folder of mods
-  - Modrinth modpack `.mrpack` (WIP)
+  - Modrinth modpack `.mrpack`
 
 ## Stack
 
