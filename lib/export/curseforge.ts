@@ -88,9 +88,11 @@ export const getCFDownload = async ({
 
   return [
     {
+      provider: 'curseforge',
       name: latest.fileName,
       url: `/api/cursed?url=${encodeURIComponent(latest.downloadUrl)}`,
       type: 'direct',
+      fileSize: latest.fileLength,
     },
   ];
 };

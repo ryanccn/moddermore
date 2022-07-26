@@ -1,17 +1,16 @@
 import type { RichModList } from '~/types/moddermore';
-import type { Download, DownloadError } from './types';
-import type { Dispatch, SetStateAction } from 'react';
+import type { ExportReturnData } from './types';
 
 import pLimit from 'p-limit';
 import { getCFDownload } from './curseforge';
 import { getModrinthDownload } from './modrinth';
+import { SetStateFn } from '~/types/react';
 
 export const getDownloadURLs = async (
   list: RichModList,
-  setProgress: Dispatch<SetStateAction<{ value: number; max: number }>>
+  setProgress: SetStateFn<{ value: number; max: number }>
 ) => {
-  let ret: (Download | DownloadError)[] = [];
-  setProgress({ value: 0, max: list.mods.length });
+  let ret: ExportReturnData = [];
 
   const lim = pLimit(4);
 

@@ -3,7 +3,7 @@ import { loadAsync } from 'jszip';
 import type { ModrinthVersion } from '~/types/modrinth';
 import type { CurseForgeVersion } from '~/types/curseforge';
 import type { Mod } from '~/types/moddermore';
-import type { Dispatch, SetStateAction } from 'react';
+import type { SetStateFn } from '~/types/react';
 
 import { curseforgeHash, modrinthHash } from './hash';
 import pLimit from 'p-limit';
@@ -21,12 +21,10 @@ interface CurseForgeSpecialtyResponse {
 
 interface InputData {
   f: Uint8Array;
-  setProgress: Dispatch<
-    SetStateAction<{
-      value: number;
-      max: number;
-    }>
-  >;
+  setProgress: SetStateFn<{
+    value: number;
+    max: number;
+  }>;
 }
 
 export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {

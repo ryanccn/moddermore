@@ -11,7 +11,14 @@ const getObjFromVersion = (
 ): Download => {
   const primary = v.files.filter((f) => f.primary)[0] ?? v.files[0];
 
-  return { name: primary.filename, url: primary.url, type };
+  return {
+    provider: 'modrinth',
+    name: primary.filename,
+    url: primary.url,
+    type,
+    hashes: primary.hashes,
+    fileSize: primary.size,
+  };
 };
 
 export const getModrinthDownload = async ({

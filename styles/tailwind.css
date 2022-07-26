@@ -46,7 +46,11 @@
 
   .primaryish-button {
     @apply flex items-center space-x-3 rounded-md px-3 py-2 text-sm font-medium transition-all;
-    @apply bg-indigo-500 text-white hover:bg-indigo-400 disabled:opacity-75;
+    @apply bg-indigo-500 text-white hover:brightness-[0.85] disabled:scale-95 disabled:brightness-[0.8];
+  }
+
+  .primaryish-button.modrinth-themed {
+    @apply bg-[hsl(155,58%,38%)] focus:ring-[hsla(155,58%,38%,60%)];
   }
 
   .data-list {

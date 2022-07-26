@@ -21,6 +21,8 @@ import CreateBanner from '~/components/CreateBanner';
 import RichModDisplay from '~/components/RichModDisplay';
 import ProgressOverlay from '~/components/ProgressOverlay';
 import { FolderDownloadIcon } from '@heroicons/react/outline';
+import ModrinthIcon from '~/components/ModrinthIcon';
+import { generateModrinthPack } from '~/lib/export/mrpack';
 
 interface Props {
   data: RichModList;
@@ -78,6 +80,19 @@ const ListPage: NextPage<Props> = ({ data }) => {
     setStatus('idle');
   };
 
+  const modrinthExport = async () => {
+    setProgress({ value: 0, max: data.mods.length });
+    setStatus('resolving');
+
+    const mrpack = await generateModrinthPack(
+      data,
+      await getDownloadURLs(data, setProgress)
+    );
+    saveAs(mrpack, `${data.title}.mrpack`);
+
+    setStatus('idle');
+  };
+
   if (router.isFallback) {
     return <FullLoadingScreen />;
   }
@@ -94,10 +109,17 @@ const ListPage: NextPage<Props> = ({ data }) => {
         </p>
       </div>
 
-      <div className="spaec-x-4 flex">
+      <div className="flex space-x-4">
         <button className="primaryish-button mb-16" onClick={downloadExport}>
           <FolderDownloadIcon className="block h-5 w-5" />
           <span>Export</span>
+        </button>
+        <button
+          className="primaryish-button modrinth-themed mb-16"
+          onClick={modrinthExport}
+        >
+          <ModrinthIcon className="block h-5 w-5" />
+          <span>Modrinth pack</span>
         </button>
       </div>
 
