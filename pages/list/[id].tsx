@@ -153,7 +153,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const data = await getSpecificList(params.id);
   if (!data) {
     console.error('not found', data);
-    return { notFound: true, revalidate: 15 };
+    return { notFound: true, revalidate: 1 };
   }
 
   let newData: RichModList = {
