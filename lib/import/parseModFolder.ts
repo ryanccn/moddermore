@@ -39,8 +39,6 @@ export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
     return { id: mrData.project_id, provider: 'modrinth' };
   }
 
-  console.log('Modrinth not found, moving to CF');
-
   const cfHash = await curseforgeHash(file);
   const cfRes = await fetch('https://api.curseforge.com/v1/fingerprints', {
     method: 'POST',
@@ -82,7 +80,7 @@ export const parseModFolder = async ({ f, setProgress }: InputData) => {
       resolveLimit(async () => {
         try {
           const modFile = await zipFile.files[mod].async('uint8array');
-          ret = [...ret, await parseMod(modFile)];
+          ret.push(await parseMod(modFile));
         } catch (e) {
           console.error(e);
         }
