@@ -35,6 +35,7 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
   const ret = await db.select('*').eq('id', id);
 
   if (!ret.data || ret.data.length === 0) {
+    console.error('debug', { id, ret });
     return null;
   }
 

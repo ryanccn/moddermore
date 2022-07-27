@@ -152,8 +152,9 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     throw new Error('invalid parameter');
 
   const data = await getSpecificList(params.id);
+
   if (!data) {
-    console.error('not found', { id: params.id, data });
+    console.error('not found');
     return { notFound: true, revalidate: 1 };
   }
 
