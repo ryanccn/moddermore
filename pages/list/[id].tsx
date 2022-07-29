@@ -6,6 +6,7 @@ import type { RichModList } from '~/types/moddermore';
 import { getInfo as getModrinthInfo } from '~/lib/metadata/modrinth';
 import { getInfo as getCurseForgeInfo } from '~/lib/metadata/curseforge';
 import { getDownloadURLs } from '~/lib/export';
+import { generateModrinthPack } from '~/lib/export/mrpack';
 import { loaderFormat } from '~/lib/strings';
 
 import JSZip from 'jszip';
@@ -16,13 +17,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import GlobalLayout from '~/components/GlobalLayout';
+import Modalistic from '~/components/Modalistic';
 import FullLoadingScreen from '~/components/FullLoadingScreen';
 import CreateBanner from '~/components/CreateBanner';
 import RichModDisplay from '~/components/RichModDisplay';
 import ProgressOverlay from '~/components/ProgressOverlay';
-import { FolderDownloadIcon } from '@heroicons/react/outline';
 import ModrinthIcon from '~/components/ModrinthIcon';
-import { generateModrinthPack } from '~/lib/export/mrpack';
+import { FolderDownloadIcon } from '@heroicons/react/outline';
 
 interface Props {
   data: RichModList;
@@ -31,10 +32,11 @@ interface Props {
 const ListPage: NextPage<Props> = ({ data }) => {
   const router = useRouter();
 
-  const [status, setStatus] = useState<'idle' | 'resolving' | 'downloading'>(
-    'idle'
-  );
+  const [status, setStatus] = useState<
+    'idle' | 'resolving' | 'downloading' | 'result'
+  >('idle');
   const [progress, setProgress] = useState({ value: 0, max: 0 });
+  const [result, setResult] = useState({ success: 0, failed: 0 });
 
   const downloadExport = async () => {
     setProgress({ value: 0, max: data.mods.length });
@@ -44,6 +46,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
 
     setStatus('downloading');
     setProgress({ value: 0, max: data.mods.length });
+    setResult({ success: 0, failed: 0 });
 
     const zipfile = new JSZip();
     const modFolder = zipfile.folder('mods');
@@ -57,10 +60,23 @@ const ListPage: NextPage<Props> = ({ data }) => {
     await Promise.all(
       urls.map((downloadData) =>
         lim(async () => {
-          if ('error' in downloadData) return;
-          const fileContents = await fetch(downloadData.url).then((r) =>
-            r.blob()
-          );
+          if ('error' in downloadData) {
+            setResult((a) => ({ ...a, failed: a.failed + 1 }));
+            return;
+          }
+
+          const fileContents = await fetch(downloadData.url).then((r) => {
+            if (!r.ok) {
+              return null;
+            }
+
+            return r.blob();
+          });
+
+          if (!fileContents) {
+            setResult((a) => ({ ...a, failed: a.failed + 1 }));
+            return;
+          }
 
           modFolder.file(downloadData.name, fileContents);
 
@@ -70,6 +86,8 @@ const ListPage: NextPage<Props> = ({ data }) => {
               max: old.max,
             }));
           }
+
+          setResult((a) => ({ ...a, success: a.success + 1 }));
         })
       )
     );
@@ -77,7 +95,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
     const zipBlob = await zipfile.generateAsync({ type: 'blob' });
     saveAs(zipBlob, `${data.title}.zip`);
 
-    setStatus('idle');
+    setStatus('result');
   };
 
   const modrinthExport = async () => {
@@ -133,16 +151,34 @@ const ListPage: NextPage<Props> = ({ data }) => {
 
       <CreateBanner />
 
-      {status !== 'idle' && (
-        <ProgressOverlay
-          label={
-            status === 'downloading'
-              ? 'Downloading mods...'
-              : 'Resolving mods...'
-          }
-          {...progress}
-        />
-      )}
+      {status === 'resolving' ? (
+        <ProgressOverlay label="Resolving mods..." {...progress} />
+      ) : status === 'downloading' ? (
+        <ProgressOverlay label="Downloading mods..." {...progress} />
+      ) : status === 'result' ? (
+        <Modalistic
+          backdropClickHandler={() => {
+            setStatus('idle');
+          }}
+        >
+          <div className="flex flex-col items-center space-y-2">
+            <p className="text-lg font-medium text-green-400">
+              {result.success} successful downloads
+            </p>
+            <p className="text-lg font-medium text-red-400">
+              {result.failed} failed
+            </p>
+          </div>
+          <button
+            className="primaryish-button self-center"
+            onClick={() => {
+              setStatus('idle');
+            }}
+          >
+            Close
+          </button>
+        </Modalistic>
+      ) : null}
     </GlobalLayout>
   );
 };
