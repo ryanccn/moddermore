@@ -22,7 +22,7 @@ const Home: NextPage = () => {
         </div>
 
         <Link href="/new">
-          <a className="primaryish-button px-4 py-3 text-xl">
+          <a className="primaryish-button px-6 py-4 text-xl">
             <PlusCircleIcon className="block h-8 w-8" />
             <span>Create a new list</span>
           </a>
