@@ -13,8 +13,9 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
 import pLimit from 'p-limit';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import { AnimatePresence } from 'framer-motion';
 
 import GlobalLayout from '~/components/GlobalLayout';
 import Modalistic from '~/components/Modalistic';
@@ -37,6 +38,8 @@ const ListPage: NextPage<Props> = ({ data }) => {
   >('idle');
   const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [result, setResult] = useState({ success: 0, failed: 0 });
+
+  const showModal = useMemo(() => status === 'result', [status]);
 
   const downloadExport = async () => {
     setProgress({ value: 0, max: data.mods.length });
@@ -155,30 +158,34 @@ const ListPage: NextPage<Props> = ({ data }) => {
         <ProgressOverlay label="Resolving mods..." {...progress} />
       ) : status === 'downloading' ? (
         <ProgressOverlay label="Downloading mods..." {...progress} />
-      ) : status === 'result' ? (
-        <Modalistic
-          backdropClickHandler={() => {
-            setStatus('idle');
-          }}
-        >
-          <div className="flex flex-col items-center space-y-2">
-            <p className="text-lg font-medium text-green-400">
-              {result.success} successful downloads
-            </p>
-            <p className="text-lg font-medium text-red-400">
-              {result.failed} failed
-            </p>
-          </div>
-          <button
-            className="primaryish-button self-center"
-            onClick={() => {
+      ) : null}
+
+      <AnimatePresence>
+        {showModal && (
+          <Modalistic
+            backdropClickHandler={() => {
               setStatus('idle');
             }}
           >
-            Close
-          </button>
-        </Modalistic>
-      ) : null}
+            <div className="flex flex-col items-center space-y-2">
+              <p className="text-lg font-medium text-green-400">
+                {result.success} successful downloads
+              </p>
+              <p className="text-lg font-medium text-red-400">
+                {result.failed} failed
+              </p>
+            </div>
+            <button
+              className="primaryish-button self-center"
+              onClick={() => {
+                setStatus('idle');
+              }}
+            >
+              Close
+            </button>
+          </Modalistic>
+        )}
+      </AnimatePresence>
     </GlobalLayout>
   );
 };
