@@ -5,12 +5,7 @@ import type { RichModList } from '~/types/moddermore';
 
 import { getInfo as getModrinthInfo } from '~/lib/metadata/modrinth';
 import { getInfo as getCurseForgeInfo } from '~/lib/metadata/curseforge';
-import { getDownloadURLs } from '~/lib/export';
-import { generateModrinthPack } from '~/lib/export/mrpack';
 import { loaderFormat } from '~/lib/strings';
-
-import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
 
 import pLimit from 'p-limit';
 import { useMemo, useState } from 'react';
@@ -34,7 +29,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
   const router = useRouter();
 
   const [status, setStatus] = useState<
-    'idle' | 'resolving' | 'downloading' | 'result'
+    'idle' | 'resolving' | 'downloading' | 'result' | 'loadinglibraries'
   >('idle');
   const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [result, setResult] = useState({ success: 0, failed: 0 });
@@ -42,14 +37,24 @@ const ListPage: NextPage<Props> = ({ data }) => {
   const showModal = useMemo(() => status === 'result', [status]);
 
   const downloadExport = async () => {
+    setProgress({ value: 0, max: 3 });
+    setStatus('loadinglibraries');
+
+    const { getDownloadURLs } = await import('~/lib/export');
+    setProgress({ value: 1, max: 3 });
+    const { default: JSZip } = await import('jszip');
+    setProgress({ value: 2, max: 3 });
+    const { saveAs } = await import('file-saver');
+    setProgress({ value: 3, max: 3 });
+
     setProgress({ value: 0, max: data.mods.length });
     setStatus('resolving');
 
     const urls = await getDownloadURLs(data, setProgress);
 
-    setStatus('downloading');
     setProgress({ value: 0, max: data.mods.length });
     setResult({ success: 0, failed: 0 });
+    setStatus('downloading');
 
     const zipfile = new JSZip();
     const modFolder = zipfile.folder('mods');
@@ -102,8 +107,18 @@ const ListPage: NextPage<Props> = ({ data }) => {
   };
 
   const modrinthExport = async () => {
-    setProgress({ value: 0, max: data.mods.length });
+    setProgress({ value: 0, max: 3 });
+    setStatus('loadinglibraries');
+
+    const { getDownloadURLs } = await import('~/lib/export');
+    setProgress({ value: 1, max: 3 });
+    const { generateModrinthPack } = await import('~/lib/export/mrpack');
+    setProgress({ value: 2, max: 3 });
+    const { saveAs } = await import('file-saver');
+    setProgress({ value: 3, max: 3 });
+
     setStatus('resolving');
+    setProgress({ value: 0, max: data.mods.length });
 
     const mrpack = await generateModrinthPack(
       data,
@@ -158,6 +173,11 @@ const ListPage: NextPage<Props> = ({ data }) => {
         <ProgressOverlay label="Resolving mods..." {...progress} />
       ) : status === 'downloading' ? (
         <ProgressOverlay label="Downloading mods..." {...progress} />
+      ) : status === 'loadinglibraries' ? (
+        <ProgressOverlay
+          label="Loading supplementary libraries..."
+          {...progress}
+        />
       ) : null}
 
       <AnimatePresence>
