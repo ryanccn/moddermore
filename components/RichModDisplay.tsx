@@ -1,18 +1,21 @@
+/* eslint-disable @next/next/no-img-element */
+
 import type { RichMod } from '~/types/moddermore';
 
-import Image from 'next/future/image';
 import { providerFormat } from '~/lib/strings';
 
 function SomeDetails({ data }: { data: RichMod }) {
   return (
     <>
       {data.iconUrl && (
-        <Image
-          width={64}
-          height={64}
+        <img
           src={data.iconUrl}
           alt={`Icon of ${data.name}`}
           className="h-[64px] w-[64px] rounded-md opacity-80 transition-opacity group-hover:opacity-100"
+          width={64}
+          height={64}
+          loading="lazy"
+          decoding="async"
         />
       )}
       <div className="flex w-full flex-col space-y-1">
