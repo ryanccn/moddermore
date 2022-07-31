@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
+    "@iarna/toml": "^2.2.5",
     "@radix-ui/react-portal": "^1.0.0",
     "clsx": "^1.2.1",
     "fast-xml-parser": "^4.0.9",

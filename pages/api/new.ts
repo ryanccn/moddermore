@@ -25,7 +25,7 @@ const modListPartialZod = z.object({
 });
 
 const h: NextApiHandler = async (req, res) => {
-  if (req.method !== 'POST') {
+  if (req.method?.toLowerCase() !== 'post') {
     res.status(400).json({ error: 'Not a good method.' });
     return;
   }

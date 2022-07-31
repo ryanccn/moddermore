@@ -7,6 +7,7 @@ import {
   FolderIcon,
 } from '@heroicons/react/outline';
 import GlobalLayout from '~/components/GlobalLayout';
+import PolyIcon from '~/components/PolyIcon';
 
 const NewIndex: NextPage = () => {
   return (
@@ -16,6 +17,12 @@ const NewIndex: NextPage = () => {
           <a className="new-card">
             <TerminalIcon className="block h-10 w-10 stroke-[1.5]" />
             <span>Ferium</span>
+          </a>
+        </Link>
+        <Link href="/new/polymc">
+          <a className="new-card">
+            <PolyIcon className="block h-10 w-10 stroke-[1.5]" />
+            <span>MultiMC / PolyMC instance</span>
           </a>
         </Link>
         <Link href="/new/folder">

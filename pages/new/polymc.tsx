@@ -4,7 +4,7 @@ import { type FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { loadAsync } from 'jszip';
-import { parseModFolder } from '~/lib/import/parseModFolder';
+import { parsePolyMCInstance } from '~/lib/import/polymc';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader } from '~/types/moddermore';
 
@@ -13,10 +13,10 @@ import ProgressOverlay from '~/components/ProgressOverlay';
 import NewSubmitButton from '~/components/NewSubmitButton';
 import { CloudUploadIcon } from '@heroicons/react/outline';
 
-const FeriumImportPage: NextPage = () => {
+const PolyMCInstanceImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
-  const [modZipFile, setModZipFile] = useState<File | null>(null);
+  const [instanceFile, setInstanceFile] = useState<File | null>(null);
   const [modLoader, setModLoader] = useState<ModLoader>('fabric');
 
   const [progress, setProgress] = useState({ value: 0, max: 0 });
@@ -29,10 +29,10 @@ const FeriumImportPage: NextPage = () => {
 
     setSubmitting(true);
 
-    const aaa = await modZipFile?.arrayBuffer();
+    const aaa = await instanceFile?.arrayBuffer();
     if (!aaa) throw aaa;
 
-    const parsedMods = await parseModFolder({
+    const parsedMods = await parsePolyMCInstance({
       f: await loadAsync(new Uint8Array(aaa)),
       setProgress,
     }).then((r) => r.filter(Boolean));
@@ -57,7 +57,7 @@ const FeriumImportPage: NextPage = () => {
   };
 
   return (
-    <GlobalLayout title="Import from folder" displayTitle={false}>
+    <GlobalLayout title="Import from MultiMC / PolyMC" displayTitle={false}>
       <form
         className="flex flex-col items-start space-y-6"
         onSubmit={submitHandle}
@@ -109,7 +109,7 @@ const FeriumImportPage: NextPage = () => {
         </div>
 
         <h2 className="!mt-12 text-sm font-bold uppercase text-zinc-800 dark:text-zinc-200">
-          .zip file containing mods
+          Exported instance from MultiMC / PolyMC
         </h2>
 
         <div className="!mt-3 flex items-center space-x-4">
@@ -129,13 +129,13 @@ const FeriumImportPage: NextPage = () => {
               accept=".zip"
               required
               onChange={(e) => {
-                setModZipFile(e.target.files?.item(0) ?? null);
+                setInstanceFile(e.target.files?.item(0) ?? null);
               }}
             />
           </label>
 
-          {modZipFile && (
-            <span className="text-lg font-medium">{modZipFile.name}</span>
+          {instanceFile && (
+            <span className="text-lg font-medium">{instanceFile.name}</span>
           )}
         </div>
 
@@ -149,4 +149,4 @@ const FeriumImportPage: NextPage = () => {
   );
 };
 
-export default FeriumImportPage;
+export default PolyMCInstanceImportPage;
