@@ -44,7 +44,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
     setProgress({ value: 1, max: 3 });
     const { default: JSZip } = await import('jszip');
     setProgress({ value: 2, max: 3 });
-    const { saveAs } = await import('file-saver');
+    const { default: saveAs } = await import('file-saver');
     setProgress({ value: 3, max: 3 });
 
     setProgress({ value: 0, max: data.mods.length });
@@ -114,7 +114,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
     setProgress({ value: 1, max: 3 });
     const { generateModrinthPack } = await import('~/lib/export/mrpack');
     setProgress({ value: 2, max: 3 });
-    const { saveAs } = await import('file-saver');
+    const { default: saveAs } = await import('file-saver');
     setProgress({ value: 3, max: 3 });
 
     setStatus('resolving');
