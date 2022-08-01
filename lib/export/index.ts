@@ -4,7 +4,7 @@ import type { ExportReturnData } from './types';
 import pLimit from 'p-limit';
 import { getCFDownload } from './curseforge';
 import { getModrinthDownload } from './modrinth';
-import { SetStateFn } from '~/types/react';
+import type { SetStateFn } from '~/types/react';
 
 export const getDownloadURLs = async (
   list: RichModList,
@@ -22,6 +22,7 @@ export const getDownloadURLs = async (
             id: mod.id,
             gameVersion: list.gameVersion,
             loader: list.modloader,
+            name: mod.name,
           });
 
           if (list.modloader === 'quilt' && dat.length === 0) {
@@ -29,6 +30,7 @@ export const getDownloadURLs = async (
               id: mod.id,
               gameVersion: list.gameVersion,
               loader: 'fabric',
+              name: mod.name,
             });
           }
 
@@ -38,6 +40,7 @@ export const getDownloadURLs = async (
             id: mod.id,
             gameVersion: list.gameVersion,
             loader: list.modloader,
+            name: mod.name,
           });
 
           if (list.modloader === 'quilt' && dat.length === 0) {
@@ -45,6 +48,7 @@ export const getDownloadURLs = async (
               id: mod.id,
               gameVersion: list.gameVersion,
               loader: 'fabric',
+              name: mod.name,
             });
           }
 

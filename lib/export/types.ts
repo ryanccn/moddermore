@@ -2,6 +2,7 @@ import type { ModLoader, ModProvider } from '~/types/moddermore';
 
 export interface ProviderSpecificOptions {
   id: string;
+  name: string;
   loader: ModLoader;
   gameVersion: string;
 }
@@ -30,6 +31,7 @@ export type Download = ModrinthDownload | CurseForgeDownload;
 
 export interface DownloadError {
   error: 'unavailable' | 'notfound';
+  name: string;
 }
 
 export type ExportReturnData = (Download | DownloadError)[];

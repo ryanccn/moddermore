@@ -18,7 +18,7 @@ export default function Modalistic({
       />
 
       <m.div
-        className="fixed top-1/2 left-1/2 z-[88] flex max-h-[85vh] w-[90%] max-w-lg flex-col items-center space-y-6 rounded-lg bg-zinc-50 p-8 dark:bg-zinc-800"
+        className="fixed top-1/2 left-1/2 z-[88] flex max-h-[85vh] w-[90%] max-w-lg flex-col items-center space-y-4 overflow-y-auto rounded-lg bg-zinc-50 p-8 dark:bg-zinc-800"
         role="dialog"
         aria-live="assertive"
         initial={{ scale: 0.1, translateX: '-50%', translateY: '-50%' }}

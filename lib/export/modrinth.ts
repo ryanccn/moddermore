@@ -25,6 +25,7 @@ export const getModrinthDownload = async ({
   id,
   gameVersion,
   loader,
+  name,
 }: ProviderSpecificOptions): Promise<ExportReturnData> => {
   const res = await fetch(
     `https://api.modrinth.com/v2/project/${id}/version?loaders=["${loader}"]&game_versions=["${gameVersion}"]`,
@@ -34,7 +35,7 @@ export const getModrinthDownload = async ({
   );
 
   if (res.status === 404) {
-    return [{ error: 'notfound' }];
+    return [{ error: 'notfound', name }];
   }
 
   const data = (await res.json()) as ModrinthVersion[];
@@ -67,7 +68,7 @@ export const getModrinthDownload = async ({
   }
 
   if (!latest) {
-    return [{ error: 'notfound' }];
+    return [{ error: 'notfound', name }];
   }
 
   const ret = [];
@@ -89,6 +90,7 @@ export const getModrinthDownload = async ({
             id: dep.project_id,
             gameVersion,
             loader,
+            name,
           }))
         );
       }

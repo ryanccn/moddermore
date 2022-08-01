@@ -51,6 +51,7 @@ export const getCFDownload = async ({
   id,
   gameVersion,
   loader,
+  name,
 }: ProviderSpecificOptions): Promise<ExportReturnData> => {
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
   if (!API_KEY) throw new Error('No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!');
@@ -74,7 +75,7 @@ export const getCFDownload = async ({
   );
 
   if (res.status === 404) {
-    return [{ error: 'notfound' }];
+    return [{ error: 'notfound', name }];
   }
 
   const data = (await res.json().then((json) => json.data)) as NetworkResult;
@@ -83,8 +84,8 @@ export const getCFDownload = async ({
   if (!latest) latest = data.filter((v) => v.releaseType === 2)[0];
   if (!latest) latest = data.filter((v) => v.releaseType === 3)[0];
 
-  if (!latest) return [{ error: 'notfound' }];
-  if (!latest.isAvailable) return [{ error: 'unavailable' }];
+  if (!latest) return [{ error: 'notfound', name }];
+  if (!latest.isAvailable) return [{ error: 'unavailable', name }];
 
   return [
     {

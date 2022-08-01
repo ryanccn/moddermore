@@ -32,7 +32,9 @@ const ListPage: NextPage<Props> = ({ data }) => {
     'idle' | 'resolving' | 'downloading' | 'result' | 'loadinglibraries'
   >('idle');
   const [progress, setProgress] = useState({ value: 0, max: 0 });
-  const [result, setResult] = useState({ success: 0, failed: 0 });
+  const [result, setResult] = useState<{ success: string[]; failed: string[] }>(
+    { success: [], failed: [] }
+  );
 
   const showModal = useMemo(() => status === 'result', [status]);
 
@@ -53,7 +55,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
     const urls = await getDownloadURLs(data, setProgress);
 
     setProgress({ value: 0, max: data.mods.length });
-    setResult({ success: 0, failed: 0 });
+    setResult({ success: [], failed: [] });
     setStatus('downloading');
 
     const zipfile = new JSZip();
@@ -69,7 +71,13 @@ const ListPage: NextPage<Props> = ({ data }) => {
       urls.map((downloadData) =>
         lim(async () => {
           if ('error' in downloadData) {
-            setResult((a) => ({ ...a, failed: a.failed + 1 }));
+            setResult((a) => ({
+              ...a,
+              failed: [
+                ...a.failed,
+                `${downloadData.name} ${downloadData.error}`,
+              ],
+            }));
             return;
           }
 
@@ -82,7 +90,13 @@ const ListPage: NextPage<Props> = ({ data }) => {
           });
 
           if (!fileContents) {
-            setResult((a) => ({ ...a, failed: a.failed + 1 }));
+            setResult((a) => ({
+              ...a,
+              failed: [
+                ...a.failed,
+                `${downloadData.name} network request failed`,
+              ],
+            }));
             return;
           }
 
@@ -95,7 +109,10 @@ const ListPage: NextPage<Props> = ({ data }) => {
             }));
           }
 
-          setResult((a) => ({ ...a, success: a.success + 1 }));
+          setResult((a) => ({
+            ...a,
+            success: [...a.success, downloadData.name],
+          }));
         })
       )
     );
@@ -188,12 +205,26 @@ const ListPage: NextPage<Props> = ({ data }) => {
             }}
           >
             <div className="flex flex-col items-center space-y-2">
-              <p className="text-lg font-medium text-green-400">
-                {result.success} successful downloads
-              </p>
-              <p className="text-lg font-medium text-red-400">
-                {result.failed} failed
-              </p>
+              <details className="bg-white p-2 shadow-sm dark:bg-zinc-800">
+                <summary className="mb-2 text-lg font-medium text-green-400">
+                  {result.success.length} successful downloads
+                </summary>
+                <ul>
+                  {result.success.map((a) => (
+                    <li key={a}>{a}</li>
+                  ))}
+                </ul>
+              </details>
+              <details className="bg-white p-2 shadow-sm dark:bg-zinc-800">
+                <summary className="mb-2 text-lg font-medium text-red-400">
+                  {result.failed.length} failed
+                </summary>
+                <ul>
+                  {result.failed.map((a) => (
+                    <li key={a}>{a}</li>
+                  ))}
+                </ul>
+              </details>
             </div>
             <button
               className="primaryish-button self-center"
