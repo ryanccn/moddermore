@@ -68,6 +68,19 @@
     @apply transition-shadow;
   }
 
+  .results-list {
+    @apply flex w-full flex-col space-y-2;
+  }
+  .results-list > details {
+    @apply flex w-full flex-col items-center rounded bg-white p-2 shadow-sm dark:bg-zinc-700;
+  }
+  .results-list > details > summary {
+    @apply cursor-default text-lg font-medium hover:cursor-pointer;
+  }
+  .results-list > details > ul {
+    @apply mt-2 flex w-full flex-col space-y-0.5;
+  }
+
   .moddermore-footer {
     @apply mt-4 flex w-full flex-col items-center space-y-1 py-16;
   }

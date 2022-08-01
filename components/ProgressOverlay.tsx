@@ -10,7 +10,7 @@ const ProgressOverlay = ({
   label: string;
 }) => {
   return (
-    <Modalistic>
+    <Modalistic className="flex flex-col items-center space-y-6">
       <h2 className="text-lg font-medium" id="searching-for-mods-label">
         {label} ({value} / {max})
       </h2>

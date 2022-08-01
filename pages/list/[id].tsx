@@ -15,7 +15,7 @@ import { AnimatePresence } from 'framer-motion';
 import GlobalLayout from '~/components/GlobalLayout';
 import Modalistic from '~/components/Modalistic';
 import FullLoadingScreen from '~/components/FullLoadingScreen';
-import CreateBanner from '~/components/CreateBanner';
+
 import RichModDisplay from '~/components/RichModDisplay';
 import ProgressOverlay from '~/components/ProgressOverlay';
 import ModrinthIcon from '~/components/ModrinthIcon';
@@ -184,8 +184,6 @@ const ListPage: NextPage<Props> = ({ data }) => {
         ))}
       </ul>
 
-      <CreateBanner />
-
       {status === 'resolving' ? (
         <ProgressOverlay label="Resolving mods..." {...progress} />
       ) : status === 'downloading' ? (
@@ -200,13 +198,14 @@ const ListPage: NextPage<Props> = ({ data }) => {
       <AnimatePresence>
         {showModal && (
           <Modalistic
+            className="flex flex-col space-y-4"
             backdropClickHandler={() => {
               setStatus('idle');
             }}
           >
-            <div className="flex flex-col items-center space-y-2">
-              <details className="bg-white p-2 shadow-sm dark:bg-zinc-800">
-                <summary className="mb-2 text-lg font-medium text-green-400">
+            <div className="results-list">
+              <details>
+                <summary className="text-green-400">
                   {result.success.length} successful downloads
                 </summary>
                 <ul>
@@ -215,8 +214,9 @@ const ListPage: NextPage<Props> = ({ data }) => {
                   ))}
                 </ul>
               </details>
-              <details className="bg-white p-2 shadow-sm dark:bg-zinc-800">
-                <summary className="mb-2 text-lg font-medium text-red-400">
+
+              <details>
+                <summary className="text-red-400">
                   {result.failed.length} failed
                 </summary>
                 <ul>
@@ -226,6 +226,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
                 </ul>
               </details>
             </div>
+
             <button
               className="primaryish-button self-center"
               onClick={() => {
