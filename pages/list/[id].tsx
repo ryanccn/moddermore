@@ -214,7 +214,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (!params || !params.id || typeof params.id !== 'string')
     throw new Error('invalid parameter');
 
-  const data = await getSpecificList(params.id);
+  const data =
+    (await getSpecificList(params.id)) ??
+    (await getSpecificList(params.id)) ??
+    (await getSpecificList(params.id)) ??
+    (await getSpecificList(params.id)) ??
+    (await getSpecificList(params.id));
 
   if (!data) {
     console.error('not found');
