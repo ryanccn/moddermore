@@ -1,3 +1,5 @@
+import PoweredByVercel from './PoweredByVercel';
+
 export default function Footer() {
   return (
     <footer className="moddermore-footer">
@@ -17,6 +19,7 @@ export default function Footer() {
           Revision {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}
         </a>
       )}
+      <PoweredByVercel />
     </footer>
   );
 }
