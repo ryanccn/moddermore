@@ -14,6 +14,7 @@ const getObjFromVersion = (
   return {
     provider: 'modrinth',
     name: primary.filename,
+    id: v.project_id,
     url: primary.url,
     type,
     hashes: primary.hashes,
@@ -35,7 +36,7 @@ export const getModrinthDownload = async ({
   );
 
   if (res.status === 404) {
-    return [{ error: 'notfound', name }];
+    return [{ error: 'notfound', name, id }];
   }
 
   const data = (await res.json()) as ModrinthVersion[];
@@ -68,10 +69,10 @@ export const getModrinthDownload = async ({
   }
 
   if (!latest) {
-    return [{ error: 'notfound', name }];
+    return [{ error: 'notfound', name, id }];
   }
 
-  const ret = [];
+  let ret: ExportReturnData = [];
   ret.push(getObjFromVersion(latest, 'direct'));
 
   if (latest.dependencies) {
@@ -95,6 +96,22 @@ export const getModrinthDownload = async ({
         );
       }
     }
+  }
+
+  ret = ret.filter(
+    (value, index, self) => index === self.findIndex((t) => t.id === value.id)
+  );
+
+  if (loader === 'quilt' && ret.filter((t) => t.id === 'P7dR8mSH').length > 0) {
+    ret = ret.filter((t) => t.id !== 'P7dR8mSH');
+    ret.push(
+      ...(await getModrinthDownload({
+        id: 'qvIfYCYJ',
+        gameVersion,
+        loader,
+        name,
+      }))
+    );
   }
 
   return ret;

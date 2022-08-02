@@ -1,4 +1,4 @@
-import type { ModLoader, ModProvider } from '~/types/moddermore';
+import type { ModLoader } from '~/types/moddermore';
 
 export interface ProviderSpecificOptions {
   id: string;
@@ -9,6 +9,7 @@ export interface ProviderSpecificOptions {
 
 export interface ModrinthDownload {
   name: string;
+  id: string;
   url: string;
   type: 'direct' | 'dependency';
   provider: 'modrinth';
@@ -21,6 +22,7 @@ export interface ModrinthDownload {
 
 export interface CurseForgeDownload {
   name: string;
+  id: string;
   url: string;
   type: 'direct' | 'dependency';
   provider: 'curseforge';
@@ -32,6 +34,7 @@ export type Download = ModrinthDownload | CurseForgeDownload;
 export interface DownloadError {
   error: 'unavailable' | 'notfound';
   name: string;
+  id: string;
 }
 
 export type ExportReturnData = (Download | DownloadError)[];
