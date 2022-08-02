@@ -244,14 +244,15 @@ const ListPage: NextPage<Props> = ({ data }) => {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (!params || !params.id || typeof params.id !== 'string')
-    throw new Error('invalid parameter');
+    throw new Error('invalid parameter's);
 
-  const data =
-    (await getSpecificList(params.id)) ??
-    (await getSpecificList(params.id)) ??
-    (await getSpecificList(params.id)) ??
-    (await getSpecificList(params.id)) ??
-    (await getSpecificList(params.id));
+  let data = await getSpecificList(params.id);
+
+  for (let _ = 1; _ <= 5; _++) {
+    if (data !== null) break;
+    console.warn(`retry ${_} to getSpecificList`);
+    data = await getSpecificList(params.id);
+  }
 
   if (!data) {
     console.error('not found');
