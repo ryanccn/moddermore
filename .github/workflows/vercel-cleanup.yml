@@ -14,6 +14,6 @@ jobs:
         with:
           node-version: 18
       - run: npm i -g vercel
-      - run: vercel rm moddermore --safe --yes --token="$VERCEL_TOKEN"
+      - run: vercel rm moddermore --scope="moddermore" --safe --yes --token="$VERCEL_TOKEN"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
