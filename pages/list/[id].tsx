@@ -244,7 +244,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (!params || !params.id || typeof params.id !== 'string')
-    throw new Error('invalid parameter's);
+    throw new Error('invalid parameter');
 
   let data = await getSpecificList(params.id);
 
