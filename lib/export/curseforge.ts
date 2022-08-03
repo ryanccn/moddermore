@@ -75,7 +75,7 @@ export const getCFDownload = async ({
   );
 
   if (res.status === 404) {
-    return [{ error: 'notfound', name }];
+    return [{ error: 'notfound', name, id }];
   }
 
   const data = (await res.json().then((json) => json.data)) as NetworkResult;
@@ -84,8 +84,8 @@ export const getCFDownload = async ({
   if (!latest) latest = data.filter((v) => v.releaseType === 2)[0];
   if (!latest) latest = data.filter((v) => v.releaseType === 3)[0];
 
-  if (!latest) return [{ error: 'notfound', name }];
-  if (!latest.isAvailable) return [{ error: 'unavailable', name }];
+  if (!latest) return [{ error: 'notfound', name, id }];
+  if (!latest.isAvailable) return [{ error: 'unavailable', name, id }];
 
   return [
     {
