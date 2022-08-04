@@ -56,6 +56,6 @@ There are also a few maintenance scripts available:
 - `yarn utils:supabase`: updates the TypeScript database schema from Supabase (change this command if you want your own database's schema)
 - `yarn utils:minecraftVersions`: updates available Minecraft versions from Mojang
 
-## Metrics
+## Stats
 
-![Metrics](/.github/metrics.svg)
+![Stats from Repobeats](https://repobeats.axiom.co/api/embed/d9c74f31b0719023c5dd8ab5180e3afd342d6fb5.svg)
