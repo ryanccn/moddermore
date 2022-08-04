@@ -99,3 +99,11 @@
     animation: spin-fast 0.25s linear infinite;
   }
 }
+
+#nprogress .spinner {
+  display: none;
+}
+
+#nprogress .spinner-icon {
+  display: none;
+}

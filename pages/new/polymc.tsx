@@ -4,16 +4,22 @@ import { type FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { loadAsync } from 'jszip';
+import { createList } from '~/lib/supabase';
 import { parsePolyMCInstance } from '~/lib/import/polymc';
 import minecraftVersions from '~/lib/minecraftVersions.json';
-import type { ModLoader } from '~/types/moddermore';
+import type { Mod, ModLoader } from '~/types/moddermore';
 
 import GlobalLayout from '~/components/GlobalLayout';
 import ProgressOverlay from '~/components/ProgressOverlay';
 import NewSubmitButton from '~/components/NewSubmitButton';
 import { CloudUploadIcon } from '@heroicons/react/outline';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useRequireAuth } from '~/hooks/useRequireAuth';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const PolyMCInstanceImportPage: NextPage = () => {
+  useRequireAuth();
+
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
   const [instanceFile, setInstanceFile] = useState<File | null>(null);
@@ -23,37 +29,29 @@ const PolyMCInstanceImportPage: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
+  const { user, isLoading } = useUser();
 
   const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();
+    if (!user) return;
 
     setSubmitting(true);
 
     const aaa = await instanceFile?.arrayBuffer();
     if (!aaa) throw aaa;
 
-    const parsedMods = await parsePolyMCInstance({
+    const parsedMods = (await parsePolyMCInstance({
       f: await loadAsync(new Uint8Array(aaa)),
       setProgress,
-    }).then((r) => r.filter(Boolean));
+    }).then((r) => r.filter(Boolean))) as Mod[];
 
-    fetch('/api/new', {
-      method: 'POST',
-      body: JSON.stringify({
-        title: title,
-        gameVersion,
-        modloader: modLoader,
-        mods: parsedMods,
-      }),
-      headers: { 'content-type': 'application/json' },
-    }).then(async (r) => {
-      if (!r.ok) {
-        setSubmitting(false);
-      } else {
-        const data = await r.json();
-        router.push(`/list/${data.id}`);
-      }
-    });
+    const id = await createList(
+      supabaseClient,
+      { title, mods: parsedMods, gameVersion, modloader: modLoader },
+      user
+    );
+
+    router.push(`/list/${id}`);
   };
 
   return (
@@ -139,7 +137,7 @@ const PolyMCInstanceImportPage: NextPage = () => {
           )}
         </div>
 
-        <NewSubmitButton disabled={submitting} />
+        <NewSubmitButton disabled={!isLoading && submitting} />
       </form>
 
       {submitting && (

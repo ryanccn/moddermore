@@ -12,6 +12,96 @@ export interface paths {
       };
     };
   };
+  '/profiles': {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.profiles.id'];
+          username?: parameters['rowFilter.profiles.username'];
+          /** Filtering Columns */
+          select?: parameters['select'];
+          /** Ordering */
+          order?: parameters['order'];
+          /** Limiting and Pagination */
+          offset?: parameters['offset'];
+          /** Limiting and Pagination */
+          limit?: parameters['limit'];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters['range'];
+          /** Limiting and Pagination */
+          'Range-Unit'?: parameters['rangeUnit'];
+          /** Preference */
+          Prefer?: parameters['preferCount'];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions['profiles'][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** profiles */
+          profiles?: definitions['profiles'];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters['select'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.profiles.id'];
+          username?: parameters['rowFilter.profiles.username'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters['rowFilter.profiles.id'];
+          username?: parameters['rowFilter.profiles.username'];
+        };
+        body: {
+          /** profiles */
+          profiles?: definitions['profiles'];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters['preferReturn'];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   '/mod_lists': {
     get: {
       parameters: {
@@ -22,6 +112,7 @@ export interface paths {
           title?: parameters['rowFilter.mod_lists.title'];
           game_version?: parameters['rowFilter.mod_lists.game_version'];
           modloader?: parameters['rowFilter.mod_lists.modloader'];
+          author?: parameters['rowFilter.mod_lists.author'];
           /** Filtering Columns */
           select?: parameters['select'];
           /** Ordering */
@@ -78,6 +169,7 @@ export interface paths {
           title?: parameters['rowFilter.mod_lists.title'];
           game_version?: parameters['rowFilter.mod_lists.game_version'];
           modloader?: parameters['rowFilter.mod_lists.modloader'];
+          author?: parameters['rowFilter.mod_lists.author'];
         };
         header: {
           /** Preference */
@@ -98,6 +190,7 @@ export interface paths {
           title?: parameters['rowFilter.mod_lists.title'];
           game_version?: parameters['rowFilter.mod_lists.game_version'];
           modloader?: parameters['rowFilter.mod_lists.modloader'];
+          author?: parameters['rowFilter.mod_lists.author'];
         };
         body: {
           /** mod_lists */
@@ -117,6 +210,16 @@ export interface paths {
 }
 
 export interface definitions {
+  profiles: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    /** Format: text */
+    username: string;
+  };
   mod_lists: {
     /**
      * Format: text
@@ -140,6 +243,8 @@ export interface definitions {
     game_version: string;
     /** Format: text */
     modloader: string;
+    /** Format: uuid */
+    author?: string;
   };
 }
 
@@ -176,6 +281,12 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
+  /** @description profiles */
+  'body.profiles': definitions['profiles'];
+  /** Format: uuid */
+  'rowFilter.profiles.id': string;
+  /** Format: text */
+  'rowFilter.profiles.username': string;
   /** @description mod_lists */
   'body.mod_lists': definitions['mod_lists'];
   /** Format: text */
@@ -190,6 +301,8 @@ export interface parameters {
   'rowFilter.mod_lists.game_version': string;
   /** Format: text */
   'rowFilter.mod_lists.modloader': string;
+  /** Format: uuid */
+  'rowFilter.mod_lists.author': string;
 }
 
 export interface operations {}
