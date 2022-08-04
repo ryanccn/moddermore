@@ -15,6 +15,7 @@ import NewSubmitButton from '~/components/NewSubmitButton';
 import { CloudUploadIcon } from '@heroicons/react/outline';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const PolyMCInstanceImportPage: NextPage = () => {
   useRequireAuth();
@@ -45,6 +46,7 @@ const PolyMCInstanceImportPage: NextPage = () => {
     }).then((r) => r.filter(Boolean))) as Mod[];
 
     const id = await createList(
+      supabaseClient,
       { title, mods: parsedMods, gameVersion, modloader: modLoader },
       user
     );

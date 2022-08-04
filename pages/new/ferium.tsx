@@ -12,6 +12,7 @@ import NewSubmitButton from '~/components/NewSubmitButton';
 import { useUser } from '@supabase/auth-helpers-react';
 import { createList } from '~/lib/supabase';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const FeriumImportPage: NextPage = () => {
   useRequireAuth();
@@ -32,6 +33,7 @@ const FeriumImportPage: NextPage = () => {
     setSubmitting(true);
 
     const id = await createList(
+      supabaseClient,
       {
         title,
         mods: parseFerium(feriumCopyPaste),

@@ -13,6 +13,7 @@ import NewSubmitButton from '~/components/NewSubmitButton';
 import { createList } from '~/lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const NewList: NextPage = () => {
   useRequireAuth();
@@ -39,6 +40,7 @@ const NewList: NextPage = () => {
     setSubmitting(true);
 
     const id = await createList(
+      supabaseClient,
       { title, mods: inputMods, gameVersion, modloader: modLoader },
       user
     );

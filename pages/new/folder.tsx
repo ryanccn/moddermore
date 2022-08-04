@@ -15,6 +15,7 @@ import NewSubmitButton from '~/components/NewSubmitButton';
 import { CloudUploadIcon } from '@heroicons/react/outline';
 import { createList } from '~/lib/supabase';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const FeriumImportPage: NextPage = () => {
   useRequireAuth();
@@ -45,6 +46,7 @@ const FeriumImportPage: NextPage = () => {
     }).then((r) => r.filter((k) => k !== null))) as Mod[];
 
     const id = await createList(
+      supabaseClient,
       { title, mods: parsedMods, gameVersion, modloader: modLoader },
       user
     );

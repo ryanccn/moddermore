@@ -1,5 +1,8 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { createClient, type User } from '@supabase/supabase-js';
+import {
+  createClient,
+  type SupabaseClient,
+  type User,
+} from '@supabase/supabase-js';
 import { randomBytes } from 'crypto';
 
 import type {
@@ -17,10 +20,15 @@ const serverClient = () =>
     { shouldThrowOnError: true }
   );
 
-const db = supabaseClient.from<definitions['mod_lists']>('mod_lists');
+const db = (client: SupabaseClient) =>
+  client.from<definitions['mod_lists']>('mod_lists');
 
-export const getUserLists = async (): Promise<ModList[]> => {
-  const ret = await db.select('*');
+export const getUserLists = async (
+  client: SupabaseClient
+): Promise<ModList[]> => {
+  console.log(client);
+
+  const ret = await db(client).select('*');
 
   if (ret.error) {
     console.error(ret.error);
@@ -65,12 +73,13 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
 };
 
 export const createList = async (
+  supabaseClient: SupabaseClient,
   list: ModListPartial,
   user: User
 ): Promise<string> => {
   const id = randomBytes(5).toString('hex');
 
-  await db.insert({
+  await db(supabaseClient).insert({
     id,
     mods: list.mods,
     created_at: new Date().toISOString(),
@@ -83,14 +92,18 @@ export const createList = async (
   return id;
 };
 
-export const addUsername = async (user: User, name: string) => {
-  await supabaseClient
+export const addUsername = async (
+  client: SupabaseClient,
+  user: User,
+  name: string
+) => {
+  await client
     .from<definitions['profiles']>('profiles')
     .insert({ id: user.id, username: name });
 };
 
-export const checkUsername = async (name: string) => {
-  const { count } = await supabaseClient
+export const checkUsername = async (client: SupabaseClient, name: string) => {
+  const { count } = await client
     .from<definitions['profiles']>('profiles')
     .select('*', { head: true, count: 'exact' })
     .eq('username', name);
@@ -98,8 +111,8 @@ export const checkUsername = async (name: string) => {
   return count === 0;
 };
 
-export const getUsername = async (user: User) => {
-  const { data } = await supabaseClient
+export const getUsername = async (client: SupabaseClient, user: User) => {
+  const { data } = await client
     .from<definitions['profiles']>('profiles')
     .select('*')
     .eq('id', user.id);
