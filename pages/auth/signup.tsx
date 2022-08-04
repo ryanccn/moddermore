@@ -41,7 +41,7 @@ const SignupPage: NextPage = () => {
       return;
     }
 
-    router.push('/');
+    router.push('/auth/email');
 
     setDS(false);
   };
