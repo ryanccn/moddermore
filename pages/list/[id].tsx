@@ -266,7 +266,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     title: data.title,
     gameVersion: data.gameVersion,
     modloader: data.modloader,
-    author: (await getUsername(serverClient(), data.author)) ?? 'unknown',
+    author:
+      data.author !== 'unknown'
+        ? (await getUsername(serverClient(), data.author)) ?? 'unknown'
+        : 'unknown',
     mods: [],
   };
 
