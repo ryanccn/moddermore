@@ -1,8 +1,11 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 import { type NextPage } from 'next';
+
 import { useRouter } from 'next/router';
 import { type FormEventHandler, useState } from 'react';
+
+import Link from 'next/link';
 import GlobalLayout from '~/components/GlobalLayout';
 
 const SigninPage: NextPage = () => {
@@ -29,6 +32,15 @@ const SigninPage: NextPage = () => {
 
   return (
     <GlobalLayout title="Sign in">
+      <p className="mb-6">
+        or{' '}
+        <Link href="/auth/signup">
+          <a className="text-indigo-500 transition-all hover:brightness-90 dark:text-indigo-400">
+            sign up
+          </a>
+        </Link>
+      </p>
+
       <form className="flex flex-col items-center" onSubmit={signin}>
         <div className="w-full">
           <label htmlFor="email" className="mb-2 text-sm font-medium">

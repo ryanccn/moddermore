@@ -1,11 +1,13 @@
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
 import Head from 'next/head';
 import Link from 'next/link';
 
 import Footer from './Footer';
-import { PlusIcon, UserIcon } from '@heroicons/react/outline';
+import { PlusIcon, UserIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 
-import type { ReactNode } from 'react';
+import { ReactNode, useCallback } from 'react';
+import { useRouter } from 'next/router';
 
 interface Props {
   title: string;
@@ -21,6 +23,11 @@ export default function GlobalLayout({
   children,
 }: Props) {
   const { user, isLoading } = useUser();
+  const router = useRouter();
+
+  const signOut = useCallback(() => {
+    supabaseClient.auth.signOut();
+  }, []);
 
   return (
     <>
@@ -30,19 +37,28 @@ export default function GlobalLayout({
 
       <nav className="mb-28 flex items-center justify-between px-6 py-4 shadow-sm">
         <div className="flex items-center space-x-2">
-          <Link href="/">
+          <Link href={user ? '/dashboard' : '/'}>
             <a className="text-2xl font-bold">Moddermore</a>
           </Link>
         </div>
         <div className="flex items-center space-x-2">
           {!isLoading ? (
             user ? (
-              <Link href="/new">
-                <a className="primaryish-button">
-                  <PlusIcon className="block h-5 w-5" />
-                  <span>Create</span>
-                </a>
-              </Link>
+              <>
+                <Link href="/new">
+                  <a className="primaryish-button">
+                    <PlusIcon className="block h-5 w-5" />
+                    <span>Create</span>
+                  </a>
+                </Link>
+                <button
+                  className="primaryish-button bg-transparent hover:bg-red-500/10 hover:text-red-400 hover:brightness-100 focus:ring-red-400/40"
+                  onClick={signOut}
+                >
+                  <ExternalLinkIcon className="block h-5 w-5" />
+                  <span>Sign out</span>
+                </button>
+              </>
             ) : (
               <Link href="/auth/signin">
                 <a className="primaryish-button">

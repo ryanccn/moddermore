@@ -4,6 +4,8 @@ import type { AppProps } from 'next/app';
 import { LazyMotion, domAnimation } from 'framer-motion';
 import PlausibleProvider from 'next-plausible';
 
+import NextNProgress from 'nextjs-progressbar';
+
 import { UserProvider } from '@supabase/auth-helpers-react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useEffect } from 'react';
@@ -24,6 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <PlausibleProvider domain="moddermore.vercel.app">
       <UserProvider supabaseClient={supabaseClient}>
         <LazyMotion features={domAnimation} strict>
+          <NextNProgress color="#6366F1" />
           <Component {...pageProps} />
         </LazyMotion>
       </UserProvider>

@@ -26,6 +26,7 @@ export interface ModList {
   created_at: string;
   title: string;
   gameVersion: string;
+  author: string;
   modloader: ModLoader;
   mods: Mod[];
 }
@@ -34,6 +35,7 @@ export interface RichModList {
   id: string;
   created_at: string;
   title: string;
+  author: string;
   gameVersion: string;
   modloader: ModLoader;
   mods: RichMod[];

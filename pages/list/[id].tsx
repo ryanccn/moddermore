@@ -1,6 +1,6 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 
-import { getSpecificList } from '~/lib/supabase';
+import { getSpecificList, getUsername, serverClient } from '~/lib/supabase';
 import type { RichModList } from '~/types/moddermore';
 
 import { getInfo as getModrinthInfo } from '~/lib/metadata/modrinth';
@@ -158,7 +158,8 @@ const ListPage: NextPage<Props> = ({ data }) => {
           <strong>{loaderFormat(data.modloader)}</strong>
         </p>
         <p>
-          Created on <strong>{new Date(data.created_at).toDateString()}</strong>
+          Created on <strong>{new Date(data.created_at).toDateString()}</strong>{' '}
+          by <strong>{data.author}</strong>
         </p>
       </div>
 
@@ -265,6 +266,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     title: data.title,
     gameVersion: data.gameVersion,
     modloader: data.modloader,
+    author: (await getUsername(serverClient(), data.author)) ?? 'unknown',
     mods: [],
   };
 

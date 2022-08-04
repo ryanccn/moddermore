@@ -13,12 +13,18 @@ import type {
 } from '~/types/moddermore';
 import type { definitions } from '~/types/supabase';
 
-const serverClient = () =>
-  createClient(
+export const serverClient = () => {
+  if (typeof window !== 'undefined') {
+    console.warn('SERVER CLIENT BEING USED ON CLIENT! ASDFASDFASDF');
+    throw new Error();
+  }
+
+  return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
     process.env.SUPABASE_SERVER_KEY ?? '',
     { shouldThrowOnError: true }
   );
+};
 
 const db = (client: SupabaseClient) =>
   client.from<definitions['mod_lists']>('mod_lists');
@@ -26,7 +32,7 @@ const db = (client: SupabaseClient) =>
 export const getUserLists = async (
   client: SupabaseClient
 ): Promise<ModList[]> => {
-  console.log(client);
+  // console.log(client);
 
   const ret = await db(client).select('*');
 
@@ -35,18 +41,20 @@ export const getUserLists = async (
     return [];
   }
 
-  return ret.data.map((item) => {
-    const nt = <ModList>{};
+  return ret.data
+    .map((item) => {
+      const nt = <ModList>{};
 
-    nt.title = item.title ?? 'Untitled';
-    nt.id = item.id;
-    nt.created_at = item.created_at ?? 'undefined';
-    nt.mods = item.mods as Mod[];
-    nt.gameVersion = item.game_version;
-    nt.modloader = item.modloader as ModLoader;
+      nt.title = item.title ?? 'Untitled';
+      nt.id = item.id;
+      nt.created_at = item.created_at ?? 'undefined';
+      nt.mods = item.mods as Mod[];
+      nt.gameVersion = item.game_version;
+      nt.modloader = item.modloader as ModLoader;
 
-    return nt;
-  });
+      return nt;
+    })
+    .sort((a, b) => (new Date(a.created_at) > new Date(b.created_at) ? -1 : 1));
 };
 
 export const getSpecificList = async (id: string): Promise<ModList | null> => {
@@ -68,6 +76,7 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
   nt.mods = dt.mods as Mod[];
   nt.gameVersion = dt.game_version;
   nt.modloader = dt.modloader as ModLoader;
+  nt.author = dt.author ?? 'unknown';
 
   return nt;
 };
@@ -111,11 +120,11 @@ export const checkUsername = async (client: SupabaseClient, name: string) => {
   return count === 0;
 };
 
-export const getUsername = async (client: SupabaseClient, user: User) => {
+export const getUsername = async (client: SupabaseClient, id: string) => {
   const { data } = await client
     .from<definitions['profiles']>('profiles')
     .select('*')
-    .eq('id', user.id);
+    .eq('id', id);
 
   if (!data || data.length === 0) return null;
   return data[0].username;

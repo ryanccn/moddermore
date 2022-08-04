@@ -4,8 +4,11 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 
 import GlobalLayout from '~/components/GlobalLayout';
+import { useCantHaveAuth } from '~/hooks/useRequireAuth';
 
 const Home: NextPage = () => {
+  useCantHaveAuth();
+
   return (
     <GlobalLayout title="Moddermore" titleSuffix={false} displayTitle={false}>
       <div className="flex flex-col items-start">

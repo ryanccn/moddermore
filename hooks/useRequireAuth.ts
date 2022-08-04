@@ -12,3 +12,14 @@ export const useRequireAuth = () => {
     }
   }, [user, isLoading, router]);
 };
+
+export const useCantHaveAuth = () => {
+  const router = useRouter();
+  const { user, isLoading } = useUser();
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      router.push('/dashboard');
+    }
+  }, [user, isLoading, router]);
+};

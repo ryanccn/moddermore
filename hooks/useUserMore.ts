@@ -11,7 +11,7 @@ export const useUserMore = (client: SupabaseClient) => {
   useEffect(() => {
     (async () => {
       if (!isLoading && user) {
-        const un = await getUsername(client, user);
+        const un = await getUsername(client, user.id);
         setASDF(un);
       }
     })();

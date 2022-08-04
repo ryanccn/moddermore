@@ -1,10 +1,13 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-
 import { type NextPage } from 'next';
-import { useRouter } from 'next/router';
+
 import { type FormEventHandler, useState } from 'react';
-import GlobalLayout from '~/components/GlobalLayout';
+import { useRouter } from 'next/router';
+
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { addUsername, checkUsername } from '~/lib/supabase';
+
+import Link from 'next/link';
+import GlobalLayout from '~/components/GlobalLayout';
 
 const SignupPage: NextPage = () => {
   const [email, setEmail] = useState('');
@@ -19,30 +22,41 @@ const SignupPage: NextPage = () => {
     e.preventDefault();
     setDS(true);
 
-    if (!(await checkUsername(username))) {
+    if (!(await checkUsername(supabaseClient, username))) {
       setDS(false);
       setError('Username taken!');
       return;
     }
 
-    const { user, error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-    });
+    const { user, error } = await supabaseClient.auth.signUp(
+      {
+        email,
+        password,
+      },
+      { data: { username } }
+    );
 
     if (!user || error) {
       setError(error?.message ?? 'Unknown error occurred');
       return;
     }
 
-    await addUsername(user, username);
-    router.push('/dashboard');
+    router.push('/');
 
     setDS(false);
   };
 
   return (
     <GlobalLayout title="Sign up">
+      <p className="mb-6">
+        or{' '}
+        <Link href="/auth/signin">
+          <a className="text-indigo-500 transition-all hover:brightness-90 dark:text-indigo-400">
+            sign in
+          </a>
+        </Link>
+      </p>
+
       <form className="flex flex-col items-center" onSubmit={signup}>
         <div className="w-full">
           <label htmlFor="email" className="mb-2 text-sm font-medium">
