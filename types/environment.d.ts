@@ -1,7 +1,8 @@
 declare namespace NodeJS {
   interface ProcessEnv {
-    SUPABASE_URL?: string;
-    SUPABASE_KEY?: string;
+    NEXT_PUBLIC_SUPABASE_URL?: string;
+    NEXT_PUBLIC_SUPABASE_ANON_KEY?: string;
+    SUPABASE_SERVER_KEY?: string;
     NEXT_PUBLIC_CURSEFORGE_API_KEY?: string;
 
     /** Only available when deployed */

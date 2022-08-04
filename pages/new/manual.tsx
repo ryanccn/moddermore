@@ -10,8 +10,13 @@ import { useRouter } from 'next/router';
 import GlobalLayout from '~/components/GlobalLayout';
 import RichModDisplay from '~/components/RichModDisplay';
 import NewSubmitButton from '~/components/NewSubmitButton';
+import { createList } from '~/lib/supabase';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useRequireAuth } from '~/hooks/useRequireAuth';
 
 const NewList: NextPage = () => {
+  useRequireAuth();
+
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
   const [modLoader, setModLoader] = useState<ModLoader>('fabric');
@@ -25,29 +30,20 @@ const NewList: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
+  const { user, isLoading } = useUser();
 
-  const submitHandle: FormEventHandler = (e) => {
+  const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();
+    if (!user) return;
 
     setSubmitting(true);
 
-    fetch('/api/new', {
-      method: 'POST',
-      body: JSON.stringify({
-        title: title,
-        mods: inputMods,
-        gameVersion,
-        modloader: modLoader,
-      }),
-      headers: { 'content-type': 'application/json' },
-    }).then(async (r) => {
-      if (!r.ok) {
-        setSubmitting(false);
-      } else {
-        const data = await r.json();
-        router.push(`/list/${data.id}`);
-      }
-    });
+    const id = await createList(
+      { title, mods: inputMods, gameVersion, modloader: modLoader },
+      user
+    );
+
+    router.push(`/list/${id}`);
   };
 
   const updateSearch = useCallback(() => {
@@ -191,7 +187,7 @@ const NewList: NextPage = () => {
           ))}
         </ul>
 
-        <NewSubmitButton disabled={submitting} />
+        <NewSubmitButton disabled={!isLoading && submitting} />
       </form>
     </GlobalLayout>
   );

@@ -8,8 +8,11 @@ import {
 } from '@heroicons/react/outline';
 import GlobalLayout from '~/components/GlobalLayout';
 import PolyIcon from '~/components/PolyIcon';
+import { useRequireAuth } from '~/hooks/useRequireAuth';
 
 const NewIndex: NextPage = () => {
+  useRequireAuth();
+
   return (
     <GlobalLayout title="Create a new list">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

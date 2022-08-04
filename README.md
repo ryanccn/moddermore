@@ -46,8 +46,8 @@ You will need to register for a few services and set a few environment variables
 We use [Supabase](https://supabase.com/) as our primary database. We also access the [CurseForge](https://curseforge.com/) and [Modrinth](https://modrinth.com/) APIs, and the CurseForge Core API requires an API key which you can apply for [in this form](https://forms.monday.com/forms/dce5ccb7afda9a1c21dab1a1aa1d84eb). Don't worry - this key is meant to be public!
 
 ```
-SUPABASE_URL=""
-SUPABASE_KEY=""
+NEXT_PUBLIC_SUPABASE_URL=""
+SUPABASE_SERVER_KEY=""
 NEXT_PUBLIC_CURSEFORGE_API_KEY=""
 ```
 

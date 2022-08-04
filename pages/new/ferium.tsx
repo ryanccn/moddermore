@@ -9,8 +9,13 @@ import type { ModLoader } from '~/types/moddermore';
 
 import GlobalLayout from '~/components/GlobalLayout';
 import NewSubmitButton from '~/components/NewSubmitButton';
+import { useUser } from '@supabase/auth-helpers-react';
+import { createList } from '~/lib/supabase';
+import { useRequireAuth } from '~/hooks/useRequireAuth';
 
 const FeriumImportPage: NextPage = () => {
+  useRequireAuth();
+
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
   const [modLoader, setModLoader] = useState<ModLoader>('fabric');
@@ -18,29 +23,25 @@ const FeriumImportPage: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
+  const { user, isLoading } = useUser();
 
-  const submitHandle: FormEventHandler = (e) => {
+  const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();
+    if (!user) return;
 
     setSubmitting(true);
 
-    fetch('/api/new', {
-      method: 'POST',
-      body: JSON.stringify({
-        title: title,
+    const id = await createList(
+      {
+        title,
+        mods: parseFerium(feriumCopyPaste),
         gameVersion,
         modloader: modLoader,
-        mods: parseFerium(feriumCopyPaste),
-      }),
-      headers: { 'content-type': 'application/json' },
-    }).then(async (r) => {
-      if (!r.ok) {
-        setSubmitting(false);
-      } else {
-        const data = await r.json();
-        router.push(`/list/${data.id}`);
-      }
-    });
+      },
+      user
+    );
+
+    router.push(`/list/${id}`);
   };
 
   return (
@@ -107,7 +108,7 @@ const FeriumImportPage: NextPage = () => {
           }}
         />
 
-        <NewSubmitButton disabled={submitting} />
+        <NewSubmitButton disabled={!isLoading && submitting} />
       </form>
     </GlobalLayout>
   );
