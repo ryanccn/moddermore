@@ -78,6 +78,11 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
   return nt;
 };
 
+export const deleteList = async (client: SupabaseClient, id: string) => {
+  console.warn('sadge');
+  await db(client).delete().eq('id', id);
+};
+
 const genRandomString = () => {
   const data = new Uint8Array(5);
   window.crypto.getRandomValues(data);

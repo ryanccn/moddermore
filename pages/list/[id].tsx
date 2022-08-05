@@ -1,6 +1,12 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 
-import { getSpecificList, getUsername, serverClient } from '~/lib/supabase';
+import {
+  deleteList,
+  getSpecificList,
+  getUsername,
+  serverClient,
+} from '~/lib/supabase';
+import { useUser } from '@supabase/auth-helpers-react';
 import type { RichModList } from '~/types/moddermore';
 
 import { getInfo as getModrinthInfo } from '~/lib/metadata/modrinth';
@@ -15,11 +21,11 @@ import { AnimatePresence } from 'framer-motion';
 import GlobalLayout from '~/components/GlobalLayout';
 import Modalistic from '~/components/Modalistic';
 import FullLoadingScreen from '~/components/FullLoadingScreen';
-
 import RichModDisplay from '~/components/RichModDisplay';
 import ProgressOverlay from '~/components/ProgressOverlay';
 import ModrinthIcon from '~/components/ModrinthIcon';
-import { FolderDownloadIcon } from '@heroicons/react/outline';
+import { FolderDownloadIcon, TrashIcon } from '@heroicons/react/outline';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 interface Props {
   data: RichModList;
@@ -27,6 +33,7 @@ interface Props {
 
 const ListPage: NextPage<Props> = ({ data }) => {
   const router = useRouter();
+  const { user } = useUser();
 
   const [status, setStatus] = useState<
     'idle' | 'resolving' | 'downloading' | 'result' | 'loadinglibraries'
@@ -146,6 +153,13 @@ const ListPage: NextPage<Props> = ({ data }) => {
     setStatus('idle');
   };
 
+  const deleteOMG = async () => {
+    if (!user) return;
+
+    await deleteList(supabaseClient, data.id);
+    router.push('/dashboard');
+  };
+
   if (router.isFallback) {
     return <FullLoadingScreen />;
   }
@@ -175,6 +189,15 @@ const ListPage: NextPage<Props> = ({ data }) => {
           <ModrinthIcon className="block h-5 w-5" />
           <span>Modrinth pack</span>
         </button>
+        {user && (
+          <button
+            className="primaryish-button mb-16 bg-red-500"
+            onClick={deleteOMG}
+          >
+            <TrashIcon className="block h-5 w-5" />
+            <span>Delete</span>
+          </button>
+        )}
       </div>
 
       <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
