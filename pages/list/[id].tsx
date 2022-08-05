@@ -72,7 +72,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
       throw new Error('f');
     }
 
-    const lim = pLimit(5);
+    const lim = pLimit(4);
 
     await Promise.all(
       urls.map((downloadData) =>
@@ -296,7 +296,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     mods: [],
   };
 
-  const lim = pLimit(5);
+  const lim = pLimit(4);
 
   await Promise.all(
     data.mods.map((boringMod) =>
