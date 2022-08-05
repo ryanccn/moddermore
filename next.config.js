@@ -1,5 +1,10 @@
 const { withPlausibleProxy } = require('next-plausible');
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: false,
+});
+
 const csp = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline';
@@ -47,26 +52,28 @@ const securityHeaders = [
 ];
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withPlausibleProxy()({
-  reactStrictMode: true,
-  images: { domains: ['cdn.modrinth.com', 'media.forgecdn.net'] },
+const nextConfig = withPlausibleProxy()(
+  withBundleAnalyzer({
+    reactStrictMode: true,
+    images: { domains: ['cdn.modrinth.com', 'media.forgecdn.net'] },
 
-  async headers() {
-    if (process.env.NODE_ENV === 'development') return [];
+    async headers() {
+      if (process.env.NODE_ENV === 'development') return [];
 
-    return [
-      {
-        source: '/:path*',
-        headers: securityHeaders,
-      },
-    ];
-  },
-
-  experimental: {
-    images: {
-      allowFutureImage: true,
+      return [
+        {
+          source: '/:path*',
+          headers: securityHeaders,
+        },
+      ];
     },
-  },
-});
+
+    experimental: {
+      images: {
+        allowFutureImage: true,
+      },
+    },
+  })
+);
 
 module.exports = nextConfig;

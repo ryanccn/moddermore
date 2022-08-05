@@ -3,7 +3,6 @@ import {
   type SupabaseClient,
   type User,
 } from '@supabase/supabase-js';
-import { randomBytes } from 'crypto';
 
 import type {
   Mod,
@@ -32,8 +31,6 @@ const db = (client: SupabaseClient) =>
 export const getUserLists = async (
   client: SupabaseClient
 ): Promise<ModList[]> => {
-  // console.log(client);
-
   const ret = await db(client).select('*');
 
   if (ret.error) {
@@ -81,12 +78,21 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
   return nt;
 };
 
+const genRandomString = () => {
+  const data = new Uint8Array(5);
+  window.crypto.getRandomValues(data);
+
+  return Array.from(data)
+    .map((a) => a.toString(16).padStart(2, '0'))
+    .join('');
+};
+
 export const createList = async (
   supabaseClient: SupabaseClient,
   list: ModListPartial,
   user: User
 ): Promise<string> => {
-  const id = randomBytes(5).toString('hex');
+  const id = genRandomString();
 
   await db(supabaseClient).insert({
     id,
