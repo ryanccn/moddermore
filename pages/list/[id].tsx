@@ -1,5 +1,6 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import {
   deleteList,
   getSpecificList,
@@ -18,14 +19,18 @@ import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence } from 'framer-motion';
 
+import Link from 'next/link';
 import GlobalLayout from '~/components/GlobalLayout';
 import Modalistic from '~/components/Modalistic';
 import FullLoadingScreen from '~/components/FullLoadingScreen';
 import RichModDisplay from '~/components/RichModDisplay';
 import ProgressOverlay from '~/components/ProgressOverlay';
 import ModrinthIcon from '~/components/ModrinthIcon';
-import { FolderDownloadIcon, TrashIcon } from '@heroicons/react/outline';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import {
+  FolderDownloadIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/outline';
 
 interface Props {
   data: RichModList;
@@ -190,13 +195,22 @@ const ListPage: NextPage<Props> = ({ data }) => {
           <span>Modrinth pack</span>
         </button>
         {user && (
-          <button
-            className="primaryish-button mb-16 bg-red-500"
-            onClick={deleteOMG}
-          >
-            <TrashIcon className="block h-5 w-5" />
-            <span>Delete</span>
-          </button>
+          <>
+            {/* <Link href={`/edit/${data.id}`}>
+              <a className="primaryish-button mb-16">
+                <PencilIcon className="block h-5 w-5" />
+                <span>Edit</span>
+              </a>
+            </Link> */}
+
+            <button
+              className="primaryish-button mb-16 bg-red-500"
+              onClick={deleteOMG}
+            >
+              <TrashIcon className="block h-5 w-5" />
+              <span>Delete</span>
+            </button>
+          </>
         )}
       </div>
 

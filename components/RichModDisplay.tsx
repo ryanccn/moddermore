@@ -3,6 +3,7 @@
 import type { RichMod } from '~/types/moddermore';
 
 import { providerFormat } from '~/lib/strings';
+import { TrashIcon } from '@heroicons/react/outline';
 
 function SomeDetails({ data }: { data: RichMod }) {
   return (
@@ -35,11 +36,30 @@ function SomeDetails({ data }: { data: RichMod }) {
 
 interface Props {
   data: RichMod;
+  withDeleteButton?: boolean;
   onClick?: () => void;
 }
 
-export default function RichModDisplay({ data, onClick }: Props) {
+export default function RichModDisplay({
+  data,
+  withDeleteButton,
+  onClick,
+}: Props) {
   if (onClick) {
+    if (withDeleteButton) {
+      return (
+        <div className="group flex space-x-4 rounded-sm bg-transparent p-4 text-left transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800">
+          <SomeDetails data={data} />
+          <button className="flex-grow-0 self-center rounded-md p-2">
+            <TrashIcon
+              className="block h-5 w-5 text-red-500"
+              onClick={onClick}
+            />
+          </button>
+        </div>
+      );
+    }
+
     return (
       <button
         type="button"

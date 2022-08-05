@@ -28,6 +28,20 @@ export const serverClient = () => {
 const db = (client: SupabaseClient) =>
   client.from<definitions['mod_lists']>('mod_lists');
 
+const supabaseToList = (orig: definitions['mod_lists']) => {
+  const nt = <ModList>{};
+
+  nt.title = orig.title ?? 'Untitled';
+  nt.id = orig.id;
+  nt.created_at = orig.created_at ?? 'undefined';
+  nt.mods = orig.mods as Mod[];
+  nt.gameVersion = orig.game_version;
+  nt.modloader = orig.modloader as ModLoader;
+  nt.author = orig.author ?? 'unknown';
+
+  return nt;
+};
+
 export const getUserLists = async (
   client: SupabaseClient
 ): Promise<ModList[]> => {
@@ -39,18 +53,7 @@ export const getUserLists = async (
   }
 
   return ret.data
-    .map((item) => {
-      const nt = <ModList>{};
-
-      nt.title = item.title ?? 'Untitled';
-      nt.id = item.id;
-      nt.created_at = item.created_at ?? 'undefined';
-      nt.mods = item.mods as Mod[];
-      nt.gameVersion = item.game_version;
-      nt.modloader = item.modloader as ModLoader;
-
-      return nt;
-    })
+    .map(supabaseToList)
     .sort((a, b) => (new Date(a.created_at) > new Date(b.created_at) ? -1 : 1));
 };
 
@@ -65,17 +68,26 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
   }
 
   const dt = ret.data[0];
-  const nt = <ModList>{};
 
-  nt.title = dt.title ?? 'Untitled';
-  nt.id = dt.id;
-  nt.created_at = dt.created_at ?? 'undefined';
-  nt.mods = dt.mods as Mod[];
-  nt.gameVersion = dt.game_version;
-  nt.modloader = dt.modloader as ModLoader;
-  nt.author = dt.author ?? 'unknown';
+  return supabaseToList(dt);
+};
 
-  return nt;
+export const getSpecificListForClient = async (
+  client: SupabaseClient,
+  id: string
+): Promise<ModList | null> => {
+  const ret = await client
+    .from<definitions['mod_lists']>('mod_lists')
+    .select('*')
+    .eq('id', id);
+
+  if (!ret.data || ret.data.length === 0) {
+    return null;
+  }
+
+  const dt = ret.data[0];
+
+  return supabaseToList(dt);
 };
 
 export const deleteList = async (client: SupabaseClient, id: string) => {

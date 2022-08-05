@@ -184,7 +184,13 @@ const NewList: NextPage = () => {
         <ul className="flex w-full flex-col space-y-2">
           {inputMods.map((mod) => (
             <li key={mod.id}>
-              <RichModDisplay data={mod} />
+              <RichModDisplay
+                data={mod}
+                withDeleteButton
+                onClick={() => {
+                  setInputMods(inputMods.filter((a) => a.id !== mod.id));
+                }}
+              />
             </li>
           ))}
         </ul>
