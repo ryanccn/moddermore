@@ -3,7 +3,7 @@ const { writeFile } = require('fs/promises');
 
 (async () => {
   const res = await fetch(
-    'https://piston-meta.mojang.com/mc/game/version_manifest.json'
+    'https://launchermeta.mojang.com/mc/game/version_manifest.json'
   );
 
   if (!res.ok) {
