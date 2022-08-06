@@ -124,16 +124,6 @@ export const createList = async (
   return id;
 };
 
-export const addUsername = async (
-  client: SupabaseClient,
-  user: User,
-  name: string
-) => {
-  await client
-    .from<definitions['profiles']>('profiles')
-    .insert({ id: user.id, username: name });
-};
-
 export const checkUsername = async (client: SupabaseClient, name: string) => {
   const { count } = await client
     .from<definitions['profiles']>('profiles')

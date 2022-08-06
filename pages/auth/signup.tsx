@@ -4,7 +4,7 @@ import { type FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { addUsername, checkUsername } from '~/lib/supabase';
+import { checkUsername } from '~/lib/supabase';
 
 import Link from 'next/link';
 import GlobalLayout from '~/components/GlobalLayout';
