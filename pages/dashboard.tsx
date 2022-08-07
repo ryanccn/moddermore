@@ -18,7 +18,7 @@ import type { ModList } from '~/types/moddermore';
 const Dashboard: NextPage = () => {
   useRequireAuth();
 
-  const { username, isLoading, user } = useUserMore(supabaseClient);
+  const { username, user } = useUserMore(supabaseClient);
   const [lists, setLists] = useState<ModList[] | null>(null);
 
   useEffect(() => {

@@ -8,13 +8,13 @@ import { checkUsername } from '~/lib/supabase';
 
 import Link from 'next/link';
 import GlobalLayout from '~/components/GlobalLayout';
+import toast from 'react-hot-toast';
 
 const SignupPage: NextPage = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [disableSubmit, setDS] = useState(false);
-  const [error, setError] = useState('');
 
   const router = useRouter();
 
@@ -24,7 +24,7 @@ const SignupPage: NextPage = () => {
 
     if (!(await checkUsername(supabaseClient, username))) {
       setDS(false);
-      setError('Username taken!');
+      toast.error('Username taken!');
       return;
     }
 
@@ -37,12 +37,12 @@ const SignupPage: NextPage = () => {
     );
 
     if (!user || error) {
-      setError(error?.message ?? 'Unknown error occurred');
+      toast.error(error?.message ?? 'Unknown error occurred');
       return;
     }
 
-    router.push('/auth/email');
-
+    toast.success('Check your inbox for a verification email!');
+    router.push('/auth/signin');
     setDS(false);
   };
 
@@ -115,7 +115,6 @@ const SignupPage: NextPage = () => {
         >
           Sign up
         </button>
-        {error && <p className="mt-6 font-bold text-red-500">{error}</p>}
       </form>
     </GlobalLayout>
   );

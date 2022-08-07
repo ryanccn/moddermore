@@ -5,6 +5,7 @@ import { type NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { type FormEventHandler, useState } from 'react';
 
+import toast from 'react-hot-toast';
 import Link from 'next/link';
 import GlobalLayout from '~/components/GlobalLayout';
 
@@ -25,9 +26,9 @@ const SigninPage: NextPage = () => {
       return;
     }
 
-    router.push('/dashboard');
-
+    toast.success('Signed in!');
     setDS(false);
+    router.push('/dashboard');
   };
 
   return (
