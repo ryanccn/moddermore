@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     console.log(
       `%cModdermore%c${
-        process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 6) ??
+        process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 8) ??
         'unknown'
       }`,
       'padding: 0.5rem 0.375rem 0.375rem 0.5rem; font-weight: bold; border-radius: 0.25rem 0 0 0.25rem; background-color: #6366F1; border: 1px solid transparent;',

@@ -16,7 +16,8 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Revision {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}
+          Revision{' '}
+          {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.substring(0, 8)}
         </a>
       )}
       <PoweredByVercel />
