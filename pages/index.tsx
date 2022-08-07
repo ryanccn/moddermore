@@ -20,15 +20,15 @@ const Home: NextPage = () => {
       <div className="min-w-screen relative mb-16 flex min-h-screen flex-col items-start px-12">
         <Navbar isLandingPage />
 
-        <div className="mb-24 flex flex-col">
+        <div className="mb-20 flex flex-col">
           <h2 className="mb-4 text-4xl font-bold">Moddermore</h2>
           <h2 className="mb-10 text-3xl font-semibold">
             Share the mods you use with anyone
           </h2>
           <h3 className="text-lg font-medium">
-            Moddermore supports mods from both Modrinth and CurseForge. You can
-            import either manually, from Ferium, or from a folder of mod files.
-            Exports are also available for download via ZIPs or .mrpacks (WIP).
+            Moddermore supports mods from both Modrinth and CurseForge. Import
+            either manually, from Ferium, or from a folder of mod files. Exports
+            are also available for download via ZIPs or .mrpacks.
           </h3>
         </div>
 

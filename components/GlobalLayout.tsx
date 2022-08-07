@@ -27,7 +27,7 @@ export default function GlobalLayout({
 
       {!isLandingPage ? <Navbar /> : null}
 
-      <main className={!isLandingPage ? 'layout mt-28' : 'px-2'}>
+      <main className={!isLandingPage ? 'layout mt-28' : ''}>
         {displayTitle === true ? (
           <h1 className="title">{title}</h1>
         ) : typeof displayTitle === 'string' ? (
