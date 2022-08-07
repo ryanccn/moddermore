@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const { format } = require('prettier');
 const { writeFile } = require('fs/promises');
 
