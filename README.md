@@ -11,6 +11,7 @@ Share the mods you use with anyone.
 - Import from
   - Folder of mods
   - [Ferium](https://github.com/gorilla-devs/ferium)
+  - MultiMC and [PolyMC](https://polymc.org) instances
   - Manual (built-in!) search
 - Export to
   - Folder of mods
@@ -46,8 +47,12 @@ You will need to register for a few services and set a few environment variables
 We use [Supabase](https://supabase.com/) as our primary database. We also access the [CurseForge](https://curseforge.com/) and [Modrinth](https://modrinth.com/) APIs, and the CurseForge Core API requires an API key which you can apply for [in this form](https://forms.monday.com/forms/dce5ccb7afda9a1c21dab1a1aa1d84eb). Don't worry - this key is meant to be public!
 
 ```
+# Supabase
 NEXT_PUBLIC_SUPABASE_URL=""
+NEXT_PUBLIC_SUPABASE_ANON_KEY=""
 SUPABASE_SERVER_KEY=""
+
+# CurseForge
 NEXT_PUBLIC_CURSEFORGE_API_KEY=""
 ```
 
