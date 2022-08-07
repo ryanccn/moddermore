@@ -69,7 +69,7 @@ export const parseModFolder = async ({ f, setProgress }: InputData) => {
       !f.files[name].dir
   );
 
-  let ret: (Mod | null)[] = [];
+  const ret: (Mod | null)[] = [];
   setProgress({ value: 0, max: mods.length });
 
   const resolveLimit = pLimit(4);

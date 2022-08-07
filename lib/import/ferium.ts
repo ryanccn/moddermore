@@ -4,7 +4,7 @@ export const parseFerium = (str: string) => {
   const lines = str.split('\n').filter(Boolean);
   const matrix = lines.map((l) => l.split(' ').filter(Boolean));
 
-  let ret: Mod[] = [];
+  const ret: Mod[] = [];
 
   for (const mod of matrix) {
     const rawProvider = mod[mod.length - 2];

@@ -19,18 +19,13 @@ import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence } from 'framer-motion';
 
-import Link from 'next/link';
 import GlobalLayout from '~/components/GlobalLayout';
 import Modalistic from '~/components/Modalistic';
 import FullLoadingScreen from '~/components/FullLoadingScreen';
 import RichModDisplay from '~/components/RichModDisplay';
 import ProgressOverlay from '~/components/ProgressOverlay';
 import ModrinthIcon from '~/components/ModrinthIcon';
-import {
-  FolderDownloadIcon,
-  PencilIcon,
-  TrashIcon,
-} from '@heroicons/react/outline';
+import { FolderDownloadIcon, TrashIcon } from '@heroicons/react/outline';
 
 interface Props {
   data: RichModList;
@@ -297,7 +292,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     return { notFound: true, revalidate: 1 };
   }
 
-  let newData: RichModList = {
+  const newData: RichModList = {
     id: params.id,
     created_at: data.created_at,
     title: data.title,

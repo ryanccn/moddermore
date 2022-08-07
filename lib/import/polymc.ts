@@ -64,7 +64,7 @@ export const parsePolyMCInstance = async ({ f, setProgress }: InputData) => {
 
     console.log({ mods });
 
-    let ret: (Mod | null)[] = [];
+    const ret: (Mod | null)[] = [];
     setProgress({ value: 0, max: mods.length });
 
     const resolveLimit = pLimit(4);

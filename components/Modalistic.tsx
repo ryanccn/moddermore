@@ -10,7 +10,7 @@ export default function Modalistic({
   children,
 }: {
   className?: string;
-  backdropClickHandler?: () => any;
+  backdropClickHandler?: () => void | Promise<void>;
   children: ReactNode | ReactNode[];
 }) {
   return (

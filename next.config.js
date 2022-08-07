@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const { withPlausibleProxy } = require('next-plausible');
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
