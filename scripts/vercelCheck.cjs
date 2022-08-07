@@ -1,11 +1,11 @@
 const shouldDeploy = () => {
   console.log('Should deploy!');
-  process.exit(0);
+  process.exit(1);
 };
 
 const shouldntDeploy = () => {
   console.log("Shouldn't deploy!");
-  process.exit(1);
+  process.exit(0);
 };
 
 if (process.env.VERCEL_ENV !== 'production') {
