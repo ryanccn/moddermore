@@ -1,0 +1,31 @@
+name: Update Minecraft versions
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+
+jobs:
+  minecraft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Update versions
+        run: yarn utils:minecraftVersions
+
+      - name: Commit & push
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          author_name: "Ryan Cao's Bot"
+          author_email: '98804099+ryanccn-bot@users.noreply.github.com'
+          message: 'chore: autoupdate Minecraft versions'
