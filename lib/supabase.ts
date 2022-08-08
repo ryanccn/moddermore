@@ -26,7 +26,7 @@ export const serverClient = () => {
   );
 };
 
-const db = (client: SupabaseClient) =>
+export const db = (client: SupabaseClient) =>
   client.from<definitions['mod_lists']>('mod_lists');
 
 const supabaseToList = (orig: definitions['mod_lists']) => {
