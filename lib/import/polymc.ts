@@ -2,6 +2,7 @@ import { parse } from '@iarna/toml';
 import type JSZip from 'jszip';
 import pLimit from 'p-limit';
 import { parseModFolder } from './parseModFolder';
+import toast from 'react-hot-toast';
 
 import type { Mod } from '~/types/moddermore';
 import type { ModPwToml } from '~/types/packwiz';
@@ -44,13 +45,15 @@ export const parsePolyMCInstance = async ({ f, setProgress }: InputData) => {
   const mcFolder = f.folder('.minecraft');
 
   if (!mcFolder) {
-    throw new Error('no .minecraft folder exists!');
+    toast.error('No .minecraft folder exists!');
+    return;
   }
 
   const modFolder = mcFolder.folder('mods');
 
   if (!modFolder) {
-    throw new Error('no mod folder exists!');
+    toast.error('No mods folder exists!');
+    return;
   }
 
   const pwIndexDir = modFolder.folder('.index');

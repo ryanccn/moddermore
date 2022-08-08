@@ -22,7 +22,7 @@ const SigninPage: NextPage = () => {
 
     const ret = await supabaseClient.auth.signIn({ email, password });
     if (ret.error) {
-      console.error(ret.error);
+      toast.error(ret.error.message);
       return;
     }
 

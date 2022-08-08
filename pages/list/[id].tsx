@@ -26,6 +26,7 @@ import RichModDisplay from '~/components/RichModDisplay';
 import ProgressOverlay from '~/components/ProgressOverlay';
 import ModrinthIcon from '~/components/ModrinthIcon';
 import { FolderDownloadIcon, TrashIcon } from '@heroicons/react/outline';
+import toast from 'react-hot-toast';
 
 interface Props {
   data: RichModList;
@@ -157,6 +158,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
     if (!user) return;
 
     await deleteList(supabaseClient, data.id);
+    toast.success(`Deleted ${data.title} (${data.id})!`);
     router.push('/dashboard');
   };
 
