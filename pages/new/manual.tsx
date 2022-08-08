@@ -168,6 +168,7 @@ const NewList: NextPage = () => {
                   <RichModDisplay
                     data={res}
                     key={res.id}
+                    buttonType="add"
                     onClick={() => {
                       setInputMods([...inputMods, res]);
                     }}
@@ -186,7 +187,7 @@ const NewList: NextPage = () => {
             <li key={mod.id}>
               <RichModDisplay
                 data={mod}
-                withDeleteButton
+                buttonType="delete"
                 onClick={() => {
                   setInputMods(inputMods.filter((a) => a.id !== mod.id));
                 }}

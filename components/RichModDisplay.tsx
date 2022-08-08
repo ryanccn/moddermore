@@ -3,7 +3,7 @@
 import type { RichMod } from '~/types/moddermore';
 
 import { providerFormat } from '~/lib/strings';
-import { TrashIcon } from '@heroicons/react/outline';
+import { PlusIcon, TrashIcon } from '@heroicons/react/outline';
 
 function SomeDetails({ data }: { data: RichMod }) {
   return (
@@ -36,17 +36,13 @@ function SomeDetails({ data }: { data: RichMod }) {
 
 interface Props {
   data: RichMod;
-  withDeleteButton?: boolean;
+  buttonType?: 'add' | 'delete';
   onClick?: () => void;
 }
 
-export default function RichModDisplay({
-  data,
-  withDeleteButton,
-  onClick,
-}: Props) {
+export default function RichModDisplay({ data, buttonType, onClick }: Props) {
   if (onClick) {
-    if (withDeleteButton) {
+    if (buttonType === 'delete') {
       return (
         <div className="group flex space-x-4 rounded-sm bg-transparent p-4 text-left transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800">
           <SomeDetails data={data} />
@@ -58,17 +54,21 @@ export default function RichModDisplay({
           </button>
         </div>
       );
+    } else if (buttonType === 'add') {
+      return (
+        <div className="group flex space-x-4 rounded-sm bg-transparent p-4 text-left transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800">
+          <SomeDetails data={data} />
+          <button className="flex-grow-0 self-center rounded-md p-2">
+            <PlusIcon
+              className="block h-5 w-5 text-green-500"
+              onClick={onClick}
+            />
+          </button>
+        </div>
+      );
+    } else {
+      return null;
     }
-
-    return (
-      <button
-        type="button"
-        className="group flex space-x-4 rounded-sm bg-transparent p-4 text-left transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800"
-        onClick={onClick}
-      >
-        <SomeDetails data={data} />
-      </button>
-    );
   }
 
   return (
