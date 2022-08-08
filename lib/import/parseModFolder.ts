@@ -51,6 +51,8 @@ const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
 
   if (cfRes.ok) {
     const cfData = (await cfRes.json()) as CurseForgeSpecialtyResponse;
+
+    if (cfData.data.exactMatches.length === 0) return null;
     return {
       id: `${cfData.data.exactMatches[0].file.modId}`,
       provider: 'curseforge',
