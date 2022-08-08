@@ -17,4 +17,4 @@ const Spinner = ({ className }: { className?: string }) => {
   );
 };
 
-export default Spinner;
+export { Spinner };

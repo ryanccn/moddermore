@@ -1,4 +1,4 @@
-export default function PolyIcon({ className }: { className?: string }) {
+export const PolyMCIcon = ({ className }: { className?: string }) => {
   return (
     <svg
       width="64"
@@ -53,4 +53,4 @@ export default function PolyIcon({ className }: { className?: string }) {
       />
     </svg>
   );
-}
+};

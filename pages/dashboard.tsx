@@ -10,8 +10,8 @@ import { useUserMore } from '~/hooks/useUserMore';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
 
 import Link from 'next/link';
-import FullLoadingScreen from '~/components/FullLoadingScreen';
-import GlobalLayout from '~/components/GlobalLayout';
+import { FullLoadingScreen } from '~/components/FullLoadingScreen';
+import { GlobalLayout } from '~/components/layout/GlobalLayout';
 
 import type { ModList } from '~/types/moddermore';
 

@@ -4,7 +4,7 @@ interface Props {
   disabled?: boolean;
 }
 
-export default function NewSubmitButton({ disabled }: Props) {
+export const NewSubmitButton = ({ disabled }: Props) => {
   return (
     <button
       type="submit"
@@ -15,4 +15,4 @@ export default function NewSubmitButton({ disabled }: Props) {
       <span>Submit</span>
     </button>
   );
-}
+};

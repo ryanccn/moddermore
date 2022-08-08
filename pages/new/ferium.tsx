@@ -7,8 +7,9 @@ import { parseFerium } from '~/lib/import/ferium';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader } from '~/types/moddermore';
 
-import GlobalLayout from '~/components/GlobalLayout';
-import NewSubmitButton from '~/components/NewSubmitButton';
+import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
+
 import { useUser } from '@supabase/auth-helpers-react';
 import { createList } from '~/lib/supabase';
 import { useRequireAuth } from '~/hooks/useRequireAuth';

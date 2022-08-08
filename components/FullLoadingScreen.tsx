@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import Spinner from './Spinner';
+import { Spinner } from './partials/Spinner';
 
-export default function FullLoadingScreen({ title }: { title?: string }) {
+export const FullLoadingScreen = ({ title }: { title?: string }) => {
   const { isFallback } = useRouter();
 
   return (
@@ -18,4 +18,4 @@ export default function FullLoadingScreen({ title }: { title?: string }) {
       </div>
     </div>
   );
-}
+};

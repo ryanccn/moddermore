@@ -1,6 +1,6 @@
-import PoweredByVercel from './PoweredByVercel';
+import { PoweredByVercel } from '../PoweredByVercel';
 
-export default function Footer() {
+export const Footer = () => {
   return (
     <footer className="moddermore-footer">
       <a
@@ -23,4 +23,4 @@ export default function Footer() {
       <PoweredByVercel />
     </footer>
   );
-}
+};

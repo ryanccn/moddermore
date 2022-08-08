@@ -1,4 +1,4 @@
-import Modalistic from './Modalistic';
+import { Modalistic } from './Modalistic';
 
 const ProgressOverlay = ({
   value,
@@ -34,4 +34,4 @@ const ProgressOverlay = ({
   );
 };
 
-export default ProgressOverlay;
+export { ProgressOverlay };

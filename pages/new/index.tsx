@@ -6,8 +6,8 @@ import {
   ArchiveIcon,
   FolderIcon,
 } from '@heroicons/react/outline';
-import GlobalLayout from '~/components/GlobalLayout';
-import PolyIcon from '~/components/PolyIcon';
+import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { PolyMCIcon } from '~/components/icons';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
 
 const NewIndex: NextPage = () => {
@@ -24,7 +24,7 @@ const NewIndex: NextPage = () => {
         </Link>
         <Link href="/new/polymc">
           <a className="new-card">
-            <PolyIcon className="block h-10 w-10 stroke-[1.5]" />
+            <PolyMCIcon className="block h-10 w-10 stroke-[1.5]" />
             <span>MultiMC / PolyMC instance</span>
           </a>
         </Link>

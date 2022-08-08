@@ -3,9 +3,9 @@ import type { NextPage } from 'next';
 
 import Link from 'next/link';
 
-import GlobalLayout from '~/components/GlobalLayout';
-import Navbar from '~/components/Navbar';
-import WickedBackground from '~/components/WickedBackground';
+import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { Navbar } from '~/components/layout/Navbar';
+import { WickedBackground } from '~/components/WickedBackground';
 
 import { useCantHaveAuth } from '~/hooks/useRequireAuth';
 

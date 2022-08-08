@@ -7,7 +7,7 @@ import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { checkUsername } from '~/lib/supabase';
 
 import Link from 'next/link';
-import GlobalLayout from '~/components/GlobalLayout';
+import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import toast from 'react-hot-toast';
 
 const SignupPage: NextPage = () => {

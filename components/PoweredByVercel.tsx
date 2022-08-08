@@ -1,4 +1,4 @@
-export default function PoweredByVercel() {
+export const PoweredByVercel = () => {
   return (
     <a
       target="_blank"
@@ -23,4 +23,4 @@ export default function PoweredByVercel() {
       </svg>
     </a>
   );
-}
+};

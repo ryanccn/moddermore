@@ -7,9 +7,10 @@ import { search } from '~/lib/import/search';
 
 import { useRouter } from 'next/router';
 
-import GlobalLayout from '~/components/GlobalLayout';
-import RichModDisplay from '~/components/RichModDisplay';
-import NewSubmitButton from '~/components/NewSubmitButton';
+import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { RichModDisplay } from '~/components/partials/RichModDisplay';
+import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
+
 import { createList } from '~/lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useRequireAuth } from '~/hooks/useRequireAuth';

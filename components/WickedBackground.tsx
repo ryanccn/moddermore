@@ -77,4 +77,4 @@ const WickedBackground = () => {
   );
 };
 
-export default WickedBackground;
+export { WickedBackground };

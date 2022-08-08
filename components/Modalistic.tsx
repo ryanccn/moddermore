@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import { type ReactNode } from 'react';
 
-export default function Modalistic({
+export const Modalistic = ({
   className,
   backdropClickHandler,
   children,
@@ -12,7 +12,7 @@ export default function Modalistic({
   className?: string;
   backdropClickHandler?: () => void | Promise<void>;
   children: ReactNode | ReactNode[];
-}) {
+}) => {
   return (
     <Portal container={document.body}>
       <m.div
@@ -44,4 +44,4 @@ export default function Modalistic({
       </m.div>
     </Portal>
   );
-}
+};

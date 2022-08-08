@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import { Navbar } from './Navbar';
+import { Footer } from './Footer';
 
 import type { ReactNode } from 'react';
 
@@ -12,13 +12,13 @@ interface Props {
   children: ReactNode | ReactNode[];
 }
 
-export default function GlobalLayout({
+export const GlobalLayout = ({
   title,
   titleSuffix = true,
   displayTitle = true,
   isLandingPage = false,
   children,
-}: Props) {
+}: Props) => {
   return (
     <>
       <Head>
@@ -39,4 +39,4 @@ export default function GlobalLayout({
       <Footer />
     </>
   );
-}
+};

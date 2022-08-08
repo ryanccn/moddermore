@@ -7,7 +7,7 @@ import { type FormEventHandler, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import Link from 'next/link';
-import GlobalLayout from '~/components/GlobalLayout';
+import { GlobalLayout } from '~/components/layout/GlobalLayout';
 
 const SigninPage: NextPage = () => {
   const [email, setEmail] = useState('');

@@ -5,7 +5,7 @@ import type { RichMod } from '~/types/moddermore';
 import { providerFormat } from '~/lib/strings';
 import { PlusIcon, TrashIcon } from '@heroicons/react/outline';
 
-function SomeDetails({ data }: { data: RichMod }) {
+const SomeDetails = ({ data }: { data: RichMod }) => {
   return (
     <>
       {data.iconUrl && (
@@ -32,7 +32,7 @@ function SomeDetails({ data }: { data: RichMod }) {
       </div>
     </>
   );
-}
+};
 
 interface Props {
   data: RichMod;
@@ -40,7 +40,7 @@ interface Props {
   onClick?: () => void;
 }
 
-export default function RichModDisplay({ data, buttonType, onClick }: Props) {
+export const RichModDisplay = ({ data, buttonType, onClick }: Props) => {
   if (onClick) {
     if (buttonType === 'delete') {
       return (
@@ -81,4 +81,4 @@ export default function RichModDisplay({ data, buttonType, onClick }: Props) {
       <SomeDetails data={data} />
     </a>
   );
-}
+};

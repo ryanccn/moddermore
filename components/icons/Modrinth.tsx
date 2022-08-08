@@ -1,4 +1,4 @@
-export default function ModrinthIcon({ className }: { className?: string }) {
+export const ModrinthIcon = ({ className }: { className?: string }) => {
   return (
     <svg
       width="512"
@@ -21,4 +21,4 @@ export default function ModrinthIcon({ className }: { className?: string }) {
       />
     </svg>
   );
-}
+};

@@ -62,4 +62,4 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
   );
 };
 
-export default Navbar;
+export { Navbar };

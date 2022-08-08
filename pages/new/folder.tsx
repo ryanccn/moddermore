@@ -9,10 +9,11 @@ import { parseModFolder } from '~/lib/import/parseModFolder';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { Mod, ModLoader } from '~/types/moddermore';
 
-import GlobalLayout from '~/components/GlobalLayout';
-import ProgressOverlay from '~/components/ProgressOverlay';
-import NewSubmitButton from '~/components/NewSubmitButton';
+import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { ProgressOverlay } from '~/components/ProgressOverlay';
+import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 import { CloudUploadIcon } from '@heroicons/react/outline';
+
 import { createList } from '~/lib/supabase';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';

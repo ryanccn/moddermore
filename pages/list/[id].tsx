@@ -19,12 +19,12 @@ import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence } from 'framer-motion';
 
-import GlobalLayout from '~/components/GlobalLayout';
-import Modalistic from '~/components/Modalistic';
-import FullLoadingScreen from '~/components/FullLoadingScreen';
-import RichModDisplay from '~/components/RichModDisplay';
-import ProgressOverlay from '~/components/ProgressOverlay';
-import ModrinthIcon from '~/components/ModrinthIcon';
+import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { Modalistic } from '~/components/Modalistic';
+import { FullLoadingScreen } from '~/components/FullLoadingScreen';
+import { RichModDisplay } from '~/components/partials/RichModDisplay';
+import { ProgressOverlay } from '~/components/ProgressOverlay';
+import { ModrinthIcon } from '~/components/icons';
 import { FolderDownloadIcon, TrashIcon } from '@heroicons/react/outline';
 import toast from 'react-hot-toast';
 
@@ -193,13 +193,6 @@ const ListPage: NextPage<Props> = ({ data }) => {
         </button>
         {user && (
           <>
-            {/* <Link href={`/edit/${data.id}`}>
-              <a className="primaryish-button mb-16">
-                <PencilIcon className="block h-5 w-5" />
-                <span>Edit</span>
-              </a>
-            </Link> */}
-
             <button
               className="primaryish-button mb-16 bg-red-500"
               onClick={deleteOMG}
