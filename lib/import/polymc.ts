@@ -46,14 +46,14 @@ export const parsePolyMCInstance = async ({ f, setProgress }: InputData) => {
 
   if (!mcFolder) {
     toast.error('No .minecraft folder exists!');
-    return;
+    return null;
   }
 
   const modFolder = mcFolder.folder('mods');
 
   if (!modFolder) {
     toast.error('No mods folder exists!');
-    return;
+    return null;
   }
 
   const pwIndexDir = modFolder.folder('.index');

@@ -7,12 +7,14 @@ import { loadAsync } from 'jszip';
 import { createList } from '~/lib/supabase';
 import { parsePolyMCInstance } from '~/lib/import/polymc';
 import minecraftVersions from '~/lib/minecraftVersions.json';
+
 import type { Mod, ModLoader } from '~/types/moddermore';
 
 import GlobalLayout from '~/components/GlobalLayout';
 import ProgressOverlay from '~/components/ProgressOverlay';
 import NewSubmitButton from '~/components/NewSubmitButton';
 import { CloudUploadIcon } from '@heroicons/react/outline';
+
 import { useUser } from '@supabase/auth-helpers-react';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
@@ -40,14 +42,23 @@ const PolyMCInstanceImportPage: NextPage = () => {
     const aaa = await instanceFile?.arrayBuffer();
     if (!aaa) throw aaa;
 
-    const parsedMods = (await parsePolyMCInstance({
+    const parseResponse = await parsePolyMCInstance({
       f: await loadAsync(new Uint8Array(aaa)),
       setProgress,
-    }).then((r) => r.filter(Boolean))) as Mod[];
+    });
+
+    if (!parseResponse) {
+      return;
+    }
 
     const id = await createList(
       supabaseClient,
-      { title, mods: parsedMods, gameVersion, modloader: modLoader },
+      {
+        title,
+        mods: parseResponse.filter(Boolean) as Mod[],
+        gameVersion,
+        modloader: modLoader,
+      },
       user
     );
 

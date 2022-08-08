@@ -3,6 +3,7 @@ import {
   type SupabaseClient,
   type User,
 } from '@supabase/supabase-js';
+import toast from 'react-hot-toast';
 
 import type {
   Mod,
@@ -48,7 +49,7 @@ export const getUserLists = async (
   const ret = await db(client).select('*');
 
   if (ret.error) {
-    console.error(ret.error);
+    toast.error(ret.error.message);
     return [];
   }
 
