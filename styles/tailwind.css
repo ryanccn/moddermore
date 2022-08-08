@@ -5,6 +5,7 @@
 @layer base {
   html {
     @apply scroll-smooth;
+    accent-color: theme(colors.indigo.500);
     color-scheme: dark light;
   }
 
