@@ -10,6 +10,7 @@ import type { SetStateFn } from '~/types/react';
 
 interface InputData {
   f: JSZip;
+  useMetadata: boolean;
   setProgress: SetStateFn<{
     value: number;
     max: number;
@@ -41,7 +42,11 @@ const parsePackwizTOML = (toml: string): Mod | null => {
   return null;
 };
 
-export const parsePolyMCInstance = async ({ f, setProgress }: InputData) => {
+export const parsePolyMCInstance = async ({
+  f,
+  useMetadata,
+  setProgress,
+}: InputData) => {
   const mcFolder = f.folder('.minecraft');
 
   if (!mcFolder) {
@@ -58,7 +63,7 @@ export const parsePolyMCInstance = async ({ f, setProgress }: InputData) => {
 
   const pwIndexDir = modFolder.folder('.index');
 
-  if (pwIndexDir) {
+  if (pwIndexDir && useMetadata) {
     console.log('.index folder detected, using packwiz format');
 
     const mods = Object.keys(pwIndexDir.files).filter((fn) =>
@@ -94,7 +99,7 @@ export const parsePolyMCInstance = async ({ f, setProgress }: InputData) => {
     return ret;
   }
 
-  console.warn('no .index folder, falling back to mod folder');
+  console.warn('falling back to mod folder');
 
   return await parseModFolder({ f: modFolder, setProgress });
 };
