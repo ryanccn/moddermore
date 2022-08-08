@@ -5,17 +5,19 @@ import { getUsername } from '~/lib/supabase';
 import { type SupabaseClient } from '@supabase/supabase-js';
 
 export const useUserMore = (client: SupabaseClient) => {
-  const { user, isLoading, error } = useUser();
-  const [asdf, setASDF] = useState<string | null>(null);
+  const { user, isLoading: isFirstStepLoading, error } = useUser();
+  const [username, setUsername] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      if (!isLoading && user) {
+      if (!isFirstStepLoading && user) {
         const un = await getUsername(client, user.id);
-        setASDF(un);
+        setUsername(un);
+        setIsLoading(false);
       }
     })();
-  }, [user, isLoading, client]);
+  }, [user, isFirstStepLoading, client]);
 
-  return { user, isLoading, error, username: asdf };
+  return { user, username, isLoading, error };
 };
