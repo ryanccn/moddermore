@@ -28,7 +28,7 @@ const Dashboard: NextPage = () => {
   }, [user]);
 
   if (!user || !username || !lists) {
-    return <FullLoadingScreen />;
+    return <FullLoadingScreen title="Dashboard" />;
   }
 
   return (
