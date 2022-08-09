@@ -14,7 +14,6 @@ import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 
 import type { ModList } from '~/types/moddermore';
-import { CommandPalette } from '~/components/CommandPalette';
 
 const Dashboard: NextPage = () => {
   useRequireAuth();
@@ -62,7 +61,6 @@ const Dashboard: NextPage = () => {
           No lists yet!
         </div>
       )}
-      <CommandPalette />
     </GlobalLayout>
   );
 };

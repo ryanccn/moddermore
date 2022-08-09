@@ -37,7 +37,7 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
                 </a>
               </Link>
               <button
-                className="primaryish-button bg-transparent text-red-400 hover:bg-red-500/10 hover:text-red-400 hover:brightness-100 focus:ring-red-400/40 dark:text-white"
+                className="primaryish-button bg-transparent hover:bg-red-500/10 hover:text-red-400 hover:brightness-100 focus:ring-red-400/40"
                 onClick={signOut}
               >
                 <ExternalLinkIcon className="block h-5 w-5" />
