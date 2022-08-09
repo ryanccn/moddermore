@@ -19,7 +19,7 @@ const Home: NextPage = () => {
       displayTitle={false}
       isLandingPage
     >
-      <div className="min-w-screen relative mb-16 flex min-h-screen flex-col items-start px-12">
+      <div className="min-w-screen relative mb-16 flex min-h-screen flex-col items-start px-12 text-white">
         <Navbar isLandingPage />
 
         <div className="mb-20 flex flex-col">
