@@ -10,6 +10,7 @@ import type {
   ModList,
   ModListPartial,
   ModLoader,
+  RichMod,
 } from '~/types/moddermore';
 import type { definitions } from '~/types/supabase';
 
@@ -41,6 +42,10 @@ const supabaseToList = (orig: definitions['mod_lists']) => {
   nt.author = orig.author ?? null;
 
   return nt;
+};
+
+export const richModToMod = (orig: RichMod): Mod => {
+  return { id: orig.id, provider: orig.provider };
 };
 
 export const getUserLists = async (

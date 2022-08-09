@@ -43,7 +43,7 @@ export const search = async ({
 
     return data.hits.map((rawMod) => ({
       id: rawMod.project_id,
-      href: `https://modrinth.com/mod/${rawMod.project_id}`,
+      href: `https://modrinth.com/mod/${rawMod.slug}`,
       name: rawMod.title,
       provider: 'modrinth',
       description: rawMod.description,

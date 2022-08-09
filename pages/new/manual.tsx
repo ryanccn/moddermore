@@ -11,7 +11,7 @@ import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 
-import { createList } from '~/lib/supabase';
+import { createList, richModToMod } from '~/lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
@@ -42,7 +42,12 @@ const NewList: NextPage = () => {
 
     const id = await createList(
       supabaseClient,
-      { title, mods: inputMods, gameVersion, modloader: modLoader },
+      {
+        title,
+        mods: inputMods.map(richModToMod),
+        gameVersion,
+        modloader: modLoader,
+      },
       user
     );
 
