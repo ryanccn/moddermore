@@ -175,7 +175,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
         </p>
         <p>
           Created on <strong>{new Date(data.created_at).toDateString()}</strong>{' '}
-          by <strong>{data.author}</strong>
+          by <strong>{data.author?.username ?? 'unknown'}</strong>
         </p>
       </div>
 
@@ -191,7 +191,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
           <ModrinthIcon className="block h-5 w-5" />
           <span>Modrinth pack</span>
         </button>
-        {user && (
+        {user?.id === data.author?.id && (
           <>
             <button
               className="primaryish-button mb-16 bg-red-500"
@@ -293,10 +293,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     title: data.title,
     gameVersion: data.gameVersion,
     modloader: data.modloader,
-    author:
-      data.author !== 'unknown'
-        ? (await getUsername(serverClient(), data.author)) ?? 'unknown'
-        : 'unknown',
+    author: data.author
+      ? {
+          username:
+            (await getUsername(serverClient(), data.author)) ??
+            'failed to fetch',
+          id: data.author,
+        }
+      : null,
     mods: [],
   };
 

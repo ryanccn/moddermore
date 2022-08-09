@@ -38,7 +38,7 @@ const supabaseToList = (orig: definitions['mod_lists']) => {
   nt.mods = orig.mods as Mod[];
   nt.gameVersion = orig.game_version;
   nt.modloader = orig.modloader as ModLoader;
-  nt.author = orig.author ?? 'unknown';
+  nt.author = orig.author ?? null;
 
   return nt;
 };
