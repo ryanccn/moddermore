@@ -22,6 +22,12 @@ const SignupPage: NextPage = () => {
     e.preventDefault();
     setDS(true);
 
+    if (username.includes(' ')) {
+      setDS(false);
+      toast.error('Username can not contain spaces!');
+      return;
+    }
+
     if (!(await checkUsername(supabaseClient, username))) {
       setDS(false);
       toast.error('Username taken!');
