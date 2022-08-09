@@ -191,7 +191,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
           <ModrinthIcon className="block h-5 w-5" />
           <span>Modrinth pack</span>
         </button>
-        {user?.id === data.author?.id && (
+        {user && user.id === data.author?.id && (
           <>
             <button
               className="primaryish-button mb-16 bg-red-500"
