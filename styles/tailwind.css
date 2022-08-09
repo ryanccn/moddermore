@@ -75,7 +75,7 @@
   }
 
   .new-card {
-    @apply bg-zinc-100 px-5 py-8 dark:bg-zinc-800;
+    @apply bg-zinc-50 px-5 py-8 dark:bg-zinc-800;
     @apply flex flex-col items-center space-y-2;
     @apply rounded text-xl font-semibold;
     @apply transition-shadow;
@@ -92,6 +92,14 @@
   }
   .results-list > details > ul {
     @apply mt-2 flex w-full flex-col space-y-0.5;
+  }
+
+  .modal-backdrop {
+    @apply fixed inset-0 bg-white/75 backdrop-blur-md dark:bg-zinc-900/75;
+  }
+  .modal-modal {
+    @apply fixed top-1/2 left-1/2 z-[99] max-h-[85vh] w-[90%] max-w-lg -translate-x-1/2 -translate-y-1/2;
+    @apply flex flex-col items-stretch overflow-y-auto rounded-lg bg-zinc-50 p-8 shadow-md dark:bg-zinc-800;
   }
 
   .moddermore-footer {
@@ -120,4 +128,46 @@
 
 #nprogress .spinner-icon {
   display: none;
+}
+
+[cmdk-dialog] {
+  @apply modal-modal p-0;
+  @apply space-y-0;
+}
+
+[cmdk-overlay] {
+  @apply modal-backdrop;
+}
+
+[cmdk-input] {
+  @apply w-full bg-zinc-100 px-4 py-3 shadow-sm dark:bg-zinc-800;
+  @apply rounded-none border-b-2 border-zinc-200 dark:border-zinc-600;
+  @apply focus:ring-0;
+}
+
+[cmdk-list] {
+  @apply flex flex-col space-y-1 overflow-y-auto px-2 py-4;
+}
+
+[cmdk-item] {
+  @apply rounded-md bg-transparent py-2 px-3;
+  @apply text-black text-opacity-95 hover:text-opacity-100 dark:text-white;
+  @apply transition-colors;
+  @apply cursor-default hover:cursor-pointer;
+}
+
+[cmdk-item][aria-selected] {
+  @apply bg-zinc-100 dark:bg-zinc-700;
+}
+
+[cmdk-group] {
+  @apply mb-2;
+}
+
+[cmdk-group-heading] {
+  @apply mb-1 select-none text-sm uppercase text-black/75 dark:text-white/75;
+}
+
+[cmdk-separator] {
+  @apply my-1 block h-[2px] w-full bg-zinc-500;
 }
