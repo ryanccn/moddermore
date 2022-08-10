@@ -5,13 +5,12 @@ import {
   deleteList,
   getSpecificList,
   getUsername,
+  modToRichMod,
   serverClient,
 } from '~/lib/supabase';
 import { useUser } from '@supabase/auth-helpers-react';
-import type { RichModList } from '~/types/moddermore';
+import type { RichMod, RichModList } from '~/types/moddermore';
 
-import { getInfo as getModrinthInfo } from '~/lib/metadata/modrinth';
-import { getInfo as getCurseForgeInfo } from '~/lib/metadata/curseforge';
 import { loaderFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
@@ -25,7 +24,11 @@ import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { ModrinthIcon } from '~/components/icons';
-import { FolderDownloadIcon, TrashIcon } from '@heroicons/react/outline';
+import {
+  FolderDownloadIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/outline';
 import toast from 'react-hot-toast';
 
 interface Props {
@@ -179,13 +182,13 @@ const ListPage: NextPage<Props> = ({ data }) => {
         </p>
       </div>
 
-      <div className="flex space-x-4">
-        <button className="primaryish-button mb-16" onClick={downloadExport}>
+      <div className="mb-6 flex space-x-4">
+        <button className="primaryish-button" onClick={downloadExport}>
           <FolderDownloadIcon className="block h-5 w-5" />
           <span>Export</span>
         </button>
         <button
-          className="primaryish-button modrinth-themed mb-16"
+          className="primaryish-button modrinth-themed"
           onClick={modrinthExport}
         >
           <ModrinthIcon className="block h-5 w-5" />
@@ -194,7 +197,16 @@ const ListPage: NextPage<Props> = ({ data }) => {
         {user && user.id === data.author?.id && (
           <>
             <button
-              className="primaryish-button mb-16 bg-red-500"
+              className="primaryish-button"
+              onClick={() => {
+                router.push(`/edit/${router.query.id}`);
+              }}
+            >
+              <PencilIcon className="block h-5 w-5" />
+              <span>Edit</span>
+            </button>
+            <button
+              className="primaryish-button  bg-red-500"
               onClick={deleteOMG}
             >
               <TrashIcon className="block h-5 w-5" />
@@ -305,22 +317,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   };
 
   const lim = pLimit(4);
+  newData.mods = await Promise.all(
+    data.mods.map((a) => lim(() => modToRichMod(a)))
+  ).then((a) => a.filter((b) => b !== null) as RichMod[]);
 
-  await Promise.all(
-    data.mods.map((boringMod) =>
-      lim(async () => {
-        if (boringMod.provider === 'modrinth') {
-          const info = await getModrinthInfo(boringMod.id);
-          if (info) newData.mods.push(info);
-        } else if (boringMod.provider === 'curseforge') {
-          const info = await getCurseForgeInfo(boringMod.id);
-          if (info) newData.mods.push(info);
-        }
-      })
-    )
-  );
-
-  newData.mods.sort((a, b) =>
+  newData.mods = newData.mods.sort((a, b) =>
     a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
   );
 

@@ -3,6 +3,9 @@ import {
   type SupabaseClient,
   type User,
 } from '@supabase/supabase-js';
+
+import { getInfo as getModrinthInfo } from '~/lib/metadata/modrinth';
+import { getInfo as getCurseForgeInfo } from '~/lib/metadata/curseforge';
 import toast from 'react-hot-toast';
 
 import type {
@@ -46,6 +49,18 @@ const supabaseToList = (orig: definitions['mod_lists']) => {
 
 export const richModToMod = (orig: RichMod): Mod => {
   return { id: orig.id, provider: orig.provider };
+};
+
+export const modToRichMod = async (orig: Mod): Promise<RichMod | null> => {
+  if (orig.provider === 'modrinth') {
+    const info = await getModrinthInfo(orig.id);
+    if (info) return info;
+  } else if (orig.provider === 'curseforge') {
+    const info = await getCurseForgeInfo(orig.id);
+    if (info) return info;
+  }
+
+  return null;
 };
 
 export const getUserLists = async (
@@ -126,6 +141,26 @@ export const createList = async (
     title: list.title,
     author: user.id,
   });
+
+  return id;
+};
+
+export const updateList = async (
+  supabaseClient: SupabaseClient,
+  id: string,
+  list: ModListPartial,
+  user: User
+): Promise<string> => {
+  await db(supabaseClient)
+    .update({
+      mods: list.mods,
+      created_at: new Date().toISOString(),
+      game_version: list.gameVersion,
+      modloader: list.modloader,
+      title: list.title,
+      author: user.id,
+    })
+    .match({ id });
 
   return id;
 };
