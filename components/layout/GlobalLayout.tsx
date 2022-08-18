@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 import Head from 'next/head';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
@@ -23,6 +25,11 @@ export const GlobalLayout = ({
     <>
       <Head>
         <title>{titleSuffix ? `${title} / Moddermore` : title}</title>
+        <link rel="preconnect" href="https://fonts.bunny.net" />
+        <link
+          href="https://fonts.bunny.net/css?family=lobster:400"
+          rel="stylesheet"
+        />
       </Head>
 
       {!isLandingPage ? <Navbar /> : null}
@@ -37,6 +44,15 @@ export const GlobalLayout = ({
       </main>
 
       <Footer />
+
+      <a
+        href="https://www.buymeacoffee.com/ryanccn"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="primaryish-button fixed bottom-0 right-0 m-4 bg-yellow-500 font-['Lobster',_sans-serif] shadow-sm"
+      >
+        Support me
+      </a>
     </>
   );
 };
