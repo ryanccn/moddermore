@@ -30,6 +30,10 @@ export const GlobalLayout = ({
           href="https://fonts.bunny.net/css?family=lobster:400"
           rel="stylesheet"
         />
+        <meta
+          name="google-site-verification"
+          content="gAuvmm-r_a-HDIw51Wb2tUWvBMM6MxOdpSVunn2bECY"
+        />
       </Head>
 
       {!isLandingPage ? <Navbar /> : null}
