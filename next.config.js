@@ -10,7 +10,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const csp = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline';
-  style-src 'self' 'unsafe-inline';
+  style-src 'self' fonts.bunny.net 'unsafe-inline';
   img-src * blob: data:;
   child-src 'none';
   media-src 'none';
