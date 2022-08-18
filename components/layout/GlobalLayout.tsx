@@ -51,7 +51,7 @@ export const GlobalLayout = ({
         rel="noopener noreferrer"
         className="primaryish-button fixed bottom-0 right-0 m-4 bg-yellow-500 font-['Lobster',_sans-serif] shadow-sm"
       >
-        Support me
+        Donate
       </a>
     </>
   );
