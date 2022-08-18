@@ -14,7 +14,7 @@ const csp = `
   img-src * blob: data:;
   child-src 'none';
   media-src 'none';
-  font-src 'self';
+  font-src 'self' fonts.bunny.net;
   connect-src *;
 `;
 
