@@ -4,7 +4,7 @@ Your edits might not reflect immediately on the lists page. And you will be perf
 
 The reason is, fetching the mod metadata from the Modrinth and CurseForge APIs takes quite a while. As you can observe for yourself, the first time you open a list takes quite a while to load.
 
-If we do not cache this metadata, we will be stuck with a. loading spinners for 10+ seconds and high network waterfalls or b. 10 second TTFB, which is not optimal.
+If we do not cache this metadata, we will be stuck with a. loading spinners for 10+ seconds and high network waterfalls or b. 10 second TTFB (Time to First Byte), which is not optimal.
 
 This is why we utilize Next.js's static site generation feature to statically generate the list pages. Lists are updated every 30 seconds, while 404 pages are updated every single second. In addition, after you submit an edit, the app will tell the server to update the page's data, so you can see the updates in approximately 10 seconds.
 
