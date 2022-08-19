@@ -1,4 +1,4 @@
-export type ModProvider = 'modrinth' | 'curseforge' | 'github';
+export type ModProvider = 'modrinth' | 'curseforge';
 export type ModLoader = 'quilt' | 'fabric' | 'forge';
 
 export interface Mod {

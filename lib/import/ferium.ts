@@ -9,14 +9,16 @@ export const parseFerium = (str: string) => {
   for (const mod of matrix) {
     const rawProvider = mod[mod.length - 2];
 
-    const provider: ModProvider =
+    const provider: ModProvider | null =
       rawProvider === 'Modrinth'
         ? 'modrinth'
         : rawProvider === 'CurseForge'
         ? 'curseforge'
-        : 'github';
+        : null;
 
-    ret.push({ id: mod[mod.length - 1], provider });
+    if (provider) {
+      ret.push({ id: mod[mod.length - 1], provider });
+    }
   }
 
   return ret;
