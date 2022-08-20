@@ -68,6 +68,7 @@ export const parseModFolder = async ({ f, setProgress }: InputData) => {
       name.endsWith('.jar') &&
       !name.includes('__MACOSX') && // some macOS zip stuff
       !name.includes('.old') && // ferium
+      !name.endsWith('.disabled') && // disabled mods
       !f.files[name].dir
   );
 
