@@ -74,7 +74,7 @@ export const parseModFolder = async ({ f, setProgress }: InputData) => {
   const ret: (Mod | null)[] = [];
   setProgress({ value: 0, max: mods.length });
 
-  const resolveLimit = pLimit(4);
+  const resolveLimit = pLimit(6);
 
   await Promise.all(
     mods.map((mod) =>

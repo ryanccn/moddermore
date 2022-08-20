@@ -12,7 +12,7 @@ export const getDownloadURLs = async (
 ) => {
   let ret: ExportReturnData = [];
 
-  const lim = pLimit(4);
+  const lim = pLimit(6);
 
   await Promise.all(
     list.mods.map((mod) =>

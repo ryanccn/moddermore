@@ -76,7 +76,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
       throw new Error('f');
     }
 
-    const lim = pLimit(4);
+    const lim = pLimit(6);
 
     await Promise.all(
       urls.map((downloadData) =>
@@ -316,7 +316,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     mods: [],
   };
 
-  const lim = pLimit(4);
+  const lim = pLimit(6);
   newData.mods = await Promise.all(
     data.mods.map((a) => lim(() => modToRichMod(a)))
   ).then((a) => a.filter((b) => b !== null) as RichMod[]);

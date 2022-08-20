@@ -61,7 +61,7 @@ const NewList: NextPage = () => {
         setGameVersion(a.gameVersion);
         setModLoader(a.modloader);
 
-        const lim = pLimit(4);
+        const lim = pLimit(6);
         setInputMods(
           await Promise.all(a.mods.map((a) => lim(() => modToRichMod(a)))).then(
             (a) => a.filter((b) => b !== null) as RichMod[]
