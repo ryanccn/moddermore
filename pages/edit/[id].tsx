@@ -30,7 +30,7 @@ const NewList: NextPage = () => {
 
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
-  const [modLoader, setModLoader] = useState<ModLoader>('fabric');
+  const [modLoader, setModLoader] = useState<ModLoader>('quilt');
 
   const [searchProvider, setSearchProvider] = useState('modrinth');
   const [searchQuery, setSearchQuery] = useState('');

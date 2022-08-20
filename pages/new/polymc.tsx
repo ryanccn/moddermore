@@ -25,7 +25,7 @@ const PolyMCInstanceImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
   const [instanceFile, setInstanceFile] = useState<File | null>(null);
-  const [modLoader, setModLoader] = useState<ModLoader>('fabric');
+  const [modLoader, setModLoader] = useState<ModLoader>('quilt');
   const [useMetadata, setUseMetadata] = useState(true);
 
   const [progress, setProgress] = useState({ value: 0, max: 0 });

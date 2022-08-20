@@ -20,7 +20,7 @@ const FeriumImportPage: NextPage = () => {
 
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
-  const [modLoader, setModLoader] = useState<ModLoader>('fabric');
+  const [modLoader, setModLoader] = useState<ModLoader>('quilt');
   const [feriumCopyPaste, setFeriumCopyPaste] = useState('');
   const [submitting, setSubmitting] = useState(false);
 

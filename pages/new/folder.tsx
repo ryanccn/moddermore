@@ -24,7 +24,7 @@ const FeriumImportPage: NextPage = () => {
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
   const [modZipFile, setModZipFile] = useState<File | null>(null);
-  const [modLoader, setModLoader] = useState<ModLoader>('fabric');
+  const [modLoader, setModLoader] = useState<ModLoader>('quilt');
 
   const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [submitting, setSubmitting] = useState(false);
