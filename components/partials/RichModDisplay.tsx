@@ -46,7 +46,10 @@ export const RichModDisplay = ({ data, buttonType, onClick }: Props) => {
       return (
         <div className="group flex space-x-4 rounded-sm bg-transparent p-4 text-left transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800">
           <SomeDetails data={data} />
-          <button className="flex-grow-0 self-center rounded-md p-2">
+          <button
+            className="flex-grow-0 self-center rounded-md p-2"
+            type="button"
+          >
             <TrashIcon
               className="block h-5 w-5 text-red-500"
               onClick={onClick}
@@ -58,7 +61,10 @@ export const RichModDisplay = ({ data, buttonType, onClick }: Props) => {
       return (
         <div className="group flex space-x-4 rounded-sm bg-transparent p-4 text-left transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800">
           <SomeDetails data={data} />
-          <button className="flex-grow-0 self-center rounded-md p-2">
+          <button
+            className="flex-grow-0 self-center rounded-md p-2"
+            type="button"
+          >
             <PlusIcon
               className="block h-5 w-5 text-green-500"
               onClick={onClick}
