@@ -4,7 +4,7 @@ export interface ProviderSpecificOptions {
   id: string;
   name: string;
   loader: ModLoader;
-  gameVersion: string;
+  gameVersions: string[];
 }
 
 export interface ModrinthDownload {

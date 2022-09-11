@@ -18,39 +18,21 @@ export const getDownloadURLs = async (
     list.mods.map((mod) =>
       lim(async () => {
         if (mod.provider === 'curseforge') {
-          let dat = await getCFDownload({
+          const dat = await getCFDownload({
             id: mod.id,
-            gameVersion: list.gameVersion,
+            gameVersions: [list.gameVersion],
             loader: list.modloader,
             name: mod.name,
           });
-
-          if (list.modloader === 'quilt' && dat.length === 0) {
-            dat = await getCFDownload({
-              id: mod.id,
-              gameVersion: list.gameVersion,
-              loader: 'fabric',
-              name: mod.name,
-            });
-          }
 
           ret = [...ret, ...dat];
         } else if (mod.provider === 'modrinth') {
-          let dat = await getModrinthDownload({
+          const dat = await getModrinthDownload({
             id: mod.id,
-            gameVersion: list.gameVersion,
+            gameVersions: [list.gameVersion],
             loader: list.modloader,
             name: mod.name,
           });
-
-          if (list.modloader === 'quilt' && dat.length === 0) {
-            dat = await getModrinthDownload({
-              id: mod.id,
-              gameVersion: list.gameVersion,
-              loader: 'fabric',
-              name: mod.name,
-            });
-          }
 
           ret = [...ret, ...dat];
         }

@@ -1,55 +1,9 @@
 import type { ExportReturnData, ProviderSpecificOptions } from './types';
-
-type NetworkResult = {
-  id: number;
-  gameId: number;
-  modId: number;
-  isAvailable: boolean;
-  displayName: string;
-
-  fileName: string;
-  releaseType: number;
-  fileStatus: number;
-  hashes: {
-    value: string;
-    algo: number;
-  }[];
-
-  fileDate: string;
-  fileLength: number;
-  downloadCount: number;
-  downloadUrl: string;
-
-  gameVersions: string[];
-  sortableGameVersions: {
-    gameVersionName: string;
-    gameVersionPadded: string;
-    gameVersion: string;
-    gameVersionReleaseDate: '2019-08-24T14:15:22Z';
-    gameVersionTypeId: number;
-  }[];
-
-  dependencies: {
-    modId: number;
-    relationType: number;
-  }[];
-
-  exposeAsAlternative: boolean | null;
-  parentProjectFileId: number | null;
-  alternateFileId: number | null;
-  isServerPack: boolean | null;
-  serverPackFileId: number | null;
-  fileFingerprint: number;
-
-  modules: {
-    name: string;
-    fingerprint: number;
-  }[];
-}[];
+import type { CurseForgeVersion } from '~/types/curseforge';
 
 export const getCFDownload = async ({
   id,
-  gameVersion,
+  gameVersions,
   loader,
   name,
 }: ProviderSpecificOptions): Promise<ExportReturnData> => {
@@ -67,7 +21,7 @@ export const getCFDownload = async ({
 
   const res = await fetch(
     `https://api.curseforge.com/v1/mods/${id}/files?gameVersion=${encodeURIComponent(
-      gameVersion
+      gameVersions[0]
     )}&modLoaderType=${modLoaderTypeCringe}`,
     {
       headers: { 'x-api-key': API_KEY },
@@ -78,7 +32,9 @@ export const getCFDownload = async ({
     return [{ error: 'notfound', name, id }];
   }
 
-  const data = (await res.json().then((json) => json.data)) as NetworkResult;
+  const data = (await res
+    .json()
+    .then((json) => json.data)) as CurseForgeVersion[];
 
   let latest = data.filter((v) => v.releaseType === 1)[0];
   if (!latest) latest = data.filter((v) => v.releaseType === 2)[0];
