@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import minecraftVersions from '../minecraftVersions.json';
+
 import type { RichMod } from '~/types/moddermore';
 import type { ModrinthSearchResult } from '~/types/modrinth';
 import type { CurseForgeSearchResult } from '~/types/curseforge';
@@ -24,13 +26,19 @@ export const search = async ({
   gameVersion,
 }: Options): Promise<RichMod[]> => {
   if (platform === 'modrinth') {
+    const compatGameVersions = minecraftVersions.filter((a) =>
+      a.startsWith(gameVersion.split('.').slice(0, 2).join('.'))
+    );
+
+    console.log(compatGameVersions);
+
     const data = await fetch(
       `https://api.modrinth.com/v2/search?query=${encodeURIComponent(
         query
       )}&facets=${encodeURIComponent(
         JSON.stringify([
           [`project_type:mod`],
-          [`versions:${gameVersion}`],
+          compatGameVersions.map((a) => `versions:${a}`),
           loader === 'quilt'
             ? ['categories:fabric', 'categories:quilt']
             : [`categories:${loader}`],

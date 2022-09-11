@@ -77,10 +77,8 @@ export const getModrinthDownload = async ({
 
   if (!latest) {
     const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersions[0].split('.').slice(0, 3).join('.'))
+      a.startsWith(gameVersions[0].split('.').slice(0, 2).join('.'))
     );
-
-    console.log('aaaa', compatGameVersions);
 
     latest = await callModrinthAPI({
       id,
@@ -94,8 +92,6 @@ export const getModrinthDownload = async ({
     const compatGameVersions = minecraftVersions.filter((a) =>
       a.startsWith(gameVersions[0].split('.').slice(0, 2).join('.'))
     );
-
-    console.log('aaaa', compatGameVersions);
 
     latest = await callModrinthAPI({
       id,
