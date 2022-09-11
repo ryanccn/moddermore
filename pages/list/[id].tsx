@@ -16,7 +16,6 @@ import { loaderFormat } from '~/lib/strings';
 import pLimit from 'p-limit';
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import { AnimatePresence } from 'framer-motion';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { Modalistic } from '~/components/Modalistic';
@@ -235,49 +234,47 @@ const ListPage: NextPage<Props> = ({ data }) => {
         />
       ) : null}
 
-      <AnimatePresence>
-        {showModal && (
-          <Modalistic
-            className="flex flex-col space-y-4"
-            backdropClickHandler={() => {
+      {showModal && (
+        <Modalistic
+          className="flex flex-col space-y-4"
+          backdropClickHandler={() => {
+            setStatus('idle');
+          }}
+        >
+          <div className="results-list">
+            <details>
+              <summary className="text-green-400">
+                {result.success.length} successful downloads
+              </summary>
+              <ul>
+                {result.success.map((a) => (
+                  <li key={a}>{a}</li>
+                ))}
+              </ul>
+            </details>
+
+            <details>
+              <summary className="text-red-400">
+                {result.failed.length} failed
+              </summary>
+              <ul>
+                {result.failed.map((a) => (
+                  <li key={a}>{a}</li>
+                ))}
+              </ul>
+            </details>
+          </div>
+
+          <button
+            className="primaryish-button self-center"
+            onClick={() => {
               setStatus('idle');
             }}
           >
-            <div className="results-list">
-              <details>
-                <summary className="text-green-400">
-                  {result.success.length} successful downloads
-                </summary>
-                <ul>
-                  {result.success.map((a) => (
-                    <li key={a}>{a}</li>
-                  ))}
-                </ul>
-              </details>
-
-              <details>
-                <summary className="text-red-400">
-                  {result.failed.length} failed
-                </summary>
-                <ul>
-                  {result.failed.map((a) => (
-                    <li key={a}>{a}</li>
-                  ))}
-                </ul>
-              </details>
-            </div>
-
-            <button
-              className="primaryish-button self-center"
-              onClick={() => {
-                setStatus('idle');
-              }}
-            >
-              Close
-            </button>
-          </Modalistic>
-        )}
-      </AnimatePresence>
+            Close
+          </button>
+        </Modalistic>
+      )}
     </GlobalLayout>
   );
 };

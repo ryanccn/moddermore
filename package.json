@@ -21,7 +21,6 @@
     "clsx": "^1.2.1",
     "fast-xml-parser": "^4.0.9",
     "file-saver": "^2.0.5",
-    "framer-motion": "^7.0.0",
     "jszip": "^3.10.1",
     "next": "12.2.4",
     "next-plausible": "^3.2.0",
