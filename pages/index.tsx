@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { Navbar } from '~/components/layout/Navbar';
-import { WickedBackground } from '~/components/WickedBackground';
 
 import { useCantHaveAuth } from '~/hooks/useRequireAuth';
 
@@ -40,8 +39,6 @@ const Home: NextPage = () => {
             <span>Create a new list</span>
           </a>
         </Link>
-
-        <WickedBackground />
       </div>
     </GlobalLayout>
   );
