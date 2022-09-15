@@ -4,7 +4,7 @@ import { type FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { loadAsync } from 'jszip';
-import { createList } from '~/lib/supabase';
+import { createList } from '~/lib/db';
 import { parsePolyMCInstance } from '~/lib/import/polymc';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 

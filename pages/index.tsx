@@ -6,11 +6,7 @@ import Link from 'next/link';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { Navbar } from '~/components/layout/Navbar';
 
-import { useCantHaveAuth } from '~/hooks/useRequireAuth';
-
 const Home: NextPage = () => {
-  useCantHaveAuth();
-
   return (
     <GlobalLayout
       title="Moddermore"

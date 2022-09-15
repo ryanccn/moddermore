@@ -1,11 +1,11 @@
 import '~/styles/tailwind.css';
 import type { AppProps } from 'next/app';
-import PlausibleProvider from 'next-plausible';
-import { UserProvider } from '@supabase/auth-helpers-react';
-import { Toaster } from 'react-hot-toast';
 
+import PlausibleProvider from 'next-plausible';
+import { SessionProvider } from 'next-auth/react';
+
+import { Toaster } from 'react-hot-toast';
 import NextNProgress from 'nextjs-progressbar';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 import { useEffect } from 'react';
 import {
@@ -13,7 +13,7 @@ import {
   ExclamationCircleIcon,
 } from '@heroicons/react/outline';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   useEffect(() => {
     console.log(
       `%cModdermore%c${
@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <PlausibleProvider domain="moddermore.vercel.app">
-      <UserProvider supabaseClient={supabaseClient}>
+      <SessionProvider session={session}>
         <NextNProgress color="#6366F1" />
         <Component {...pageProps} />
         <Toaster
@@ -49,7 +49,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             },
           }}
         />
-      </UserProvider>
+      </SessionProvider>
     </PlausibleProvider>
   );
 }

@@ -6,18 +6,16 @@ import minecraftVersions from '~/lib/minecraftVersions.json';
 import { search } from '~/lib/import/search';
 
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 
-import { createList, richModToMod } from '~/lib/supabase';
-import { useUser } from '@supabase/auth-helpers-react';
-import { useRequireAuth } from '~/hooks/useRequireAuth';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { createList, richModToMod } from '~/lib/db';
 
 const NewList: NextPage = () => {
-  useRequireAuth();
+  const session = useSession({ required: true });
 
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
@@ -32,7 +30,6 @@ const NewList: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
-  const { user, isLoading } = useUser();
 
   const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();

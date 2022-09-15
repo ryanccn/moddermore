@@ -1,21 +1,14 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import {
-  deleteList,
-  getSpecificList,
-  getUsername,
-  modToRichMod,
-  serverClient,
-} from '~/lib/supabase';
-import { useUser } from '@supabase/auth-helpers-react';
 import type { RichMod, RichModList } from '~/types/moddermore';
 
+import { getSpecificList, modToRichMod } from '~/lib/db';
 import { loaderFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { Modalistic } from '~/components/Modalistic';
@@ -36,7 +29,7 @@ interface Props {
 
 const ListPage: NextPage<Props> = ({ data }) => {
   const router = useRouter();
-  const { user } = useUser();
+  const session = useSession();
 
   const [status, setStatus] = useState<
     'idle' | 'resolving' | 'downloading' | 'result' | 'loadinglibraries'
@@ -157,10 +150,14 @@ const ListPage: NextPage<Props> = ({ data }) => {
   };
 
   const deleteOMG = async () => {
-    if (!user) return;
+    if (!session.data) return;
 
-    await deleteList(supabaseClient, data.id);
-    toast.success(`Deleted ${data.title} (${data.id})!`);
+    const a = await fetch('/api/delete?id=' + data.id);
+    if (a.ok) {
+      toast.success(`Deleted ${data.title} (${data.id})!`);
+    } else {
+      toast.error(`Failed to delete ${data.title} (${data.id})!`);
+    }
     router.push('/dashboard');
   };
 
@@ -177,7 +174,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
         </p>
         <p>
           Created on <strong>{new Date(data.created_at).toDateString()}</strong>{' '}
-          by <strong>{data.author?.username ?? 'unknown'}</strong>
+          by <strong>{data.owner ?? 'unknown'}</strong>
         </p>
       </div>
 
@@ -193,7 +190,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
           <ModrinthIcon className="block h-5 w-5" />
           <span>Modrinth pack</span>
         </button>
-        {user && user.id === data.author?.id && (
+        {session && session.data?.user?.email === data.owner && (
           <>
             <button
               className="primaryish-button"
@@ -302,14 +299,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     title: data.title,
     gameVersion: data.gameVersion,
     modloader: data.modloader,
-    author: data.author
-      ? {
-          username:
-            (await getUsername(serverClient(), data.author)) ??
-            'failed to fetch',
-          id: data.author,
-        }
-      : null,
+    owner: data.owner,
     mods: [],
   };
 

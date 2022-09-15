@@ -14,7 +14,7 @@ import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 import { CloudUploadIcon } from '@heroicons/react/outline';
 
-import { createList } from '~/lib/supabase';
+import { createList } from '~/lib/db';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 

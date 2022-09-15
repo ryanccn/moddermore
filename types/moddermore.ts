@@ -21,12 +21,13 @@ export interface ModListPartial {
   modloader: ModLoader;
   mods: Mod[];
 }
+
 export interface ModList {
   id: string;
   created_at: string;
   title: string;
   gameVersion: string;
-  author: string | null;
+  owner: string | null;
   modloader: ModLoader;
   mods: Mod[];
 }
@@ -35,7 +36,7 @@ export interface RichModList {
   id: string;
   created_at: string;
   title: string;
-  author: { username: string; id: string } | null;
+  owner: string | null;
   gameVersion: string;
   modloader: ModLoader;
   mods: RichMod[];

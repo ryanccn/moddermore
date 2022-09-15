@@ -12,21 +12,14 @@ import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 
-import {
-  getSpecificListForClient,
-  modToRichMod,
-  richModToMod,
-  updateList,
-} from '~/lib/supabase';
-import { useUser } from '@supabase/auth-helpers-react';
-import { useRequireAuth } from '~/hooks/useRequireAuth';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { modToRichMod, richModToMod } from '~/lib/db';
 
 import toast from 'react-hot-toast';
 import pLimit from 'p-limit';
+import { useSession } from 'next-auth/react';
 
 const NewList: NextPage = () => {
-  useRequireAuth();
+  const session = useSession({ required: true });
 
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
@@ -43,7 +36,6 @@ const NewList: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
-  const { user, isLoading } = useUser();
 
   useEffect(() => {
     if (!user) return;

@@ -11,7 +11,7 @@ import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 
 import { useUser } from '@supabase/auth-helpers-react';
-import { createList } from '~/lib/supabase';
+import { createList } from '~/lib/db';
 import { useRequireAuth } from '~/hooks/useRequireAuth';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 

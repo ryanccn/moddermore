@@ -2,12 +2,8 @@ import type { NextPage } from 'next';
 
 import { useEffect, useState } from 'react';
 
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { getUserLists } from '~/lib/supabase';
+import { useSession } from 'next-auth/react';
 import { loaderFormat } from '~/lib/strings';
-
-import { useUserMore } from '~/hooks/useUserMore';
-import { useRequireAuth } from '~/hooks/useRequireAuth';
 
 import Link from 'next/link';
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
@@ -16,25 +12,25 @@ import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import type { ModList } from '~/types/moddermore';
 
 const Dashboard: NextPage = () => {
-  useRequireAuth();
-
-  const { username, user } = useUserMore(supabaseClient);
+  const session = useSession({ required: true });
   const [lists, setLists] = useState<ModList[] | null>(null);
 
   useEffect(() => {
-    if (user) {
-      getUserLists(supabaseClient).then(setLists);
+    if (session.data && session.data.user?.email) {
+      fetch('/api/getUserLists')
+        .then((a) => a.json())
+        .then(setLists);
     }
-  }, [user]);
+  }, [session]);
 
-  if (!user || !username || !lists) {
+  if (session.status === 'loading' || !lists) {
     return <FullLoadingScreen title="Dashboard" />;
   }
 
   return (
     <GlobalLayout
       title="Dashboard"
-      displayTitle={`Welcome to Moddermore, ${username}`}
+      displayTitle={`Welcome to Moddermore, ${session.data.user?.name}`}
     >
       {lists.length > 0 ? (
         <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">

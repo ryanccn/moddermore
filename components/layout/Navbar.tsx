@@ -1,16 +1,21 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { useUser } from '@supabase/auth-helpers-react';
 import { useCallback } from 'react';
 
 import Link from 'next/link';
 import { ExternalLinkIcon, PlusIcon, UserIcon } from '@heroicons/react/outline';
+
 import clsx from 'clsx';
 
+import {
+  useSession,
+  signIn as nextAuthSignIn,
+  signOut as nextAuthSignOut,
+} from 'next-auth/react';
+
 const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
-  const { user, isLoading } = useUser();
+  const { data, status } = useSession();
 
   const signOut = useCallback(() => {
-    supabaseClient.auth.signOut();
+    nextAuthSignOut();
   }, []);
 
   return (
@@ -21,14 +26,14 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
       ])}
     >
       <div className="flex items-center space-x-2">
-        <Link href={user ? '/dashboard' : '/'}>
+        <Link href={data ? '/dashboard' : '/'}>
           <a className="text-2xl font-bold">Moddermore</a>
         </Link>
       </div>
 
       <div className="flex items-center space-x-2">
-        {!isLoading ? (
-          user ? (
+        {status !== 'loading' ? (
+          data ? (
             <>
               <Link href="/new">
                 <a className="primaryish-button">
@@ -45,12 +50,15 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
               </button>
             </>
           ) : (
-            <Link href="/auth/signin">
-              <a className="primaryish-button">
-                <UserIcon className="block h-5 w-5" />
-                <span>Sign in / Sign up</span>
-              </a>
-            </Link>
+            <button
+              className="primaryish-button"
+              onClick={() => {
+                nextAuthSignIn();
+              }}
+            >
+              <UserIcon className="block h-5 w-5" />
+              <span>Sign in / Sign up</span>
+            </button>
           )
         ) : (
           <div className="primaryish-button animate-pulse bg-zinc-300 px-16 dark:bg-zinc-700">
