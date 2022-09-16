@@ -12,7 +12,8 @@ import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 
-import { createList, richModToMod } from '~/lib/db';
+import { richModToMod } from '~/lib/db/conversions';
+import toast from 'react-hot-toast';
 
 const NewList: NextPage = () => {
   const session = useSession({ required: true });
@@ -33,20 +34,27 @@ const NewList: NextPage = () => {
 
   const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();
-    if (!user) return;
+    if (!session.data) return;
 
     setSubmitting(true);
 
-    const id = await createList(
-      supabaseClient,
-      {
+    const a = await fetch('/api/create', {
+      method: 'POST',
+      body: JSON.stringify({
         title,
-        mods: inputMods.map(richModToMod),
         gameVersion,
         modloader: modLoader,
-      },
-      user
-    );
+        mods: inputMods.map(richModToMod),
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!a.ok) {
+      toast.error("Couldn't create the list");
+      return;
+    }
+
+    const { id } = await a.json();
 
     router.push(`/list/${id}`);
   };
@@ -199,7 +207,9 @@ const NewList: NextPage = () => {
           ))}
         </ul>
 
-        <NewSubmitButton disabled={!isLoading && submitting} />
+        <NewSubmitButton
+          disabled={session.status === 'loading' || submitting}
+        />
       </form>
     </GlobalLayout>
   );

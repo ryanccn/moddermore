@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
 
+import { useSession } from 'next-auth/react';
+
 import {
   TerminalIcon,
   ArchiveIcon,
@@ -8,10 +10,9 @@ import {
 } from '@heroicons/react/outline';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { PolyMCIcon } from '~/components/icons';
-import { useRequireAuth } from '~/hooks/useRequireAuth';
 
 const NewIndex: NextPage = () => {
-  useRequireAuth();
+  useSession({ required: true });
 
   return (
     <GlobalLayout title="Create a new list">

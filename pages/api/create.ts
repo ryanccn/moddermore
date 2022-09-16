@@ -2,10 +2,11 @@ import type { NextApiHandler } from 'next';
 
 import { unstable_getServerSession } from 'next-auth';
 import { authOptions } from './auth/[...nextauth]';
-import { getUserLists } from '~/lib/db';
+import { createList } from '~/lib/db';
+import { modListPartialZod } from '~/types/moddermore';
 
 const h: NextApiHandler = async (req, res) => {
-  if (req.method !== 'GET') {
+  if (req.method !== 'POST') {
     res.status(405).end();
     return;
   }
@@ -17,8 +18,15 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const lists = await getUserLists(sess?.user?.email);
-  res.status(200).json(lists);
+  const parsedData = modListPartialZod.safeParse(req.body);
+
+  if (!parsedData.success) {
+    res.status(400).json({ error: 'Bad request' });
+    return;
+  }
+
+  const lists = await createList(parsedData.data, sess?.user?.email);
+  res.status(200).json({ id: lists });
 };
 
 export default h;

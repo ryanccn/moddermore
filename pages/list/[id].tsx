@@ -2,7 +2,9 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 
 import type { RichMod, RichModList } from '~/types/moddermore';
 
-import { getSpecificList, modToRichMod } from '~/lib/db';
+import { getSpecificList } from '~/lib/db';
+
+import { modToRichMod } from '~/lib/db/conversions';
 import { loaderFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
@@ -280,6 +282,8 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (!params || !params.id || typeof params.id !== 'string')
     throw new Error('invalid parameter');
 
+  const timeA = performance.now();
+
   let data = await getSpecificList(params.id);
 
   for (let _ = 1; _ <= 5; _++) {
@@ -311,6 +315,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   newData.mods = newData.mods.sort((a, b) =>
     a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
   );
+
+  const timeB = performance.now();
+
+  console.log(`Fetching ${params.id} took ${(timeB - timeA).toFixed(2)}ms`);
 
   return { props: { data: newData }, revalidate: 30 };
 };

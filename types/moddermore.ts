@@ -1,5 +1,12 @@
+import { z } from 'zod';
+
 export type ModProvider = 'modrinth' | 'curseforge';
 export type ModLoader = 'quilt' | 'fabric' | 'forge';
+
+const modZod = z.object({
+  id: z.string(),
+  provider: z.union([z.literal('modrinth'), z.literal('curseforge')]),
+});
 
 export interface Mod {
   provider: ModProvider;
@@ -15,12 +22,18 @@ export interface RichMod {
   id: string;
 }
 
-export interface ModListPartial {
-  title: string;
-  gameVersion: string;
-  modloader: ModLoader;
-  mods: Mod[];
-}
+export const modListPartialZod = z.object({
+  title: z.string().min(1),
+  gameVersion: z.string(),
+  modloader: z.union([
+    z.literal('forge'),
+    z.literal('fabric'),
+    z.literal('quilt'),
+  ]),
+  mods: z.array(modZod),
+});
+
+export type ModListPartial = z.infer<typeof modListPartialZod>;
 
 export interface ModList {
   id: string;
