@@ -18,11 +18,13 @@ const Home: NextPage = () => {
         <Navbar isLandingPage />
 
         <div className="mb-20 flex flex-col">
-          <h2 className="mb-4 text-4xl font-bold">Moddermore</h2>
-          <h2 className="mb-10 text-3xl font-semibold">
-            Share the mods you use with anyone
+          <h2 className="mb-10 text-6xl font-bold">
+            Share the mods you use with{' '}
+            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text font-extrabold text-transparent">
+              anyone
+            </span>
           </h2>
-          <h3 className="text-lg font-medium">
+          <h3 className="max-w-prose text-2xl font-medium">
             Include mods from both Modrinth and CurseForge. Import either
             manually, from Ferium, or from a folder of mod files. Export lists
             to zips or Modrinth modpacks.

@@ -22,7 +22,7 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
     <nav
       className={clsx([
         'flex w-full items-center justify-between shadow-sm',
-        isLandingPage ? 'mb-24 bg-transparent py-4' : 'px-6 py-4',
+        isLandingPage ? 'mb-40 bg-transparent py-4' : 'px-6 py-4',
       ])}
     >
       <div className="flex items-center space-x-2">
