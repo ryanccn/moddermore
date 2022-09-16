@@ -8,10 +8,6 @@ const shouldntDeploy = () => {
   process.exit(0);
 };
 
-if (process.env.VERCEL_ENV !== 'production') {
-  shouldntDeploy();
-}
-
 if (
   process.env.VERCEL_GIT_COMMIT_MESSAGE &&
   process.env.VERCEL_GIT_COMMIT_MESSAGE.includes('[skip ci]')
