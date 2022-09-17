@@ -1,14 +1,12 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import type { NextPage } from 'next';
 
-import type { RichMod, RichModList } from '~/types/moddermore';
-
-import { getSpecificList } from '~/lib/db';
+import type { ModList, RichMod, RichModList } from '~/types/moddermore';
 
 import { modToRichMod } from '~/lib/db/conversions';
 import { loaderFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -25,13 +23,14 @@ import {
 } from '@heroicons/react/outline';
 import toast from 'react-hot-toast';
 
-interface Props {
-  data: RichModList;
-}
-
-const ListPage: NextPage<Props> = ({ data }) => {
+const ListPage: NextPage = () => {
   const router = useRouter();
   const session = useSession();
+
+  const [data, setData] = useState<RichModList | null>(null);
+  const [initialLoadStatus, setInitialLoadStatus] = useState<
+    [string, number, number]
+  >(['Loading list', 0, 1]);
 
   const [status, setStatus] = useState<
     'idle' | 'resolving' | 'downloading' | 'result' | 'loadinglibraries'
@@ -41,9 +40,44 @@ const ListPage: NextPage<Props> = ({ data }) => {
     { success: [], failed: [] }
   );
 
+  useEffect(() => {
+    if (typeof router.query.id !== 'string') return;
+
+    fetch('/api/get?id=' + router.query.id)
+      .then((r) => r.json())
+      .then(async (a: ModList) => {
+        if (!a) {
+          toast.error('An error occurred');
+          router.push('/dashboard');
+          return;
+        }
+
+        setInitialLoadStatus(['Resolving mods', 0, a.mods.length]);
+
+        const lim = pLimit(6);
+        const mods = await Promise.all(
+          a.mods.map((a) =>
+            lim(async () => {
+              const richedMod = await modToRichMod(a);
+              console.log(richedMod?.name);
+              if (richedMod) {
+                setInitialLoadStatus((a) => [a[0], a[1] + 1, a[2]]);
+              }
+              return richedMod;
+            })
+          )
+        ).then((a) => a.filter((b) => b !== null) as RichMod[]);
+
+        setData({ ...a, mods });
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const showModal = useMemo(() => status === 'result', [status]);
 
   const downloadExport = async () => {
+    if (!data) return;
+
     setProgress({ value: 0, max: 3 });
     setStatus('loadinglibraries');
 
@@ -129,6 +163,8 @@ const ListPage: NextPage<Props> = ({ data }) => {
   };
 
   const modrinthExport = async () => {
+    if (!data) return;
+
     setProgress({ value: 0, max: 3 });
     setStatus('loadinglibraries');
 
@@ -152,7 +188,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
   };
 
   const deleteOMG = async () => {
-    if (!session.data) return;
+    if (!data || !session.data) return;
 
     const a = await fetch('/api/delete?id=' + data.id);
     if (a.ok) {
@@ -163,8 +199,12 @@ const ListPage: NextPage<Props> = ({ data }) => {
     router.push('/dashboard');
   };
 
-  if (router.isFallback) {
-    return <FullLoadingScreen />;
+  if (!data) {
+    return (
+      <FullLoadingScreen
+        label={`${initialLoadStatus[0]} ${initialLoadStatus[1]}/${initialLoadStatus[2]}`}
+      />
+    );
   }
 
   return (
@@ -276,55 +316,6 @@ const ListPage: NextPage<Props> = ({ data }) => {
       )}
     </GlobalLayout>
   );
-};
-
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  if (!params || !params.id || typeof params.id !== 'string')
-    throw new Error('invalid parameter');
-
-  const timeA = performance.now();
-
-  let data = await getSpecificList(params.id);
-
-  for (let _ = 1; _ <= 5; _++) {
-    if (data !== null) break;
-    console.warn(`retry ${_} to getSpecificList`);
-    data = await getSpecificList(params.id);
-  }
-
-  if (!data) {
-    console.error('not found');
-    return { notFound: true, revalidate: 1 };
-  }
-
-  const newData: RichModList = {
-    id: params.id,
-    created_at: data.created_at,
-    title: data.title,
-    gameVersion: data.gameVersion,
-    modloader: data.modloader,
-    owner: data.owner,
-    mods: [],
-  };
-
-  const lim = pLimit(6);
-  newData.mods = await Promise.all(
-    data.mods.map((a) => lim(() => modToRichMod(a)))
-  ).then((a) => a.filter((b) => b !== null) as RichMod[]);
-
-  newData.mods = newData.mods.sort((a, b) =>
-    a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
-  );
-
-  const timeB = performance.now();
-
-  console.log(`Fetching ${params.id} took ${(timeB - timeA).toFixed(2)}ms`);
-
-  return { props: { data: newData }, revalidate: 30 };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return { paths: [], fallback: true };
 };
 
 export default ListPage;

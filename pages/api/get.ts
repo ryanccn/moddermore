@@ -25,7 +25,7 @@ const h: NextApiHandler = async (req, res) => {
   }
 
   const list = await getSpecificList(id);
-  res.status(200).json(list);
+  res.status(200).setHeader('cache-control', 's-maxage=2').json(list);
 };
 
 export default h;
