@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const getListsCollection = async () => {
   const client = await clientPromise;
-  return client.db('mainDatabase').collection<ModList>('lists');
+  return client.db().collection<ModList>('lists');
 };
 
 export { clientPromise, getListsCollection };

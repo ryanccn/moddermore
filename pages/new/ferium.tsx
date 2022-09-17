@@ -9,14 +9,11 @@ import type { ModLoader } from '~/types/moddermore';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
-
-import { useUser } from '@supabase/auth-helpers-react';
-import { createList } from '~/lib/db';
-import { useRequireAuth } from '~/hooks/useRequireAuth';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useSession } from 'next-auth/react';
+import toast from 'react-hot-toast';
 
 const FeriumImportPage: NextPage = () => {
-  useRequireAuth();
+  const sess = useSession({ required: true });
 
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
@@ -25,24 +22,30 @@ const FeriumImportPage: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
-  const { user, isLoading } = useUser();
 
   const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();
-    if (!user) return;
+    if (!sess.data) return;
 
     setSubmitting(true);
 
-    const id = await createList(
-      supabaseClient,
-      {
+    const a = await fetch('/api/create', {
+      method: 'POST',
+      body: JSON.stringify({
         title,
-        mods: parseFerium(feriumCopyPaste),
         gameVersion,
         modloader: modLoader,
-      },
-      user
-    );
+        mods: parseFerium(feriumCopyPaste),
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!a.ok) {
+      toast.error("Couldn't create the list");
+      return;
+    }
+
+    const { id } = await a.json();
 
     router.push(`/list/${id}`);
   };
@@ -111,7 +114,7 @@ const FeriumImportPage: NextPage = () => {
           }}
         />
 
-        <NewSubmitButton disabled={!isLoading && submitting} />
+        <NewSubmitButton disabled={sess.status === 'loading' || submitting} />
       </form>
     </GlobalLayout>
   );

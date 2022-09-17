@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { type FormEventHandler, useState, useCallback, useEffect } from 'react';
-import type { RichMod, ModLoader } from '~/types/moddermore';
+import type { RichMod, ModLoader, ModList } from '~/types/moddermore';
 
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import { search } from '~/lib/import/search';
@@ -12,7 +12,7 @@ import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 
-import { modToRichMod, richModToMod } from '~/lib/db';
+import { modToRichMod, richModToMod } from '~/lib/db/conversions';
 
 import toast from 'react-hot-toast';
 import pLimit from 'p-limit';
@@ -38,11 +38,12 @@ const NewList: NextPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) return;
+    if (!session.data) return;
     if (!router.query.id || typeof router.query.id !== 'string') return;
 
-    getSpecificListForClient(supabaseClient, router.query.id).then(
-      async (a) => {
+    fetch('/api/get?id=' + router.query.id)
+      .then((r) => r.json())
+      .then(async (a: ModList) => {
         if (!a) {
           toast.error('An error occurred');
           router.push('/dashboard');
@@ -61,27 +62,27 @@ const NewList: NextPage = () => {
         );
 
         setODIL(false);
-      }
-    );
-  }, [user, router]);
+      });
+  }, [session, router]);
 
   const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();
-    if (!user) return;
+    if (!session.data) return;
 
     setSubmitting(true);
 
-    const id = await updateList(
-      supabaseClient,
-      router.query.id as string,
-      {
+    const id = router.query.id as string;
+
+    await fetch('/api/update?id=' + encodeURIComponent(id), {
+      method: 'POST',
+      body: JSON.stringify({
         title,
         mods: inputMods.map(richModToMod),
         gameVersion,
         modloader: modLoader,
-      },
-      user
-    );
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    });
 
     toast.success(
       <span>
@@ -96,7 +97,8 @@ const NewList: NextPage = () => {
         </a>
       </span>
     );
-    fetch(`/api/revalidate?id=${encodeURIComponent(id)}`);
+
+    await fetch(`/api/revalidate?id=${encodeURIComponent(id)}`);
     router.push(`/list/${id}`);
   };
 
@@ -250,7 +252,9 @@ const NewList: NextPage = () => {
           ))}
         </ul>
 
-        <NewSubmitButton disabled={!isLoading && submitting} />
+        <NewSubmitButton
+          disabled={session.status === 'loading' || submitting}
+        />
       </form>
     </GlobalLayout>
   );

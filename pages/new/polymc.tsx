@@ -4,7 +4,6 @@ import { type FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { loadAsync } from 'jszip';
-import { createList } from '~/lib/db';
 import { parsePolyMCInstance } from '~/lib/import/polymc';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 
@@ -15,12 +14,11 @@ import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 import { CloudUploadIcon } from '@heroicons/react/outline';
 
-import { useUser } from '@supabase/auth-helpers-react';
-import { useRequireAuth } from '~/hooks/useRequireAuth';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import toast from 'react-hot-toast';
+import { useSession } from 'next-auth/react';
 
 const PolyMCInstanceImportPage: NextPage = () => {
-  useRequireAuth();
+  const sess = useSession({ required: true });
 
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
@@ -32,11 +30,10 @@ const PolyMCInstanceImportPage: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
-  const { user, isLoading } = useUser();
 
   const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();
-    if (!user) return;
+    if (!sess.data) return;
 
     setSubmitting(true);
 
@@ -53,16 +50,23 @@ const PolyMCInstanceImportPage: NextPage = () => {
       return;
     }
 
-    const id = await createList(
-      supabaseClient,
-      {
+    const a = await fetch('/api/create', {
+      method: 'POST',
+      body: JSON.stringify({
         title,
-        mods: parseResponse.filter(Boolean) as Mod[],
         gameVersion,
         modloader: modLoader,
-      },
-      user
-    );
+        mods: parseResponse.filter(Boolean) as Mod[],
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!a.ok) {
+      toast.error("Couldn't create the list");
+      return;
+    }
+
+    const { id } = await a.json();
 
     router.push(`/list/${id}`);
   };
@@ -166,7 +170,7 @@ const PolyMCInstanceImportPage: NextPage = () => {
           </label>
         </div>
 
-        <NewSubmitButton disabled={!isLoading && submitting} />
+        <NewSubmitButton disabled={sess.status === 'loading' || submitting} />
       </form>
 
       {submitting && (

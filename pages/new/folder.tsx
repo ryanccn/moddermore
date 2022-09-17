@@ -2,7 +2,6 @@ import type { NextPage } from 'next';
 import { type FormEventHandler, useState } from 'react';
 
 import { useRouter } from 'next/router';
-import { useUser } from '@supabase/auth-helpers-react';
 
 import { loadAsync } from 'jszip';
 import { parseModFolder } from '~/lib/import/parseModFolder';
@@ -14,12 +13,11 @@ import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 import { CloudUploadIcon } from '@heroicons/react/outline';
 
-import { createList } from '~/lib/db';
-import { useRequireAuth } from '~/hooks/useRequireAuth';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useSession } from 'next-auth/react';
+import toast from 'react-hot-toast';
 
 const FeriumImportPage: NextPage = () => {
-  useRequireAuth();
+  const sess = useSession({ required: true });
 
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
@@ -30,12 +28,11 @@ const FeriumImportPage: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
-  const { user, isLoading } = useUser();
 
   const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();
 
-    if (!user) return;
+    if (!sess.data) return;
     setSubmitting(true);
 
     const aaa = await modZipFile?.arrayBuffer();
@@ -46,11 +43,23 @@ const FeriumImportPage: NextPage = () => {
       setProgress,
     }).then((r) => r.filter((k) => k !== null))) as Mod[];
 
-    const id = await createList(
-      supabaseClient,
-      { title, mods: parsedMods, gameVersion, modloader: modLoader },
-      user
-    );
+    const a = await fetch('/api/create', {
+      method: 'POST',
+      body: JSON.stringify({
+        title,
+        gameVersion,
+        modloader: modLoader,
+        mods: parsedMods,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!a.ok) {
+      toast.error("Couldn't create the list");
+      return;
+    }
+
+    const { id } = await a.json();
 
     router.push(`/list/${id}`);
   };
@@ -138,7 +147,7 @@ const FeriumImportPage: NextPage = () => {
           )}
         </div>
 
-        <NewSubmitButton disabled={!isLoading && submitting} />
+        <NewSubmitButton disabled={sess.status === 'loading' || submitting} />
       </form>
 
       {submitting && (

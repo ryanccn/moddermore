@@ -56,7 +56,7 @@ export const updateList = async (
   userId: string
 ): Promise<boolean> => {
   const collection = await getListsCollection();
-  const res = await collection.updateOne({ id, owner: userId }, list);
+  const res = await collection.updateOne({ id, owner: userId }, { $set: list });
 
   return !!res.modifiedCount;
 };
