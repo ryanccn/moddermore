@@ -56,9 +56,9 @@ const NewList: NextPage = () => {
 
         const lim = pLimit(6);
         setInputMods(
-          await Promise.all(a.mods.map((a) => lim(() => modToRichMod(a)))).then(
-            (a) => a.filter((b) => b !== null) as RichMod[]
-          )
+          await Promise.all(a.mods.map((a) => lim(() => modToRichMod(a))))
+            .then((a) => a.filter((b) => b !== null) as RichMod[])
+            .then((a) => a.sort((a, b) => (a.name > b.name ? 1 : -1)))
         );
 
         setODIL(false);

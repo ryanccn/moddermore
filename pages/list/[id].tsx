@@ -65,7 +65,9 @@ const ListPage: NextPage = () => {
               return richedMod;
             })
           )
-        ).then((a) => a.filter((b) => b !== null) as RichMod[]);
+        )
+          .then((a) => a.filter((b) => b !== null) as RichMod[])
+          .then((a) => a.sort((a, b) => (a.name > b.name ? 1 : -1)));
 
         setData({ ...a, mods });
       });
