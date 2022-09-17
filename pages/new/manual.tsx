@@ -67,7 +67,6 @@ const NewList: NextPage = () => {
       gameVersion: gameVersion,
     }).then((res) => {
       setSearchResults(res);
-      console.log('Search results updated');
     });
   }, [searchProvider, searchQuery, modLoader, gameVersion]);
 
@@ -153,7 +152,6 @@ const NewList: NextPage = () => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
-                  console.log('Enter key triggered');
                   updateSearch();
                 }
               }}

@@ -59,7 +59,6 @@ const ListPage: NextPage = () => {
           a.mods.map((a) =>
             lim(async () => {
               const richedMod = await modToRichMod(a);
-              console.log(richedMod?.name);
               if (richedMod) {
                 setInitialLoadStatus((a) => [a[0], a[1] + 1, a[2]]);
               }

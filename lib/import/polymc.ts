@@ -70,8 +70,6 @@ export const parsePolyMCInstance = async ({
       fn.endsWith('toml')
     );
 
-    console.log({ mods });
-
     const ret: (Mod | null)[] = [];
     setProgress({ value: 0, max: mods.length });
 
@@ -82,7 +80,6 @@ export const parsePolyMCInstance = async ({
         resolveLimit(async () => {
           try {
             const modFile = await pwIndexDir.files[mod].async('text');
-            console.log({ mod, modFile });
             ret.push(parsePackwizTOML(modFile));
           } catch (e) {
             console.error(e);
