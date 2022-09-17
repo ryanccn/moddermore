@@ -13,7 +13,7 @@ const h: NextApiHandler = async (req, res) => {
 
   const sess = await unstable_getServerSession(req, res, authOptions);
 
-  if (!sess?.user?.email) {
+  if (!sess?.user.id) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }
@@ -25,7 +25,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const lists = await createList(parsedData.data, sess?.user?.email);
+  const lists = await createList(parsedData.data, sess.user.id);
   res.status(200).json({ id: lists });
 };
 

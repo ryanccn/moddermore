@@ -1,5 +1,3 @@
-/* eslint-disable no-var */
-
 declare namespace NodeJS {
   interface ProcessEnv {
     MONGODB_CONN_STRING: string;
@@ -9,3 +7,5 @@ declare namespace NodeJS {
     NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?: string;
   }
 }
+
+export {};

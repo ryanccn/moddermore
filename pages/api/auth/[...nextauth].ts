@@ -7,11 +7,16 @@ import { clientPromise } from '~/lib/db/client';
 export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
-      server: process.env.EMAIL_SERVER,
-      from: process.env.EMAIL_FROM,
+      server: process.env.id_SERVER,
+      from: process.env.id_FROM,
     }),
   ],
   adapter: MongoDBAdapter(clientPromise),
+  callbacks: {
+    async session({ session, user }) {
+      return { ...session, user: { ...session.user, id: user.id } };
+    },
+  },
 };
 
 export default NextAuth(authOptions);

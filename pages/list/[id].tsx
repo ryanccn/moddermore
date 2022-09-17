@@ -215,8 +215,8 @@ const ListPage: NextPage = () => {
           <strong>{loaderFormat(data.modloader)}</strong>
         </p>
         <p>
-          Created on <strong>{new Date(data.created_at).toDateString()}</strong>{' '}
-          by <strong>{data.owner ?? 'unknown'}</strong>
+          Last updated on{' '}
+          <strong>{new Date(data.created_at).toDateString()}</strong>
         </p>
       </div>
 
@@ -232,7 +232,7 @@ const ListPage: NextPage = () => {
           <ModrinthIcon className="block h-5 w-5" />
           <span>Modrinth pack</span>
         </button>
-        {session && session.data?.user?.email === data.owner && (
+        {session && session.data?.user.id === data.owner && (
           <>
             <button
               className="primaryish-button"

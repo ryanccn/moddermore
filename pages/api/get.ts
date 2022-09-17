@@ -12,7 +12,7 @@ const h: NextApiHandler = async (req, res) => {
 
   const sess = await unstable_getServerSession(req, res, authOptions);
 
-  if (!sess?.user?.email) {
+  if (!sess?.user.id) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }

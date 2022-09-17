@@ -84,21 +84,8 @@ const NewList: NextPage = () => {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    toast.success(
-      <span>
-        Updated! The list will refresh soon :D{' '}
-        <a
-          href="https://github.com/ryanccn/moddermore/blob/main/docs/why-static.md"
-          className="text-indigo-500 hover:brightness-90 dark:text-indigo-400"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          See why
-        </a>
-      </span>
-    );
+    toast.success(<span>Updated!</span>);
 
-    await fetch(`/api/revalidate?id=${encodeURIComponent(id)}`);
     router.push(`/list/${id}`);
   };
 

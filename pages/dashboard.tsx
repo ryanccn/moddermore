@@ -16,22 +16,19 @@ const Dashboard: NextPage = () => {
   const [lists, setLists] = useState<ModList[] | null>(null);
 
   useEffect(() => {
-    if (session.data && session.data.user?.email) {
+    if (session.data && session.data.user.id) {
       fetch('/api/getUserLists')
         .then((a) => a.json())
         .then(setLists);
     }
   }, [session]);
 
-  if (session.status === 'loading' || !lists) {
+  if (session.status === 'loading' || lists === null) {
     return <FullLoadingScreen title="Dashboard" />;
   }
 
   return (
-    <GlobalLayout
-      title="Dashboard"
-      displayTitle={`Welcome to Moddermore, ${session.data.user?.name}`}
-    >
+    <GlobalLayout title="Dashboard" displayTitle={`Welcome to Moddermore`}>
       {lists.length > 0 ? (
         <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {lists.map((list) => (
@@ -44,7 +41,7 @@ const Dashboard: NextPage = () => {
                     <strong>{loaderFormat(list.modloader)}</strong>
                   </p>
                   <p>
-                    Created on{' '}
+                    Last updated{' '}
                     <strong>{new Date(list.created_at).toDateString()}</strong>
                   </p>
                 </div>

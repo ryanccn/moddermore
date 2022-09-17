@@ -20,7 +20,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  if (!sess?.user?.email) {
+  if (!sess?.user.id) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }
@@ -33,7 +33,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const ok = await updateList(id, parsedData.data, sess.user.email);
+  const ok = await updateList(id, parsedData.data, sess.user.id);
 
   if (ok) res.status(200).json({ ok: true });
   else res.status(400).json({ ok: false });
