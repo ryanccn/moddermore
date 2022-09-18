@@ -30,7 +30,7 @@ const Dashboard: NextPage = () => {
     <GlobalLayout title="Dashboard" displayTitle={`Welcome to Moddermore`}>
       {lists ? (
         lists.length > 0 ? (
-          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
             {lists.map((list) => (
               <Link href={`/list/${list.id}`} key={list.id}>
                 <a className="group flex flex-col space-y-2 rounded-sm bg-transparent p-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800">

@@ -193,6 +193,11 @@ const ListPage: NextPage = () => {
 
   return (
     <GlobalLayout title={data.title}>
+      {data.legacy && (
+        <span className="mb-4 inline-block w-auto self-start rounded-full bg-red-300/50 px-2 py-1 text-xs font-bold uppercase text-red-500 dark:bg-red-700/50 dark:text-white">
+          Legacy
+        </span>
+      )}
       <div className="data-list">
         <p>
           For Minecraft <strong>{data.gameVersion}</strong> with{' '}
