@@ -45,7 +45,6 @@ const ListPage: NextPage = () => {
       .then(async (a: ModList) => {
         if (!a) {
           toast.error('An error occurred');
-          router.push('/dashboard');
           return;
         }
 
