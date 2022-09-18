@@ -57,7 +57,7 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
               }}
             >
               <UserIcon className="block h-5 w-5" />
-              <span>Sign in / Sign up</span>
+              <span>Sign in</span>
             </button>
           )
         ) : (
