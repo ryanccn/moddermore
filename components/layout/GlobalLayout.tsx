@@ -21,10 +21,30 @@ export const GlobalLayout = ({
   isLandingPage = false,
   children,
 }: Props) => {
+  const derivedTitle = titleSuffix ? `${title} / Moddermore` : title;
+
   return (
     <>
       <Head>
-        <title>{titleSuffix ? `${title} / Moddermore` : title}</title>
+        <title>{derivedTitle}</title>
+        <meta name="title" content={derivedTitle} />
+        <meta name="description" content="Share your mods with anyone." />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={derivedTitle} />
+        <meta
+          property="og:description"
+          content="Share your mods with anyone."
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@RyanCaoDev" />
+        <meta
+          property="og:image"
+          content="https://moddermore.vercel.app/e.png"
+        />
+        <meta
+          name="twitter:image"
+          content="https://moddermore.vercel.app/e.png"
+        />
       </Head>
 
       {!isLandingPage ? <Navbar /> : null}
