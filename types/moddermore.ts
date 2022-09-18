@@ -24,13 +24,13 @@ export interface RichMod {
 
 export const modListPartialZod = z.object({
   title: z.string().min(1),
-  gameVersion: z.string(),
+  gameVersion: z.string().min(1),
   modloader: z.union([
     z.literal('forge'),
     z.literal('fabric'),
     z.literal('quilt'),
   ]),
-  mods: z.array(modZod),
+  mods: z.array(modZod).min(1),
 });
 
 export type ModListPartial = z.infer<typeof modListPartialZod>;

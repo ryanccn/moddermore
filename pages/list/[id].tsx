@@ -167,10 +167,9 @@ const ListPage: NextPage = () => {
     setStatus('resolving');
     setProgress({ value: 0, max: data.mods.length });
 
-    const mrpack = await generateModrinthPack(
-      data,
-      await getDownloadURLs(data, setProgress)
-    );
+    const urls = await getDownloadURLs(data, setProgress);
+
+    const mrpack = await generateModrinthPack(data, urls);
     saveAs(mrpack, `${data.title}.mrpack`);
 
     setStatus('idle');
@@ -206,13 +205,18 @@ const ListPage: NextPage = () => {
       </div>
 
       <div className="mb-16 flex space-x-4">
-        <button className="primaryish-button" onClick={downloadExport}>
+        <button
+          className="primaryish-button"
+          onClick={downloadExport}
+          disabled={!data.mods.length}
+        >
           <FolderArrowDownIcon className="block h-5 w-5" />
           <span>Export</span>
         </button>
         <button
           className="primaryish-button modrinth-themed"
           onClick={modrinthExport}
+          disabled={!data.mods.length}
         >
           <ModrinthIcon className="block h-5 w-5" />
           <span>Modrinth pack</span>
@@ -229,7 +233,7 @@ const ListPage: NextPage = () => {
               <span>Edit</span>
             </button>
             <button
-              className="primaryish-button  bg-red-500"
+              className="primaryish-button bg-red-500"
               onClick={deleteOMG}
             >
               <TrashIcon className="block h-5 w-5" />
