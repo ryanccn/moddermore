@@ -24,7 +24,7 @@ Share the mods you use with anyone.
 - [Radix UI](https://www.radix-ui.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Heroicons](https://github.com/tailwindlabs/heroicons)
-- [Supabase](https://supabase.com/)
+- [MongoDB](https://www.mongodb.com/)
 - [CurseForge Core](https://docs.curseforge.com/)
 - [Modrinth API](https://docs.modrinth.com/)
 - [TypeScript](https://www.typescriptlang.org/)
@@ -44,13 +44,11 @@ Run `yarn install` to install dependencies, and run `yarn dev` to start the deve
 
 You will need to register for a few services and set a few environment variables (e.g. via `.env.local`) to start contributing.
 
-We use [Supabase](https://supabase.com/) as our primary database. We also access the [CurseForge](https://curseforge.com/) and [Modrinth](https://modrinth.com/) APIs, and the CurseForge Core API requires an API key which you can apply for [in this form](https://forms.monday.com/forms/dce5ccb7afda9a1c21dab1a1aa1d84eb). Don't worry - this key is meant to be public!
+We use [MongoDB](https://www.mongodb.com/) as our primary database. We also access the [CurseForge](https://curseforge.com/) and [Modrinth](https://modrinth.com/) APIs, and the CurseForge Core API requires an API key which you can apply for [in this form](https://forms.monday.com/forms/dce5ccb7afda9a1c21dab1a1aa1d84eb). Don't worry - this key is meant to be public!
 
 ```
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=""
-NEXT_PUBLIC_SUPABASE_ANON_KEY=""
-SUPABASE_SERVER_KEY=""
+# MongoDB
+MONGODB_CONN_STRING=""
 
 # CurseForge
 NEXT_PUBLIC_CURSEFORGE_API_KEY=""
@@ -58,7 +56,6 @@ NEXT_PUBLIC_CURSEFORGE_API_KEY=""
 
 There are also a few maintenance scripts available:
 
-- `yarn utils:supabase`: updates the TypeScript database schema from Supabase (change this command if you want your own database's schema)
 - `yarn utils:minecraftVersions`: updates available Minecraft versions from Mojang
 
 ## Stats

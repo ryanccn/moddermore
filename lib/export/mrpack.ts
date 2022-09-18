@@ -12,6 +12,8 @@ export const generateModrinthPack = async (
   list: RichModList,
   urls: ExportReturnData
 ) => {
+  console.log({ list, urls });
+
   const mrIndex = {
     formatVersion: 1,
     game: 'minecraft',
@@ -38,9 +40,11 @@ export const generateModrinthPack = async (
         ? { 'fabric-loader': await getLatestFabric() }
         : list.modloader === 'quilt'
         ? { 'quilt-loader': await getLatestQuilt() }
-        : null),
+        : {}),
     },
   };
+
+  console.log({ mrIndex });
 
   const indexJSON = JSON.stringify(mrIndex);
   const mrpack = new JSZip();

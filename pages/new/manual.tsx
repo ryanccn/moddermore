@@ -6,18 +6,17 @@ import minecraftVersions from '~/lib/minecraftVersions.json';
 import { search } from '~/lib/import/search';
 
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 
-import { createList, richModToMod } from '~/lib/supabase';
-import { useUser } from '@supabase/auth-helpers-react';
-import { useRequireAuth } from '~/hooks/useRequireAuth';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { richModToMod } from '~/lib/db/conversions';
+import toast from 'react-hot-toast';
 
 const NewList: NextPage = () => {
-  useRequireAuth();
+  const session = useSession({ required: true });
 
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
@@ -32,24 +31,30 @@ const NewList: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
-  const { user, isLoading } = useUser();
 
   const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();
-    if (!user) return;
+    if (!session.data) return;
 
     setSubmitting(true);
 
-    const id = await createList(
-      supabaseClient,
-      {
+    const a = await fetch('/api/create', {
+      method: 'POST',
+      body: JSON.stringify({
         title,
-        mods: inputMods.map(richModToMod),
         gameVersion,
         modloader: modLoader,
-      },
-      user
-    );
+        mods: inputMods.map(richModToMod),
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!a.ok) {
+      toast.error("Couldn't create the list");
+      return;
+    }
+
+    const { id } = await a.json();
 
     router.push(`/list/${id}`);
   };
@@ -62,7 +67,6 @@ const NewList: NextPage = () => {
       gameVersion: gameVersion,
     }).then((res) => {
       setSearchResults(res);
-      console.log('Search results updated');
     });
   }, [searchProvider, searchQuery, modLoader, gameVersion]);
 
@@ -148,7 +152,6 @@ const NewList: NextPage = () => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
-                  console.log('Enter key triggered');
                   updateSearch();
                 }
               }}
@@ -202,7 +205,9 @@ const NewList: NextPage = () => {
           ))}
         </ul>
 
-        <NewSubmitButton disabled={!isLoading && submitting} />
+        <NewSubmitButton
+          disabled={session.status === 'loading' || submitting}
+        />
       </form>
     </GlobalLayout>
   );

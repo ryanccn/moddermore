@@ -112,6 +112,40 @@
   .animate-spin-fast {
     animation: spin-fast 0.25s linear infinite;
   }
+
+  .skeleton {
+    @apply relative inline-block overflow-hidden rounded-md;
+    @apply bg-zinc-100 dark:bg-zinc-800;
+  }
+
+  .skeleton::after {
+    @apply absolute inset-0 -translate-x-full;
+    background-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 0,
+      rgba(0, 0, 0, 0.025) 20%,
+      rgba(0, 0, 0, 0.05) 60%,
+      rgba(0, 0, 0, 0)
+    );
+    animation: shimmer 1.5s infinite;
+    content: '';
+
+    @media (prefers-color-scheme: dark) {
+      background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.025) 20%,
+        rgba(255, 255, 255, 0.05) 60%,
+        rgba(255, 255, 255, 0)
+      );
+    }
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
 }
 
 #nprogress .spinner {

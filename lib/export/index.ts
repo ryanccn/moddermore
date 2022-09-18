@@ -42,5 +42,5 @@ export const getDownloadURLs = async (
     )
   );
 
-  return [...new Set(ret)];
+  return ret;
 };

@@ -1,21 +1,14 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import type { NextPage } from 'next';
 
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import {
-  deleteList,
-  getSpecificList,
-  getUsername,
-  modToRichMod,
-  serverClient,
-} from '~/lib/supabase';
-import { useUser } from '@supabase/auth-helpers-react';
-import type { RichMod, RichModList } from '~/types/moddermore';
+import type { ModList, RichMod, RichModList } from '~/types/moddermore';
 
+import { modToRichMod } from '~/lib/db/conversions';
 import { loaderFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { Modalistic } from '~/components/Modalistic';
@@ -24,19 +17,17 @@ import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { ModrinthIcon } from '~/components/icons';
 import {
-  FolderDownloadIcon,
+  FolderArrowDownIcon,
   PencilIcon,
   TrashIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/20/solid';
 import toast from 'react-hot-toast';
 
-interface Props {
-  data: RichModList;
-}
-
-const ListPage: NextPage<Props> = ({ data }) => {
+const ListPage: NextPage = () => {
   const router = useRouter();
-  const { user } = useUser();
+  const session = useSession();
+
+  const [data, setData] = useState<RichModList | null>(null);
 
   const [status, setStatus] = useState<
     'idle' | 'resolving' | 'downloading' | 'result' | 'loadinglibraries'
@@ -46,9 +37,36 @@ const ListPage: NextPage<Props> = ({ data }) => {
     { success: [], failed: [] }
   );
 
+  useEffect(() => {
+    if (typeof router.query.id !== 'string') return;
+
+    fetch('/api/get?id=' + router.query.id)
+      .then((r) => r.json())
+      .then(async (a: ModList) => {
+        if (!a) {
+          toast.error('An error occurred');
+          router.push('/dashboard');
+          return;
+        }
+
+        setData({ ...a, mods: [] });
+
+        const lim = pLimit(6);
+        const mods = await Promise.all(
+          a.mods.map((a) => lim(() => modToRichMod(a)))
+        )
+          .then((a) => a.filter((b) => b !== null) as RichMod[])
+          .then((a) => a.sort((a, b) => (a.name > b.name ? 1 : -1)));
+
+        setData({ ...a, mods });
+      });
+  }, [router]);
+
   const showModal = useMemo(() => status === 'result', [status]);
 
   const downloadExport = async () => {
+    if (!data) return;
+
     setProgress({ value: 0, max: 3 });
     setStatus('loadinglibraries');
 
@@ -134,6 +152,8 @@ const ListPage: NextPage<Props> = ({ data }) => {
   };
 
   const modrinthExport = async () => {
+    if (!data) return;
+
     setProgress({ value: 0, max: 3 });
     setStatus('loadinglibraries');
 
@@ -147,53 +167,66 @@ const ListPage: NextPage<Props> = ({ data }) => {
     setStatus('resolving');
     setProgress({ value: 0, max: data.mods.length });
 
-    const mrpack = await generateModrinthPack(
-      data,
-      await getDownloadURLs(data, setProgress)
-    );
+    const urls = await getDownloadURLs(data, setProgress);
+
+    const mrpack = await generateModrinthPack(data, urls);
     saveAs(mrpack, `${data.title}.mrpack`);
 
     setStatus('idle');
   };
 
   const deleteOMG = async () => {
-    if (!user) return;
+    if (!data || !session.data) return;
 
-    await deleteList(supabaseClient, data.id);
-    toast.success(`Deleted ${data.title} (${data.id})!`);
+    const a = await fetch('/api/delete?id=' + data.id);
+    if (a.ok) {
+      toast.success(`Deleted ${data.title} (${data.id})!`);
+    } else {
+      toast.error(`Failed to delete ${data.title} (${data.id})!`);
+    }
     router.push('/dashboard');
   };
 
-  if (router.isFallback) {
+  if (!data) {
     return <FullLoadingScreen />;
   }
 
   return (
     <GlobalLayout title={data.title}>
+      {data.legacy && (
+        <span className="mb-4 inline-block w-auto self-start rounded-full bg-red-300/50 px-2 py-1 text-xs font-bold uppercase text-red-500 dark:bg-red-700/50 dark:text-white">
+          Legacy
+        </span>
+      )}
       <div className="data-list">
         <p>
           For Minecraft <strong>{data.gameVersion}</strong> with{' '}
           <strong>{loaderFormat(data.modloader)}</strong>
         </p>
         <p>
-          Created on <strong>{new Date(data.created_at).toDateString()}</strong>{' '}
-          by <strong>{data.author?.username ?? 'unknown'}</strong>
+          Last updated on{' '}
+          <strong>{new Date(data.created_at).toDateString()}</strong>
         </p>
       </div>
 
-      <div className="mb-6 flex space-x-4">
-        <button className="primaryish-button" onClick={downloadExport}>
-          <FolderDownloadIcon className="block h-5 w-5" />
+      <div className="mb-16 flex space-x-4">
+        <button
+          className="primaryish-button"
+          onClick={downloadExport}
+          disabled={!data.mods.length}
+        >
+          <FolderArrowDownIcon className="block h-5 w-5" />
           <span>Export</span>
         </button>
         <button
           className="primaryish-button modrinth-themed"
           onClick={modrinthExport}
+          disabled={!data.mods.length}
         >
           <ModrinthIcon className="block h-5 w-5" />
           <span>Modrinth pack</span>
         </button>
-        {user && user.id === data.author?.id && (
+        {session && session.data?.user.id === data.owner && (
           <>
             <button
               className="primaryish-button"
@@ -205,7 +238,7 @@ const ListPage: NextPage<Props> = ({ data }) => {
               <span>Edit</span>
             </button>
             <button
-              className="primaryish-button  bg-red-500"
+              className="primaryish-button bg-red-500"
               onClick={deleteOMG}
             >
               <TrashIcon className="block h-5 w-5" />
@@ -215,12 +248,25 @@ const ListPage: NextPage<Props> = ({ data }) => {
         )}
       </div>
 
-      <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
-        {data.mods.map((mod) => (
-          <li className="block" key={mod.id}>
-            <RichModDisplay data={mod} />
-          </li>
-        ))}
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {data.mods.length ? (
+          data.mods.map((mod) => (
+            <li className="block" key={mod.id}>
+              <RichModDisplay data={mod} />
+            </li>
+          ))
+        ) : (
+          <>
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+          </>
+        )}
       </ul>
 
       {status === 'resolving' ? (
@@ -277,56 +323,6 @@ const ListPage: NextPage<Props> = ({ data }) => {
       )}
     </GlobalLayout>
   );
-};
-
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  if (!params || !params.id || typeof params.id !== 'string')
-    throw new Error('invalid parameter');
-
-  let data = await getSpecificList(params.id);
-
-  for (let _ = 1; _ <= 5; _++) {
-    if (data !== null) break;
-    console.warn(`retry ${_} to getSpecificList`);
-    data = await getSpecificList(params.id);
-  }
-
-  if (!data) {
-    console.error('not found');
-    return { notFound: true, revalidate: 1 };
-  }
-
-  const newData: RichModList = {
-    id: params.id,
-    created_at: data.created_at,
-    title: data.title,
-    gameVersion: data.gameVersion,
-    modloader: data.modloader,
-    author: data.author
-      ? {
-          username:
-            (await getUsername(serverClient(), data.author)) ??
-            'failed to fetch',
-          id: data.author,
-        }
-      : null,
-    mods: [],
-  };
-
-  const lim = pLimit(6);
-  newData.mods = await Promise.all(
-    data.mods.map((a) => lim(() => modToRichMod(a)))
-  ).then((a) => a.filter((b) => b !== null) as RichMod[]);
-
-  newData.mods = newData.mods.sort((a, b) =>
-    a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
-  );
-
-  return { props: { data: newData }, revalidate: 30 };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return { paths: [], fallback: true };
 };
 
 export default ListPage;

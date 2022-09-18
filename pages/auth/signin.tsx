@@ -1,77 +1,53 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-
 import { type NextPage } from 'next';
 
 import { useRouter } from 'next/router';
-import { type FormEventHandler, useState } from 'react';
+import { type FormEventHandler, useState, useEffect } from 'react';
 
-import toast from 'react-hot-toast';
-import Link from 'next/link';
+import { signIn, useSession } from 'next-auth/react';
+
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import toast from 'react-hot-toast';
 
 const SigninPage: NextPage = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [disableSubmit, setDS] = useState(false);
 
+  const sess = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    if (sess.status === 'authenticated') {
+      router.push('/dashboard');
+      toast.success('Signed in!');
+    }
+  }, [sess, router]);
 
   const signin: FormEventHandler = async (e) => {
     e.preventDefault();
     setDS(true);
 
-    const ret = await supabaseClient.auth.signIn({ email, password });
-    if (ret.error) {
-      toast.error(ret.error.message);
-      return;
-    }
-
-    toast.success('Signed in!');
-    setDS(false);
-    router.push('/dashboard');
+    await signIn('email', { email });
   };
 
   return (
-    <GlobalLayout title="Sign in">
-      <p className="mb-6">
-        or{' '}
-        <Link href="/auth/signup">
-          <a className="text-indigo-500 transition-all hover:brightness-90 dark:text-indigo-400">
-            sign up
-          </a>
-        </Link>
-      </p>
-
-      <form className="flex flex-col items-center" onSubmit={signin}>
-        <div className="w-full">
-          <label htmlFor="email" className="mb-2 text-sm font-medium">
+    <GlobalLayout title="Sign in" isAuthPage>
+      <form className="flex w-full flex-col items-center" onSubmit={signin}>
+        <div className="mb-8 flex w-full items-center space-x-2">
+          <label
+            htmlFor="email"
+            className="text-sm font-medium text-zinc-600 dark:text-zinc-400"
+          >
             Email
           </label>
           <input
             type="text"
             id="email"
             name="email"
-            className="moddermore-input mb-4"
+            className="moddermore-input"
             placeholder="hello@moddermore.app"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-            }}
-            required
-          />
-        </div>
-        <div className="w-full">
-          <label htmlFor="password" className="mb-2 text-sm font-medium">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            className="moddermore-input mb-8"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
             }}
             required
           />

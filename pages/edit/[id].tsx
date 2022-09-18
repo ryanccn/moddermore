@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { type FormEventHandler, useState, useCallback, useEffect } from 'react';
-import type { RichMod, ModLoader } from '~/types/moddermore';
+import type { RichMod, ModLoader, ModList } from '~/types/moddermore';
 
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import { search } from '~/lib/import/search';
@@ -12,21 +12,14 @@ import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 
-import {
-  getSpecificListForClient,
-  modToRichMod,
-  richModToMod,
-  updateList,
-} from '~/lib/supabase';
-import { useUser } from '@supabase/auth-helpers-react';
-import { useRequireAuth } from '~/hooks/useRequireAuth';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { modToRichMod, richModToMod } from '~/lib/db/conversions';
 
 import toast from 'react-hot-toast';
 import pLimit from 'p-limit';
+import { useSession } from 'next-auth/react';
 
 const NewList: NextPage = () => {
-  useRequireAuth();
+  const session = useSession({ required: true });
 
   const [title, setTitle] = useState('');
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
@@ -43,14 +36,14 @@ const NewList: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
-  const { user, isLoading } = useUser();
 
   useEffect(() => {
-    if (!user) return;
+    if (!session.data) return;
     if (!router.query.id || typeof router.query.id !== 'string') return;
 
-    getSpecificListForClient(supabaseClient, router.query.id).then(
-      async (a) => {
+    fetch('/api/get?id=' + router.query.id)
+      .then((r) => r.json())
+      .then(async (a: ModList) => {
         if (!a) {
           toast.error('An error occurred');
           router.push('/dashboard');
@@ -63,48 +56,36 @@ const NewList: NextPage = () => {
 
         const lim = pLimit(6);
         setInputMods(
-          await Promise.all(a.mods.map((a) => lim(() => modToRichMod(a)))).then(
-            (a) => a.filter((b) => b !== null) as RichMod[]
-          )
+          await Promise.all(a.mods.map((a) => lim(() => modToRichMod(a))))
+            .then((a) => a.filter((b) => b !== null) as RichMod[])
+            .then((a) => a.sort((a, b) => (a.name > b.name ? 1 : -1)))
         );
 
         setODIL(false);
-      }
-    );
-  }, [user, router]);
+      });
+  }, [session, router]);
 
   const submitHandle: FormEventHandler = async (e) => {
     e.preventDefault();
-    if (!user) return;
+    if (!session.data) return;
 
     setSubmitting(true);
 
-    const id = await updateList(
-      supabaseClient,
-      router.query.id as string,
-      {
+    const id = router.query.id as string;
+
+    await fetch('/api/update?id=' + encodeURIComponent(id), {
+      method: 'POST',
+      body: JSON.stringify({
         title,
         mods: inputMods.map(richModToMod),
         gameVersion,
         modloader: modLoader,
-      },
-      user
-    );
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    toast.success(
-      <span>
-        Updated! The list will refresh soon :D{' '}
-        <a
-          href="https://github.com/ryanccn/moddermore/blob/main/docs/why-static.md"
-          className="text-indigo-500 hover:brightness-90 dark:text-indigo-400"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          See why
-        </a>
-      </span>
-    );
-    fetch(`/api/revalidate?id=${encodeURIComponent(id)}`);
+    toast.success(<span>Updated!</span>);
+
     router.push(`/list/${id}`);
   };
 
@@ -116,7 +97,6 @@ const NewList: NextPage = () => {
       gameVersion: gameVersion,
     }).then((res) => {
       setSearchResults(res);
-      console.log('Search results updated');
     });
   }, [searchProvider, searchQuery, modLoader, gameVersion]);
 
@@ -204,7 +184,6 @@ const NewList: NextPage = () => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
-                  console.log('Enter key triggered');
                   updateSearch();
                 }
               }}
@@ -258,7 +237,9 @@ const NewList: NextPage = () => {
           ))}
         </ul>
 
-        <NewSubmitButton disabled={!isLoading && submitting} />
+        <NewSubmitButton
+          disabled={session.status === 'loading' || submitting}
+        />
       </form>
     </GlobalLayout>
   );

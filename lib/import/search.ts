@@ -30,8 +30,6 @@ export const search = async ({
       a.startsWith(gameVersion.split('.').slice(0, 2).join('.'))
     );
 
-    console.log(compatGameVersions);
-
     const data = await fetch(
       `https://api.modrinth.com/v2/search?query=${encodeURIComponent(
         query

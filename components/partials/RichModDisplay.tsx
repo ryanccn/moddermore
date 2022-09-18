@@ -3,7 +3,7 @@
 import type { RichMod } from '~/types/moddermore';
 
 import { providerFormat } from '~/lib/strings';
-import { PlusIcon, TrashIcon } from '@heroicons/react/outline';
+import { PlusIcon, TrashIcon } from '@heroicons/react/20/solid';
 
 const SomeDetails = ({ data }: { data: RichMod }) => {
   return (
