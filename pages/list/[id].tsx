@@ -28,9 +28,6 @@ const ListPage: NextPage = () => {
   const session = useSession();
 
   const [data, setData] = useState<RichModList | null>(null);
-  const [initialLoadStatus, setInitialLoadStatus] = useState<
-    [string, number, number]
-  >(['Loading list', 0, 1]);
 
   const [status, setStatus] = useState<
     'idle' | 'resolving' | 'downloading' | 'result' | 'loadinglibraries'
@@ -52,19 +49,11 @@ const ListPage: NextPage = () => {
           return;
         }
 
-        setInitialLoadStatus(['Resolving mods', 0, a.mods.length]);
+        setData({ ...a, mods: [] });
 
         const lim = pLimit(6);
         const mods = await Promise.all(
-          a.mods.map((a) =>
-            lim(async () => {
-              const richedMod = await modToRichMod(a);
-              if (richedMod) {
-                setInitialLoadStatus((a) => [a[0], a[1] + 1, a[2]]);
-              }
-              return richedMod;
-            })
-          )
+          a.mods.map((a) => lim(() => modToRichMod(a)))
         )
           .then((a) => a.filter((b) => b !== null) as RichMod[])
           .then((a) => a.sort((a, b) => (a.name > b.name ? 1 : -1)));
@@ -200,11 +189,7 @@ const ListPage: NextPage = () => {
   };
 
   if (!data) {
-    return (
-      <FullLoadingScreen
-        label={`${initialLoadStatus[0]} ${initialLoadStatus[1]}/${initialLoadStatus[2]}`}
-      />
-    );
+    return <FullLoadingScreen />;
   }
 
   return (
@@ -220,7 +205,7 @@ const ListPage: NextPage = () => {
         </p>
       </div>
 
-      <div className="mb-6 flex space-x-4">
+      <div className="mb-16 flex space-x-4">
         <button className="primaryish-button" onClick={downloadExport}>
           <FolderDownloadIcon className="block h-5 w-5" />
           <span>Export</span>
@@ -254,12 +239,21 @@ const ListPage: NextPage = () => {
         )}
       </div>
 
-      <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
-        {data.mods.map((mod) => (
-          <li className="block" key={mod.id}>
-            <RichModDisplay data={mod} />
-          </li>
-        ))}
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {data.mods.length ? (
+          data.mods.map((mod) => (
+            <li className="block" key={mod.id}>
+              <RichModDisplay data={mod} />
+            </li>
+          ))
+        ) : (
+          <>
+            <li className="skeleton h-20" />
+            <li className="skeleton h-20" />
+            <li className="skeleton h-20" />
+            <li className="skeleton h-20" />
+          </>
+        )}
       </ul>
 
       {status === 'resolving' ? (

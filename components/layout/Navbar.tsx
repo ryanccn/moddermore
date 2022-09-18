@@ -61,7 +61,7 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
             </button>
           )
         ) : (
-          <div className="primaryish-button animate-pulse bg-zinc-300 px-16 dark:bg-zinc-700">
+          <div className="primaryish-button skeleton bg-zinc-300 px-16 dark:bg-zinc-700">
             &nbsp;
           </div>
         )}
