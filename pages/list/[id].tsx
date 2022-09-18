@@ -252,10 +252,14 @@ const ListPage: NextPage = () => {
           ))
         ) : (
           <>
-            <li className="skeleton h-20" />
-            <li className="skeleton h-20" />
-            <li className="skeleton h-20" />
-            <li className="skeleton h-20" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
+            <li className="skeleton h-24" />
           </>
         )}
       </ul>

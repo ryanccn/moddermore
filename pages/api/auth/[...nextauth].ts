@@ -17,6 +17,12 @@ export const authOptions: NextAuthOptions = {
       return { ...session, user: { ...session.user, id: user.id } };
     },
   },
+  pages: {
+    signIn: '/auth/signin',
+    error: '/auth/error',
+    verifyRequest: '/auth/verify',
+    // newUser: '/auth/new-user',
+  },
 };
 
 export default NextAuth(authOptions);
