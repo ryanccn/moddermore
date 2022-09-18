@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
 import {
-  TerminalIcon,
-  ArchiveIcon,
+  CommandLineIcon,
+  ArchiveBoxIcon,
   FolderIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/20/solid';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { PolyMCIcon } from '~/components/icons';
 
@@ -19,7 +19,7 @@ const NewIndex: NextPage = () => {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Link href="/new/ferium">
           <a className="new-card">
-            <TerminalIcon className="block h-10 w-10 stroke-[1.5]" />
+            <CommandLineIcon className="block h-10 w-10 stroke-[1.5]" />
             <span>Ferium</span>
           </a>
         </Link>
@@ -37,7 +37,7 @@ const NewIndex: NextPage = () => {
         </Link>
         <Link href="/new/manual">
           <a className="new-card">
-            <ArchiveIcon className="block h-10 w-10 stroke-[1.5]" />
+            <ArchiveBoxIcon className="block h-10 w-10 stroke-[1.5]" />
             <span>Manual</span>
           </a>
         </Link>

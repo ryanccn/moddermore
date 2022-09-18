@@ -69,12 +69,6 @@ const nextConfig = withPlausibleProxy()(
         },
       ];
     },
-
-    experimental: {
-      images: {
-        allowFutureImage: true,
-      },
-    },
   })
 );
 

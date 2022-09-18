@@ -1,4 +1,4 @@
-import { UploadIcon } from '@heroicons/react/outline';
+import { CloudArrowUpIcon } from '@heroicons/react/20/solid';
 
 interface Props {
   disabled?: boolean;
@@ -11,7 +11,7 @@ export const NewSubmitButton = ({ disabled }: Props) => {
       className="primaryish-button !mt-14"
       disabled={disabled}
     >
-      <UploadIcon className="block h-5 w-5" />
+      <CloudArrowUpIcon className="block h-5 w-5" />
       <span>Submit</span>
     </button>
   );

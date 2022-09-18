@@ -17,10 +17,10 @@ import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { ModrinthIcon } from '~/components/icons';
 import {
-  FolderDownloadIcon,
+  FolderArrowDownIcon,
   PencilIcon,
   TrashIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/20/solid';
 import toast from 'react-hot-toast';
 
 const ListPage: NextPage = () => {
@@ -207,7 +207,7 @@ const ListPage: NextPage = () => {
 
       <div className="mb-16 flex space-x-4">
         <button className="primaryish-button" onClick={downloadExport}>
-          <FolderDownloadIcon className="block h-5 w-5" />
+          <FolderArrowDownIcon className="block h-5 w-5" />
           <span>Export</span>
         </button>
         <button

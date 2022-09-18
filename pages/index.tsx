@@ -1,4 +1,4 @@
-import { PlusCircleIcon } from '@heroicons/react/outline';
+import { PlusCircleIcon } from '@heroicons/react/20/solid';
 import type { NextPage } from 'next';
 
 import Link from 'next/link';

@@ -11,9 +11,13 @@ import { useEffect } from 'react';
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/20/solid';
+import { Session } from 'next-auth';
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps<{ session: Session }>) {
   useEffect(() => {
     console.log(
       `%cModdermore%c${

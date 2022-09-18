@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import Link from 'next/link';
-import { ExternalLinkIcon, PlusIcon, UserIcon } from '@heroicons/react/outline';
+import { XCircleIcon, PlusIcon, UserIcon } from '@heroicons/react/20/solid';
 
 import clsx from 'clsx';
 
@@ -45,7 +45,7 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
                 className="primaryish-button bg-transparent hover:bg-red-500/10 hover:text-red-400 hover:brightness-100 focus:ring-red-400/40"
                 onClick={signOut}
               >
-                <ExternalLinkIcon className="block h-5 w-5" />
+                <XCircleIcon className="block h-5 w-5" />
                 <span>Sign out</span>
               </button>
             </>

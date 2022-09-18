@@ -11,7 +11,7 @@ import type { Mod, ModLoader } from '~/types/moddermore';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
-import { CloudUploadIcon } from '@heroicons/react/outline';
+import { CloudArrowUpIcon } from '@heroicons/react/20/solid';
 
 import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
@@ -126,7 +126,7 @@ const FeriumImportPage: NextPage = () => {
               role="button"
               className="primaryish-button flex cursor-auto hover:cursor-pointer"
             >
-              <CloudUploadIcon className="block h-5 w-5" />
+              <CloudArrowUpIcon className="block h-5 w-5" />
               <span>Choose file</span>
             </div>
 
