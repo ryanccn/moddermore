@@ -14,6 +14,7 @@ import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { Modalistic } from '~/components/Modalistic';
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
+import { LegacyBadge } from '~/components/partials/LegacyBadge';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { ModrinthIcon } from '~/components/icons';
 import {
@@ -21,6 +22,7 @@ import {
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/20/solid';
+
 import toast from 'react-hot-toast';
 
 const ListPage: NextPage = () => {
@@ -192,11 +194,7 @@ const ListPage: NextPage = () => {
 
   return (
     <GlobalLayout title={data.title}>
-      {data.legacy && (
-        <span className="mb-4 inline-block w-auto self-start rounded-full bg-red-300/50 px-2 py-1 text-xs font-bold uppercase text-red-500 dark:bg-red-700/50 dark:text-white">
-          Legacy
-        </span>
-      )}
+      {data.legacy && <LegacyBadge />}
       <div className="data-list">
         <p>
           For Minecraft <strong>{data.gameVersion}</strong> with{' '}

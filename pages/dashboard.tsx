@@ -7,6 +7,7 @@ import { loaderFormat } from '~/lib/strings';
 
 import Link from 'next/link';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { LegacyBadge } from '~/components/partials/LegacyBadge';
 
 import type { ModList } from '~/types/moddermore';
 import toast from 'react-hot-toast';
@@ -34,7 +35,10 @@ const Dashboard: NextPage = () => {
             {lists.map((list) => (
               <Link href={`/list/${list.id}`} key={list.id}>
                 <a className="group flex flex-col space-y-2 rounded-sm bg-transparent p-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800">
-                  <h2 className="text-lg font-semibold">{list.title}</h2>
+                  <h2 className="flex justify-between text-lg font-semibold">
+                    <span>{list.title}</span>
+                    {list.legacy && <LegacyBadge />}
+                  </h2>
                   <div className="data-list text-sm">
                     <p>
                       For Minecraft <strong>{list.gameVersion}</strong> with{' '}
