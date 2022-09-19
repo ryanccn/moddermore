@@ -194,7 +194,7 @@ const ListPage: NextPage = () => {
 
   return (
     <GlobalLayout title={data.title}>
-      {data.legacy && <LegacyBadge />}
+      {data.legacy && <LegacyBadge className="mb-4" />}
       <div className="data-list">
         <p>
           For Minecraft <strong>{data.gameVersion}</strong> with{' '}
