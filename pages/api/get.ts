@@ -1,8 +1,9 @@
 import type { NextApiHandler } from 'next';
 
 import { getSpecificList } from '~/lib/db';
+import type { ModList } from '~/types/moddermore';
 
-const h: NextApiHandler = async (req, res) => {
+const h: NextApiHandler<ModList | { error: string }> = async (req, res) => {
   if (req.method !== 'GET') {
     res.status(405).end();
     return;
@@ -16,7 +17,15 @@ const h: NextApiHandler = async (req, res) => {
   }
 
   const list = await getSpecificList(id);
-  res.status(200).setHeader('cache-control', 's-maxage=2').json(list);
+  if (!list) {
+    res.status(404).json({ error: 'Not found' });
+    return;
+  }
+
+  res
+    .status(200)
+    .setHeader('cache-control', 's-maxage=2')
+    .json(!list.legacy ? list : { ...list, legacy: 'redacted' });
 };
 
 export default h;

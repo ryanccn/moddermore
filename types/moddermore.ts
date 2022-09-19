@@ -43,7 +43,7 @@ export interface ModList {
   owner: string | null;
   modloader: ModLoader;
   mods: Mod[];
-  legacy?: true;
+  legacy?: string;
 }
 
 export interface RichModList {
@@ -54,5 +54,5 @@ export interface RichModList {
   gameVersion: string;
   modloader: ModLoader;
   mods: RichMod[];
-  legacy?: true;
+  legacy?: string;
 }

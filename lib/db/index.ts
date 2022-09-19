@@ -12,6 +12,15 @@ export const getUserLists = async (userId: string): Promise<ModList[]> => {
   );
 };
 
+export const getLegacyUserLists = async (email: string): Promise<ModList[]> => {
+  const collection = await getListsCollection();
+  const lists = await collection.find({ legacy: email }).toArray();
+
+  return lists.sort((a, b) =>
+    new Date(a.created_at) > new Date(b.created_at) ? -1 : 1
+  );
+};
+
 export const getSpecificList = async (id: string): Promise<ModList | null> => {
   const collection = await getListsCollection();
   const list = await collection.findOne({ id });
