@@ -1815,10 +1815,10 @@ next-auth@^4.10.3:
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
 
-next-plausible@^3.6.2:
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/next-plausible/-/next-plausible-3.6.2.tgz#262abdbe4b566d8a26505bba0179306ece8c3167"
-  integrity sha512-WhyFo0ZjoActGHFtkBiTxgZ0ALLkrKEqpgH/G2JXFqfg2Dx6/ne2fjKvXDGyyL4IYIXnWz/UFJFq40TxbGa5zA==
+next-plausible@^3.6.3:
+  version "3.6.3"
+  resolved "https://registry.yarnpkg.com/next-plausible/-/next-plausible-3.6.3.tgz#964e711e015a0fc03ad772123d1a1e48c86900bd"
+  integrity sha512-KlpB0k/PPMq0udKOLgTcp6RAqGLiIi7956tXRD5w/gzzgVdp2i3xvnafG60Exjiz98go1Jj98n/PxD3WitKH6Q==
 
 next@^12.3.1-canary.3:
   version "12.3.1-canary.3"
