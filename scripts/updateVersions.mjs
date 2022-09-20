@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const { format } = require('prettier');
-const { writeFile } = require('fs/promises');
+import fetch from 'node-fetch';
+import { format } from 'prettier';
+import { writeFile } from 'fs/promises';
 
 (async () => {
   const res = await fetch(
