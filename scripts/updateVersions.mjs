@@ -21,7 +21,7 @@ import { writeFile } from 'fs/promises';
     .map((v) => v.id);
 
   await writeFile(
-    './lib/minecraftVersions.json',
+    './src/lib/minecraftVersions.json',
     format(JSON.stringify(versions), { parser: 'json' })
   );
 })().catch((e) => {
