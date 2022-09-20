@@ -51,7 +51,7 @@ export const GlobalLayout = ({
         />
       </Head>
 
-      {!isLandingPage ? <Navbar /> : null}
+      <Navbar isLandingPage={isLandingPage} />
 
       <main
         className={

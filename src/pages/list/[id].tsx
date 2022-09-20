@@ -1,6 +1,6 @@
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 
-import type { ModList, RichMod, RichModList } from '~/types/moddermore';
+import type { ModList, RichMod } from '~/types/moddermore';
 
 import { modToRichMod } from '~/lib/db/conversions';
 import { loaderFormat } from '~/lib/strings';
@@ -24,12 +24,17 @@ import {
 } from '@heroicons/react/20/solid';
 
 import toast from 'react-hot-toast';
+import { getSpecificList } from '~/lib/db';
 
-const ListPage: NextPage = () => {
+interface PageProps {
+  data: ModList;
+}
+
+const ListPage: NextPage<PageProps> = ({ data }) => {
   const router = useRouter();
   const session = useSession();
 
-  const [data, setData] = useState<RichModList | null>(null);
+  const [resolvedMods, setResolvedMods] = useState<RichMod[] | null>(null);
 
   const [status, setStatus] = useState<
     'idle' | 'resolving' | 'downloading' | 'result' | 'loadinglibraries'
@@ -40,33 +45,25 @@ const ListPage: NextPage = () => {
   );
 
   useEffect(() => {
-    if (typeof router.query.id !== 'string') return;
+    (async () => {
+      const lim = pLimit(6);
 
-    fetch('/api/get?id=' + router.query.id)
-      .then((r) => r.json())
-      .then(async (a: ModList) => {
-        if (!a) {
-          toast.error('An error occurred');
-          return;
-        }
+      const mods = await Promise.all(
+        data.mods.map((a) => lim(() => modToRichMod(a)))
+      )
+        .then((a) => a.filter((b) => b !== null) as RichMod[])
+        .then((a) => a.sort((a, b) => (a.name > b.name ? 1 : -1)));
 
-        setData({ ...a, mods: [] });
-
-        const lim = pLimit(6);
-        const mods = await Promise.all(
-          a.mods.map((a) => lim(() => modToRichMod(a)))
-        )
-          .then((a) => a.filter((b) => b !== null) as RichMod[])
-          .then((a) => a.sort((a, b) => (a.name > b.name ? 1 : -1)));
-
-        setData({ ...a, mods });
-      });
-  }, [router]);
+      setResolvedMods(mods);
+    })().catch(() => {
+      toast.error('Failed to resolve mods');
+    });
+  }, [data]);
 
   const showModal = useMemo(() => status === 'result', [status]);
 
   const downloadExport = async () => {
-    if (!data) return;
+    if (!resolvedMods) return;
 
     setProgress({ value: 0, max: 3 });
     setStatus('loadinglibraries');
@@ -81,7 +78,10 @@ const ListPage: NextPage = () => {
     setProgress({ value: 0, max: data.mods.length });
     setStatus('resolving');
 
-    const urls = await getDownloadURLs(data, setProgress);
+    const urls = await getDownloadURLs(
+      { ...data, mods: resolvedMods },
+      setProgress
+    );
 
     setProgress({ value: 0, max: data.mods.length });
     setResult({ success: [], failed: [] });
@@ -153,7 +153,7 @@ const ListPage: NextPage = () => {
   };
 
   const modrinthExport = async () => {
-    if (!data) return;
+    if (!data || !resolvedMods) return;
 
     setProgress({ value: 0, max: 3 });
     setStatus('loadinglibraries');
@@ -168,9 +168,15 @@ const ListPage: NextPage = () => {
     setStatus('resolving');
     setProgress({ value: 0, max: data.mods.length });
 
-    const urls = await getDownloadURLs(data, setProgress);
+    const urls = await getDownloadURLs(
+      { ...data, mods: resolvedMods },
+      setProgress
+    );
 
-    const mrpack = await generateModrinthPack(data, urls);
+    const mrpack = await generateModrinthPack(
+      { ...data, mods: resolvedMods },
+      urls
+    );
     saveAs(mrpack, `${data.title}.mrpack`);
 
     setStatus('idle');
@@ -246,8 +252,8 @@ const ListPage: NextPage = () => {
       </div>
 
       <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {data.mods.length ? (
-          data.mods.map((mod) => (
+        {resolvedMods ? (
+          resolvedMods.map((mod) => (
             <li className="block" key={mod.id}>
               <RichModDisplay data={mod} />
             </li>
@@ -320,6 +326,25 @@ const ListPage: NextPage = () => {
       )}
     </GlobalLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps<
+  PageProps | { notFound: true }
+> = async ({ query }) => {
+  if (typeof query.id !== 'string') throw new Error('?');
+  const data = await getSpecificList(query.id);
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      data: { ...data, legacy: data.legacy ? 'redacted' : null },
+    },
+  };
 };
 
 export default ListPage;

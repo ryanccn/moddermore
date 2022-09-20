@@ -25,7 +25,17 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
   const collection = await getListsCollection();
   const list = await collection.findOne({ id });
 
-  return list;
+  if (!list) return null;
+
+  return {
+    id: list.id,
+    title: list.title,
+    mods: list.mods,
+    gameVersion: list.gameVersion,
+    modloader: list.modloader,
+    owner: list.owner,
+    created_at: list.created_at,
+  };
 };
 
 export const deleteList = async (
