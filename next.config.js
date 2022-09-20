@@ -69,10 +69,6 @@ const nextConfig = withPlausibleProxy()(
         },
       ];
     },
-
-    experimental: {
-      fallbackNodePolyfills: false,
-    },
   })
 );
 
