@@ -260,14 +260,9 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
           ))
         ) : (
           <>
-            <li className="skeleton h-24" />
-            <li className="skeleton h-24" />
-            <li className="skeleton h-24" />
-            <li className="skeleton h-24" />
-            <li className="skeleton h-24" />
-            <li className="skeleton h-24" />
-            <li className="skeleton h-24" />
-            <li className="skeleton h-24" />
+            {data.mods.map(({ provider, id }) => (
+              <li className="skeleton h-24" key={`${provider}-${id}`} />
+            ))}
           </>
         )}
       </ul>
