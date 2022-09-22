@@ -6,7 +6,7 @@ import { writeFile } from 'fs/promises';
 
 (async () => {
   const res = await fetch(
-    'https://launchermeta.mojang.com/mc/game/version_manifest.json'
+    'https://piston-meta.mojang.com/mc/game/version_manifest.json'
   );
 
   if (!res.ok) {
