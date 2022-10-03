@@ -92,10 +92,10 @@
   dependencies:
     "@lukeed/csprng" "^1.0.0"
 
-"@next-auth/mongodb-adapter@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@next-auth/mongodb-adapter/-/mongodb-adapter-1.0.4.tgz#bf1f2cc59aafb0b51bf848af488884223918ef2f"
-  integrity sha512-vRSPo2o9Ok+S5JpOvtgVtMExPFgrg2ybz1zVs0YJwUZ+GIPHKRGYxa1NsJRmWjZ1DesrUDkvoInzGAmE1dWx6Q==
+"@next-auth/mongodb-adapter@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@next-auth/mongodb-adapter/-/mongodb-adapter-1.1.0.tgz#7a7ce55c04d078ceef705a2ed7771d4e2d424438"
+  integrity sha512-jB63vZYwgyVQFNGXwNaxZODVAsdZZCuCvN+uY8mp0lXLIstd/4/GbevWK4eHlUvoteOOKlYJxW46FbRuuh+WBw==
 
 "@next/bundle-analyzer@^12.3.1":
   version "12.3.1"
