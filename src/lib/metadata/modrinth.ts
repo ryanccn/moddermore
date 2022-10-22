@@ -19,5 +19,6 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
     provider: 'modrinth',
     name: data.title,
     description: data.description,
+    downloads: data.downloads,
   };
 };

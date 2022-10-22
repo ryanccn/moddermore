@@ -1,5 +1,10 @@
 import type { ModLoader, ModProvider } from '~/types/moddermore';
 
+export const numberFormat = (value: number): string => {
+  const formatter = Intl.NumberFormat('en', { notation: 'compact' });
+  return formatter.format(value);
+};
+
 export const providerFormat = (prov: ModProvider) => {
   if (prov === 'curseforge') return 'CurseForge';
   else if (prov === 'modrinth') return 'Modrinth';
