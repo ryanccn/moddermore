@@ -21,7 +21,7 @@ export const generateModrinthPack = async (
     name: list.title,
     summary: 'Generated from Moddermore (https://moddermore.vercel.app/)',
     files: (
-      urls.filter(
+      [...new Set(urls)].filter(
         (dl) => !('error' in dl) && dl.provider === 'modrinth'
       ) as ModrinthDownload[]
     ).map((dl) => {
