@@ -108,6 +108,7 @@ export const getModrinthDownload = async ({
   let ret: ExportReturnData = [];
   ret.push(getObjFromVersion(latest, 'direct'));
 
+  /*
   if (latest.dependencies) {
     for (const dep of latest.dependencies.filter(
       (d) => d.dependency_type === 'required'
@@ -130,10 +131,7 @@ export const getModrinthDownload = async ({
       }
     }
   }
-
-  ret = ret.filter(
-    (value, index, self) => index === self.findIndex((t) => t.id === value.id)
-  );
+  */
 
   // Fabric API to QSL swap
   if (loader === 'quilt' && ret.filter((t) => t.id === 'P7dR8mSH').length > 0) {
