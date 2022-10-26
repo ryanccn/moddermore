@@ -26,16 +26,18 @@ export const RichModDisplay = ({ data, buttonType, onClick }: Props) => {
               src={data.iconUrl}
               alt={`Icon of ${data.name}`}
               className="mr-4 h-16 w-16 rounded-2xl object-contain"
+              width={64}
+              height={64}
             />
           )}
         </div>
-        <div className="flex grow justify-between">
+        <div className="flex grow flex-col sm:flex-row sm:justify-between">
           <div className="flex flex-col">
             <div className="flex shrink-0 flex-wrap align-baseline">
               <h2 className="mr-2 text-xl font-bold">{data.name}</h2>
             </div>
             <p className="my-0.5 font-medium">{data.description}</p>
-            <div className="flex flex-wrap">
+            <div className="mb-2 flex flex-wrap">
               <a
                 className="flex items-center underline"
                 href={data.href}
@@ -47,21 +49,21 @@ export const RichModDisplay = ({ data, buttonType, onClick }: Props) => {
               </a>
             </div>
           </div>
-          <div className="min-w-fit text-right">
+          <div className="min-w-fit">
             {data.downloads && (
-              <div className="mb-2 flex items-center">
-                <ArrowDownTrayIcon className="ml-auto mr-1 h-4 w-4" />
-                <p>
+              <div className="mb-2 flex items-center sm:justify-end">
+                <ArrowDownTrayIcon className="mr-1 h-4 w-4" />
+                <p className="font-medium">
                   <strong>{numberFormat(data.downloads)}</strong> downloads
                 </p>
               </div>
             )}
-            <div className="flex flex-col items-end">
+            <div className="flex flex-col sm:items-end">
               {onClick && (
                 <>
                   {buttonType === 'delete' && (
                     <button
-                      className="primaryish-button bg-red-500"
+                      className="primaryish-button mb-2 bg-red-500"
                       onClick={onClick}
                     >
                       <TrashIcon className="block h-5 w-5" />
@@ -70,7 +72,7 @@ export const RichModDisplay = ({ data, buttonType, onClick }: Props) => {
                   )}
                   {buttonType === 'add' && (
                     <button
-                      className="primaryish-button bg-green-500"
+                      className="primaryish-button mb-2 bg-green-500"
                       onClick={onClick}
                     >
                       <PlusIcon className="block h-5 w-5" />
