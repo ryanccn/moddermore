@@ -53,6 +53,7 @@ export const search = async ({
       name: rawMod.title,
       provider: 'modrinth',
       description: rawMod.description,
+      downloads: rawMod.downloads,
       iconUrl: rawMod.icon_url,
     }));
   } else if (platform === 'curseforge') {
@@ -87,6 +88,7 @@ export const search = async ({
       provider: 'curseforge',
       name: rawMod.name,
       description: rawMod.summary,
+      downloads: rawMod.downloadCount,
     }));
   }
 

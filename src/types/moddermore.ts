@@ -17,6 +17,7 @@ export interface RichMod {
   provider: ModProvider;
   name: string;
   description?: string;
+  downloads?: number;
   iconUrl?: string;
   href: string;
   id: string;

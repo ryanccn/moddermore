@@ -251,10 +251,10 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         )}
       </div>
 
-      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <ul className="flex flex-wrap space-y-2">
         {resolvedMods ? (
           resolvedMods.map((mod) => (
-            <li className="block" key={mod.id}>
+            <li className="w-full" key={mod.id}>
               <RichModDisplay data={mod} />
             </li>
           ))

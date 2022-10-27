@@ -26,5 +26,6 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
     provider: 'curseforge',
     name: data.name,
     description: data.summary,
+    downloads: data.downloadCount,
   };
 };

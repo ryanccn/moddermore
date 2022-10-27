@@ -1,6 +1,6 @@
 declare namespace NodeJS {
   interface ProcessEnv {
-    MONGODB_CONN_STRING: string;
+    MONGODB_URI: string;
     NEXT_PUBLIC_CURSEFORGE_API_KEY: string;
 
     /** Only available when deployed */

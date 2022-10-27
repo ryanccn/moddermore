@@ -199,21 +199,22 @@ const NewList: NextPage = () => {
           </div>
 
           {searchResults.length > 0 && (
-            <ul className="flex flex-col space-y-2">
+            <ul className="flex flex-wrap space-y-2">
               {searchResults.map((res) =>
                 inputMods.filter(
                   (m) => m.id === res.id && m.provider === res.provider
                 ).length > 0 ? (
                   <></>
                 ) : (
-                  <RichModDisplay
-                    data={res}
-                    key={res.id}
-                    buttonType="add"
-                    onClick={() => {
-                      setInputMods([...inputMods, res]);
-                    }}
-                  />
+                  <li className="w-full" key={res.id}>
+                    <RichModDisplay
+                      data={res}
+                      buttonType="add"
+                      onClick={() => {
+                        setInputMods([...inputMods, res]);
+                      }}
+                    />
+                  </li>
                 )
               )}
             </ul>
