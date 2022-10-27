@@ -11,7 +11,7 @@ Share the mods you use with anyone.
 - Import from
   - Folder of mods
   - [Ferium](https://github.com/gorilla-devs/ferium)
-  - MultiMC and [PolyMC](https://polymc.org) instances
+  - MultiMC and [Prism Launcher](httpsprismlauncherpolymc.org) instances
   - Manual (built-in!) search
 - Export to
   - Folder of mods
@@ -48,7 +48,7 @@ We use [MongoDB](https://www.mongodb.com/) as our primary database. We also acce
 
 ```
 # MongoDB
-MONGODB_CONN_STRING=""
+MONGODB_URI=""
 
 # CurseForge
 NEXT_PUBLIC_CURSEFORGE_API_KEY=""
