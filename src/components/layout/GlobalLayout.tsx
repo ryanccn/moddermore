@@ -6,6 +6,10 @@ import { Footer } from './Footer';
 
 import type { ReactNode } from 'react';
 
+import { Lobster } from '@next/font/google';
+
+const lobster = Lobster({ weight: '400', subsets: ['latin'] });
+
 interface Props {
   title: string;
   titleSuffix?: boolean;
@@ -82,7 +86,10 @@ export const GlobalLayout = ({
         href="https://www.buymeacoffee.com/ryanccn"
         target="_blank"
         rel="noopener noreferrer"
-        className="primaryish-button fixed bottom-0 right-0 m-4 bg-yellow-500 font-['Lobster',_sans-serif] shadow-sm"
+        className={
+          'primaryish-button fixed bottom-0 right-0 m-4 bg-yellow-500 shadow-sm ' +
+          lobster.className
+        }
       >
         Donate
       </a>

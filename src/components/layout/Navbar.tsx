@@ -26,8 +26,8 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
       ])}
     >
       <div className="flex items-center space-x-2">
-        <Link href={data ? '/dashboard' : '/'}>
-          <a className="text-2xl font-bold">Moddermore</a>
+        <Link href={data ? '/dashboard' : '/'} className="text-2xl font-bold">
+          Moddermore
         </Link>
       </div>
 
@@ -35,11 +35,9 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
         {status !== 'loading' ? (
           data ? (
             <>
-              <Link href="/new">
-                <a className="primaryish-button">
-                  <PlusIcon className="block h-5 w-5" />
-                  <span>Create</span>
-                </a>
+              <Link href="/new" className="primaryish-button">
+                <PlusIcon className="block h-5 w-5" />
+                <span>Create</span>
               </Link>
               <button
                 className="primaryish-button bg-transparent hover:bg-red-500/10 hover:text-red-400 hover:brightness-100 focus:ring-red-400/40"
