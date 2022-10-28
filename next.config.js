@@ -69,6 +69,12 @@ const nextConfig = withPlausibleProxy()(
         },
       ];
     },
+
+    async redirects() {
+      return [
+        { source: '/new/polymc', destination: '/new/prism', permanent: true },
+      ];
+    },
   })
 );
 

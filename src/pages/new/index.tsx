@@ -9,7 +9,7 @@ import {
   FolderIcon,
 } from '@heroicons/react/20/solid';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { PolyMCIcon } from '~/components/icons';
+import { PrismIcon } from '~/components/icons';
 
 const NewIndex: NextPage = () => {
   useSession({ required: true });
@@ -23,10 +23,10 @@ const NewIndex: NextPage = () => {
             <span>Ferium</span>
           </a>
         </Link>
-        <Link href="/new/polymc">
+        <Link href="/new/prism">
           <a className="new-card">
-            <PolyMCIcon className="block h-10 w-10 stroke-[1.5]" />
-            <span>MultiMC / PolyMC instance</span>
+            <PrismIcon className="block h-10 w-10 stroke-[1.5]" />
+            <span>MultiMC / Prism instance</span>
           </a>
         </Link>
         <Link href="/new/folder">

@@ -11,7 +11,7 @@ Share the mods you use with anyone.
 - Import from
   - Folder of mods
   - [Ferium](https://github.com/gorilla-devs/ferium)
-  - MultiMC and [Prism Launcher](httpsprismlauncherpolymc.org) instances
+  - MultiMC and [Prism Launcher](https://prismlauncher.org) instances
   - Manual (built-in!) search
 - Export to
   - Folder of mods

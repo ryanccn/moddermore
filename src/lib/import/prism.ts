@@ -42,7 +42,7 @@ const parsePackwizTOML = (toml: string): Mod | null => {
   return null;
 };
 
-export const parsePolyMCInstance = async ({
+export const parsePrismInstance = async ({
   f,
   useMetadata,
   setProgress,
