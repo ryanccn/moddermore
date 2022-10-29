@@ -251,7 +251,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         )}
       </div>
 
-      <ul className="flex flex-wrap space-y-2">
+      <ul className="flex flex-col gap-y-3">
         {resolvedMods ? (
           resolvedMods.map((mod) => (
             <li className="w-full" key={mod.id}>
@@ -261,7 +261,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         ) : (
           <>
             {data.mods.map(({ provider, id }) => (
-              <li className="skeleton h-24" key={`${provider}-${id}`} />
+              <li className="skeleton h-36" key={`${provider}-${id}`} />
             ))}
           </>
         )}
