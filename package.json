@@ -21,7 +21,7 @@
     "jszip": "^3.10.1",
     "next": "^13.0.0",
     "next-auth": "^4.15.0",
-    "next-plausible": "^3.6.3",
+    "next-plausible": "^3.6.4",
     "nextjs-progressbar": "^0.0.16",
     "react": "18.2.0",
     "react-dom": "18.2.0",
