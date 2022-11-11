@@ -15,7 +15,7 @@ const Home: NextPage = () => {
       isLandingPage
     >
       <div className="min-w-screen relative mb-16 flex min-h-screen flex-col items-center px-12 text-center">
-        <div className="mb-20 flex flex-col">
+        <div className="mb-20 flex flex-col items-center">
           <h2 className="mb-10 text-6xl font-bold">
             Share the mods you use with{' '}
             <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text font-extrabold text-transparent">
