@@ -25,6 +25,7 @@ import {
 
 import toast from 'react-hot-toast';
 import { getSpecificList } from '~/lib/db';
+import { DonationMessage } from '~/components/partials/DonateMessage';
 
 interface PageProps {
   data: ModList;
@@ -250,6 +251,8 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
           </>
         )}
       </div>
+
+      <DonationMessage />
 
       <ul className="flex flex-col gap-y-3">
         {resolvedMods ? (
