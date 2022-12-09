@@ -8,7 +8,7 @@ export const DonationMessage = () => {
   return (
     <div
       className={clsx(
-        'relative mb-12 flex flex-col gap-y-4 rounded-lg bg-zinc-800 p-6 shadow',
+        'relative mb-12 flex flex-col gap-y-4 rounded-lg bg-zinc-100 dark:bg-zinc-800 p-6 shadow',
         hide ? 'hidden' : null
       )}
     >
