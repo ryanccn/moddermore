@@ -81,18 +81,6 @@ export const GlobalLayout = ({
       </main>
 
       <Footer />
-
-      <a
-        href="https://www.buymeacoffee.com/ryanccn"
-        target="_blank"
-        rel="noopener noreferrer"
-        className={
-          'primaryish-button fixed bottom-0 right-0 m-4 bg-yellow-500 shadow-sm ' +
-          lobster.className
-        }
-      >
-        Donate
-      </a>
     </>
   );
 };

@@ -28,7 +28,7 @@ export const DonationMessage = () => {
         to come ✨
       </p>
       <a
-        href="https://buymeacoffee.com/ryanccn"
+        href="https://ko-fi.com/ryancaodev"
         className="hover:brigt rounded bg-yellow-500 px-4 py-3 text-center text-lg font-semibold text-white transition hover:brightness-90"
       >
         Donate
