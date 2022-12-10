@@ -8,7 +8,7 @@ export const DonationMessage = () => {
   return (
     <div
       className={clsx(
-        'relative mb-12 flex flex-col gap-y-4 rounded-lg bg-zinc-100 dark:bg-zinc-800 p-6 shadow',
+        'relative mb-12 flex flex-col gap-y-4 rounded-lg bg-zinc-100 p-6 shadow dark:bg-zinc-800',
         hide ? 'hidden' : null
       )}
     >
@@ -29,7 +29,7 @@ export const DonationMessage = () => {
       </p>
       <a
         href="https://buymeacoffee.com/ryanccn"
-        className="rounded bg-yellow-500 px-4 py-3 text-center text-lg font-semibold transition hover:bg-yellow-600"
+        className="hover:brigt rounded bg-yellow-500 px-4 py-3 text-center text-lg font-semibold text-white transition hover:brightness-90"
       >
         Donate
       </a>
