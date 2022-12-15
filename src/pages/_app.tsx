@@ -30,7 +30,7 @@ function MyApp({
   }, []);
 
   return (
-    <PlausibleProvider domain="moddermore.vercel.app">
+    <PlausibleProvider domain="moddermore.net">
       <SessionProvider session={session}>
         <NextNProgress color="#6366F1" />
         <Component {...pageProps} />

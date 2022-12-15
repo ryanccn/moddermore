@@ -19,7 +19,7 @@ export const generateModrinthPack = async (
     game: 'minecraft',
     versionId: '0.0.1',
     name: list.title,
-    summary: 'Generated from Moddermore (https://moddermore.vercel.app/)',
+    summary: 'Generated from Moddermore (https://moddermore.net/)',
     files: (
       urls.filter(
         (dl) => !('error' in dl) && dl.provider === 'modrinth'

@@ -45,14 +45,8 @@ export const GlobalLayout = ({
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:creator" content="@RyanCaoDev" />
-        <meta
-          property="og:image"
-          content="https://moddermore.vercel.app/e.png"
-        />
-        <meta
-          name="twitter:image"
-          content="https://moddermore.vercel.app/e.png"
-        />
+        <meta property="og:image" content="https://moddermore.net/e.png" />
+        <meta name="twitter:image" content="https://moddermore.net/e.png" />
       </Head>
 
       <Navbar isLandingPage={isLandingPage} />
