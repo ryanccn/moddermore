@@ -50,8 +50,16 @@ We use [MongoDB](https://www.mongodb.com/) as our primary database. We also acce
 # MongoDB
 MONGODB_URI=""
 
+# GitHub
+GITHUB_CLIENT_ID=""
+GITHUB_CLIENT_SECRET=""
+
 # CurseForge
 NEXT_PUBLIC_CURSEFORGE_API_KEY=""
+
+# Email
+EMAIL_SERVER=""
+EMAIL_FROM=""
 ```
 
 There are also a few maintenance scripts available:

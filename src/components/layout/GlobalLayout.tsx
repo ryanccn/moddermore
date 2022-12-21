@@ -6,10 +6,6 @@ import { Footer } from './Footer';
 
 import type { ReactNode } from 'react';
 
-import { Lobster } from '@next/font/google';
-
-const lobster = Lobster({ weight: '400', subsets: ['latin'] });
-
 interface Props {
   title: string;
   titleSuffix?: boolean;

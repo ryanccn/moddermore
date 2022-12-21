@@ -13,7 +13,6 @@
     "@heroicons/react": "^2.0.13",
     "@iarna/toml": "^2.2.5",
     "@next-auth/mongodb-adapter": "^1.1.1",
-    "@next/font": "^13.0.7",
     "@radix-ui/react-portal": "^1.0.1",
     "clsx": "^1.2.1",
     "fast-xml-parser": "^4.0.12",
