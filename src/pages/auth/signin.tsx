@@ -6,7 +6,7 @@ import { type FormEventHandler, useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { GitHubIcon } from '~/components/icons';
+import { DiscordIcon, GitHubIcon } from '~/components/icons';
 import toast from 'react-hot-toast';
 
 const errors = {
@@ -54,7 +54,7 @@ const SigninPage: NextPage = () => {
 
   return (
     <GlobalLayout title="Sign in" isAuthPage>
-      <div className="flex w-full flex-col gap-y-8">
+      <div className="flex w-full flex-col gap-y-4">
         {router.query.error && (
           <p className="rounded bg-red-500 px-4 py-3 font-semibold text-white">
             {typeof router.query.error === 'string' &&
@@ -66,6 +66,7 @@ const SigninPage: NextPage = () => {
         )}
         <button
           className="primaryish-button bg-black text-white"
+          disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
             await signIn('github', {
@@ -78,6 +79,22 @@ const SigninPage: NextPage = () => {
         >
           <GitHubIcon className="block h-5 w-5 fill-current stroke-transparent" />
           <span>Sign in with GitHub</span>
+        </button>
+        <button
+          className="primaryish-button mb-4 bg-[#5865F2] text-white"
+          disabled={disableSubmit}
+          onClick={async () => {
+            setDS(true);
+            await signIn('discord', {
+              callbackUrl:
+                typeof router.query.callbackUrl === 'string'
+                  ? router.query.callbackUrl
+                  : undefined,
+            });
+          }}
+        >
+          <DiscordIcon className="block h-5 w-5 fill-current stroke-transparent" />
+          <span>Sign in with Discord</span>
         </button>
 
         <form className="flex items-center gap-x-2" onSubmit={signin}>
