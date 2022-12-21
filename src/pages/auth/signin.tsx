@@ -43,7 +43,13 @@ const SigninPage: NextPage = () => {
     e.preventDefault();
     setDS(true);
 
-    await signIn('email', { email });
+    await signIn('email', {
+      email,
+      callbackUrl:
+        typeof router.query.callbackUrl === 'string'
+          ? router.query.callbackUrl
+          : undefined,
+    });
   };
 
   return (
@@ -62,7 +68,12 @@ const SigninPage: NextPage = () => {
           className="primaryish-button bg-black text-white"
           onClick={async () => {
             setDS(true);
-            await signIn('github');
+            await signIn('github', {
+              callbackUrl:
+                typeof router.query.callbackUrl === 'string'
+                  ? router.query.callbackUrl
+                  : undefined,
+            });
           }}
         >
           <GitHubIcon className="block h-5 w-5 fill-current stroke-transparent" />
