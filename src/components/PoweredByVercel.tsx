@@ -4,7 +4,6 @@ export const PoweredByVercel = () => {
       target="_blank"
       rel="noopener noreferrer"
       href="https://vercel.com/?utm_source=moddermore&utm_campaign=oss"
-      className="scale-[85%]"
     >
       <svg
         width="212"
