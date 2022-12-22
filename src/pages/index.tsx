@@ -1,10 +1,11 @@
 import { PlusCircleIcon } from '@heroicons/react/20/solid';
+import { ArrowDownIcon } from '@heroicons/react/24/solid';
 import type { NextPage } from 'next';
 
 import Link from 'next/link';
+import { TutanotaIcon, VercelIcon } from '~/components/icons';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
-// import { Navbar } from '~/components/layout/Navbar';
 
 const Home: NextPage = () => {
   return (
@@ -14,7 +15,7 @@ const Home: NextPage = () => {
       displayTitle={false}
       isLandingPage
     >
-      <div className="min-w-screen relative mb-16 flex min-h-screen flex-col items-center px-12 text-center">
+      <div className="mb-20 flex flex-col items-center px-12 text-center">
         <div className="mb-20 flex flex-col items-center">
           <h2 className="mb-10 text-6xl font-bold">
             Share the mods you use with{' '}
@@ -29,10 +30,33 @@ const Home: NextPage = () => {
           </h3>
         </div>
 
-        <Link href="/new" className="primaryish-button px-6 py-4 text-xl">
+        <Link
+          href="/new"
+          className="primaryish-button mb-16 px-6 py-4 text-xl shadow-xl shadow-indigo-500/30"
+        >
           <PlusCircleIcon className="block h-8 w-8" />
           <span>Create a new list</span>
         </Link>
+
+        <ArrowDownIcon className="block h-5 w-5 stroke-2 text-zinc-600 dark:text-zinc-400" />
+      </div>
+
+      <div className="mb-36 flex flex-col items-center gap-y-16">
+        <h2 className="text-4xl font-bold">Our sponsors</h2>
+        <div className="flex flex-col gap-16 lg:flex-row">
+          <div className="flex flex-col gap-y-6">
+            <h3 className="text-2xl font-semibold">Email</h3>
+            <a href="https://tutanota.com/">
+              <TutanotaIcon />
+            </a>
+          </div>
+          <div className="flex flex-col gap-y-6">
+            <h3 className="text-2xl font-semibold">Hosting</h3>
+            <a href="https://vercel.com/?utm_source=moddermore&utm_campaign=oss">
+              <VercelIcon className="w-60" />
+            </a>
+          </div>
+        </div>
       </div>
     </GlobalLayout>
   );

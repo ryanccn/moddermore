@@ -70,7 +70,7 @@ export const GlobalLayout = ({
         {children}
       </main>
 
-      <Footer />
+      <Footer isLandingPage={isLandingPage} />
     </>
   );
 };
