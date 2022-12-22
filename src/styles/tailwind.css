@@ -95,7 +95,7 @@
   }
 
   .moddermore-footer {
-    @apply mt-4 flex w-full flex-col items-center space-y-2 py-16;
+    @apply mt-4 flex w-full flex-col items-center gap-y-2 py-16;
   }
   .moddermore-footer > p,
   .moddermore-footer > a {
