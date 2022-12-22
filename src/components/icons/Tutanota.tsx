@@ -1,13 +1,13 @@
-export const TutanotaIcon = () => {
+export const TutanotaIcon = ({ className }: { className?: string }) => {
   return (
     <svg
       preserveAspectRatio="xMinYMid"
       enableBackground="new 0 0 1280 800"
       viewBox="0 0 1054.473 236.49001"
-      className="block w-60 fill-black dark:fill-white"
       xmlns="http://www.w3.org/2000/svg"
       y="0px"
       x="0px"
+      className={className}
     >
       <g id="g9" transform="translate(-132.628,-222.799)">
         <path

@@ -44,16 +44,16 @@ const Home: NextPage = () => {
       <div className="mb-36 flex flex-col items-center gap-y-16">
         <h2 className="text-4xl font-bold">Our sponsors</h2>
         <div className="flex flex-col gap-16 lg:flex-row">
-          <div className="flex flex-col gap-y-6">
+          <div className="flex flex-col gap-y-6 transition hover:scale-105">
             <h3 className="text-2xl font-semibold">Email</h3>
             <a href="https://tutanota.com/">
-              <TutanotaIcon />
+              <TutanotaIcon className="block w-60 fill-black dark:fill-white" />
             </a>
           </div>
-          <div className="flex flex-col gap-y-6">
+          <div className="flex flex-col gap-y-6 transition hover:scale-105">
             <h3 className="text-2xl font-semibold">Hosting</h3>
             <a href="https://vercel.com/?utm_source=moddermore&utm_campaign=oss">
-              <VercelIcon className="w-60" />
+              <VercelIcon className="block w-60 fill-black dark:fill-white" />
             </a>
           </div>
         </div>
