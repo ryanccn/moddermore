@@ -6,7 +6,7 @@ import { type FormEventHandler, useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { DiscordIcon, GitHubIcon } from '~/components/icons';
+import { DiscordIcon, GitHubIcon, GoogleIcon } from '~/components/icons';
 import toast from 'react-hot-toast';
 
 const errors = {
@@ -81,7 +81,7 @@ const SigninPage: NextPage = () => {
           <span>Sign in with GitHub</span>
         </button>
         <button
-          className="primaryish-button mb-4 bg-[#5865F2] text-white"
+          className="primaryish-button bg-[#5865F2] text-white"
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
@@ -95,6 +95,22 @@ const SigninPage: NextPage = () => {
         >
           <DiscordIcon className="block h-5 w-5 fill-current stroke-transparent" />
           <span>Sign in with Discord</span>
+        </button>
+        <button
+          className="primaryish-button mb-4 bg-[#4285F4] text-white"
+          disabled={disableSubmit}
+          onClick={async () => {
+            setDS(true);
+            await signIn('google', {
+              callbackUrl:
+                typeof router.query.callbackUrl === 'string'
+                  ? router.query.callbackUrl
+                  : undefined,
+            });
+          }}
+        >
+          <GoogleIcon className="block h-5 w-5 fill-current stroke-transparent" />
+          <span>Sign in with Google</span>
         </button>
 
         <form className="flex items-center gap-x-2" onSubmit={signin}>

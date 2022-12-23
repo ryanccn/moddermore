@@ -1,7 +1,10 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
+
 import GitHubProvider from 'next-auth/providers/github';
 import DiscordProvider from 'next-auth/providers/discord';
+import GoogleProvider from 'next-auth/providers/google';
+
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 
 import { clientPromise } from '~/lib/db/client';
@@ -20,6 +23,11 @@ export const authOptions: NextAuthOptions = {
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       allowDangerousEmailAccountLinking: true,
     }),
   ],

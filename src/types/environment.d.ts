@@ -7,6 +7,8 @@ declare global {
       GITHUB_CLIENT_SECRET: string;
       DISCORD_CLIENT_ID: string;
       DISCORD_CLIENT_SECRET: string;
+      GOOGLE_CLIENT_ID: string;
+      GOOGLE_CLIENT_SECRET: string;
 
       EMAIL_SERVER: string;
       EMAIL_FROM: string;

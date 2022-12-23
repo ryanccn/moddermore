@@ -1,13 +1,25 @@
-import { PlusCircleIcon } from '@heroicons/react/20/solid';
-import { ArrowDownIcon } from '@heroicons/react/24/solid';
 import type { NextPage } from 'next';
 
-import Link from 'next/link';
-import { TutanotaIcon, VercelIcon } from '~/components/icons';
+import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
 
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+
+import { TutanotaIcon, VercelIcon } from '~/components/icons';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 
+import { PlusCircleIcon } from '@heroicons/react/20/solid';
+import { ArrowDownIcon } from '@heroicons/react/24/solid';
+
 const Home: NextPage = () => {
+  const router = useRouter();
+  const { status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated') router.push('/dashboard');
+  }, [status, router]);
+
   return (
     <GlobalLayout
       title="Moddermore"

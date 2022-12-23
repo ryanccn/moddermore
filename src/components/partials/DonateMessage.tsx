@@ -1,17 +1,6 @@
-import { useState } from 'react';
-import clsx from 'clsx';
-import { XMarkIcon } from '@heroicons/react/20/solid';
-
 export const DonationMessage = () => {
-  const [hide, setHide] = useState(false);
-
   return (
-    <div
-      className={clsx(
-        'relative mb-12 flex flex-col gap-y-4 rounded-lg bg-zinc-100 p-6 shadow dark:bg-zinc-800',
-        hide ? 'hidden' : null
-      )}
-    >
+    <div className="mb-12 flex flex-col gap-y-4 rounded-lg bg-zinc-100 p-6 shadow dark:bg-zinc-800">
       <h2 className="text-lg font-bold">
         Hello! I&apos;m the creator of Moddermore.
       </h2>
@@ -33,14 +22,6 @@ export const DonationMessage = () => {
       >
         Donate
       </a>
-      <button
-        className="absolute top-0 right-0 m-4 rounded p-1"
-        onClick={() => {
-          setHide(true);
-        }}
-      >
-        <XMarkIcon className="block h-5 w-5" />
-      </button>
     </div>
   );
 };
