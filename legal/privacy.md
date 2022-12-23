@@ -12,7 +12,7 @@ Moddermore is a Data Controller of your information.
 
 We will retain your personal information only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use your information to the extent necessary to comply with our legal obligations, resolve disputes, and enforce our policies.
 
-If you are a resident of the European Economic Area (EEA), you have certain data protection rights. If you wish to be informed what Personal Information we hold about you and if you want it to be removed from our systems, please contact us by email at [gdpr@moddermore.net](https://www.notion.so/Moddermore-Privacy-Policy-cbdb67fb7c8248228171ad6bf3e67d64).
+If you are a resident of the European Economic Area (EEA), you have certain data protection rights. If you wish to be informed what Personal Information we hold about you and if you want it to be removed from our systems, please contact us by email at [privacy@moddermore.net](mailto:privacy@moddermore.net).
 
 In certain circumstances, you have the following data protection rights:
 
