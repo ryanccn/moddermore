@@ -1,5 +1,8 @@
 import { useCallback } from 'react';
 
+import ModdermoreIcon from '~/moddermore.png';
+
+import Image from 'next/image';
 import Link from 'next/link';
 import { XCircleIcon, PlusIcon, UserIcon } from '@heroicons/react/20/solid';
 
@@ -25,7 +28,14 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
         isLandingPage ? 'mb-40 bg-transparent' : null,
       ])}
     >
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-x-3">
+        <Image
+          src={ModdermoreIcon}
+          width="32"
+          height="32"
+          className="rounded-full"
+          alt="Moddermore icon"
+        />
         <Link href={data ? '/dashboard' : '/'} className="text-2xl font-bold">
           Moddermore
         </Link>
