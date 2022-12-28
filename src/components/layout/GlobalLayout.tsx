@@ -6,6 +6,24 @@ import { Footer } from './Footer';
 
 import type { ReactNode } from 'react';
 
+import localFont from '@next/font/local';
+import clsx from 'clsx';
+const switzerFont = localFont({
+  src: [
+    {
+      path: '../../fonts/Switzer-Variable.woff2',
+      style: 'normal',
+    },
+    {
+      path: '../../fonts/Switzer-VariableItalic.woff2',
+      style: 'italic',
+    },
+  ],
+  display: 'swap',
+  weight: '100 900',
+  variable: '--font-switzer',
+});
+
 interface Props {
   title: string;
   titleSuffix?: boolean;
@@ -45,16 +63,17 @@ export const GlobalLayout = ({
         <meta name="twitter:image" content="https://moddermore.net/e.png" />
       </Head>
 
-      <Navbar isLandingPage={isLandingPage} />
+      <Navbar className={switzerFont.variable} isLandingPage={isLandingPage} />
 
       <main
-        className={
+        className={clsx(
+          switzerFont.variable,
           isLandingPage
-            ? ''
+            ? null
             : isAuthPage
             ? 'layout mt-28 max-w-[45ch] items-center text-center'
             : 'layout mt-28'
-        }
+        )}
       >
         {displayTitle === true ? (
           <>
