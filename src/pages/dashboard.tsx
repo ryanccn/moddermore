@@ -28,7 +28,7 @@ const Dashboard: NextPage = () => {
   }, [session]);
 
   return (
-    <GlobalLayout title="Dashboard" displayTitle={`Welcome to Moddermore`}>
+    <GlobalLayout title="Dashboard" displayTitle={`Your lists`}>
       {lists ? (
         lists.length > 0 ? (
           <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
@@ -62,6 +62,8 @@ const Dashboard: NextPage = () => {
         )
       ) : (
         <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="skeleton" style={{ height: '8rem' }} />
+          <div className="skeleton" style={{ height: '8rem' }} />
           <div className="skeleton" style={{ height: '8rem' }} />
           <div className="skeleton" style={{ height: '8rem' }} />
           <div className="skeleton" style={{ height: '8rem' }} />

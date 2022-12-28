@@ -12,7 +12,7 @@ import type { Mod, ModLoader } from '~/types/moddermore';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
-import { CloudArrowUpIcon } from '@heroicons/react/20/solid';
+import { PaperClipIcon } from '@heroicons/react/24/solid';
 
 import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
@@ -133,7 +133,7 @@ const PrismInstanceImportPage: NextPage = () => {
               role="button"
               className="primaryish-button flex cursor-auto hover:cursor-pointer"
             >
-              <CloudArrowUpIcon className="block h-5 w-5" />
+              <PaperClipIcon className="block h-5 w-5" />
               <span>Choose file</span>
             </div>
 

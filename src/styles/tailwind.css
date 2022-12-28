@@ -76,9 +76,12 @@
 
   .new-card {
     @apply bg-zinc-100 px-5 py-8 dark:bg-zinc-800;
-    @apply flex flex-col items-center space-y-2;
-    @apply rounded text-xl font-semibold;
+    @apply flex flex-col items-center gap-y-2 rounded;
     @apply transition-shadow;
+  }
+
+  .new-card > span {
+    @apply text-xl font-semibold;
   }
 
   .results-list {

@@ -36,7 +36,7 @@ export const RichModDisplay = ({ data, buttonType, onClick }: Props) => {
             <div className="flex shrink-0 flex-wrap align-baseline">
               <h2 className="mr-2 text-xl font-bold">{data.name}</h2>
             </div>
-            <p className="my-0.5 font-medium">{data.description}</p>
+            <p className="my-0.5">{data.description}</p>
             <div className="mb-2 flex flex-wrap">
               <a
                 className="flex items-center underline"
