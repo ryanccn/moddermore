@@ -68,6 +68,8 @@ We utilize [Twilio](https://twilio.com/)’s SendGrid services to send transacti
 
 This site and its preview deploys are hosted on [Vercel](https://vercel.com/). They have a pre-signed [Data Processing Agreement](https://vercel.com/legal/dpa) you can view on their website.
 
+We use [Sentry](https://sentry.io/) to track errors and provide timely support. They provide a [Data Processing Addendum](https://sentry.io/legal/dpa/).
+
 ## Anonymized analytics
 
 We use [Plausible](https://plausible.io/) to anonymously count visits to our website. No cookies are used and no personally identifiable data—not even an IP address or browser user agent—is stored. For more information, see the [Plausible Data Policy](https://plausible.io/data-policy).

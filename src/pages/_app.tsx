@@ -1,6 +1,8 @@
 import '~/styles/tailwind.css';
 import type { AppProps } from 'next/app';
 
+import { setUser } from '@sentry/browser';
+
 import PlausibleProvider from 'next-plausible';
 import { SessionProvider } from 'next-auth/react';
 
@@ -28,6 +30,10 @@ function MyApp({
       'padding: 0.5rem 0.375rem 0.375rem 0.5rem; font-weight: medium; border-radius: 0 0.25rem 0.25rem 0; background-color: transparent; border: 1px solid #6366F1;'
     );
   }, []);
+
+  useEffect(() => {
+    setUser(session ? { email: session.user.email } : null);
+  }, [session]);
 
   return (
     <PlausibleProvider domain="moddermore.net">
