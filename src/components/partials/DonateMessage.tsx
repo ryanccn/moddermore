@@ -1,6 +1,6 @@
 export const DonationMessage = () => {
   return (
-    <div className="mb-12 flex flex-col gap-y-4 rounded-lg bg-zinc-100 p-6 shadow dark:bg-zinc-800">
+    <div className="mb-12 flex flex-col gap-y-4 rounded-lg bg-neutral-100 p-6 shadow dark:bg-neutral-800">
       <h2 className="text-lg font-bold">
         Hello! I&apos;m the creator of Moddermore.
       </h2>

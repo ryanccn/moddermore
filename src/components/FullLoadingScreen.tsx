@@ -21,7 +21,9 @@ export const FullLoadingScreen = ({
       <div className="flex flex-col items-center space-y-6">
         <Spinner className="mb-4" />
         <span
-          className={!label ? 'sr-only' : 'text-zinc-700 dark:text-zinc-300'}
+          className={
+            !label ? 'sr-only' : 'text-neutral-700 dark:text-neutral-300'
+          }
         >
           {label ?? 'Fetching data'}
         </span>

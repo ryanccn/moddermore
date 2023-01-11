@@ -25,7 +25,7 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
     <nav
       className={clsx([
         'flex w-full items-center justify-between px-6 py-4 shadow-sm',
-        isLandingPage ? 'mb-40 bg-transparent' : null,
+        isLandingPage ? 'bg-transparent' : null,
       ])}
     >
       <div className="flex items-center gap-x-3">
@@ -36,7 +36,10 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
           className="rounded-full"
           alt="Moddermore icon"
         />
-        <Link href={data ? '/dashboard' : '/'} className="text-2xl font-bold">
+        <Link
+          href={data ? '/dashboard' : '/'}
+          className="text-2xl font-bold text-neutral-800 dark:text-neutral-200"
+        >
           Moddermore
         </Link>
       </div>
@@ -69,7 +72,7 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
             </button>
           )
         ) : (
-          <div className="primaryish-button skeleton bg-zinc-300 px-16 dark:bg-zinc-700">
+          <div className="primaryish-button skeleton bg-neutral-300 px-16 dark:bg-neutral-700">
             &nbsp;
           </div>
         )}

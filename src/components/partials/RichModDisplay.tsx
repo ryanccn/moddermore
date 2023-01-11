@@ -9,16 +9,28 @@ import {
   ArrowTopRightOnSquareIcon,
   ArrowDownTrayIcon,
 } from '@heroicons/react/20/solid';
+import clsx from 'clsx';
 
 interface Props {
   data: RichMod;
   buttonType?: 'add' | 'delete';
   onClick?: () => void;
+  className?: string;
 }
 
-export const RichModDisplay = ({ data, buttonType, onClick }: Props) => {
+export const RichModDisplay = ({
+  data,
+  buttonType,
+  onClick,
+  className,
+}: Props) => {
   return (
-    <div className="flex justify-between rounded-2xl border-none bg-zinc-100 p-4 pt-4 shadow-sm dark:bg-zinc-800">
+    <div
+      className={clsx(
+        'flex justify-between rounded-2xl border-none bg-neutral-100 p-4 pt-4 shadow-sm dark:bg-neutral-800',
+        className
+      )}
+    >
       <div className="flex w-full">
         <div className="shrink-0">
           {data.iconUrl && (
@@ -32,16 +44,15 @@ export const RichModDisplay = ({ data, buttonType, onClick }: Props) => {
           )}
         </div>
         <div className="flex grow flex-col sm:flex-row sm:justify-between">
-          <div className="flex flex-col">
+          <div className="flex flex-col justify-between">
             <div className="flex shrink-0 flex-wrap align-baseline">
               <h2 className="mr-2 text-xl font-bold">{data.name}</h2>
+              <p className="my-0.5">{data.description}</p>
             </div>
-            <p className="my-0.5">{data.description}</p>
             <div className="mb-2 flex flex-wrap">
               <a
                 className="flex items-center underline"
                 href={data.href}
-                target="_blank"
                 rel="noreferrer noopener"
               >
                 {providerFormat(data.provider)}

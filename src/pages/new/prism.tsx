@@ -123,7 +123,7 @@ const PrismInstanceImportPage: NextPage = () => {
           </select>
         </div>
 
-        <h2 className="!mt-12 text-sm font-bold uppercase text-zinc-800 dark:text-zinc-200">
+        <h2 className="!mt-12 text-sm font-bold uppercase text-neutral-800 dark:text-neutral-200">
           Exported instance from MultiMC / Prism Launcher
         </h2>
 

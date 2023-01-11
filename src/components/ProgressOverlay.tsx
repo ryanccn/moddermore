@@ -16,7 +16,7 @@ const ProgressOverlay = ({
       </h2>
 
       <div
-        className="h-2.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700"
+        className="h-2.5 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-700"
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={max}

@@ -188,7 +188,7 @@ const NewList: NextPage = () => {
           )}
         </div>
 
-        <h2 className="!mt-12 text-sm font-bold uppercase text-zinc-800 dark:text-zinc-200">
+        <h2 className="!mt-12 text-sm font-bold uppercase text-neutral-800 dark:text-neutral-200">
           Added mods
         </h2>
         <ul className="flex w-full flex-col space-y-2">

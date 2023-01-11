@@ -36,7 +36,7 @@ const Dashboard: NextPage = () => {
               <Link
                 href={`/list/${list.id}`}
                 key={list.id}
-                className="group flex flex-col space-y-2 rounded-sm bg-transparent p-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                className="group flex flex-col space-y-2 rounded-sm bg-transparent p-4 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800"
               >
                 <h2 className="flex justify-between text-lg font-semibold">
                   <span>{list.title}</span>
@@ -56,7 +56,7 @@ const Dashboard: NextPage = () => {
             ))}
           </ul>
         ) : (
-          <div className="rounded bg-transparent p-8 text-center text-lg shadow dark:bg-zinc-800">
+          <div className="rounded bg-transparent p-8 text-center text-lg shadow dark:bg-neutral-800">
             No lists yet!
           </div>
         )
