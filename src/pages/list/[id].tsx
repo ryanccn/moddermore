@@ -10,12 +10,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
+import * as Dialog from '@radix-ui/react-dialog';
+
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { Modalistic } from '~/components/Modalistic';
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { LegacyBadge } from '~/components/partials/LegacyBadge';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
+
 import { ModrinthIcon } from '~/components/icons';
 import {
   FolderArrowDownIcon,
@@ -38,8 +40,18 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [resolvedMods, setResolvedMods] = useState<RichMod[] | null>(null);
 
   const [status, setStatus] = useState<
-    'idle' | 'resolving' | 'downloading' | 'result' | 'loadinglibraries'
+    | 'idle'
+    | 'resolving'
+    | 'downloading'
+    | 'result'
+    | 'loadinglibraries'
+    | 'modrinth.form'
   >('idle');
+
+  const [mrpackName, setMrpackName] = useState(data.title);
+  const [mrpackVersion, setMrpackVersion] = useState('0.0.1');
+  const [mrpackCurseForgeStrategy, setMrpackCurseForgeStrategy] =
+    useState('skip');
   const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [result, setResult] = useState<{ success: string[]; failed: string[] }>(
     { success: [], failed: [] }
@@ -111,7 +123,11 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
             return;
           }
 
-          const fileContents = await fetch(downloadData.url).then((r) => {
+          const fileContents = await fetch(
+            downloadData.provider === 'curseforge'
+              ? `/api/cursed?url=${encodeURIComponent(downloadData.url)}`
+              : downloadData.url
+          ).then((r) => {
             if (!r.ok) {
               return null;
             }
@@ -153,6 +169,10 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     setStatus('result');
   };
 
+  const modrinthExportInit = () => {
+    setStatus('modrinth.form');
+  };
+
   const modrinthExport = async () => {
     if (!data || !resolvedMods) return;
 
@@ -176,7 +196,12 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
     const mrpack = await generateModrinthPack(
       { ...data, mods: resolvedMods },
-      urls
+      urls,
+      {
+        name: mrpackName,
+        version: mrpackVersion,
+        cfStrategy: mrpackCurseForgeStrategy,
+      }
     );
     saveAs(mrpack, `${data.title}.mrpack`);
 
@@ -224,7 +249,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         </button>
         <button
           className="primaryish-button modrinth-themed"
-          onClick={modrinthExport}
+          onClick={modrinthExportInit}
           disabled={!data.mods.length}
         >
           <ModrinthIcon className="block h-5 w-5" />
@@ -281,47 +306,137 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         />
       ) : null}
 
-      {showModal && (
-        <Modalistic
-          className="flex flex-col space-y-4"
-          backdropClickHandler={() => {
-            setStatus('idle');
-          }}
-        >
-          <div className="results-list">
-            <details>
-              <summary className="text-green-400">
-                {result.success.length} successful downloads
-              </summary>
-              <ul>
-                {result.success.map((a) => (
-                  <li key={a}>{a}</li>
-                ))}
-              </ul>
-            </details>
-
-            <details>
-              <summary className="text-red-400">
-                {result.failed.length} failed
-              </summary>
-              <ul>
-                {result.failed.map((a) => (
-                  <li key={a}>{a}</li>
-                ))}
-              </ul>
-            </details>
-          </div>
-
-          <button
-            className="primaryish-button self-center"
-            onClick={() => {
+      <Dialog.Root open={status === 'modrinth.form'}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="dialog overlay" />
+          <Dialog.Content
+            className="dialog content"
+            onEscapeKeyDown={() => {
+              setStatus('idle');
+            }}
+            onPointerDownOutside={() => {
+              setStatus('idle');
+            }}
+            onInteractOutside={() => {
               setStatus('idle');
             }}
           >
-            Close
-          </button>
-        </Modalistic>
-      )}
+            <form
+              className="flex flex-col gap-y-8"
+              onSubmit={(e) => {
+                e.preventDefault();
+                modrinthExport();
+              }}
+            >
+              <label className="flex flex-col gap-y-1">
+                <span className="text-sm font-medium">Name</span>
+                <input
+                  className="moddermore-input"
+                  required
+                  minLength={1}
+                  value={mrpackName}
+                  onChange={(e) => {
+                    setMrpackName(e.target.value);
+                  }}
+                />
+              </label>
+              <label className="flex flex-col gap-y-1">
+                <span className="text-sm font-medium">Version</span>
+
+                <input
+                  className="moddermore-input"
+                  required
+                  minLength={1}
+                  value={mrpackVersion}
+                  onChange={(e) => {
+                    setMrpackVersion(e.target.value);
+                  }}
+                />
+              </label>
+              <label className="flex flex-col gap-y-1">
+                <span className="text-sm font-medium">
+                  CurseForge mod resolution strategy
+                </span>
+                <select
+                  id="curseforge-strategy"
+                  className="moddermore-input"
+                  required
+                  value={mrpackCurseForgeStrategy}
+                  onChange={(e) => {
+                    setMrpackCurseForgeStrategy(e.target.value);
+                  }}
+                >
+                  <option value="embed">Embed files</option>
+                  <option value="links">Include download links</option>
+                  <option value="skip">Skip</option>
+                </select>
+              </label>
+              {mrpackCurseForgeStrategy !== 'skip' && (
+                <div className="rounded bg-yellow-100 p-4 font-semibold text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100">
+                  {mrpackCurseForgeStrategy === 'embed'
+                    ? 'Make sure you have the rights to embed these files in your modpack distribution!'
+                    : 'This modpack will be ineligible for publication on Modrinth.'}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="primaryish-button modrinth-themed self-start"
+              >
+                <ModrinthIcon className="block h-5 w-5" />
+                <span>Start export</span>
+              </button>
+            </form>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root
+        open={showModal}
+        onOpenChange={(open) => {
+          if (!open) setStatus('idle');
+        }}
+      >
+        <Dialog.Portal>
+          <Dialog.Overlay className="dialog overlay" />
+          <Dialog.Content className="dialog content">
+            <div className="flex flex-col space-y-4">
+              <div className="results-list">
+                <details>
+                  <summary className="text-green-400">
+                    {result.success.length} successful downloads
+                  </summary>
+                  <ul>
+                    {result.success.map((a) => (
+                      <li key={a}>{a}</li>
+                    ))}
+                  </ul>
+                </details>
+
+                <details>
+                  <summary className="text-red-400">
+                    {result.failed.length} failed
+                  </summary>
+                  <ul>
+                    {result.failed.map((a) => (
+                      <li key={a}>{a}</li>
+                    ))}
+                  </ul>
+                </details>
+              </div>
+
+              <button
+                className="primaryish-button self-center"
+                onClick={() => {
+                  setStatus('idle');
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </GlobalLayout>
   );
 };

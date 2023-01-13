@@ -43,9 +43,9 @@ export const RichModDisplay = ({
             />
           )}
         </div>
-        <div className="flex grow flex-col sm:flex-row sm:justify-between">
-          <div className="flex flex-col justify-between">
-            <div className="flex shrink-0 flex-wrap align-baseline">
+        <div className="flex grow flex-col gap-x-2 sm:flex-row sm:justify-between">
+          <div className="flex flex-col justify-between gap-y-2">
+            <div className="flex flex-col gap-y-1">
               <h2 className="mr-2 text-xl font-bold">{data.name}</h2>
               <p className="my-0.5">{data.description}</p>
             </div>

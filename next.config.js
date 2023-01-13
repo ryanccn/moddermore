@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const { withPlausibleProxy } = require('next-plausible');
-const { withSentryConfig } = require('@sentry/nextjs');
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -55,35 +54,28 @@ const securityHeaders = [
 ];
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withSentryConfig(
-  withPlausibleProxy()(
-    withBundleAnalyzer({
-      reactStrictMode: true,
-      images: { domains: ['cdn.modrinth.com', 'media.forgecdn.net'] },
+const nextConfig = withPlausibleProxy()(
+  withBundleAnalyzer({
+    reactStrictMode: true,
+    images: { domains: ['cdn.modrinth.com', 'media.forgecdn.net'] },
 
-      async headers() {
-        if (process.env.NODE_ENV === 'development') return [];
+    async headers() {
+      if (process.env.NODE_ENV === 'development') return [];
 
-        return [
-          {
-            source: '/:path*',
-            headers: securityHeaders,
-          },
-        ];
-      },
+      return [
+        {
+          source: '/:path*',
+          headers: securityHeaders,
+        },
+      ];
+    },
 
-      async redirects() {
-        return [
-          { source: '/new/polymc', destination: '/new/prism', permanent: true },
-        ];
-      },
-
-      sentry: {
-        hideSourceMaps: true,
-      },
-    })
-  ),
-  { silent: true }
+    async redirects() {
+      return [
+        { source: '/new/polymc', destination: '/new/prism', permanent: true },
+      ];
+    },
+  })
 );
 
 module.exports = nextConfig;

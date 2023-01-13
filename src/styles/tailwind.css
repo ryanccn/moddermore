@@ -50,6 +50,11 @@
 
   :not(select).moddermore-input {
     @apply w-full rounded bg-neutral-100 px-3 py-2 shadow-sm dark:bg-neutral-800;
+    @apply border-2 border-transparent;
+  }
+
+  .moddermore-input.invalid {
+    @apply border-red-500;
   }
 
   select.moddermore-input {
@@ -124,6 +129,16 @@
   }
   .results-list > details > ul {
     @apply mt-2 flex w-full flex-col space-y-0.5;
+  }
+
+  .dialog.overlay {
+    @apply fixed inset-0 bg-white/75 backdrop-blur-md dark:bg-neutral-900/75;
+  }
+
+  .dialog.content {
+    @apply fixed top-1/2 left-1/2 z-[99] max-h-[85vh] w-[90%] max-w-lg -translate-x-1/2 -translate-y-1/2 overflow-y-auto;
+    @apply rounded-lg bg-white p-8 dark:bg-neutral-900;
+    @apply focus:outline-none;
   }
 
   .moddermore-footer {

@@ -21,8 +21,6 @@ export const getLatestQuilt = () =>
     'https://maven.quiltmc.org/repository/release/org/quiltmc/quilt-loader/maven-metadata.xml'
   );
 
-// TBH Forge is kind of an afterthought, although I don't think I have any special treatment for Fabric
-// The `fabric.mod.json` parsing stuff has been removed pretty early on
 export const getLatestForge = () =>
   getFromMaven(
     'https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml'
