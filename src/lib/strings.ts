@@ -1,8 +1,10 @@
 import type { ModLoader, ModProvider } from '~/types/moddermore';
 
 export const numberFormat = (value: number): string => {
-  const formatter = Intl.NumberFormat('en', { notation: 'compact' });
-  return formatter.format(value);
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `${(value / 1_000).toFixed(1)}k`;
+
+  return `${value}`;
 };
 
 export const providerFormat = (prov: ModProvider) => {

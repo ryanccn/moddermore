@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
@@ -21,7 +21,16 @@ import {
   ArrowDownIcon,
 } from '@heroicons/react/24/solid';
 
-const Home: NextPage = () => {
+import { getLists, getPageviews, getUsers } from '~/lib/stats';
+import { numberFormat } from '~/lib/strings';
+
+interface PageProps {
+  pageviews: number;
+  users: number;
+  lists: number;
+}
+
+const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
   const router = useRouter();
   const { status } = useSession();
 
@@ -36,7 +45,7 @@ const Home: NextPage = () => {
       displayTitle={false}
       isLandingPage
     >
-      <div className="mb-20 flex min-h-screen flex-col justify-center px-20">
+      <div className="mb-14 flex min-h-screen flex-col justify-center px-20">
         <div className="mb-20 flex flex-col">
           <h2 className="mb-10 text-6xl font-bold">
             Share the mods you use with{' '}
@@ -60,7 +69,22 @@ const Home: NextPage = () => {
         <ArrowDownIcon className="block h-5 w-5 stroke-2 text-neutral-600 dark:text-neutral-400" />
       </div>
 
-      <div className="mb-10 flex flex-col items-start gap-y-4 p-20">
+      <div className="flex gap-x-24 self-center p-6 lg:p-20">
+        <div className="flex flex-col items-center gap-y-2">
+          <span className="text-lg font-bold">Monthly pageviews</span>
+          <span className="text-5xl font-black">{numberFormat(pageviews)}</span>
+        </div>
+        <div className="flex flex-col items-center gap-y-2">
+          <span className="text-lg font-bold">Active users</span>
+          <span className="text-5xl font-black">{numberFormat(users)}</span>
+        </div>
+        <div className="flex flex-col items-center gap-y-2">
+          <span className="text-lg font-bold">Lists created</span>
+          <span className="text-5xl font-black">{numberFormat(lists)}</span>
+        </div>
+      </div>
+
+      <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:p-20">
         <h2 className="text-4xl font-bold">Import from many platforms</h2>
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           All of your mods, but in the same place.
@@ -96,7 +120,7 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      <div className="mb-10 flex flex-col items-start gap-y-4 p-20">
+      <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:p-20">
         <h2 className="text-4xl font-bold">Share with your friends</h2>
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Or just publish the link publicly anywhere you want!
@@ -121,7 +145,7 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      <div className="-mt-36 mb-10 flex flex-col items-start gap-y-4 p-20">
+      <div className="-mt-36 mb-10 flex flex-col items-start gap-y-4 p-6 lg:p-20">
         <h2 className="text-4xl font-bold">Export to anywhere</h2>
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Publishing to Modrinth? Importing to Prism Launcher? We{"'"}ve got you
@@ -147,7 +171,7 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      <div className="mb-36 flex flex-col gap-y-16 p-20">
+      <div className="mb-36 flex flex-col gap-y-16 p-6 lg:p-20">
         <h2 className="text-4xl font-bold">Our sponsors</h2>
 
         <div className="flex flex-col gap-24 lg:flex-row">
@@ -171,6 +195,17 @@ const Home: NextPage = () => {
       </div>
     </GlobalLayout>
   );
+};
+
+export const getStaticProps: GetStaticProps<PageProps> = async () => {
+  return {
+    props: {
+      pageviews: await getPageviews(),
+      users: await getUsers(),
+      lists: await getLists(),
+    },
+    revalidate: 5 * 60,
+  };
 };
 
 export default Home;

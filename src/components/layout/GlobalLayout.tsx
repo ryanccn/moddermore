@@ -50,7 +50,7 @@ export const GlobalLayout = ({
       <main
         className={
           isLandingPage
-            ? ''
+            ? 'flex flex-col'
             : isAuthPage
             ? 'layout mt-28 max-w-[45ch] items-center text-center'
             : 'layout mt-28'

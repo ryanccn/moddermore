@@ -42,4 +42,9 @@ const getListsCollection = async () => {
   return client.db().collection<ModList>('lists');
 };
 
-export { clientPromise, getListsCollection };
+const getUsersCollection = async () => {
+  const client = await clientPromise;
+  return client.db().collection('users');
+};
+
+export { clientPromise, getListsCollection, getUsersCollection };

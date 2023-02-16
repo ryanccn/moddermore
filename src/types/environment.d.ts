@@ -15,6 +15,8 @@ declare global {
 
       NEXT_PUBLIC_CURSEFORGE_API_KEY: string;
 
+      PLAUSIBLE_TOKEN: string;
+
       /** Only available when deployed */
       NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?: string;
     }
