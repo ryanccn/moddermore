@@ -45,7 +45,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
       displayTitle={false}
       isLandingPage
     >
-      <div className="mb-14 flex min-h-screen flex-col justify-center px-20">
+      <div className="mb-14 flex min-h-screen flex-col justify-center p-6 lg:px-20">
         <div className="mb-20 flex flex-col">
           <h2 className="mb-10 text-6xl font-bold">
             Share the mods you use with{' '}
@@ -69,7 +69,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         <ArrowDownIcon className="block h-5 w-5 stroke-2 text-neutral-600 dark:text-neutral-400" />
       </div>
 
-      <div className="flex gap-x-24 self-center p-6 lg:p-20">
+      <div className="flex flex-col items-center gap-y-16 gap-x-24 self-center p-6 lg:flex-row lg:p-20">
         <div className="flex flex-col items-center gap-y-2">
           <span className="text-lg font-bold">Monthly pageviews</span>
           <span className="text-5xl font-black">{numberFormat(pageviews)}</span>
