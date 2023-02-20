@@ -66,8 +66,8 @@ export const getCFDownload = async ({
       type: 'direct',
       fileSize: latest.fileLength,
       sha1: latest.hashes.filter((k) => k.algo === 1)[0].value,
-      projectId: latest.id,
-      fileId: latest.modId,
+      projectId: latest.modId,
+      fileId: latest.id,
       displayName: latest.displayName ?? latest.fileName,
     },
   ];
