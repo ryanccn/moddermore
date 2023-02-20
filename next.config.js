@@ -75,6 +75,15 @@ const nextConfig = withPlausibleProxy()(
         { source: '/new/polymc', destination: '/new/prism', permanent: true },
       ];
     },
+
+    async rewrites() {
+      return [
+        {
+          source: '/list/:id/packwiz/:match*',
+          destination: '/api/packwiz/list/:id/:match*',
+        },
+      ];
+    },
   })
 );
 
