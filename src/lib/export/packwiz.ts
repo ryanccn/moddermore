@@ -8,11 +8,11 @@ import {
   getLatestQuilt,
 } from './loaderVersions';
 
-import { callModrinthAPI } from './modrinth';
-import { callCurseForgeAPI } from './curseforge';
+import { getModrinthDownload } from './modrinth';
+import { getCFDownload } from './curseforge';
 import pLimit from 'p-limit';
 
-import type { ProviderSpecificOptions } from './types';
+import type { CurseForgeDownload, ModrinthDownload, ProviderSpecificOptions } from './types';
 
 export const getPackTOML = async (id: string) => {
   const list = await getSpecificList(id);
@@ -88,38 +88,42 @@ export const getIndexTOML = async (id: string) => {
 };
 
 export const getModrinthTOML = async (data: ProviderSpecificOptions) => {
-  const res = await callModrinthAPI(data);
-  if (!res) return null;
+  const res = (await getModrinthDownload(data)).filter(
+    (dl) => !('error' in dl) && dl.provider === 'modrinth'
+  ) as ModrinthDownload[];
+  if (!res || res.length === 0) return null;
 
-  const f = res.files[0];
+  const f = res[0];
 
   return {
-    name: res.name,
-    filename: f.filename,
+    name: f.displayName,
+    filename: f.name,
     download: { url: f.url, 'hash-format': 'sha512', hash: f.hashes.sha512 },
     update: {
       modrinth: {
-        'mod-id': res.project_id,
-        version: res.id,
+        'mod-id': f.id,
+        version: f.version,
       },
     },
   };
 };
 
 export const getCurseForgeTOML = async (data: ProviderSpecificOptions) => {
-  const res = await callCurseForgeAPI(data);
+  const res = (await getCFDownload(data)).filter(
+    (dl) => !('error' in dl) && dl.provider === 'curseforge'
+  ) as CurseForgeDownload[];
   if (!res || res.length === 0) return null;
 
   const f = res[0];
 
   return {
-    name: f.displayName ?? f.fileName,
-    filename: f.fileName,
+    name: f.displayName,
+    filename: f.name,
     download: {
       mode: 'metadata:curseforge',
       'hash-format': 'sha1',
-      hash: f.hashes.filter((k) => k.algo === 1)[0].value,
+      hash: f.sha1,
     },
-    update: { curseforge: { 'file-id': f.id, 'project-id': f.modId } },
+    update: { curseforge: { 'file-id': f.fileId, 'project-id': f.projectId } },
   };
 };
