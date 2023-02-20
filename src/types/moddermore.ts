@@ -31,7 +31,7 @@ export const modListPartialZod = z.object({
     z.literal('fabric'),
     z.literal('quilt'),
   ]),
-  mods: z.array(modZod).min(1),
+  mods: z.array(modZod).min(1).max(150),
 });
 
 export type ModListPartial = z.infer<typeof modListPartialZod>;
