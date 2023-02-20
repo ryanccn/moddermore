@@ -23,6 +23,7 @@ import {
   FolderArrowDownIcon,
   PencilIcon,
   TrashIcon,
+  LinkIcon,
 } from '@heroicons/react/20/solid';
 
 import toast from 'react-hot-toast';
@@ -208,6 +209,16 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     setStatus('idle');
   };
 
+  const packwizExport = async () => {
+    await navigator.clipboard.writeText(getPackwizUrl(document));
+  };
+
+  const getPackwizUrl = (document: Document) => {
+    const url = new URL(document.URL);
+    url.pathname = `/list/${data.id}/packwiz/pack.toml`;
+    return url.href;
+  };
+
   const deleteOMG = async () => {
     if (!data || !session.data) return;
 
@@ -254,6 +265,14 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         >
           <ModrinthIcon className="block h-5 w-5" />
           <span>Modrinth pack</span>
+        </button>
+        <button
+          className="primaryish-button"
+          onClick={packwizExport}
+          disabled={!data.mods.length}
+        >
+          <LinkIcon className="block h-5 w-5" />
+          <span>Copy Packwiz link</span>
         </button>
         {session && session.data?.user.id === data.owner && (
           <>
