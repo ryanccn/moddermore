@@ -33,6 +33,16 @@ export const authOptions: NextAuthOptions = {
   ],
   adapter: MongoDBAdapter(clientPromise),
   callbacks: {
+    async signIn({ user }) {
+      if (
+        process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview' &&
+        (!('emailVerified' in user) || !user.emailVerified)
+      ) {
+        return false;
+      }
+
+      return true;
+    },
     async session({ session, user }) {
       return { ...session, user: { ...session.user, id: user.id } };
     },
