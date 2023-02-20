@@ -18,6 +18,8 @@ declare global {
       PLAUSIBLE_TOKEN: string;
 
       /** Only available when deployed */
+      NEXT_PUBLIC_VERCEL_ENV?: 'production' | 'preview' | 'development';
+      /** Only available when deployed */
       NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?: string;
     }
   }
