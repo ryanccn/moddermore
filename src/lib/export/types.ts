@@ -18,6 +18,8 @@ export interface ModrinthDownload {
     sha1: string;
     sha512: string;
   };
+  displayName: string;
+  version: string;
 }
 
 export interface CurseForgeDownload {
@@ -27,6 +29,10 @@ export interface CurseForgeDownload {
   type: 'direct' | 'dependency';
   provider: 'curseforge';
   fileSize: number;
+  sha1: string;
+  projectId: number;
+  fileId: number;
+  displayName: string;
 }
 
 export type Download = ModrinthDownload | CurseForgeDownload;
