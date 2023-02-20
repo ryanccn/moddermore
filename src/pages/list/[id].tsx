@@ -47,7 +47,6 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     | 'result'
     | 'loadinglibraries'
     | 'modrinth.form'
-    | 'packwiz.show'
   >('idle');
 
   const [mrpackName, setMrpackName] = useState(data.title);
@@ -210,11 +209,11 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     setStatus('idle');
   };
 
-  const packwizExport = () => {
-    setStatus('packwiz.show');
+  const packwizExport = async () => {
+    await navigator.clipboard.writeText(getPackwizUrl(document));
   };
 
-  const getPackwizUrl = () => {
+  const getPackwizUrl = (document: Document) => {
     const url = new URL(document.URL);
     url.pathname = `/list/${data.id}/packwiz/pack.toml`;
     return url.href;
@@ -273,7 +272,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
           disabled={!data.mods.length}
         >
           <LinkIcon className="block h-5 w-5" />
-          <span>Packwiz link</span>
+          <span>Copy Packwiz link</span>
         </button>
         {session && session.data?.user.id === data.owner && (
           <>
@@ -444,48 +443,6 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
                   </ul>
                 </details>
               </div>
-
-              <button
-                className="primaryish-button self-center"
-                onClick={() => {
-                  setStatus('idle');
-                }}
-              >
-                Close
-              </button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
-
-      <Dialog.Root open={status === 'packwiz.show'}>
-        <Dialog.Portal>
-          <Dialog.Overlay className="dialog overlay" />
-          <Dialog.Content
-            className="dialog content"
-            onEscapeKeyDown={() => {
-              setStatus('idle');
-            }}
-            onPointerDownOutside={() => {
-              setStatus('idle');
-            }}
-            onInteractOutside={() => {
-              setStatus('idle');
-            }}
-          >
-            <div
-              className="flex flex-col gap-y-8"
-            >
-              <label className="flex flex-col gap-y-1">
-                <span className="text-sm font-medium">Link</span>
-                <input
-                  className="moddermore-input"
-                  value={getPackwizUrl()}
-                  onChange={(e) => {
-                    e.target.value = getPackwizUrl();
-                  }}
-                />
-              </label>
 
               <button
                 className="primaryish-button self-center"
