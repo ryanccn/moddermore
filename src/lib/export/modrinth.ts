@@ -21,6 +21,8 @@ const getObjFromVersion = (
     type,
     hashes: primary.hashes,
     fileSize: primary.size,
+    displayName: v.name,
+    version: v.id,
   };
 };
 
