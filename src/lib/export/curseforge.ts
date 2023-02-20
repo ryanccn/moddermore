@@ -1,12 +1,11 @@
 import type { ExportReturnData, ProviderSpecificOptions } from './types';
 import type { CurseForgeVersion } from '~/types/curseforge';
 
-export const getCFDownload = async ({
+export const callCurseForgeAPI = async ({
   id,
   gameVersions,
   loader,
-  name,
-}: ProviderSpecificOptions): Promise<ExportReturnData> => {
+}: ProviderSpecificOptions) => {
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
   if (!API_KEY) throw new Error('No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!');
 
@@ -29,12 +28,27 @@ export const getCFDownload = async ({
   );
 
   if (res.status === 404) {
-    return [{ error: 'notfound', name, id }];
+    return null;
   }
 
   const data = (await res
     .json()
     .then((json) => json.data)) as CurseForgeVersion[];
+
+  return data;
+};
+
+export const getCFDownload = async ({
+  id,
+  gameVersions,
+  loader,
+  name,
+}: ProviderSpecificOptions): Promise<ExportReturnData> => {
+  const data = await callCurseForgeAPI({ id, gameVersions, loader, name });
+
+  if (!data) {
+    return [{ error: 'notfound', name, id }];
+  }
 
   let latest = data.filter((v) => v.releaseType === 1)[0];
   if (!latest) latest = data.filter((v) => v.releaseType === 2)[0];
