@@ -25,7 +25,7 @@ const getObjFromVersion = (
 };
 
 /** WTF even is this function? what's it for? */
-const callModrinthAPI = async ({
+export const callModrinthAPI = async ({
   id,
   gameVersions,
   loader,
