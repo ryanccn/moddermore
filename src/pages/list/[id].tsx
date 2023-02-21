@@ -210,7 +210,12 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   };
 
   const packwizExport = async () => {
-    await navigator.clipboard.writeText(getPackwizUrl(document));
+    try {
+      await navigator.clipboard.writeText(getPackwizUrl(document));
+      toast.success("Copied link to clipboard");
+    } catch {
+      toast.error("Failed to copy link to clipboard");
+    }
   };
 
   const getPackwizUrl = (document: Document) => {
