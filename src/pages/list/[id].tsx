@@ -19,7 +19,7 @@ import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { LegacyBadge } from '~/components/partials/LegacyBadge';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 
-import { ModrinthIcon } from '~/components/icons';
+import { ModrinthIcon, PrismIcon } from '~/components/icons';
 import {
   FolderArrowDownIcon,
   PencilIcon,
@@ -31,6 +31,8 @@ import {
 import toast from 'react-hot-toast';
 import { getSpecificList } from '~/lib/db';
 import { DonationMessage } from '~/components/partials/DonateMessage';
+import type JSZip from 'jszip';
+import { ExportReturnData } from '~/lib/export/types';
 
 interface PageProps {
   data: ModList;
@@ -104,6 +106,16 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     setStatus('downloading');
 
     const zipfile = new JSZip();
+
+    await exportZip(zipfile, urls)
+
+    const zipBlob = await zipfile.generateAsync({ type: 'blob' });
+    saveAs(zipBlob, `${data.title}.zip`);
+
+    setStatus('result');
+  };
+
+  const exportZip = async (zipfile: JSZip, urls: ExportReturnData) => {
     const modFolder = zipfile.folder('mods');
 
     if (!modFolder) {
@@ -165,11 +177,6 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         })
       )
     );
-
-    const zipBlob = await zipfile.generateAsync({ type: 'blob' });
-    saveAs(zipBlob, `${data.title}.zip`);
-
-    setStatus('result');
   };
 
   const modrinthExportInit = () => {
@@ -224,6 +231,105 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     const url = new URL(document.URL);
     url.pathname = `/list/${data.id}/packwiz/pack.toml`;
     return url.href;
+  };
+
+  const prismStaticExport = async () => {
+    if (!resolvedMods) return;
+
+    setProgress({ value: 0, max: 3 });
+    setStatus('loadinglibraries');
+
+    const { getDownloadURLs } = await import('~/lib/export');
+    setProgress({ value: 1, max: 4 });
+    const { default: JSZip } = await import('jszip');
+    setProgress({ value: 2, max: 4 });
+    const { default: saveAs } = await import('file-saver');
+    setProgress({ value: 3, max: 4 });
+    const {
+      getLatestFabric,
+      getLatestForge,
+      getLatestQuilt,
+    } = await import('~/lib/export/loaderVersions');
+    setProgress({ value: 4, max: 4 });
+
+    setProgress({ value: 0, max: data.mods.length });
+    setStatus('resolving');
+
+    const urls = await getDownloadURLs(
+      { ...data, mods: resolvedMods },
+      setProgress
+    );
+
+    setProgress({ value: 0, max: data.mods.length });
+    setResult({ success: [], failed: [] });
+    setStatus('downloading');
+
+    const zipfile = new JSZip();
+    const dotMinecraftFolder = zipfile.folder('.minecraft');
+
+    if (!dotMinecraftFolder) {
+      throw new Error('failed to create .minecraft folder in zipfile?');
+    }
+
+    zipfile.file("instance.cfg", `name=${data.title}`);
+
+    await Promise.all([
+      exportZip(dotMinecraftFolder, urls),
+      (async () => {
+        const meta = await fetch(`https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`);
+        if (!meta.ok) {
+          throw new Error('failed to fetch meta for minecraft');
+        }
+        const parsed = await meta.json();
+        const mmcPack = {
+          "components": [
+              {
+                  "dependencyOnly": true,
+                  "uid": parsed.requires[0].uid,
+                  "version": parsed.requires[0].suggests,
+              },
+              {
+                  "uid": "net.minecraft",
+                  "version": data.gameVersion,
+              },
+          ],
+          "formatVersion": 1
+        };
+        if (data.modloader == "fabric" || data.modloader == "quilt") {
+          mmcPack.components.push({
+            "dependencyOnly": true,
+            "uid": "net.fabricmc.intermediary",
+            "version": data.gameVersion
+          });
+        }
+        switch (data.modloader) {
+          case "fabric":
+            mmcPack.components.push({
+              "uid": "net.fabricmc.fabric-loader",
+              "version": await getLatestFabric(),
+            });
+            break;
+          case "forge":
+            mmcPack.components.push({
+              "uid": "net.minecraftforge",
+              "version": await getLatestForge(),
+            });
+            break;
+          case "quilt":
+            mmcPack.components.push({
+              "uid": "org.quiltmc.quilt-loader",
+              "version": await getLatestQuilt(),
+            });
+            break;
+        }
+        zipfile.file("mmc-pack.json", JSON.stringify(mmcPack))
+      })()
+    ]);
+
+    const zipBlob = await zipfile.generateAsync({ type: 'blob' });
+    saveAs(zipBlob, `${data.title}.zip`);
+
+    setStatus('result');
   };
 
   const deleteOMG = async () => {
@@ -293,12 +399,22 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
               <button
-                className="primaryish-button dropdown rounded-t-none"
+                className="primaryish-button dropdown rounded-none"
                 onClick={packwizExport}
                 disabled={!data.mods.length}
               >
                 <LinkIcon className="block h-5 w-5" />
                 <span>Copy packwiz link</span>
+              </button>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item asChild>
+              <button
+                className="primaryish-button dropdown rounded-t-none"
+                onClick={prismStaticExport}
+                disabled={!data.mods.length}
+              >
+                <PrismIcon className="block h-5 w-5" />
+                <span>MultiMC / Prism (static)</span>
               </button>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
