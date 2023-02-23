@@ -28,7 +28,6 @@ export const getPageviews = async (): Promise<number | null> => {
 
 export const getUsers = async (): Promise<number> => {
   const db = await getUsersCollection();
-  console.log(await db.countDocuments());
   return db.countDocuments();
 };
 

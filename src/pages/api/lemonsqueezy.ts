@@ -1,4 +1,5 @@
 import type { NextApiHandler } from 'next';
+
 import { getProfilesCollection, getUsersCollection } from '~/lib/db/client';
 import { parseLSRequest } from '~/lib/lemonSqueezy';
 
