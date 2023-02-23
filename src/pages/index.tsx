@@ -25,7 +25,7 @@ import {
 // import { numberFormat } from '~/lib/strings';
 
 interface PageProps {
-  pageviews: number;
+  pageviews: number | null;
   users: number;
   lists: number;
 }
@@ -69,11 +69,15 @@ const Home: NextPage = () => {
         <ArrowDownIcon className="block h-5 w-5 stroke-2 text-neutral-600 dark:text-neutral-400" />
       </div>
 
-      {/* <div className="flex flex-col items-center gap-y-16 gap-x-24 self-center p-6 lg:flex-row lg:p-20">
-        <div className="flex flex-col items-center gap-y-2">
-          <span className="text-lg font-bold">Monthly pageviews</span>
-          <span className="text-5xl font-black">{numberFormat(pageviews)}</span>
-        </div>
+      <div className="mb-12 flex flex-col items-center gap-y-16 gap-x-24 self-center p-6 lg:flex-row lg:p-20">
+        {pageviews && (
+          <div className="flex flex-col items-center gap-y-2">
+            <span className="text-lg font-bold">Monthly pageviews</span>
+            <span className="text-5xl font-black">
+              {numberFormat(pageviews)}
+            </span>
+          </div>
+        )}
         <div className="flex flex-col items-center gap-y-2">
           <span className="text-lg font-bold">Active users</span>
           <span className="text-5xl font-black">{numberFormat(users)}</span>
