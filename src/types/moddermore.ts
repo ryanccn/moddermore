@@ -57,3 +57,16 @@ export interface RichModList {
   mods: RichMod[];
   legacy?: string | null;
 }
+
+export interface UserEditableProfileData {
+  name: string | null;
+  profilePicture: string | null;
+}
+
+export interface UserProfileData extends UserEditableProfileData {
+  plan: 'pro' | null;
+}
+
+export interface UserProfile extends UserProfileData {
+  userId: string;
+}

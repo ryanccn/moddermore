@@ -2,6 +2,7 @@ import { stringify } from '@iarna/toml';
 import type { NextApiHandler } from 'next';
 
 import { getSpecificList } from '~/lib/db';
+import { isPro } from '~/lib/db/users';
 import { getCurseForgeTOML, getModrinthTOML } from '~/lib/export/packwiz';
 
 const h: NextApiHandler = async (req, res) => {
@@ -25,6 +26,11 @@ const h: NextApiHandler = async (req, res) => {
 
   if (!list) {
     res.status(404).end();
+    return;
+  }
+
+  if (!list.owner || !(await isPro(list.owner))) {
+    res.status(401).end();
     return;
   }
 
