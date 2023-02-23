@@ -2,7 +2,6 @@ import type { NextApiRequest } from 'next';
 
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { buffer } from 'node:stream/consumers';
-// import cloneable from 'cloneable-readable';
 
 export const validateLSRequest = async (req: NextApiRequest, buf: Buffer) => {
   const secret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET;
@@ -74,7 +73,6 @@ export const parseLSRequest = async (
   if (!valid) return null;
 
   const textBody = dataBuf.toString();
-  console.log(textBody);
   const { data } = JSON.parse(textBody);
   const event = req.headers['x-event-name'];
 
