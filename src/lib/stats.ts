@@ -3,7 +3,9 @@ import { getListsCollection, getUsersCollection } from '~/lib/db/client';
 const plausibleUrl =
   'https://plausible.io/api/v1/stats/aggregate?metrics=pageviews&site_id=moddermore.net&period=30d';
 
-export const getPageviews = async (): Promise<number> => {
+export const getPageviews = async (): Promise<number | null> => {
+  if (!process.env.PLAUSIBLE_TOKEN) return null;
+
   const {
     results: {
       pageviews: { value },
