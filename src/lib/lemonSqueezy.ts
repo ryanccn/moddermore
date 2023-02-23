@@ -75,7 +75,7 @@ export const parseLSRequest = async (
 
   const textBody = dataBuf.toString();
   console.log(textBody);
-  const data = JSON.parse(textBody) as unknown;
+  const { data } = JSON.parse(textBody);
   const event = req.headers['x-event-name'];
 
   if (typeof event !== 'string') return null;
