@@ -84,7 +84,7 @@
   }
 
   .primaryish-button.dropdown {
-    @apply bg-zinc-50 dark:bg-neutral-700 w-full text-black dark:text-white
+    @apply w-full bg-zinc-50 text-black dark:bg-neutral-700 dark:text-white;
   }
 
   .landing-page-fade-out {
