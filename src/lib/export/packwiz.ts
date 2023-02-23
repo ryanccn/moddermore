@@ -12,7 +12,11 @@ import { getModrinthDownload } from './modrinth';
 import { getCFDownload } from './curseforge';
 import pLimit from 'p-limit';
 
-import type { CurseForgeDownload, ModrinthDownload, ProviderSpecificOptions } from './types';
+import type {
+  CurseForgeDownload,
+  ModrinthDownload,
+  ProviderSpecificOptions,
+} from './types';
 
 export const getPackTOML = async (id: string) => {
   const list = await getSpecificList(id);
