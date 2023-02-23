@@ -233,6 +233,105 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     return url.href;
   };
 
+  const prismExport = async () => {
+    setProgress({ value: 0, max: 3 });
+    setStatus('loadinglibraries');
+
+    const { default: JSZip } = await import('jszip');
+    setProgress({ value: 1, max: 3 });
+    const { default: saveAs } = await import('file-saver');
+    setProgress({ value: 2, max: 3 });
+    const {
+      getLatestFabric,
+      getLatestForge,
+      getLatestQuilt,
+    } = await import('~/lib/export/loaderVersions');
+    setProgress({ value: 3, max: 3 });
+
+    setProgress({ value: 0, max: data.mods.length });
+    setStatus('downloading');
+
+    const zipfile = new JSZip();
+    zipfile.file("instance.cfg", `OverrideCommands=true
+PreLaunchCommand="$INST_JAVA" -jar packwiz-installer-bootstrap.jar ${getPackwizUrl(document)}
+name=${data.title}`)
+    const meta = await fetch(`https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`);
+    if (!meta.ok) {
+      throw new Error('failed to fetch meta for minecraft');
+    }
+    const parsed = await meta.json();
+    const mmcPack = {
+      "components": [
+          {
+              "dependencyOnly": true,
+              "uid": parsed.requires[0].uid,
+              "version": parsed.requires[0].suggests,
+          },
+          {
+              "uid": "net.minecraft",
+              "version": data.gameVersion,
+          },
+      ],
+      "formatVersion": 1
+    };
+    if (data.modloader == "fabric" || data.modloader == "quilt") {
+      mmcPack.components.push({
+        "dependencyOnly": true,
+        "uid": "net.fabricmc.intermediary",
+        "version": data.gameVersion
+      });
+    }
+    switch (data.modloader) {
+      case "fabric":
+        mmcPack.components.push({
+          "uid": "net.fabricmc.fabric-loader",
+          "version": await getLatestFabric(),
+        });
+        break;
+      case "forge":
+        mmcPack.components.push({
+          "uid": "net.minecraftforge",
+          "version": await getLatestForge(),
+        });
+        break;
+      case "quilt":
+        mmcPack.components.push({
+          "uid": "org.quiltmc.quilt-loader",
+          "version": await getLatestQuilt(),
+        });
+        break;
+    }
+    zipfile.file("mmc-pack.json", JSON.stringify(mmcPack))
+    const dotMinecraftFolder = zipfile.folder(".minecraft");
+
+    if (!dotMinecraftFolder) {
+      throw new Error('failed to create .minecraft folder in zipfile?');
+    }
+
+    // packwiz-installer-bootstrap last release was july 2020 so /shrug
+    // const packwizInstallerBootstrap = await fetch("https://api.github.com/repos/packwiz/packwiz-installer-bootstrap/releases/latest")
+    // if (!packwizInstallerBootstrap.ok) {
+    //   throw new Error('failed to download packwiz-installer-bootstrap.jar');
+    // }
+
+    // const packwizInstallerBootstrapJar = await fetch((await packwizInstallerBootstrap.json()).assets[0].url, {
+    //   headers: {
+    //     Accept: "application/octet-stream"
+    //   }
+    // })
+    const packwizInstallerBootstrapJar = await fetch("/packwiz-installer-bootstrap.jar");
+    if (!packwizInstallerBootstrapJar.ok) {
+      throw new Error('failed to download packwiz-installer-bootstrap.jar');
+    }
+
+    dotMinecraftFolder.file("packwiz-installer-bootstrap.jar", packwizInstallerBootstrapJar.blob());
+
+    const zipBlob = await zipfile.generateAsync({ type: 'blob' });
+    saveAs(zipBlob, `${data.title}.zip`);
+
+    setStatus('idle');
+  };
+
   const prismStaticExport = async () => {
     if (!resolvedMods) return;
 
@@ -409,12 +508,22 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
               <button
-                className="primaryish-button dropdown rounded-t-none"
+                className="primaryish-button dropdown rounded-none"
                 onClick={prismStaticExport}
                 disabled={!data.mods.length}
               >
                 <PrismIcon className="block h-5 w-5" />
                 <span>MultiMC / Prism (static)</span>
+              </button>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item asChild>
+              <button
+                className="primaryish-button dropdown rounded-t-none"
+                onClick={prismExport}
+                disabled={!data.mods.length}
+              >
+                <PrismIcon className="block h-5 w-5" />
+                <span>MultiMC / Prism</span>
               </button>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
