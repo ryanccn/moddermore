@@ -523,7 +523,7 @@ name=${data.title}`)
                 disabled={!data.mods.length}
               >
                 <PrismIcon className="block h-5 w-5" />
-                <span>MultiMC / Prism</span>
+                <span>MultiMC / Prism (packwiz)</span>
               </button>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
