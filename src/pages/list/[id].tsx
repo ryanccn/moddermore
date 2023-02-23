@@ -250,7 +250,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
       getLatestForge,
       getLatestQuilt,
     } = await import('~/lib/export/loaderVersions');
-    setProgress({ value: 3, max: 4 });
+    setProgress({ value: 4, max: 4 });
 
     setProgress({ value: 0, max: data.mods.length });
     setStatus('resolving');
