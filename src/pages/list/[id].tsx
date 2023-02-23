@@ -50,6 +50,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     | 'downloading'
     | 'result'
     | 'loadinglibraries'
+    | 'generatingzip'
     | 'modrinth.form'
   >('idle');
 
@@ -246,8 +247,8 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     );
     setProgress({ value: 3, max: 3 });
 
-    setProgress({ value: 0, max: data.mods.length });
-    setStatus('downloading');
+    setProgress({ value: 0, max: 2 });
+    setStatus('generatingzip');
 
     const zipfile = new JSZip();
     zipfile.file(
@@ -307,6 +308,7 @@ name=${data.title}`
         break;
     }
     zipfile.file('mmc-pack.json', JSON.stringify(mmcPack));
+    setProgress({ value: 1, max: 2 });
     const dotMinecraftFolder = zipfile.folder('.minecraft');
 
     if (!dotMinecraftFolder) {
@@ -335,6 +337,7 @@ name=${data.title}`
       'packwiz-installer-bootstrap.jar',
       packwizInstallerBootstrapJar.blob()
     );
+    setProgress({ value: 2, max: 2 });
 
     const zipBlob = await zipfile.generateAsync({ type: 'blob' });
     saveAs(zipBlob, `${data.title}.zip`);
@@ -589,6 +592,11 @@ name=${data.title}`
       ) : status === 'loadinglibraries' ? (
         <ProgressOverlay
           label="Loading supplementary libraries..."
+          {...progress}
+        />
+      ) : status === 'generatingzip' ? (
+        <ProgressOverlay
+          label="Getting the .zip file ready..."
           {...progress}
         />
       ) : null}
