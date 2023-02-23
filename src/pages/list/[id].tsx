@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
 import * as Dialog from '@radix-ui/react-dialog';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
@@ -24,6 +25,7 @@ import {
   PencilIcon,
   TrashIcon,
   LinkIcon,
+  ArchiveBoxIcon,
 } from '@heroicons/react/20/solid';
 
 import toast from 'react-hot-toast';
@@ -255,30 +257,53 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
       </div>
 
       <div className="mb-16 flex space-x-4">
-        <button
-          className="primaryish-button"
-          onClick={downloadExport}
-          disabled={!data.mods.length}
-        >
-          <FolderArrowDownIcon className="block h-5 w-5" />
-          <span>Export</span>
-        </button>
-        <button
-          className="primaryish-button modrinth-themed"
-          onClick={modrinthExportInit}
-          disabled={!data.mods.length}
-        >
-          <ModrinthIcon className="block h-5 w-5" />
-          <span>Modrinth pack</span>
-        </button>
-        <button
-          className="primaryish-button"
-          onClick={packwizExport}
-          disabled={!data.mods.length}
-        >
-          <LinkIcon className="block h-5 w-5" />
-          <span>Copy Packwiz link</span>
-        </button>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger asChild>
+            <button
+              className="primaryish-button"
+              onClick={downloadExport}
+              disabled={!data.mods.length}
+            >
+              <FolderArrowDownIcon className="block h-5 w-5" />
+              <span>Export as...</span>
+            </button>
+          </DropdownMenu.Trigger>
+
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content align="start" className="mt-1 rounded shadow">
+              <DropdownMenu.Item asChild>
+                <button
+                  className="primaryish-button dropdown rounded-b-none"
+                  onClick={downloadExport}
+                  disabled={!data.mods.length}
+                >
+                  <ArchiveBoxIcon className="block h-5 w-5" />
+                  <span>Zip archive</span>
+                </button>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item asChild>
+              <button
+                className="primaryish-button dropdown rounded-none"
+                onClick={modrinthExportInit}
+                disabled={!data.mods.length}
+              >
+                <ModrinthIcon className="block h-5 w-5" />
+                <span>Modrinth pack</span>
+              </button>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item asChild>
+              <button
+                className="primaryish-button dropdown rounded-t-none"
+                onClick={packwizExport}
+                disabled={!data.mods.length}
+              >
+                <LinkIcon className="block h-5 w-5" />
+                <span>Copy Packwiz link</span>
+              </button>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
         {session && session.data?.user.id === data.owner && (
           <>
             <button
