@@ -1,6 +1,7 @@
 import type { NextApiHandler } from 'next';
 
 import { getSpecificList } from '~/lib/db';
+import { isPro } from '~/lib/db/users';
 import { getPackTOML } from '~/lib/export/packwiz';
 
 const h: NextApiHandler = async (req, res) => {
@@ -16,7 +17,13 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
+  if (!list.owner || !(await isPro(list.owner))) {
+    res.status(401).end();
+    return;
+  }
+
   res.setHeader('content-type', 'application/toml; charset=utf-8');
   res.send(await getPackTOML(req.query.id));
 };
+
 export default h;

@@ -1,11 +1,9 @@
-import { clientPromise } from '~/lib/db/client';
+import { getProfilesCollection, getUsersCollection } from '~/lib/db/client';
 import { blue, red } from 'kleur/colors';
 
 (async () => {
-  const client = await clientPromise;
-
-  const profileCollection = client.db().collection('profile');
-  const usersCollection = client.db().collection('users');
+  const profileCollection = await getProfilesCollection();
+  const usersCollection = await getUsersCollection();
 
   const deleteRes = await profileCollection.deleteMany({});
   console.log(red(`Deleted ${deleteRes.deletedCount} profiles`));
@@ -16,9 +14,10 @@ import { blue, red } from 'kleur/colors';
   while (user !== null) {
     if (!(await profileCollection.findOne({ email: user.email }))) {
       await profileCollection.insertOne({
-        email: user.email,
-        avatar: null,
-        plan: 'free',
+        userId: user._id.toString(),
+        name: null,
+        profilePicture: null,
+        plan: 'pro',
       });
       console.log('Built profile for', blue(user.email));
     } else {
@@ -27,8 +26,6 @@ import { blue, red } from 'kleur/colors';
 
     user = await userCursor.next();
   }
-
-  await client.close();
 })()
   .then(() => {
     process.exit(0);

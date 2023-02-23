@@ -1,3 +1,5 @@
+import { UserProfile } from './moddermore';
+
 declare module 'next-auth' {
   interface Session {
     user: {
@@ -10,6 +12,8 @@ declare module 'next-auth' {
       /** The user's name */
       name: string;
     };
+
+    extraProfile: UserProfile;
   }
 }
 
