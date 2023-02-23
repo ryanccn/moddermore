@@ -8,6 +8,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 
 import { clientPromise } from '~/lib/db/client';
+import { getUserProfile } from '~/lib/db/users';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -44,7 +45,14 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async session({ session, user }) {
-      return { ...session, user: { ...session.user, id: user.id } };
+      const extraProfile = await getUserProfile(user.id);
+      if (!extraProfile) throw new Error('Profile not found');
+
+      return {
+        ...session,
+        user: { ...session.user, id: user.id },
+        extraProfile,
+      };
     },
   },
   pages: {

@@ -4,7 +4,7 @@ import {
   type MongoClientOptions,
 } from 'mongodb';
 
-import type { ModList } from '~/types/moddermore';
+import type { ModList, UserProfile } from '~/types/moddermore';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -44,7 +44,19 @@ const getListsCollection = async () => {
 
 const getUsersCollection = async () => {
   const client = await clientPromise;
-  return client.db().collection('users');
+  return client
+    .db()
+    .collection<{ email: string; emailVerified: Date }>('users');
 };
 
-export { clientPromise, getListsCollection, getUsersCollection };
+const getProfilesCollection = async () => {
+  const client = await clientPromise;
+  return client.db().collection<UserProfile>('profiles');
+};
+
+export {
+  clientPromise,
+  getListsCollection,
+  getUsersCollection,
+  getProfilesCollection,
+};
