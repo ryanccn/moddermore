@@ -298,7 +298,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
                 disabled={!data.mods.length}
               >
                 <LinkIcon className="block h-5 w-5" />
-                <span>Copy Packwiz link</span>
+                <span>Copy packwiz link</span>
               </button>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
