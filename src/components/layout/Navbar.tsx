@@ -4,22 +4,14 @@ import ModdermoreIcon from '~/moddermore.png';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { XCircleIcon, PlusIcon, UserIcon } from '@heroicons/react/20/solid';
+import { PlusIcon, UserIcon } from '@heroicons/react/20/solid';
 
 import clsx from 'clsx';
 
-import {
-  useSession,
-  signIn as nextAuthSignIn,
-  signOut as nextAuthSignOut,
-} from 'next-auth/react';
+import { useSession, signIn as nextAuthSignIn } from 'next-auth/react';
 
 const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
   const { data, status } = useSession();
-
-  const signOut = useCallback(() => {
-    nextAuthSignOut();
-  }, []);
 
   return (
     <nav
@@ -52,13 +44,13 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
                 <PlusIcon className="block h-5 w-5" />
                 <span>Create</span>
               </Link>
-              <button
-                className="primaryish-button bg-transparent text-black hover:bg-red-500/10 hover:text-red-400 hover:brightness-100 focus:ring-red-400/40 dark:text-white"
-                onClick={signOut}
+              <Link
+                className="primaryish-button secondaryish-instead"
+                href="/account"
               >
-                <XCircleIcon className="block h-5 w-5" />
-                <span>Sign out</span>
-              </button>
+                <UserIcon className="block h-5 w-5" />
+                <span>Manage account</span>
+              </Link>
             </>
           ) : (
             <button
