@@ -30,7 +30,6 @@ import {
 
 import toast from 'react-hot-toast';
 import { getSpecificList } from '~/lib/db';
-import { DonationMessage } from '~/components/partials/DonateMessage';
 import type JSZip from 'jszip';
 import { ExportReturnData } from '~/lib/export/types';
 
@@ -567,8 +566,6 @@ name=${data.title}`
         )}
       </div>
 
-      <DonationMessage />
-
       <ul className="flex flex-col gap-y-3">
         {resolvedMods ? (
           resolvedMods.map((mod) => (
@@ -595,10 +592,7 @@ name=${data.title}`
           {...progress}
         />
       ) : status === 'generatingzip' ? (
-        <ProgressOverlay
-          label="Getting the .zip file ready..."
-          {...progress}
-        />
+        <ProgressOverlay label="Getting the .zip file ready..." {...progress} />
       ) : null}
 
       <Dialog.Root open={status === 'modrinth.form'}>
