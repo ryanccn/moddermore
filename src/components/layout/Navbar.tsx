@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import ModdermoreIcon from '~/moddermore.png';
 
 import Image from 'next/image';
