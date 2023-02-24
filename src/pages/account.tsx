@@ -91,7 +91,7 @@ const AccountPage: NextPage = () => {
       </form>
 
       <button
-        className="primaryish-button  self-start bg-red-500 px-4 py-2 text-lg font-semibold text-white hover:bg-red-400 hover:brightness-100 focus:ring-red-400/50"
+        className="primaryish-button oh-no self-start px-4 py-2 text-lg font-semibold"
         onClick={() => {
           signOut();
         }}
