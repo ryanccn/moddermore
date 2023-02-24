@@ -32,5 +32,9 @@ export const updateUserProfile = async (
 ) => {
   const col = await getProfilesCollection();
 
-  await col.updateOne({ userId: id }, profile);
+  const res = await col.updateOne({ userId: id }, { $set: profile });
+
+  if (!res.matchedCount) {
+    console.warn('User profile update failed because none was found!');
+  }
 };

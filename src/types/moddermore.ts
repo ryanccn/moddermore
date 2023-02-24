@@ -58,10 +58,14 @@ export interface RichModList {
   legacy?: string | null;
 }
 
-export interface UserEditableProfileData {
-  name: string | null;
-  profilePicture: string | null;
-}
+export const userEditableProfileDataZod = z.object({
+  name: z.union([z.string(), z.literal(null)]),
+  profilePicture: z.union([z.string(), z.literal(null)]),
+});
+
+export type UserEditableProfileData = z.infer<
+  typeof userEditableProfileDataZod
+>;
 
 export interface UserProfileData extends UserEditableProfileData {
   plan: 'pro' | null;
