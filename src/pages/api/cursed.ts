@@ -1,5 +1,5 @@
 export const config = {
-  runtime: 'experimental-edge',
+  runtime: 'edge',
 };
 
 const h = async (req: Request) => {
