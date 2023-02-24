@@ -71,6 +71,10 @@
     @apply bg-transparent text-black hover:bg-indigo-500/10 hover:text-indigo-400 hover:brightness-100 focus:ring-indigo-400/40 dark:text-white;
   }
 
+  .primaryish-button.oh-no {
+    @apply bg-red-500 text-white hover:bg-red-400 hover:brightness-100 focus:ring-red-400/50;
+  }
+
   .primaryish-button.modrinth-themed {
     @apply bg-[hsl(155,58%,38%)] focus:ring-[hsla(155,58%,38%,60%)];
   }

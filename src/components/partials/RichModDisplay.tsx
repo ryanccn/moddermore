@@ -74,7 +74,7 @@ export const RichModDisplay = ({
                 <>
                   {buttonType === 'delete' && (
                     <button
-                      className="primaryish-button mb-2 bg-red-500"
+                      className="primaryish-button oh-no mb-2"
                       onClick={onClick}
                     >
                       <TrashIcon className="block h-5 w-5" />
