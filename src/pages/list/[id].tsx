@@ -17,6 +17,7 @@ import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { LegacyBadge } from '~/components/partials/LegacyBadge';
+import { ProBadge } from '~/components/partials/ProBadge';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 
 import { ModrinthIcon, PrismIcon } from '~/components/icons';
@@ -31,7 +32,7 @@ import {
 import toast from 'react-hot-toast';
 import { getSpecificList } from '~/lib/db';
 import type JSZip from 'jszip';
-import { ExportReturnData } from '~/lib/export/types';
+import type { ExportReturnData } from '~/lib/export/types';
 
 interface PageProps {
   data: ModList;
@@ -489,7 +490,7 @@ name=${data.title}`
           <DropdownMenu.Portal>
             <DropdownMenu.Content
               align="start"
-              className="dropdown-menu-content mt-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800"
+              className="dropdown-menu-content z-40 mt-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800"
             >
               <DropdownMenu.Item className="focus:outline-none">
                 <button
@@ -522,6 +523,7 @@ name=${data.title}`
                 >
                   <LinkIcon className="block h-5 w-5" />
                   <span>Copy packwiz link</span>
+                  <ProBadge />
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item className="focus:outline-none">
@@ -545,6 +547,7 @@ name=${data.title}`
                 >
                   <PrismIcon className="block h-5 w-5" />
                   <span>MultiMC (auto-updating)</span>
+                  <ProBadge />
                 </button>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
