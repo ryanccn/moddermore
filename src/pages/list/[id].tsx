@@ -489,11 +489,11 @@ name=${data.title}`
           <DropdownMenu.Portal>
             <DropdownMenu.Content
               align="start"
-              className="dropdown-menu-content mt-1 rounded shadow"
+              className="dropdown-menu-content mt-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800"
             >
-              <DropdownMenu.Item asChild>
+              <DropdownMenu.Item className="focus:outline-none">
                 <button
-                  className="primaryish-button dropdown rounded-b-none"
+                  className="dropdown-button"
                   onClick={downloadExport}
                   disabled={!data.mods.length}
                 >
@@ -501,9 +501,9 @@ name=${data.title}`
                   <span>Zip archive</span>
                 </button>
               </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
+              <DropdownMenu.Item className="focus:outline-none">
                 <button
-                  className="primaryish-button dropdown rounded-none"
+                  className="dropdown-button"
                   onClick={modrinthExportInit}
                   disabled={!data.mods.length}
                 >
@@ -511,34 +511,40 @@ name=${data.title}`
                   <span>Modrinth pack</span>
                 </button>
               </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
+              <DropdownMenu.Item className="focus:outline-none">
                 <button
-                  className="primaryish-button dropdown rounded-none"
+                  className="dropdown-button"
                   onClick={packwizExport}
-                  disabled={!data.mods.length}
+                  disabled={
+                    !data.mods.length ||
+                    session.data?.extraProfile.plan !== 'pro'
+                  }
                 >
                   <LinkIcon className="block h-5 w-5" />
                   <span>Copy packwiz link</span>
                 </button>
               </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
+              <DropdownMenu.Item className="focus:outline-none">
                 <button
-                  className="primaryish-button dropdown rounded-none"
+                  className="dropdown-button"
                   onClick={prismStaticExport}
                   disabled={!data.mods.length}
                 >
                   <PrismIcon className="block h-5 w-5" />
-                  <span>MultiMC / Prism</span>
+                  <span>MultiMC</span>
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
                 <button
-                  className="primaryish-button dropdown rounded-t-none"
+                  className="dropdown-button"
                   onClick={prismExport}
-                  disabled={!data.mods.length}
+                  disabled={
+                    !data.mods.length ||
+                    session.data?.extraProfile.plan !== 'pro'
+                  }
                 >
                   <PrismIcon className="block h-5 w-5" />
-                  <span>MultiMC / Prism (auto-updating)</span>
+                  <span>MultiMC (auto-updating)</span>
                 </button>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
