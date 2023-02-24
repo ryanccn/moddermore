@@ -23,7 +23,7 @@ const h: NextApiHandler = async (req, res) => {
 
     await profilesCollection.updateOne(
       { userId: user._id.toString() },
-      { plan: 'pro' }
+      { $set: { plan: 'pro' } }
     );
 
     res.status(201).end();
@@ -39,7 +39,7 @@ const h: NextApiHandler = async (req, res) => {
 
     await profilesCollection.updateOne(
       { userId: user._id.toString() },
-      { plan: null }
+      { $set: { plan: null } }
     );
 
     res.status(201).end();
