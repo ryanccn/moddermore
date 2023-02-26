@@ -251,7 +251,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
   const getPackwizUrl = (document: Document) => {
     const url = new URL(document.URL);
-    url.pathname = `/list/${data.id}/packwiz/pack.toml`;
+    url.pathname = `/list/${data.customSlug ?? data.id}/packwiz/pack.toml`;
     return url.href;
   };
 
@@ -358,7 +358,7 @@ name=${data.title}`
   const prismStaticExport = async () => {
     if (!resolvedMods) return;
 
-    setProgress({ value: 0, max: 3 });
+    setProgress({ value: 0, max: 4 });
     setStatus('loadinglibraries');
 
     const { getDownloadURLs } = await import('~/lib/export');
