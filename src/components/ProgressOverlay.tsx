@@ -25,7 +25,7 @@ const ProgressOverlay = ({
             e.preventDefault();
           }}
         >
-          <div className="flex flex-col items-center space-y-6">
+          <div className="flex flex-col items-center gap-y-6">
             <Dialog.Title
               className="text-lg font-medium"
               id="searching-for-mods-label"

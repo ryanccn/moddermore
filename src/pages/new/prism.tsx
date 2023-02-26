@@ -74,7 +74,7 @@ const PrismInstanceImportPage: NextPage = () => {
   return (
     <GlobalLayout title="Import from MultiMC / Prism" displayTitle={false}>
       <form
-        className="flex flex-col items-start space-y-6"
+        className="flex flex-col items-start gap-y-6"
         onSubmit={submitHandle}
       >
         <input
@@ -90,7 +90,7 @@ const PrismInstanceImportPage: NextPage = () => {
           }}
         />
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-x-4">
           <select
             name="game-version"
             value={gameVersion}
@@ -123,11 +123,11 @@ const PrismInstanceImportPage: NextPage = () => {
           </select>
         </div>
 
-        <h2 className="!mt-12 text-sm font-bold uppercase text-neutral-800 dark:text-neutral-200">
+        <h2 className="mt-12 text-sm font-bold uppercase text-neutral-800 dark:text-neutral-200">
           Exported instance from MultiMC / Prism Launcher
         </h2>
 
-        <div className="!mt-3 flex items-center space-x-4">
+        <div className="mt-3 flex items-center gap-x-4">
           <label>
             <div
               role="button"
@@ -154,7 +154,7 @@ const PrismInstanceImportPage: NextPage = () => {
           )}
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-x-2">
           <input
             type="checkbox"
             className="rounded-sm bg-indigo-500"

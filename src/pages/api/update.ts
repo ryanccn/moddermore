@@ -1,6 +1,6 @@
 import type { NextApiHandler } from 'next';
 
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { authOptions } from './auth/[...nextauth]';
 import { updateList } from '~/lib/db';
 import { modListPartialZod } from '~/types/moddermore';
@@ -11,7 +11,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const sess = await unstable_getServerSession(req, res, authOptions);
+  const sess = await getServerSession(req, res, authOptions);
 
   const id = req.query.id;
 

@@ -1,13 +1,13 @@
 import type { NextApiHandler } from 'next';
 
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 
 import { updateUserProfile } from '~/lib/db/users';
 import { userEditableProfileDataZod } from '~/types/moddermore';
 
 const h: NextApiHandler = async (req, res) => {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     res.status(401).end();
     return;

@@ -1,6 +1,6 @@
 import type { NextApiHandler } from 'next';
 
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { authOptions } from './auth/[...nextauth]';
 import { createList } from '~/lib/db';
 import { modListPartialZod } from '~/types/moddermore';
@@ -11,7 +11,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const sess = await unstable_getServerSession(req, res, authOptions);
+  const sess = await getServerSession(req, res, authOptions);
 
   if (!sess?.user.id) {
     res.status(401).json({ error: 'Unauthorized' });
