@@ -529,6 +529,7 @@ name=${data.title}`
             <strong className="font-semibold">
               {data.ownersExtraData.name}
             </strong>
+            {data.ownersExtraData.pro && <ProBadge />}
           </div>
         )}
       </div>

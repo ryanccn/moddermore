@@ -9,7 +9,7 @@ export const ProBadge = ({ className }: { className?: string }) => {
   return (
     <Link
       className={clsx(
-        'flex w-auto flex-row items-center gap-x-1 self-start rounded-full bg-gradient-to-br from-indigo-500 to-green-500 px-2 py-0.5 text-xs font-bold uppercase text-white',
+        'flex w-auto flex-row items-center gap-x-1 rounded-full bg-gradient-to-br from-indigo-500 to-green-500 px-2 py-0.5 text-xs font-bold uppercase text-white',
         className
       )}
       href="/pro"

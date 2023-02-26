@@ -69,6 +69,7 @@ export const getSpecificList = async (
           ...(ownerProfile.profilePicture
             ? { profilePicture: ownerProfile.profilePicture }
             : {}),
+          pro: ownerProfile.plan === 'pro',
         }
       : {},
   };
