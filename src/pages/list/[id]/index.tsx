@@ -19,6 +19,9 @@ import { useSession } from 'next-auth/react';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
+import Link from 'next/link';
+import Head from 'next/head';
+
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
@@ -34,11 +37,13 @@ import {
   LinkIcon,
   ArchiveBoxIcon,
   RocketLaunchIcon,
+  CogIcon,
 } from '@heroicons/react/20/solid';
 
 import toast from 'react-hot-toast';
 import { getSpecificList } from '~/lib/db';
 import type JSZip from 'jszip';
+
 import { search } from '~/lib/import/search';
 import type { ExportReturnData } from '~/lib/export/types';
 
@@ -501,7 +506,7 @@ name=${data.title}`
   return (
     <GlobalLayout title={data.title}>
       {data.legacy && <LegacyBadge className="mb-4" />}
-      <div className="data-list">
+      <div className="data-list mb-8">
         <p>
           For Minecraft <strong>{data.gameVersion}</strong> with{' '}
           <strong>{loaderFormat(data.modloader)}</strong>
@@ -595,7 +600,7 @@ name=${data.title}`
           <>
             {!isEditing ? (
               <button
-                className="primaryish-button"
+                className="primaryish-button secondaryish-instead"
                 onClick={() => {
                   setIsEditing(true);
                 }}
@@ -606,7 +611,7 @@ name=${data.title}`
               </button>
             ) : (
               <button
-                className="primaryish-button"
+                className="primaryish-button greenish"
                 onClick={submitHandle}
                 disabled={isSaving}
               >
@@ -615,8 +620,16 @@ name=${data.title}`
               </button>
             )}
 
+            <Link
+              className="primaryish-button secondaryish-instead"
+              href={`/list/${data.id}/settings`}
+            >
+              <CogIcon className="block h-5 w-5" />
+              <span>Settings</span>
+            </Link>
+
             <button
-              className="primaryish-button bg-red-500"
+              className="primaryish-button oh-no"
               onClick={deleteCurrentList}
             >
               <TrashIcon className="block h-5 w-5" />
@@ -628,6 +641,10 @@ name=${data.title}`
 
       {isEditing && (
         <div className="mb-10 flex w-full flex-col gap-y-4">
+          <Head>
+            <title>Editing {data.title}</title>
+          </Head>
+
           <div className="mt-10 flex w-full items-center justify-start gap-x-2">
             <select
               name="searchProvider"
