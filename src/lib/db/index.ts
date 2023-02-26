@@ -1,7 +1,12 @@
 import { v4 as generateUUID } from '@lukeed/uuid/secure';
 
 import { getListsCollection } from './client';
-import type { ModList, ModListPartial } from '~/types/moddermore';
+import type {
+  ModList,
+  ModListCreateType,
+  ModListUpdateType,
+} from '~/types/moddermore';
+import { getUserProfile } from './users';
 
 export const getUserLists = async (userId: string): Promise<ModList[]> => {
   const collection = await getListsCollection();
@@ -23,9 +28,22 @@ export const getLegacyUserLists = async (email: string): Promise<ModList[]> => {
 
 export const getSpecificList = async (id: string): Promise<ModList | null> => {
   const collection = await getListsCollection();
-  const list = await collection.findOne({ id });
+  let list = await collection.findOne({ customSlug: id });
+
+  if (!list) {
+    list = await collection.findOne({ id });
+    if (list?.customSlug && list?.owner) {
+      const ownerProfile = await getUserProfile(list.owner);
+      if (ownerProfile?.plan === 'pro') return null;
+    }
+  }
 
   if (!list) return null;
+
+  if (list.customSlug && list.owner) {
+    const ownerProfile = await getUserProfile(list.owner);
+    if (ownerProfile?.plan !== 'pro') return null;
+  }
 
   return {
     id: list.id,
@@ -53,7 +71,7 @@ const genRandomString = (): string => {
 };
 
 export const createList = async (
-  list: ModListPartial,
+  list: ModListCreateType,
   userId: string
 ): Promise<string> => {
   const collection = await getListsCollection();
@@ -71,7 +89,7 @@ export const createList = async (
 
 export const updateList = async (
   id: string,
-  list: ModListPartial,
+  list: ModListUpdateType,
   userId: string
 ): Promise<boolean> => {
   const collection = await getListsCollection();

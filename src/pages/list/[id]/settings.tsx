@@ -46,7 +46,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         title,
         gameVersion,
         modloader: modLoader,
-        customSlug,
+        ...(customSlug ? { customSlug } : {}),
       }),
       headers: { 'Content-Type': 'application/json' },
     }).then(async (res) => {

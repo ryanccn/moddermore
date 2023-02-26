@@ -23,7 +23,20 @@ export interface RichMod {
   id: string;
 }
 
-export const modListPartialZod = z.object({
+export const modListCreateZod = z.object({
+  title: z.string().min(1),
+  gameVersion: z.string().min(1),
+  modloader: z.union([
+    z.literal('forge'),
+    z.literal('fabric'),
+    z.literal('quilt'),
+  ]),
+  mods: z.array(modZod).min(1).max(150),
+});
+
+export type ModListCreateType = z.infer<typeof modListCreateZod>;
+
+export const modListUpdateZod = z.object({
   title: z.string().min(1).optional(),
   gameVersion: z.string().min(1).optional(),
   modloader: z
@@ -33,7 +46,7 @@ export const modListPartialZod = z.object({
   customSlug: z.string().optional(),
 });
 
-export type ModListPartial = z.infer<typeof modListPartialZod>;
+export type ModListUpdateType = z.infer<typeof modListUpdateZod>;
 
 export interface ModList {
   id: string;
