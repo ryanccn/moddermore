@@ -36,7 +36,7 @@ const Dashboard: NextPage = () => {
               <Link
                 href={`/list/${list.id}`}
                 key={list.id}
-                className="group flex flex-col space-y-2 rounded-sm bg-transparent p-4 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800"
+                className="group flex flex-col gap-y-2 rounded-sm bg-transparent p-4 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800"
               >
                 <h2 className="flex justify-between text-lg font-semibold">
                   <span>{list.title}</span>

@@ -60,7 +60,7 @@ export const Footer = ({ isLandingPage }: { isLandingPage?: boolean }) => {
       <Link href="/legal/privacy">Privacy Policy</Link>
       <a
         href="https://github.com/ryanccn/moddermore"
-        className="!mb-4"
+        className="mb-4"
         rel="noreferrer"
       >
         Code open source under AGPLv3

@@ -67,7 +67,7 @@ const FeriumImportPage: NextPage = () => {
   return (
     <GlobalLayout title="Import from folder" displayTitle={false}>
       <form
-        className="flex flex-col items-start space-y-6"
+        className="flex flex-col items-start gap-y-6"
         onSubmit={submitHandle}
       >
         <input
@@ -83,7 +83,7 @@ const FeriumImportPage: NextPage = () => {
           }}
         />
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-x-4">
           <select
             name="game-version"
             value={gameVersion}
@@ -116,11 +116,11 @@ const FeriumImportPage: NextPage = () => {
           </select>
         </div>
 
-        <h2 className="!mt-12 text-sm font-bold uppercase text-neutral-800 dark:text-neutral-200">
+        <h2 className="mt-12 text-sm font-bold uppercase text-neutral-800 dark:text-neutral-200">
           .zip file containing mods
         </h2>
 
-        <div className="!mt-3 flex items-center space-x-4">
+        <div className="mt-3 flex items-center gap-x-4">
           <label>
             <div
               role="button"

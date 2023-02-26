@@ -115,7 +115,7 @@
   }
 
   .data-list {
-    @apply mb-8 space-y-1 text-neutral-700 dark:text-neutral-300;
+    @apply mb-8 gap-y-1 text-neutral-700 dark:text-neutral-300;
   }
 
   .data-list strong {
@@ -133,7 +133,7 @@
   }
 
   .results-list {
-    @apply flex w-full flex-col space-y-2;
+    @apply flex w-full flex-col gap-y-2;
   }
   .results-list > details {
     @apply flex w-full flex-col items-center rounded bg-white p-2 shadow-sm dark:bg-neutral-700;
@@ -142,7 +142,7 @@
     @apply cursor-default text-lg font-medium hover:cursor-pointer;
   }
   .results-list > details > ul {
-    @apply mt-2 flex w-full flex-col space-y-0.5;
+    @apply mt-2 flex w-full flex-col gap-y-0.5;
   }
 
   .dialog.overlay {

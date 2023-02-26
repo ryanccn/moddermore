@@ -34,7 +34,7 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
         </Link>
       </div>
 
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-x-2">
         {status !== 'loading' ? (
           data ? (
             <>

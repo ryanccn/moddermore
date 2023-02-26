@@ -13,7 +13,7 @@ import clsx from 'clsx';
 
 interface Props {
   data: RichMod;
-  buttonType?: 'add' | 'delete';
+  buttonType?: 'add' | 'delete' | null;
   onClick?: () => void;
   className?: string;
 }
