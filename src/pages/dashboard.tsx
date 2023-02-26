@@ -34,7 +34,7 @@ const Dashboard: NextPage = () => {
           <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
             {lists.map((list) => (
               <Link
-                href={`/list/${list.id}`}
+                href={`/list/${list.customSlug ?? list.id}`}
                 key={list.id}
                 className="group flex flex-col gap-y-3 rounded-lg bg-transparent p-6 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800"
               >

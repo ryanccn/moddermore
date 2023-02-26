@@ -622,7 +622,7 @@ name=${data.title}`
 
             <Link
               className="primaryish-button secondaryish-instead"
-              href={`/list/${data.id}/settings`}
+              href={`/list/${data.customSlug ?? data.id}/settings`}
             >
               <CogIcon className="block h-5 w-5" />
               <span>Settings</span>
