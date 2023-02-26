@@ -5,6 +5,8 @@ import type {
   ModList,
   ModListCreateType,
   ModListUpdateType,
+  ModListWithOwnerData,
+  UserProfile,
 } from '~/types/moddermore';
 import { getUserProfile } from './users';
 
@@ -26,14 +28,18 @@ export const getLegacyUserLists = async (email: string): Promise<ModList[]> => {
   );
 };
 
-export const getSpecificList = async (id: string): Promise<ModList | null> => {
+export const getSpecificList = async (
+  id: string
+): Promise<ModListWithOwnerData | null> => {
   const collection = await getListsCollection();
   let list = await collection.findOne({ customSlug: id });
+
+  let ownerProfile: UserProfile | null = null;
 
   if (!list) {
     list = await collection.findOne({ id });
     if (list?.customSlug && list?.owner) {
-      const ownerProfile = await getUserProfile(list.owner);
+      ownerProfile = await getUserProfile(list.owner);
       if (ownerProfile?.plan === 'pro') return null;
     }
   }
@@ -41,9 +47,12 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
   if (!list) return null;
 
   if (list.customSlug && list.owner) {
-    const ownerProfile = await getUserProfile(list.owner);
+    ownerProfile = await getUserProfile(list.owner);
     if (ownerProfile?.plan !== 'pro') return null;
   }
+
+  if (!ownerProfile && list.owner)
+    ownerProfile = await getUserProfile(list.owner);
 
   return {
     id: list.id,
@@ -53,6 +62,14 @@ export const getSpecificList = async (id: string): Promise<ModList | null> => {
     modloader: list.modloader,
     owner: list.owner,
     created_at: list.created_at,
+    ownersExtraData: ownerProfile
+      ? {
+          ...(ownerProfile.name ? { name: ownerProfile.name } : {}),
+          ...(ownerProfile.profilePicture
+            ? { profilePicture: ownerProfile.profilePicture }
+            : {}),
+        }
+      : {},
   };
 };
 
