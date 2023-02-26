@@ -127,7 +127,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         </label>
 
         <label className="moddermore-form-label">
-          <div className="flex flex-row gap-x-2">
+          <div className="flex flex-row items-center gap-x-2">
             <span>Custom URL</span>
             <ProBadge />
           </div>
