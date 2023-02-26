@@ -21,8 +21,9 @@ import {
   ArrowDownIcon,
 } from '@heroicons/react/24/solid';
 
-// import { getLists, getPageviews, getUsers } from '~/lib/stats';
-// import { numberFormat } from '~/lib/strings';
+import { getLists, getPageviews, getUsers } from '~/lib/stats';
+import { numberFormat } from '~/lib/strings';
+import { ProBadge } from '~/components/partials/ProBadge';
 
 interface PageProps {
   pageviews: number | null;
@@ -164,9 +165,9 @@ const Home: NextPage = () => {
             <ModrinthIcon className="block h-5 w-5" />
             <span>Modrinth pack</span>
           </div>
-          <div className="primaryish-button showcase idk-blue-themed opacity-80">
+          <div className="primaryish-button showcase idk-blue-themed">
             <ArchiveBoxIcon className="block h-5 w-5" />
-            <span>packwiz (WIP)</span>
+            <span>packwiz <ProBadge/></span>
           </div>
           <div className="primaryish-button showcase fuchsia-themed opacity-80">
             <QuestionMarkCircleIcon className="block h-5 w-5" />
