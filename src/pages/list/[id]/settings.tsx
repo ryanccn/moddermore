@@ -24,7 +24,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   const [title, setTitle] = useState(data.title);
   const [gameVersion, setGameVersion] = useState(data.gameVersion);
   const [modLoader, setModLoader] = useState<ModLoader>(data.modloader);
-  const [customSlug, setCustomSlug] = useState('');
+  const [customSlug, setCustomSlug] = useState(data.customSlug || '');
 
   const [inProgress, setInProgress] = useState(false);
 
