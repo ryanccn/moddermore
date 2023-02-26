@@ -31,7 +31,8 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (session.data?.user.id !== data.owner) {
+    if (session.status !== 'authenticated') return;
+    if (session.data.user.id !== data.owner) {
       toast.error('Unauthorized to edit list.');
       router.push(`/list/${data.id}`);
     }
