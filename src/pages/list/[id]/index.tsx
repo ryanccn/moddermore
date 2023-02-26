@@ -356,7 +356,7 @@ name=${data.title}`
   const prismStaticExport = async () => {
     if (!resolvedMods) return;
 
-    setProgress({ value: 0, max: 3 });
+    setProgress({ value: 0, max: 4 });
     setStatus('loadinglibraries');
 
     const { getDownloadURLs } = await import('~/lib/export');
