@@ -37,13 +37,16 @@ const h: NextApiHandler = async (req, res) => {
     res
       .status(403)
       .json({ error: 'Forbidden to use custom slug on free plan' });
+    return;
   }
 
-  if (
-    parsedData.data.customSlug &&
-    (await getSpecificList(parsedData.data.customSlug))
-  ) {
-    res.status(400).json({ error: 'List already exists with custom URL' });
+  if (parsedData.data.customSlug) {
+    const existing = await getSpecificList(parsedData.data.customSlug);
+
+    if (existing && existing.id !== id) {
+      res.status(400).json({ error: 'List already exists with custom URL' });
+      return;
+    }
   }
 
   const ok = await updateList(id, parsedData.data, sess.user.id);
