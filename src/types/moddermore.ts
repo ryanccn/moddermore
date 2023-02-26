@@ -43,7 +43,10 @@ export const modListUpdateZod = z.object({
     .union([z.literal('forge'), z.literal('fabric'), z.literal('quilt')])
     .optional(),
   mods: z.array(modZod).min(1).max(150).optional(),
-  customSlug: z.string().optional(),
+  customSlug: z
+    .string()
+    .regex(/[a-zA-Z0-9-]+/)
+    .optional(),
 });
 
 export type ModListUpdateType = z.infer<typeof modListUpdateZod>;
