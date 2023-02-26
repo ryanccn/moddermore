@@ -1,6 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
+
 import type { GetServerSideProps, NextPage } from 'next';
 
-import type { ModList, RichMod } from '~/types/moddermore';
+import type { ModListWithOwnerData, RichMod } from '~/types/moddermore';
 
 import { modToRichMod, richModToMod } from '~/lib/db/conversions';
 import { loaderFormat } from '~/lib/strings';
@@ -48,7 +50,7 @@ import { search } from '~/lib/import/search';
 import type { ExportReturnData } from '~/lib/export/types';
 
 interface PageProps {
-  data: ModList;
+  data: ModListWithOwnerData;
 }
 
 const ListPage: NextPage<PageProps> = ({ data }) => {
@@ -515,6 +517,20 @@ name=${data.title}`
           Last updated on{' '}
           <strong>{new Date(data.created_at).toDateString()}</strong>
         </p>
+        {data.ownersExtraData && (
+          <div className="mt-2 flex flex-row items-center gap-x-3">
+            <img
+              src={data.ownersExtraData.profilePicture}
+              width={32}
+              height={32}
+              className="rounded-full"
+              alt=""
+            />
+            <strong className="font-semibold">
+              {data.ownersExtraData.name}
+            </strong>
+          </div>
+        )}
       </div>
 
       <div className="mb-16 flex gap-x-4">

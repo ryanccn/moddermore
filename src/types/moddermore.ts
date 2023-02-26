@@ -60,6 +60,10 @@ export interface ModList {
   legacy?: string | null;
 }
 
+export interface ModListWithOwnerData extends ModList {
+  ownersExtraData: { name?: string; profilePicture?: string };
+}
+
 export interface RichModList {
   id: string;
   created_at: string;

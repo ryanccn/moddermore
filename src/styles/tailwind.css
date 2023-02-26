@@ -131,7 +131,7 @@
   }
 
   .data-list {
-    @apply gap-y-1 text-neutral-700 dark:text-neutral-300;
+    @apply flex flex-col gap-y-2 text-neutral-700 dark:text-neutral-300;
   }
 
   .data-list strong {
