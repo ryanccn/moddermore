@@ -2,7 +2,7 @@ import type { NextApiHandler } from 'next';
 
 import { getServerSession } from 'next-auth';
 import { authOptions } from './auth/[...nextauth]';
-import { updateList } from '~/lib/db';
+import { getSpecificList, updateList } from '~/lib/db';
 import { modListUpdateZod } from '~/types/moddermore';
 
 const h: NextApiHandler = async (req, res) => {
@@ -37,6 +37,13 @@ const h: NextApiHandler = async (req, res) => {
     res
       .status(403)
       .json({ error: 'Forbidden to use custom slug on free plan' });
+  }
+
+  if (
+    parsedData.data.customSlug &&
+    (await getSpecificList(parsedData.data.customSlug))
+  ) {
+    res.status(400).json({ error: 'List already exists with custom URL' });
   }
 
   const ok = await updateList(id, parsedData.data, sess.user.id);
