@@ -167,7 +167,8 @@ const Home: NextPage = () => {
           </div>
           <div className="primaryish-button showcase idk-blue-themed">
             <ArchiveBoxIcon className="block h-5 w-5" />
-            <span>packwiz <ProBadge/></span>
+            <span>packwiz</span>
+            <ProBadge />
           </div>
           <div className="primaryish-button showcase fuchsia-themed opacity-80">
             <QuestionMarkCircleIcon className="block h-5 w-5" />
