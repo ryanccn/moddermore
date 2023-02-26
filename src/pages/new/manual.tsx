@@ -73,7 +73,7 @@ const NewList: NextPage = () => {
   return (
     <GlobalLayout title="Manual creation" displayTitle={false}>
       <form
-        className="flex flex-col items-start space-y-6"
+        className="flex flex-col items-start gap-y-6"
         onSubmit={submitHandle}
       >
         <input
@@ -89,7 +89,7 @@ const NewList: NextPage = () => {
           }}
         />
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-x-4">
           <select
             name="game-version"
             value={gameVersion}
@@ -122,8 +122,8 @@ const NewList: NextPage = () => {
           </select>
         </div>
 
-        <div className="flex w-full flex-col space-y-4">
-          <div className="!mt-10 flex w-full items-center justify-start space-x-2">
+        <div className="flex w-full flex-col gap-y-4">
+          <div className="mt-10 flex w-full items-center justify-start gap-x-2">
             <select
               name="searchProvider"
               value={searchProvider}
@@ -167,7 +167,7 @@ const NewList: NextPage = () => {
           </div>
 
           {searchResults.length > 0 && (
-            <ul className="flex flex-col space-y-2">
+            <ul className="flex flex-col gap-y-2">
               {searchResults.map((res) =>
                 inputMods.filter(
                   (m) => m.id === res.id && m.provider === res.provider
@@ -188,10 +188,10 @@ const NewList: NextPage = () => {
           )}
         </div>
 
-        <h2 className="!mt-12 text-sm font-bold uppercase text-neutral-800 dark:text-neutral-200">
+        <h2 className="mt-12 text-sm font-bold uppercase text-neutral-800 dark:text-neutral-200">
           Added mods
         </h2>
-        <ul className="flex w-full flex-col space-y-2">
+        <ul className="flex w-full flex-col gap-y-2">
           {inputMods.map((mod) => (
             <li key={mod.id}>
               <RichModDisplay

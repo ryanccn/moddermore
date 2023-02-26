@@ -53,7 +53,7 @@ const FeriumImportPage: NextPage = () => {
   return (
     <GlobalLayout title="Ferium import" displayTitle={false}>
       <form
-        className="flex flex-col items-start space-y-6"
+        className="flex flex-col items-start gap-y-6"
         onSubmit={submitHandle}
       >
         <input
@@ -69,7 +69,7 @@ const FeriumImportPage: NextPage = () => {
           }}
         />
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-x-4">
           <select
             name="game-version"
             value={gameVersion}

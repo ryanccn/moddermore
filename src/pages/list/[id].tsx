@@ -2,11 +2,17 @@ import type { GetServerSideProps, NextPage } from 'next';
 
 import type { ModList, RichMod } from '~/types/moddermore';
 
-import { modToRichMod } from '~/lib/db/conversions';
+import { modToRichMod, richModToMod } from '~/lib/db/conversions';
 import { loaderFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
-import { useEffect, useMemo, useState } from 'react';
+import {
+  FormEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -27,11 +33,13 @@ import {
   TrashIcon,
   LinkIcon,
   ArchiveBoxIcon,
+  RocketLaunchIcon,
 } from '@heroicons/react/20/solid';
 
 import toast from 'react-hot-toast';
 import { getSpecificList } from '~/lib/db';
 import type JSZip from 'jszip';
+import { search } from '~/lib/import/search';
 import type { ExportReturnData } from '~/lib/export/types';
 
 interface PageProps {
@@ -53,6 +61,12 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     | 'generatingzip'
     | 'modrinth.form'
   >('idle');
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [searchProvider, setSearchProvider] = useState('modrinth');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<RichMod[]>([]);
 
   const [mrpackName, setMrpackName] = useState(data.title);
   const [mrpackVersion, setMrpackVersion] = useState('0.0.1');
@@ -315,22 +329,11 @@ name=${data.title}`
       throw new Error('failed to create .minecraft folder in zipfile?');
     }
 
-    // packwiz-installer-bootstrap last release was july 2020 so /shrug
-    // const packwizInstallerBootstrap = await fetch("https://api.github.com/repos/packwiz/packwiz-installer-bootstrap/releases/latest")
-    // if (!packwizInstallerBootstrap.ok) {
-    //   throw new Error('failed to download packwiz-installer-bootstrap.jar');
-    // }
-
-    // const packwizInstallerBootstrapJar = await fetch((await packwizInstallerBootstrap.json()).assets[0].url, {
-    //   headers: {
-    //     Accept: "application/octet-stream"
-    //   }
-    // })
     const packwizInstallerBootstrapJar = await fetch(
       '/packwiz-installer-bootstrap.jar'
     );
     if (!packwizInstallerBootstrapJar.ok) {
-      throw new Error('failed to download packwiz-installer-bootstrap.jar');
+      throw new Error('Failed to download packwiz-installer-bootstrap.jar');
     }
 
     dotMinecraftFolder.file(
@@ -444,7 +447,42 @@ name=${data.title}`
     setStatus('result');
   };
 
-  const deleteOMG = async () => {
+  const submitHandle: FormEventHandler = async (e) => {
+    e.preventDefault();
+    if (!session.data || !resolvedMods) return;
+
+    setIsSaving(true);
+
+    const id = router.query.id as string;
+
+    await fetch('/api/update?id=' + encodeURIComponent(id), {
+      method: 'POST',
+      body: JSON.stringify({
+        title: data.title,
+        mods: resolvedMods.map(richModToMod),
+        gameVersion: data.gameVersion,
+        modloader: data.modloader,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    toast.success('Updated!');
+    setIsSaving(false);
+    setIsEditing(false);
+  };
+
+  const updateSearch = useCallback(() => {
+    search({
+      platform: searchProvider as 'modrinth' | 'curseforge',
+      query: searchQuery,
+      loader: data.modloader,
+      gameVersion: data.gameVersion,
+    }).then((res) => {
+      setSearchResults(res);
+    });
+  }, [searchProvider, searchQuery, data]);
+
+  const deleteCurrentList = async () => {
     if (!data || !session.data) return;
 
     const a = await fetch('/api/delete?id=' + data.id);
@@ -474,7 +512,7 @@ name=${data.title}`
         </p>
       </div>
 
-      <div className="mb-16 flex space-x-4">
+      <div className="mb-16 flex gap-x-4">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <button
@@ -555,18 +593,31 @@ name=${data.title}`
         </DropdownMenu.Root>
         {session && session.data?.user.id === data.owner && (
           <>
-            <button
-              className="primaryish-button"
-              onClick={() => {
-                router.push(`/edit/${router.query.id}`);
-              }}
-            >
-              <PencilIcon className="block h-5 w-5" />
-              <span>Edit</span>
-            </button>
+            {!isEditing ? (
+              <button
+                className="primaryish-button"
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+                disabled={isSaving}
+              >
+                <PencilIcon className="block h-5 w-5" />
+                <span>Edit</span>
+              </button>
+            ) : (
+              <button
+                className="primaryish-button"
+                onClick={submitHandle}
+                disabled={isSaving}
+              >
+                <RocketLaunchIcon className="block h-5 w-5" />
+                <span>Save</span>
+              </button>
+            )}
+
             <button
               className="primaryish-button bg-red-500"
-              onClick={deleteOMG}
+              onClick={deleteCurrentList}
             >
               <TrashIcon className="block h-5 w-5" />
               <span>Delete</span>
@@ -575,11 +626,86 @@ name=${data.title}`
         )}
       </div>
 
+      {isEditing && (
+        <div className="mb-10 flex w-full flex-col gap-y-4">
+          <div className="mt-10 flex w-full items-center justify-start gap-x-2">
+            <select
+              name="searchProvider"
+              value={searchProvider}
+              className="moddermore-input flex-grow-0"
+              aria-label="Select a provider to search from"
+              onChange={(e) => {
+                setSearchProvider(e.target.value);
+              }}
+            >
+              <option value="modrinth">Modrinth</option>
+              <option value="curseforge">CurseForge</option>
+            </select>
+
+            <input
+              type="text"
+              name="search-bar"
+              className="moddermore-input flex-grow"
+              placeholder="Search for mods"
+              role="search"
+              aria-label="Search for mods"
+              minLength={1}
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  updateSearch();
+                }
+              }}
+            />
+
+            <button
+              type="button"
+              className="primaryish-button"
+              onClick={updateSearch}
+            >
+              Search
+            </button>
+          </div>
+
+          {resolvedMods && searchResults.length > 0 && (
+            <ul className="flex flex-wrap gap-y-2">
+              {searchResults.map((res) =>
+                resolvedMods.filter(
+                  (m) => m.id === res.id && m.provider === res.provider
+                ).length > 0 ? (
+                  <></>
+                ) : (
+                  <li className="w-full" key={res.id}>
+                    <RichModDisplay
+                      data={res}
+                      buttonType="add"
+                      onClick={() => {
+                        setResolvedMods([...resolvedMods, res]);
+                      }}
+                    />
+                  </li>
+                )
+              )}
+            </ul>
+          )}
+        </div>
+      )}
+
       <ul className="flex flex-col gap-y-3">
         {resolvedMods ? (
           resolvedMods.map((mod) => (
             <li className="w-full" key={mod.id}>
-              <RichModDisplay data={mod} />
+              <RichModDisplay
+                data={mod}
+                buttonType={isEditing ? 'delete' : null}
+                onClick={() => {
+                  setResolvedMods(resolvedMods.filter((a) => a.id !== mod.id));
+                }}
+              />
             </li>
           ))
         ) : (
@@ -698,7 +824,7 @@ name=${data.title}`
         <Dialog.Portal>
           <Dialog.Overlay className="dialog overlay" />
           <Dialog.Content className="dialog content">
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col gap-y-4">
               <div className="results-list">
                 <details>
                   <summary className="text-green-400">

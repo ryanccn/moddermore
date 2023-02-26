@@ -8,7 +8,7 @@ export const NewSubmitButton = ({ disabled }: Props) => {
   return (
     <button
       type="submit"
-      className="primaryish-button !mt-14"
+      className="primaryish-button mt-14"
       disabled={disabled}
     >
       <CloudArrowUpIcon className="block h-5 w-5" />
