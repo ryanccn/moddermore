@@ -1,7 +1,7 @@
 import type { NextApiHandler } from 'next';
 
 import { getServerSession } from 'next-auth';
-import { authOptions } from './auth/[...nextauth]';
+import { authOptions } from '~/lib/authOptions';
 import { getSpecificList, updateList } from '~/lib/db';
 import { modListUpdateZod } from '~/types/moddermore';
 

@@ -29,7 +29,7 @@ const FeriumImportPage: NextPage = () => {
 
     setSubmitting(true);
 
-    const a = await fetch('/api/create', {
+    const a = await fetch('/api/list/create', {
       method: 'POST',
       body: JSON.stringify({
         title,

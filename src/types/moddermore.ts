@@ -90,6 +90,7 @@ export type UserEditableProfileData = z.infer<
 
 export interface UserProfileData extends UserEditableProfileData {
   plan: 'pro' | null;
+  likes?: string[];
 }
 
 export interface UserProfile extends UserProfileData {

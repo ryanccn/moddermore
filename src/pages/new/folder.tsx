@@ -43,7 +43,7 @@ const FeriumImportPage: NextPage = () => {
       setProgress,
     }).then((r) => r.filter((k) => k !== null))) as Mod[];
 
-    const a = await fetch('/api/create', {
+    const a = await fetch('/api/list/create', {
       method: 'POST',
       body: JSON.stringify({
         title,

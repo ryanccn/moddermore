@@ -1,7 +1,7 @@
 import type { NextApiHandler } from 'next';
 
 import { getServerSession } from 'next-auth';
-import { authOptions } from './auth/[...nextauth]';
+import { authOptions } from '~/lib/authOptions';
 import { deleteList } from '~/lib/db';
 
 const h: NextApiHandler = async (req, res) => {

@@ -18,7 +18,7 @@ const Dashboard: NextPage = () => {
 
   useEffect(() => {
     if (session.data && session.data.user.id) {
-      fetch('/api/getUserLists')
+      fetch('/api/list/ownLists')
         .then((a) => a.json())
         .then(setLists)
         .catch(() => {

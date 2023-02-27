@@ -28,6 +28,11 @@ export const getLegacyUserLists = async (email: string): Promise<ModList[]> => {
   );
 };
 
+export const listExists = async (trueId: string) => {
+  const collection = await getListsCollection();
+  return !!(await collection.findOne({ id: trueId }));
+};
+
 export const getSpecificList = async (
   id: string
 ): Promise<ModListWithOwnerData | null> => {
