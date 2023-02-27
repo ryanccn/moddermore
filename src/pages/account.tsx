@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { DashboardLayout } from '~/components/layout/DashboardLayout';
+
 import { toast } from 'react-hot-toast';
 
 const AccountPage: NextPage = () => {
@@ -48,57 +49,59 @@ const AccountPage: NextPage = () => {
   };
 
   return (
-    <GlobalLayout title="Account" displayTitle="Manage your account">
-      <form
-        className="mb-16 flex flex-col gap-y-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          saveProfile();
-        }}
-      >
-        <label className="flex flex-col gap-y-2">
-          <span className="text-sm font-semibold">Name</span>
-          <input
-            className="moddermore-input"
-            type="text"
-            value={name || ''}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
+    <DashboardLayout title="Account">
+      <div className="flex w-full flex-col px-6">
+        <form
+          className="mb-16 flex flex-col gap-y-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            saveProfile();
+          }}
+        >
+          <label className="flex flex-col gap-y-2">
+            <span className="text-sm font-semibold">Name</span>
+            <input
+              className="moddermore-input"
+              type="text"
+              value={name || ''}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              disabled={inProgress}
+            />
+          </label>
+          <label className="flex flex-col gap-y-2">
+            <span className="text-sm font-semibold">Profile picture</span>
+            <input
+              className="moddermore-input"
+              type="text"
+              value={profilePicture || ''}
+              onChange={(e) => {
+                setProfilePicture(e.target.value);
+              }}
+              disabled={inProgress}
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="primaryish-button mt-2 self-start"
             disabled={inProgress}
-          />
-        </label>
-        <label className="flex flex-col gap-y-2">
-          <span className="text-sm font-semibold">Profile picture</span>
-          <input
-            className="moddermore-input"
-            type="text"
-            value={profilePicture || ''}
-            onChange={(e) => {
-              setProfilePicture(e.target.value);
-            }}
-            disabled={inProgress}
-          />
-        </label>
+          >
+            Save
+          </button>
+        </form>
 
         <button
-          type="submit"
-          className="primaryish-button mt-2 self-start"
-          disabled={inProgress}
+          className="primaryish-button oh-no self-start px-4 py-2 text-lg font-semibold"
+          onClick={() => {
+            signOut();
+          }}
         >
-          Save
+          Sign out
         </button>
-      </form>
-
-      <button
-        className="primaryish-button oh-no self-start px-4 py-2 text-lg font-semibold"
-        onClick={() => {
-          signOut();
-        }}
-      >
-        Sign out
-      </button>
-    </GlobalLayout>
+      </div>
+    </DashboardLayout>
   );
 };
 

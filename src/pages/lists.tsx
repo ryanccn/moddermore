@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { loaderFormat } from '~/lib/strings';
 
 import Link from 'next/link';
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { DashboardLayout } from '~/components/layout/DashboardLayout';
 import { LegacyBadge } from '~/components/partials/LegacyBadge';
 
 import type { ModList } from '~/types/moddermore';
@@ -28,10 +28,10 @@ const Dashboard: NextPage = () => {
   }, [session]);
 
   return (
-    <GlobalLayout title="Dashboard" displayTitle={`Your lists`}>
+    <DashboardLayout title="Lists">
       {lists ? (
         lists.length > 0 ? (
-          <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+          <ul className="grid h-fit w-full grid-cols-1 gap-4 px-6 lg:grid-cols-3">
             {lists.map((list) => (
               <Link
                 href={`/list/${list.customSlug ?? list.id}`}
@@ -70,7 +70,7 @@ const Dashboard: NextPage = () => {
           <div className="skeleton" style={{ height: '8rem' }} />
         </ul>
       )}
-    </GlobalLayout>
+    </DashboardLayout>
   );
 };
 
