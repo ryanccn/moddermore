@@ -4,19 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PlusIcon, UserIcon } from '@heroicons/react/20/solid';
 
-import clsx from 'clsx';
-
 import { useSession, signIn as nextAuthSignIn } from 'next-auth/react';
 
-const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
+const Navbar = () => {
   const { data, status } = useSession();
 
   return (
     <nav
-      className={clsx([
-        'flex w-full items-center justify-between px-6 py-4 shadow-sm',
-        isLandingPage ? 'bg-transparent' : null,
-      ])}
+      className={'flex w-full items-center justify-between px-6 py-4 shadow-sm'}
     >
       <div className="flex items-center gap-x-3">
         <Image
@@ -27,7 +22,7 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
           alt="Moddermore icon"
         />
         <Link
-          href={data ? '/dashboard' : '/'}
+          href={data ? '/lists' : '/'}
           className="text-2xl font-bold text-neutral-800 dark:text-neutral-200"
         >
           Moddermore
@@ -41,13 +36,6 @@ const Navbar = ({ isLandingPage = false }: { isLandingPage?: boolean }) => {
               <Link href="/new" className="primaryish-button">
                 <PlusIcon className="block h-5 w-5" />
                 <span>Create</span>
-              </Link>
-              <Link
-                className="primaryish-button secondaryish-instead"
-                href="/account"
-              >
-                <UserIcon className="block h-5 w-5" />
-                <span>Manage account</span>
               </Link>
             </>
           ) : (

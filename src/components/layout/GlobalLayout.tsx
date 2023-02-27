@@ -45,7 +45,7 @@ export const GlobalLayout = ({
         <meta name="twitter:image" content="https://moddermore.net/e.png" />
       </Head>
 
-      <Navbar isLandingPage={isLandingPage} />
+      <Navbar />
 
       <main
         className={

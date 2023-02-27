@@ -172,8 +172,9 @@
   }
 
   .moddermore-footer {
-    @apply mt-4 flex w-full flex-col items-center gap-y-2 py-16;
+    @apply mt-4 flex w-full flex-col items-start gap-y-4 bg-neutral-100 px-20 py-16 dark:bg-neutral-800;
   }
+
   .moddermore-footer > p,
   .moddermore-footer > a {
     @apply text-sm font-normal text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200;

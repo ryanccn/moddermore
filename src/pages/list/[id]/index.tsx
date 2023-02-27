@@ -526,7 +526,7 @@ name=${data.title}`
     } else {
       toast.error(`Failed to delete ${data.title} (${data.id})!`);
     }
-    router.push('/dashboard');
+    router.push('/lists');
   };
 
   if (!data) {

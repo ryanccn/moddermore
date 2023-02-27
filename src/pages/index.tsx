@@ -36,7 +36,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
   const { status } = useSession();
 
   useEffect(() => {
-    if (status === 'authenticated') router.push('/dashboard');
+    if (status === 'authenticated') router.push('/lists');
   }, [status, router]);
 
   return (

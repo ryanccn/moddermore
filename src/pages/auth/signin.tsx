@@ -34,7 +34,7 @@ const SigninPage: NextPage = () => {
 
   useEffect(() => {
     if (sess.status === 'authenticated') {
-      router.push('/dashboard');
+      router.push('/lists');
       toast.success('Signed in!');
     }
   }, [sess, router]);
