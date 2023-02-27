@@ -1,7 +1,7 @@
 import type { NextApiHandler } from 'next';
 
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]';
+import { authOptions } from '~/lib/authOptions';
 
 import { updateUserProfile } from '~/lib/db/users';
 import { userEditableProfileDataZod } from '~/types/moddermore';
