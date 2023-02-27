@@ -40,6 +40,7 @@ import {
   ArchiveBoxIcon,
   RocketLaunchIcon,
   CogIcon,
+  HeartIcon,
 } from '@heroicons/react/20/solid';
 
 import toast from 'react-hot-toast';
@@ -48,6 +49,7 @@ import type JSZip from 'jszip';
 
 import { search } from '~/lib/import/search';
 import type { ExportReturnData } from '~/lib/export/types';
+import clsx from 'clsx';
 
 interface PageProps {
   data: ModListWithOwnerData;
@@ -75,6 +77,8 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<RichMod[]>([]);
 
+  const [hasLiked, setHasLiked] = useState(false);
+
   const [mrpackName, setMrpackName] = useState(data.title);
   const [mrpackVersion, setMrpackVersion] = useState('0.0.1');
   const [mrpackCurseForgeStrategy, setMrpackCurseForgeStrategy] =
@@ -97,6 +101,18 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
       setResolvedMods(mods);
     })().catch(() => {
       toast.error('Failed to resolve mods');
+    });
+  }, [data]);
+
+  useEffect(() => {
+    fetch(`/api/likes/status?id=${data.id}`).then(async (r) => {
+      if (!r.ok) {
+        toast.error('Error fetching like status');
+        return;
+      }
+
+      const { data: hasLikedRemote } = (await r.json()) as { data: boolean };
+      setHasLiked(hasLikedRemote);
     });
   }, [data]);
 
@@ -462,7 +478,7 @@ name=${data.title}`
 
     const id = router.query.id as string;
 
-    await fetch('/api/update?id=' + encodeURIComponent(id), {
+    await fetch(`/api/list/${encodeURIComponent(id)}/update`, {
       method: 'POST',
       body: JSON.stringify({
         title: data.title,
@@ -489,10 +505,22 @@ name=${data.title}`
     });
   }, [searchProvider, searchQuery, data]);
 
+  const toggleLikeStatus = () => {
+    if (hasLiked) {
+      fetch(`/api/likes/dislike?id=${data.id}`).then((r) => {
+        if (r.ok) setHasLiked(false);
+      });
+    } else {
+      fetch(`/api/likes/like?id=${data.id}`).then((r) => {
+        if (r.ok) setHasLiked(true);
+      });
+    }
+  };
+
   const deleteCurrentList = async () => {
     if (!data || !session.data) return;
 
-    const a = await fetch('/api/delete?id=' + data.id);
+    const a = await fetch(`/api/list/${data.id}/delete`);
     if (a.ok) {
       toast.success(`Deleted ${data.title} (${data.id})!`);
     } else {
@@ -613,6 +641,23 @@ name=${data.title}`
             </DropdownMenu.Content>
           </DropdownMenu.Portal>
         </DropdownMenu.Root>
+
+        <button
+          className="primaryish-button"
+          onClick={toggleLikeStatus}
+          disabled={!session}
+        >
+          <HeartIcon
+            className={clsx(
+              'block h-5 w-5',
+              hasLiked
+                ? 'fill-current stroke-none'
+                : 'fill-none stroke-current stroke-[1.5]'
+            )}
+          />
+          <span>{!hasLiked ? 'Like' : 'Unlike'}</span>
+        </button>
+
         {session && session.data?.user.id === data.owner && (
           <>
             {!isEditing ? (

@@ -41,7 +41,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   const saveSettings = () => {
     setInProgress(true);
 
-    fetch(`/api/update?id=${encodeURIComponent(data.id)}`, {
+    fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
       method: 'POST',
       body: JSON.stringify({
         title,

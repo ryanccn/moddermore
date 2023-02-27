@@ -1,5 +1,6 @@
 import { getProfilesCollection } from './client';
 import type { UserEditableProfileData } from '~/types/moddermore';
+import { getSpecificList, listExists } from '.';
 
 export const getUserProfile = async (id: string) => {
   const col = await getProfilesCollection();
@@ -37,4 +38,37 @@ export const updateUserProfile = async (
   if (!res.matchedCount) {
     console.warn('User profile update failed because none was found!');
   }
+};
+
+export const getLikeStatus = async (userId: string, listId: string) => {
+  const col = await getProfilesCollection();
+  const res = await col.findOne({ userId });
+
+  return res?.likes ? res.likes.includes(listId) : false;
+};
+
+export const like = async (userId: string, listId: string) => {
+  if (!(await listExists(listId))) return false;
+
+  const col = await getProfilesCollection();
+  let res = await col.updateOne({ userId }, { $push: { likes: listId } });
+
+  if (!res.acknowledged) {
+    res = await col.updateOne({ userId }, { $set: { likes: [listId] } });
+  }
+
+  return res.acknowledged;
+};
+
+export const dislike = async (userId: string, listId: string) => {
+  if (!(await listExists(listId))) return false;
+
+  const col = await getProfilesCollection();
+  let res = await col.updateOne({ userId }, { $pull: { likes: listId } });
+
+  if (!res.acknowledged) {
+    res = await col.updateOne({ userId }, { $set: { likes: [] } });
+  }
+
+  return res.acknowledged;
 };
