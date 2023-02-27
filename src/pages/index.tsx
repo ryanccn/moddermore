@@ -21,8 +21,8 @@ import {
   ArrowDownIcon,
 } from '@heroicons/react/24/solid';
 
-import { getLists, getPageviews, getUsers } from '~/lib/stats';
-import { numberFormat } from '~/lib/strings';
+// import { getLists, getPageviews, getUsers } from '~/lib/stats';
+// import { numberFormat } from '~/lib/strings';
 
 interface PageProps {
   pageviews: number;
@@ -30,7 +30,7 @@ interface PageProps {
   lists: number;
 }
 
-const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
+const Home: NextPage = () => {
   const router = useRouter();
   const { status } = useSession();
 
@@ -69,7 +69,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         <ArrowDownIcon className="block h-5 w-5 stroke-2 text-neutral-600 dark:text-neutral-400" />
       </div>
 
-      <div className="flex flex-col items-center gap-y-16 gap-x-24 self-center p-6 lg:flex-row lg:p-20">
+      {/* <div className="flex flex-col items-center gap-y-16 gap-x-24 self-center p-6 lg:flex-row lg:p-20">
         <div className="flex flex-col items-center gap-y-2">
           <span className="text-lg font-bold">Monthly pageviews</span>
           <span className="text-5xl font-black">{numberFormat(pageviews)}</span>
@@ -82,7 +82,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
           <span className="text-lg font-bold">Lists created</span>
           <span className="text-5xl font-black">{numberFormat(lists)}</span>
         </div>
-      </div>
+      </div> */}
 
       <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:p-20">
         <h2 className="text-4xl font-bold">Import from many platforms</h2>
@@ -197,15 +197,15 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<PageProps> = async () => {
-  return {
-    props: {
-      pageviews: await getPageviews(),
-      users: await getUsers(),
-      lists: await getLists(),
-    },
-    revalidate: 5 * 60,
-  };
-};
+// export const getStaticProps: GetStaticProps<PageProps> = async () => {
+//   return {
+//     props: {
+//       pageviews: await getPageviews(),
+//       users: await getUsers(),
+//       lists: await getLists(),
+//     },
+//     revalidate: 5 * 60,
+//   };
+// };
 
 export default Home;

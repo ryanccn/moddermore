@@ -33,6 +33,14 @@ export const GlobalLayout = ({
     if (!localStorage.getItem('downtimeMessageViewed-2-26')) {
       setShowDowntimeMessage(true);
       localStorage.setItem('downtimeMessageViewed-2-26', 'true');
+
+      const timeout = setTimeout(() => {
+        setShowDowntimeMessage(false);
+      }, 4000);
+
+      return () => {
+        clearTimeout(timeout);
+      };
     }
   }, []);
 
