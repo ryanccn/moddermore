@@ -81,7 +81,7 @@ export interface RichModList {
 
 export const userEditableProfileDataZod = z.object({
   name: z.union([z.string(), z.literal(null)]),
-  profilePicture: z.union([z.string(), z.literal(null)]),
+  profilePicture: z.union([z.string().url(), z.literal(null)]),
 });
 
 export type UserEditableProfileData = z.infer<
