@@ -1,3 +1,5 @@
+// import '@total-typescript/ts-reset';
+
 import { z } from 'zod';
 
 export type ModProvider = 'modrinth' | 'curseforge';
