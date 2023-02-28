@@ -16,7 +16,7 @@ import {
   useState,
 } from 'react';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 import * as Dialog from '@radix-ui/react-dialog';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
@@ -105,6 +105,8 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   }, [data]);
 
   useEffect(() => {
+    if (session.status !== 'authenticated') return;
+
     fetch(`/api/likes/status?id=${data.id}`).then(async (r) => {
       if (!r.ok) {
         toast.error('Error fetching like status');
@@ -114,7 +116,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
       const { data: hasLikedRemote } = (await r.json()) as { data: boolean };
       setHasLiked(hasLikedRemote);
     });
-  }, [data]);
+  }, [data.id, session.status]);
 
   const showModal = useMemo(() => status === 'result', [status]);
 
@@ -506,6 +508,11 @@ name=${data.title}`
   }, [searchProvider, searchQuery, data]);
 
   const toggleLikeStatus = () => {
+    if (session.status !== 'authenticated') {
+      signIn();
+      return;
+    }
+
     if (hasLiked) {
       fetch(`/api/likes/dislike?id=${data.id}`).then((r) => {
         if (r.ok) setHasLiked(false);
@@ -642,11 +649,7 @@ name=${data.title}`
           </DropdownMenu.Portal>
         </DropdownMenu.Root>
 
-        <button
-          className="primaryish-button"
-          onClick={toggleLikeStatus}
-          disabled={!session}
-        >
+        <button className="primaryish-button" onClick={toggleLikeStatus}>
           <HeartIcon
             className={clsx(
               'block h-5 w-5',
@@ -809,20 +812,25 @@ name=${data.title}`
         <ProgressOverlay label="Getting the .zip file ready..." {...progress} />
       ) : null}
 
-      <Dialog.Root open={status === 'modrinth.form'}>
+      <Dialog.Root
+        open={status === 'modrinth.form'}
+        onOpenChange={(open) => {
+          if (!open) setStatus('idle');
+        }}
+      >
         <Dialog.Portal>
           <Dialog.Overlay className="dialog overlay" />
           <Dialog.Content
             className="dialog content"
-            onEscapeKeyDown={() => {
-              setStatus('idle');
-            }}
-            onPointerDownOutside={() => {
-              setStatus('idle');
-            }}
-            onInteractOutside={() => {
-              setStatus('idle');
-            }}
+            // onEscapeKeyDown={() => {
+            //   setStatus('idle');
+            // }}
+            // onPointerDownOutside={() => {
+            //   setStatus('idle');
+            // }}
+            // onInteractOutside={() => {
+            //   setStatus('idle');
+            // }}
           >
             <form
               className="flex flex-col gap-y-8"
