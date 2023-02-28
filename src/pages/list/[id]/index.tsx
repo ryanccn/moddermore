@@ -562,7 +562,7 @@ name=${data.title}`
         )}
       </div>
 
-      <div className="mb-16 flex gap-x-4">
+      <div className="mb-16 flex flex-wrap gap-x-4">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <button
