@@ -5,7 +5,7 @@ import type {
   ProviderSpecificOptions,
 } from './types';
 
-import minecraftVersions from '../minecraftVersions.json';
+import minecraftVersions from '~/lib/minecraftVersions.json';
 
 const getObjFromVersion = (
   v: ModrinthVersion,
@@ -26,16 +26,37 @@ const getObjFromVersion = (
   };
 };
 
-/** WTF even is this function? what's it for? */
 export const callModrinthAPI = async ({
   id,
   gameVersions,
   loader,
+  version,
 }: ProviderSpecificOptions): Promise<ModrinthVersion | null> => {
+  if (version) {
+    const res = await fetch(
+      `https://api.modrinth.com/v2/version/${encodeURIComponent(version)}`,
+      {
+        headers: { 'User-Agent': 'Moddermore/noversion' },
+      }
+    );
+
+    if (!res.ok) {
+      return null;
+    }
+
+    const data = (await res.json()) as ModrinthVersion;
+
+    return data;
+  }
+
   const res = await fetch(
-    `https://api.modrinth.com/v2/project/${id}/version?loaders=["${loader}"]&game_versions=[${gameVersions
-      .map((a) => `"${a}"`)
-      .join(',')}]`,
+    `https://api.modrinth.com/v2/project/${encodeURIComponent(
+      id
+    )}/version?loaders=["${encodeURIComponent(
+      loader
+    )}"]&game_versions=[${encodeURIComponent(
+      gameVersions.map((a) => `"${a}"`).join(',')
+    )}]`,
     {
       headers: { 'User-Agent': 'Moddermore/noversion' },
     }
@@ -63,10 +84,11 @@ export const getModrinthDownload = async ({
   gameVersions,
   loader,
   name,
+  version,
 }: ProviderSpecificOptions): Promise<ExportReturnData> => {
   let latest: ModrinthVersion | null = null;
 
-  latest = await callModrinthAPI({ id, gameVersions, loader, name });
+  latest = await callModrinthAPI({ id, gameVersions, loader, name, version });
 
   if (!latest && loader === 'quilt') {
     latest = await callModrinthAPI({
@@ -74,6 +96,7 @@ export const getModrinthDownload = async ({
       gameVersions,
       loader: 'fabric',
       name,
+      version,
     });
   }
 
@@ -87,6 +110,7 @@ export const getModrinthDownload = async ({
       gameVersions: compatGameVersions,
       loader,
       name,
+      version,
     });
   }
 
@@ -100,6 +124,7 @@ export const getModrinthDownload = async ({
       gameVersions: compatGameVersions,
       loader: 'fabric',
       name,
+      version,
     });
   }
 

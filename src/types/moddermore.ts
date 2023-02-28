@@ -13,6 +13,7 @@ const modZod = z.object({
 export interface Mod {
   provider: ModProvider;
   id: string;
+  version?: string;
 }
 
 export interface RichMod {
@@ -23,6 +24,7 @@ export interface RichMod {
   iconUrl?: string;
   href: string;
   id: string;
+  version?: string;
 }
 
 export const modListCreateZod = z.object({
