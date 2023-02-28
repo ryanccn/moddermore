@@ -84,6 +84,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
             className="moddermore-input"
             type="text"
             value={title}
+            required
             onChange={(e) => {
               setTitle(e.target.value);
             }}
@@ -116,6 +117,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
             name="modloader"
             value={modLoader}
             aria-label="Mod loader"
+            required
             onChange={(e) => {
               setModLoader(e.target.value as ModLoader);
             }}
