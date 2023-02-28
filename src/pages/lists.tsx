@@ -61,7 +61,7 @@ const Dashboard: NextPage = () => {
           </div>
         )
       ) : (
-        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <ul className="grid h-fit w-full grid-cols-1 gap-4 px-6 lg:grid-cols-3">
           <div className="skeleton" style={{ height: '8rem' }} />
           <div className="skeleton" style={{ height: '8rem' }} />
           <div className="skeleton" style={{ height: '8rem' }} />
