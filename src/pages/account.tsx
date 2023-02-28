@@ -74,7 +74,7 @@ const AccountPage: NextPage = () => {
             <span className="text-sm font-semibold">Profile picture</span>
             <input
               className="moddermore-input"
-              type="text"
+              type="url"
               value={profilePicture || ''}
               onChange={(e) => {
                 setProfilePicture(e.target.value);
