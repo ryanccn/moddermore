@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { DocumentIcon } from '@heroicons/react/20/solid';
+import { ArrowLeftIcon, DocumentIcon } from '@heroicons/react/20/solid';
 
 import { getSpecificList } from '~/lib/db';
 import minecraftVersions from '~/lib/minecraftVersions.json';
@@ -13,6 +13,7 @@ import type { ModLoader, ModList } from '~/types/moddermore';
 import { toast } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
 import { ProBadge } from '~/components/partials/ProBadge';
+import Link from 'next/link';
 
 interface PageProps {
   data: ModList;
@@ -71,6 +72,13 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
 
   return (
     <GlobalLayout title={`Settings for ${data.title}`}>
+      <Link
+        href={`/list/${data.customSlug ?? data.id}`}
+        className="mb-2 flex flex-row gap-x-2"
+      >
+        <ArrowLeftIcon className="block h-3 w-3" />
+        <span>Back</span>
+      </Link>
       <form
         className="mb-16 flex flex-col gap-y-4"
         onSubmit={(e) => {
