@@ -1,6 +1,6 @@
 import { getProfilesCollection } from './client';
 import type { UserEditableProfileData } from '~/types/moddermore';
-import { getSpecificList, listExists } from '.';
+import { getSpecificListByID } from '.';
 
 export const getUserProfile = async (id: string) => {
   const col = await getProfilesCollection();
@@ -48,7 +48,7 @@ export const getLikeStatus = async (userId: string, listId: string) => {
 };
 
 export const like = async (userId: string, listId: string) => {
-  if (!(await listExists(listId))) return false;
+  if (!(await getSpecificListByID(listId))) return false;
 
   const col = await getProfilesCollection();
   let res = await col.updateOne({ userId }, { $push: { likes: listId } });
@@ -61,7 +61,7 @@ export const like = async (userId: string, listId: string) => {
 };
 
 export const dislike = async (userId: string, listId: string) => {
-  if (!(await listExists(listId))) return false;
+  if (!(await getSpecificListByID(listId))) return false;
 
   const col = await getProfilesCollection();
   let res = await col.updateOne({ userId }, { $pull: { likes: listId } });

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { GlobalLayout } from './GlobalLayout';
-import { ListBulletIcon, UserIcon } from '@heroicons/react/24/solid';
+import { HeartIcon, ListBulletIcon, UserIcon } from '@heroicons/react/24/solid';
 
 interface Props {
   title: string;
@@ -46,6 +46,11 @@ export const DashboardLayout = ({ title, children }: Props) => {
             title="Lists"
             href="/lists"
             icon={<ListBulletIcon className="block h-5 w-5" />}
+          />
+          <DashboardLink
+            title="Likes"
+            href="/likes"
+            icon={<HeartIcon className="block h-5 w-5" />}
           />
           <DashboardLink
             title="Account"
