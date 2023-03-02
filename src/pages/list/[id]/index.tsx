@@ -777,7 +777,7 @@ name=${data.title}`
         </div>
       )}
 
-      <ul className="flex flex-col gap-y-3">
+      <ul className="flex flex-col gap-y-4">
         {resolvedMods ? (
           resolvedMods.map((mod) => (
             <li className="w-full" key={mod.id}>
@@ -787,6 +787,7 @@ name=${data.title}`
                 onClick={() => {
                   setResolvedMods(resolvedMods.filter((a) => a.id !== mod.id));
                 }}
+                parent={data}
               />
             </li>
           ))

@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 
-import type { RichMod } from '~/types/moddermore';
+import type { ModList, RichMod } from '~/types/moddermore';
 
 import { providerFormat, numberFormat } from '~/lib/strings';
 import {
   PlusIcon,
   TrashIcon,
-  ArrowTopRightOnSquareIcon,
   ArrowDownTrayIcon,
+  ArrowUpRightIcon,
 } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
 
@@ -16,6 +16,7 @@ interface Props {
   buttonType?: 'add' | 'delete' | null;
   onClick?: () => void;
   className?: string;
+  parent?: ModList;
 }
 
 export const RichModDisplay = ({
@@ -23,11 +24,17 @@ export const RichModDisplay = ({
   buttonType,
   onClick,
   className,
+  parent,
 }: Props) => {
+  const incompatible =
+    parent &&
+    data.gameVersions &&
+    !data.gameVersions.includes(parent.gameVersion);
   return (
     <div
       className={clsx(
-        'flex justify-between rounded-2xl border-none bg-neutral-100 p-4 pt-4 shadow-sm dark:bg-neutral-800',
+        'flex justify-between rounded-2xl border-none bg-neutral-100 p-5 shadow-sm dark:bg-neutral-800',
+        incompatible ? 'ring-2 ring-red-400/70' : null,
         className
       )}
     >
@@ -43,23 +50,30 @@ export const RichModDisplay = ({
             />
           )}
         </div>
+
         <div className="flex grow flex-col gap-x-2 sm:flex-row sm:justify-between">
           <div className="flex flex-col justify-between gap-y-2">
             <div className="flex flex-col gap-y-1">
               <h2 className="mr-2 text-xl font-bold">{data.name}</h2>
               <p className="my-0.5">{data.description}</p>
             </div>
-            <div className="mb-2 flex flex-wrap">
-              <a
-                className="flex items-center underline"
-                href={data.href}
-                rel="noreferrer noopener"
-              >
-                {providerFormat(data.provider)}
-                <ArrowTopRightOnSquareIcon className="mr-auto ml-1 h-4 w-4" />
-              </a>
-            </div>
+
+            {incompatible && (
+              <div className="font-medium text-red-500 dark:text-red-400">
+                Incompatible with current list!
+              </div>
+            )}
+
+            <a
+              className="group flex flex-wrap items-center gap-x-1 self-start underline decoration-black/50 underline-offset-2 transition-all hover:decoration-black/75 dark:decoration-white/50 dark:hover:decoration-white/75"
+              href={data.href}
+              rel="noreferrer noopener"
+            >
+              {providerFormat(data.provider)}
+              <ArrowUpRightIcon className="block h-4 w-4" />
+            </a>
           </div>
+
           <div className="min-w-fit">
             {data.downloads && (
               <div className="mb-2 flex items-center sm:justify-end">
