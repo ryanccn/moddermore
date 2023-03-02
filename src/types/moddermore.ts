@@ -1,5 +1,3 @@
-// import '@total-typescript/ts-reset';
-
 import { z } from 'zod';
 
 export type ModProvider = 'modrinth' | 'curseforge';
@@ -25,6 +23,7 @@ export interface RichMod {
   href: string;
   id: string;
   version?: string;
+  gameVersions?: string[];
 }
 
 export const modListCreateZod = z.object({
