@@ -12,6 +12,7 @@ export interface ModrinthProject {
   icon_url: string | null;
   id: string;
   team: string;
+  game_versions?: string[];
 }
 
 export interface ModrinthVersion {

@@ -67,7 +67,7 @@ export const getSpecificList = async (
     modloader: list.modloader,
     owner: list.owner,
     created_at: list.created_at,
-    customSlug: list.customSlug,
+    customSlug: list.customSlug ?? null,
     ownersExtraData: ownerProfile
       ? {
           ...(ownerProfile.name ? { name: ownerProfile.name } : {}),

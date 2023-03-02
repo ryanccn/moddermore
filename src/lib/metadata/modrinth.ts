@@ -20,5 +20,6 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
     name: data.title,
     description: data.description,
     downloads: data.downloads,
+    ...(data.game_versions ? { gameVersions: data.game_versions } : {}),
   };
 };
