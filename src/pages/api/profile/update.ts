@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '~/lib/authOptions';
 
 import { updateUserProfile } from '~/lib/db/users';
-import { userEditableProfileDataZod } from '~/types/moddermore';
+import { UserEditableProfileData } from '~/types/moddermore';
 
 const h: NextApiHandler = async (req, res) => {
   const session = await getServerSession(req, res, authOptions);
@@ -13,7 +13,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const parsedBody = userEditableProfileDataZod.safeParse(req.body);
+  const parsedBody = UserEditableProfileData.safeParse(req.body);
 
   if (!parsedBody.success) {
     res.status(400).end();

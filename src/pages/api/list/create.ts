@@ -3,7 +3,7 @@ import type { NextApiHandler } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '~/lib/authOptions';
 import { createList } from '~/lib/db';
-import { modListCreateZod } from '~/types/moddermore';
+import { ModListCreate } from '~/types/moddermore';
 
 const h: NextApiHandler = async (req, res) => {
   if (req.method !== 'POST') {
@@ -18,7 +18,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const parsedData = modListCreateZod.safeParse(req.body);
+  const parsedData = ModListCreate.safeParse(req.body);
 
   if (!parsedData.success) {
     res.status(400).json({ error: 'Bad request' });
