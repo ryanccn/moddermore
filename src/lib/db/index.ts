@@ -3,8 +3,8 @@ import { v4 as generateUUID } from '@lukeed/uuid/secure';
 import { getListsCollection } from './client';
 import type {
   ModList,
-  ModListCreateType,
-  ModListUpdateType,
+  ModListCreate,
+  ModListUpdate,
   ModListWithOwnerData,
   UserProfile,
 } from '~/types/moddermore';
@@ -95,7 +95,7 @@ const genRandomString = (): string => {
 };
 
 export const createList = async (
-  list: ModListCreateType,
+  list: ModListCreate,
   userId: string
 ): Promise<string> => {
   const collection = await getListsCollection();
@@ -113,7 +113,7 @@ export const createList = async (
 
 export const updateList = async (
   id: string,
-  list: ModListUpdateType,
+  list: ModListUpdate,
   userId: string
 ): Promise<boolean> => {
   const collection = await getListsCollection();
