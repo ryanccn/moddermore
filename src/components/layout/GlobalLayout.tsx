@@ -30,7 +30,16 @@ export const GlobalLayout = ({
   return (
     <>
       <Head>
+        <link
+          rel="icon"
+          type="image/png"
+          href="/icons/moddermore-positive.png"
+        />
+        <link rel="apple-touch-icon" href="/icons/moddermore-negative.png" />
+        <meta name="apple-mobile-web-app-title" content="Moddermore" />
+
         <title>{derivedTitle}</title>
+
         <meta name="title" content={derivedTitle} />
         <meta name="description" content="Share your mods with anyone." />
         <meta property="og:type" content="website" />
