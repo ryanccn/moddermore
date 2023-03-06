@@ -2,7 +2,11 @@
 
 import type { GetServerSideProps, NextPage } from 'next';
 
-import type { ModListWithOwnerData, RichMod } from '~/types/moddermore';
+import type {
+  ModListCreate,
+  ModListWithOwnerData,
+  RichMod,
+} from '~/types/moddermore';
 
 import { modToRichMod, richModToMod } from '~/lib/db/conversions';
 import { loaderFormat } from '~/lib/strings';
@@ -41,6 +45,7 @@ import {
   RocketLaunchIcon,
   CogIcon,
   HeartIcon,
+  Square2StackIcon,
 } from '@heroicons/react/20/solid';
 
 import toast from 'react-hot-toast';
@@ -524,6 +529,33 @@ name=${data.title}`
     }
   };
 
+  const remixList = () => {
+    if (session.status !== 'authenticated') {
+      signIn();
+      return;
+    }
+
+    fetch('/api/list/create', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: `${data.title} (copy)`,
+        gameVersion: data.gameVersion,
+        modloader: data.modloader,
+        mods: data.mods,
+      } satisfies ModListCreate),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(async (res) => {
+        if (!res.ok) return;
+        const { id } = (await res.json()) as { id: string };
+        router.push(`/list/${id}`);
+        toast.success('Remixed list!');
+      })
+      .catch(() => {
+        toast.error('Failed to remix list!');
+      });
+  };
+
   const deleteCurrentList = async () => {
     if (!data || !session.data) return;
 
@@ -659,6 +691,11 @@ name=${data.title}`
             )}
           />
           <span>{!hasLiked ? 'Like' : 'Unlike'}</span>
+        </button>
+
+        <button className="primaryish-button" onClick={remixList}>
+          <Square2StackIcon className="block h-5 w-5" />
+          <span>Remix</span>
         </button>
 
         {session && session.data?.user.id === data.owner && (
