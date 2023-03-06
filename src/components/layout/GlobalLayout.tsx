@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
-import type { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 interface Props {
   title: string;
@@ -26,6 +26,23 @@ export const GlobalLayout = ({
   children,
 }: Props) => {
   const derivedTitle = titleSuffix ? `${title} / Moddermore` : title;
+
+  const [showDowntimeMessage, setShowDowntimeMessage] = useState(false);
+
+  useEffect(() => {
+    if (!localStorage.getItem('downtimeMessageViewed-2-26')) {
+      setShowDowntimeMessage(true);
+      localStorage.setItem('downtimeMessageViewed-2-26', 'true');
+
+      const timeout = setTimeout(() => {
+        setShowDowntimeMessage(false);
+      }, 4000);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, []);
 
   return (
     <>
@@ -78,6 +95,15 @@ export const GlobalLayout = ({
         ) : null}
         {children}
       </main>
+
+      {showDowntimeMessage && (
+        <div className="fixed bottom-0 right-0 m-6 flex max-w-md rounded-lg bg-red-100 p-6 text-sm font-medium dark:bg-red-900">
+          Our main database has gone down and there has been significant data
+          loss. We are actively trying to recover this data. Meanwhile, we have
+          moved to a new database cluster so you can continue using this
+          service.
+        </div>
+      )}
 
       <Footer isLandingPage={isLandingPage} />
     </>

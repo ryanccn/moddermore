@@ -31,7 +31,7 @@ interface PageProps {
   lists: number;
 }
 
-const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
+const Home: NextPage = () => {
   const router = useRouter();
   const { status } = useSession();
 
