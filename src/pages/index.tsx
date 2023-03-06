@@ -5,9 +5,6 @@ import { useEffect } from 'react';
 
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Image from 'next/image';
-import shareLinkLandingLightImage from '~/components/share-link-landing-page-light.png';
-import shareLinkLandingDarkImage from '~/components/share-link-landing-page-dark.png';
 
 import { ModrinthIcon, TutanotaIcon, VercelIcon } from '~/components/icons';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
@@ -31,7 +28,7 @@ interface PageProps {
   lists: number;
 }
 
-const Home: NextPage = () => {
+const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
   const router = useRouter();
   const { status } = useSession();
 
