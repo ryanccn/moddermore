@@ -1,4 +1,4 @@
-import ModdermoreIcon from '~/moddermore.png';
+import ModdermoreIcon from '../../../public/icons/moddermore-negative.png';
 
 import Image from 'next/image';
 import Link from 'next/link';
