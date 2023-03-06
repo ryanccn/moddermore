@@ -130,27 +130,9 @@ const Home: NextPage = () => {
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Or just publish the link publicly anywhere you want!
         </h3>
-        <div className="flex flex-col gap-6 lg:flex-row">
-          <Image
-            src={shareLinkLandingLightImage}
-            alt="Share link"
-            width={2664}
-            height={1332}
-            className="landing-page-fade-out dark:hidden"
-            placeholder="blur"
-          />
-          <Image
-            src={shareLinkLandingDarkImage}
-            alt="Share link"
-            width={2664}
-            height={1332}
-            className="landing-page-fade-out hidden dark:block"
-            placeholder="blur"
-          />
-        </div>
       </div>
 
-      <div className="-mt-36 mb-10 flex flex-col items-start gap-y-4 p-6 lg:p-20">
+      <div className="mt-24 mb-10 flex flex-col items-start gap-y-4 p-6 lg:p-20">
         <h2 className="text-4xl font-bold">Export to anywhere</h2>
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Publishing to Modrinth? Importing to Prism Launcher? We{"'"}ve got you
