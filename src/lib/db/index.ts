@@ -1,4 +1,4 @@
-import { v4 as generateUUID } from '@lukeed/uuid/secure';
+import { nanoid } from 'nanoid';
 
 import { getListsCollection } from './client';
 import type {
@@ -90,16 +90,12 @@ export const deleteList = async (
   return !!res.deletedCount;
 };
 
-const genRandomString = (): string => {
-  return generateUUID().replaceAll('-', '').substring(0, 10);
-};
-
 export const createList = async (
   list: ModListCreate,
   userId: string
 ): Promise<string> => {
   const collection = await getListsCollection();
-  const id = genRandomString();
+  const id = nanoid(12);
 
   await collection.insertOne({
     ...list,
