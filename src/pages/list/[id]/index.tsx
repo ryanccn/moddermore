@@ -47,6 +47,9 @@ import {
   CogIcon,
   HeartIcon,
   Square2StackIcon,
+  KeyIcon,
+  WrenchIcon,
+  ClipboardIcon,
 } from '@heroicons/react/20/solid';
 
 import toast from 'react-hot-toast';
@@ -525,6 +528,33 @@ name=${data.title}`
     });
   }, [searchProvider, searchQuery, data]);
 
+  const copyMarkdownList = () => {
+    if (!resolvedMods) return;
+
+    const text = resolvedMods
+      .map((k) => `- [**${k.name}**](${k.href}) - ${k.description}`)
+      .join('\n');
+
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success('Copied Markdown to clipboard!');
+    });
+  };
+
+  const copyJSON = () => {
+    navigator.clipboard
+      .writeText(
+        JSON.stringify({
+          title: data.title,
+          modloader: data.modloader,
+          gameVersion: data.gameVersion,
+          mods: data.mods,
+        })
+      )
+      .then(() => {
+        toast.success('Copied JSON to clipboard!');
+      });
+  };
+
   const toggleLikeStatus = () => {
     if (session.status !== 'authenticated') {
       signIn();
@@ -616,12 +646,8 @@ name=${data.title}`
 
       <div className="mb-16 flex flex-wrap gap-4">
         <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild>
-            <button
-              className="primaryish-button"
-              onClick={downloadExport}
-              disabled={!data.mods.length}
-            >
+          <DropdownMenu.Trigger asChild disabled={!resolvedMods}>
+            <button className="primaryish-button">
               <FolderArrowDownIcon className="block h-5 w-5" />
               <span>Export as...</span>
             </button>
@@ -632,7 +658,7 @@ name=${data.title}`
               align="start"
               className="dropdown-menu-content z-40 mt-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800"
             >
-              <DropdownMenu.Item className="focus:outline-none">
+              <DropdownMenu.Item asChild>
                 <button
                   className="dropdown-button"
                   onClick={downloadExport}
@@ -642,7 +668,7 @@ name=${data.title}`
                   <span>Zip archive</span>
                 </button>
               </DropdownMenu.Item>
-              <DropdownMenu.Item className="focus:outline-none">
+              <DropdownMenu.Item asChild>
                 <button
                   className="dropdown-button"
                   onClick={modrinthExportInit}
@@ -652,7 +678,7 @@ name=${data.title}`
                   <span>Modrinth pack</span>
                 </button>
               </DropdownMenu.Item>
-              <DropdownMenu.Item className="focus:outline-none">
+              <DropdownMenu.Item asChild>
                 <button
                   className="dropdown-button"
                   onClick={packwizExport}
@@ -666,7 +692,7 @@ name=${data.title}`
                   <ProBadge />
                 </button>
               </DropdownMenu.Item>
-              <DropdownMenu.Item className="focus:outline-none">
+              <DropdownMenu.Item asChild>
                 <button
                   className="dropdown-button"
                   onClick={prismStaticExport}
@@ -688,6 +714,43 @@ name=${data.title}`
                   <PrismIcon className="block h-5 w-5" />
                   <span>MultiMC (auto-updating)</span>
                   <ProBadge />
+                </button>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
+
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger asChild>
+            <button className="primaryish-button" disabled={!resolvedMods}>
+              <ClipboardIcon className="block h-5 w-5" />
+              <span>Copy as...</span>
+            </button>
+          </DropdownMenu.Trigger>
+
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              align="start"
+              className="dropdown-menu-content z-40 mt-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800"
+            >
+              <DropdownMenu.Item asChild>
+                <button
+                  className="dropdown-button"
+                  onClick={copyMarkdownList}
+                  disabled={!data.mods.length}
+                >
+                  <KeyIcon className="block h-5 w-5" />
+                  <span>Markdown list</span>
+                </button>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item asChild>
+                <button
+                  className="dropdown-button"
+                  onClick={copyJSON}
+                  disabled={!data.mods.length}
+                >
+                  <WrenchIcon className="block h-5 w-5" />
+                  <span>JSON</span>
                 </button>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
