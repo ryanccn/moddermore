@@ -9,6 +9,7 @@ import type {
 } from '~/types/moddermore';
 
 import { modToRichMod, richModToMod } from '~/lib/db/conversions';
+import { getInfos as getModrinthInfos } from '~/lib/metadata/modrinth';
 import { loaderFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
@@ -95,16 +96,28 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
   useEffect(() => {
     (async () => {
-      const lim = pLimit(6);
+      const lim = pLimit(8);
 
-      const mods = await Promise.all(
-        data.mods.map((a) => lim(() => modToRichMod(a)))
-      )
-        .then((a) => a.filter((b) => b !== null) as RichMod[])
-        .then((a) => a.sort((a, b) => (a.name > b.name ? 1 : -1)));
+      const modrinthMods = await getModrinthInfos(
+        data.mods.filter((k) => k.provider === 'modrinth').map((k) => k.id)
+      );
 
-      setResolvedMods(mods);
-    })().catch(() => {
+      const curseForgeMods = await Promise.all(
+        data.mods
+          .filter((k) => k.provider === 'curseforge')
+          .map((a) => lim(() => modToRichMod(a)))
+      );
+
+      if (!modrinthMods) throw new Error();
+
+      const mods = [...modrinthMods, ...curseForgeMods]
+        .filter((k) => k !== null)
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        .sort((a, b) => (a!.name > b!.name ? 1 : -1));
+
+      setResolvedMods(mods as RichMod[]);
+    })().catch((e) => {
+      console.error(e);
       toast.error('Failed to resolve mods');
     });
   }, [data]);
@@ -167,7 +180,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
       throw new Error('f');
     }
 
-    const lim = pLimit(6);
+    const lim = pLimit(8);
 
     await Promise.all(
       urls.map((downloadData) =>
