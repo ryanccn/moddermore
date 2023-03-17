@@ -499,9 +499,7 @@ name=${data.title}`
 
     setIsSaving(true);
 
-    const id = router.query.id as string;
-
-    await fetch(`/api/list/${encodeURIComponent(id)}/update`, {
+    await fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
       method: 'POST',
       body: JSON.stringify({
         title: data.title,
