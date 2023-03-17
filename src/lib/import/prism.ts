@@ -73,7 +73,7 @@ export const parsePrismInstance = async ({
     const ret: (Mod | null)[] = [];
     setProgress({ value: 0, max: mods.length });
 
-    const resolveLimit = pLimit(6);
+    const resolveLimit = pLimit(8);
 
     await Promise.all(
       mods.map((mod) =>

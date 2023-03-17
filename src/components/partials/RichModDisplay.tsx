@@ -33,8 +33,8 @@ export const RichModDisplay = ({
   return (
     <div
       className={clsx(
-        'flex justify-between rounded-2xl border-none bg-neutral-100 p-5 shadow-sm dark:bg-neutral-800',
-        incompatible ? 'ring-2 ring-red-400/70' : null,
+        'flex justify-between rounded-2xl border-none bg-neutral-100 p-5 shadow-sm transition-all dark:bg-neutral-800',
+        incompatible ? 'ring-2 ring-red-400/70 hover:ring-red-400/80' : null,
         className
       )}
     >
