@@ -13,8 +13,9 @@ declare global {
       EMAIL_SERVER: string;
       EMAIL_FROM: string;
 
-      LEMON_SQUEEZY_CHECKOUT_URL: string;
+      NEXT_PUBLIC_LEMON_SQUEEZY_CHECKOUT_URL: string;
       LEMON_SQUEEZY_WEBHOOK_SECRET: string;
+      LEMON_SQUEEZY_API_KEY: string;
 
       NEXT_PUBLIC_CURSEFORGE_API_KEY: string;
 

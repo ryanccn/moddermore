@@ -103,6 +103,10 @@
     @apply bg-green-500 hover:bg-green-400 focus:ring-green-500/60;
   }
 
+  .primaryish-button.pls-subscribe {
+    @apply rounded-xl bg-gradient-to-br from-indigo-500 to-green-500 px-6 py-4 text-2xl;
+  }
+
   .primaryish-button.showcase {
     @apply px-6 py-4 text-lg disabled:scale-100;
   }

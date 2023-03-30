@@ -10,7 +10,7 @@ import { signIn, useSession } from 'next-auth/react';
 
 const ProFeature = (props: { text: string; wip?: boolean }) => {
   return (
-    <div className="flex flex-row items-center gap-x-2">
+    <div className="flex flex-row items-center gap-x-3">
       <CheckIcon
         className={clsx(
           'block h-5 w-5',
@@ -18,12 +18,14 @@ const ProFeature = (props: { text: string; wip?: boolean }) => {
         )}
         strokeWidth={2.5}
       />
-      <span>
-        {props.text}
+      <div className="flex flex-col">
+        <span>{props.text}</span>
         {props.wip ? (
-          <span className="text-neutral-400">{' (work in progress)'}</span>
+          <span className="text-sm text-neutral-400">
+            {'(work in progress)'}
+          </span>
         ) : null}
-      </span>
+      </div>
     </div>
   );
 };
@@ -60,8 +62,10 @@ const ProPage: NextPage = () => {
           </h3>
           <button
             onClick={purchasePro}
-            className="primaryish-button rounded-xl bg-gradient-to-br from-indigo-500 to-green-500 px-6 py-4 text-2xl"
-            disabled={purchaseBtnDisabled}
+            className="primaryish-button pls-subscribe"
+            disabled={
+              purchaseBtnDisabled || sess.data?.extraProfile.plan === 'pro'
+            }
           >
             Subscribe for $1.99/mo
           </button>
