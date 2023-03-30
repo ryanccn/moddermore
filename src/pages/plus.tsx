@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { useCallback, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 
-const ProFeature = (props: { text: string; wip?: boolean }) => {
+const PlusFeature = (props: { text: string; wip?: boolean }) => {
   return (
     <div className="flex flex-row items-center gap-x-3">
       <CheckIcon
@@ -30,11 +30,11 @@ const ProFeature = (props: { text: string; wip?: boolean }) => {
   );
 };
 
-const ProPage: NextPage = () => {
+const PlusPage: NextPage = () => {
   const sess = useSession();
   const [purchaseBtnDisabled, setPurchaseBtnDisabled] = useState(false);
 
-  const purchasePro = useCallback(() => {
+  const purchasePlus = useCallback(() => {
     if (sess.status !== 'authenticated') {
       signIn();
       return;
@@ -48,23 +48,23 @@ const ProPage: NextPage = () => {
   }, [sess]);
 
   return (
-    <GlobalLayout title="Pro" displayTitle={false} isLandingPage>
+    <GlobalLayout title="Plus" displayTitle={false} isLandingPage>
       <div className="flex flex-col justify-center p-6 py-20">
         <div className="mb-20 flex flex-col items-center text-center">
           <h2 className="mb-4 text-4xl font-bold">
             Subscribe to{' '}
             <span className="bg-gradient-to-br from-indigo-500 to-green-500 bg-clip-text text-transparent">
-              Pro
+              Plus
             </span>
           </h2>
           <h3 className="mb-10 text-xl font-medium text-neutral-700 dark:text-neutral-300">
             Get more features and support the developer!
           </h3>
           <button
-            onClick={purchasePro}
+            onClick={purchasePlus}
             className="primaryish-button pls-subscribe"
             disabled={
-              purchaseBtnDisabled || sess.data?.extraProfile.plan === 'pro'
+              purchaseBtnDisabled || sess.data?.extraProfile.plan === 'plus'
             }
           >
             Subscribe for $1.99/mo
@@ -72,18 +72,18 @@ const ProPage: NextPage = () => {
         </div>
 
         <div className="mb-40 flex flex-col gap-3 self-center text-lg">
-          <ProFeature text="Pro badge on lists" />
-          <ProFeature text="Auto updating packs" />
-          <ProFeature text="packwiz support" />
-          <ProFeature text="Custom URLs" />
-          <ProFeature text="Priority support" />
-          <ProFeature text="File uploading" wip />
-          <ProFeature text="Modrinth synchronization" wip />
-          <ProFeature text="No ads" wip />
+          <PlusFeature text="Plus badge on lists" />
+          <PlusFeature text="Auto updating packs" />
+          <PlusFeature text="packwiz support" />
+          <PlusFeature text="Custom URLs" />
+          <PlusFeature text="Priority support" />
+          <PlusFeature text="File uploading" wip />
+          <PlusFeature text="Modrinth synchronization" wip />
+          <PlusFeature text="No ads" wip />
         </div>
       </div>
     </GlobalLayout>
   );
 };
 
-export default ProPage;
+export default PlusPage;

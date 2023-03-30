@@ -45,7 +45,7 @@ export const getSpecificList = async (
     list = await collection.findOne({ id });
     if (list?.customSlug && list?.owner) {
       ownerProfile = await getUserProfile(list.owner);
-      if (ownerProfile?.plan === 'pro') return null;
+      if (ownerProfile?.plan === 'plus') return null;
     }
   }
 
@@ -53,7 +53,7 @@ export const getSpecificList = async (
 
   if (list.customSlug && list.owner) {
     ownerProfile = await getUserProfile(list.owner);
-    if (ownerProfile?.plan !== 'pro') return null;
+    if (ownerProfile?.plan !== 'plus') return null;
   }
 
   if (!ownerProfile && list.owner)
@@ -74,7 +74,7 @@ export const getSpecificList = async (
           ...(ownerProfile.profilePicture
             ? { profilePicture: ownerProfile.profilePicture }
             : {}),
-          pro: ownerProfile.plan === 'pro',
+          plus: ownerProfile.plan === 'plus',
         }
       : {},
   };
