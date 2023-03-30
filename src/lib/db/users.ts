@@ -12,6 +12,7 @@ export const getUserProfile = async (id: string) => {
       name: null,
       plan: null,
       profilePicture: null,
+      subscriptionId: null,
     });
 
     res = await col.findOne({ userId: id });
