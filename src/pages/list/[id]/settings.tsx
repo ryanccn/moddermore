@@ -12,7 +12,7 @@ import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader, ModList } from '~/types/moddermore';
 import { toast } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
-import { ProBadge } from '~/components/partials/ProBadge';
+import { PlusBadge } from '~/components/partials/PlusBadge';
 import Link from 'next/link';
 
 interface PageProps {
@@ -139,7 +139,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         <label className="moddermore-form-label">
           <div className="flex flex-row items-center gap-x-2">
             <span>Custom URL</span>
-            <ProBadge />
+            <PlusBadge />
           </div>
           <div className="flex flex-row items-center gap-x-2">
             <span className="text-neutral-500 dark:text-neutral-400">
@@ -152,7 +152,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
               onChange={(e) => {
                 setCustomSlug(e.target.value);
               }}
-              disabled={session.data?.extraProfile.plan !== 'pro'}
+              disabled={session.data?.extraProfile.plan !== 'plus'}
             />
           </div>
         </label>

@@ -113,12 +113,12 @@ const AccountPage: NextPage = () => {
           </button>
         </form>
 
-        {session.data.extraProfile.plan !== 'pro' ? (
+        {session.data.extraProfile.plan !== 'plus' ? (
           <Link
             className="primaryish-button pls-subscribe mb-12 self-start"
-            href="/pro"
+            href="/plus"
           >
-            Subscribe to Pro
+            Subscribe to Plus
           </Link>
         ) : (
           <button
@@ -126,7 +126,7 @@ const AccountPage: NextPage = () => {
             disabled={inProgress}
             onClick={unsubscribe}
           >
-            Unsubscribe from Pro
+            Unsubscribe from Plus
           </button>
         )}
 

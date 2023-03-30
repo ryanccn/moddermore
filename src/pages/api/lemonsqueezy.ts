@@ -23,7 +23,7 @@ const h: NextApiHandler = async (req, res) => {
 
     await profilesCollection.updateOne(
       { userId: user._id.toString() },
-      { $set: { plan: 'pro', subscriptionId: lemonSqueezyData.data.id } }
+      { $set: { plan: 'plus', subscriptionId: lemonSqueezyData.data.id } }
     );
 
     res.status(201).end();

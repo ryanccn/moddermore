@@ -67,7 +67,7 @@ export interface ModList {
 }
 
 export interface ModListWithOwnerData extends ModList {
-  ownersExtraData: { name?: string; profilePicture?: string; pro?: boolean };
+  ownersExtraData: { name?: string; profilePicture?: string; plus?: boolean };
 }
 
 export interface RichModList {
@@ -90,7 +90,7 @@ export const UserEditableProfileData = z.object({
 export type UserEditableProfileData = z.infer<typeof UserEditableProfileData>;
 
 export interface UserProfileData extends UserEditableProfileData {
-  plan: 'pro' | null;
+  plan: 'plus' | null;
   subscriptionId: string | null;
   likes?: string[];
 }

@@ -33,7 +33,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  if (sess.extraProfile.plan !== 'pro' && parsedData.data.customSlug) {
+  if (sess.extraProfile.plan !== 'plus' && parsedData.data.customSlug) {
     res
       .status(403)
       .json({ error: 'Forbidden to use custom slug on free plan' });

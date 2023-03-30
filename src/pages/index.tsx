@@ -20,7 +20,7 @@ import {
 
 import { getLists, getPageviews, getUsers } from '~/lib/stats';
 import { numberFormat } from '~/lib/strings';
-import { ProBadge } from '~/components/partials/ProBadge';
+import { PlusBadge } from '~/components/partials/PlusBadge';
 
 interface PageProps {
   pageviews: number | null;
@@ -147,7 +147,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
           <div className="primaryish-button showcase idk-blue-themed">
             <ArchiveBoxIcon className="block h-5 w-5" />
             <span>packwiz</span>
-            <ProBadge />
+            <PlusBadge />
           </div>
           <div className="primaryish-button showcase fuchsia-themed opacity-80">
             <QuestionMarkCircleIcon className="block h-5 w-5" />

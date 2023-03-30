@@ -33,7 +33,7 @@ import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { LegacyBadge } from '~/components/partials/LegacyBadge';
-import { ProBadge } from '~/components/partials/ProBadge';
+import { PlusBadge } from '~/components/partials/PlusBadge';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 
 import { ModrinthIcon, PrismIcon } from '~/components/icons';
@@ -637,7 +637,7 @@ name=${data.title}`
             <strong className="font-semibold">
               {data.ownersExtraData.name}
             </strong>
-            {data.ownersExtraData.pro && <ProBadge />}
+            {data.ownersExtraData.plus && <PlusBadge />}
           </div>
         )}
       </div>
@@ -682,12 +682,12 @@ name=${data.title}`
                   onClick={packwizExport}
                   disabled={
                     !data.mods.length ||
-                    session.data?.extraProfile.plan !== 'pro'
+                    session.data?.extraProfile.plan !== 'plus'
                   }
                 >
                   <LinkIcon className="block h-5 w-5" />
                   <span>Copy packwiz link</span>
-                  <ProBadge />
+                  <PlusBadge />
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
@@ -706,12 +706,12 @@ name=${data.title}`
                   onClick={prismExport}
                   disabled={
                     !data.mods.length ||
-                    session.data?.extraProfile.plan !== 'pro'
+                    session.data?.extraProfile.plan !== 'plus'
                   }
                 >
                   <PrismIcon className="block h-5 w-5" />
                   <span>MultiMC (auto-updating)</span>
-                  <ProBadge />
+                  <PlusBadge />
                 </button>
               </DropdownMenu.Item>
             </DropdownMenu.Content>

@@ -21,11 +21,11 @@ export const getUserProfile = async (id: string) => {
   return res;
 };
 
-export const isPro = async (id: string) => {
+export const isPlus = async (id: string) => {
   const col = await getProfilesCollection();
   const profile = await col.findOne({ userId: id });
 
-  return profile?.plan === 'pro';
+  return profile?.plan === 'plus';
 };
 
 export const updateUserProfile = async (
