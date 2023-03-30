@@ -1,7 +1,12 @@
-import { NextPage } from 'next';
+import { type NextPage } from 'next';
+
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { CheckIcon } from '@heroicons/react/24/outline';
+
 import clsx from 'clsx';
+
+import { useCallback, useState } from 'react';
+import { signIn, useSession } from 'next-auth/react';
 
 const ProFeature = (props: { text: string; wip?: boolean }) => {
   return (
@@ -24,6 +29,22 @@ const ProFeature = (props: { text: string; wip?: boolean }) => {
 };
 
 const ProPage: NextPage = () => {
+  const sess = useSession();
+  const [purchaseBtnDisabled, setPurchaseBtnDisabled] = useState(false);
+
+  const purchasePro = useCallback(() => {
+    if (sess.status !== 'authenticated') {
+      signIn();
+      return;
+    }
+
+    setPurchaseBtnDisabled(true);
+    window.open(
+      `${process.env.NEXT_PUBLIC_LEMON_SQUEEZY_CHECKOUT_URL}?checkout[email]=${sess.data.user.email}`
+    );
+    setPurchaseBtnDisabled(false);
+  }, [sess]);
+
   return (
     <GlobalLayout title="Pro" displayTitle={false} isLandingPage>
       <div className="flex flex-col justify-center p-6 py-20">
@@ -37,7 +58,11 @@ const ProPage: NextPage = () => {
           <h3 className="mb-10 text-xl font-medium text-neutral-700 dark:text-neutral-300">
             Get more features and support the developer!
           </h3>
-          <button className="primaryish-button rounded-xl bg-gradient-to-br from-indigo-500 to-green-500 px-6 py-4 text-2xl">
+          <button
+            onClick={purchasePro}
+            className="primaryish-button rounded-xl bg-gradient-to-br from-indigo-500 to-green-500 px-6 py-4 text-2xl"
+            disabled={purchaseBtnDisabled}
+          >
             Subscribe for $1.99/mo
           </button>
         </div>
