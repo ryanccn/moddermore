@@ -11,7 +11,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  if (sess.extraProfile.plan !== 'pro') {
+  if (sess.extraProfile.plan !== 'plus') {
     res.status(201).end();
     return;
   }
