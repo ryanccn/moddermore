@@ -7,6 +7,7 @@ import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { DashboardLayout } from '~/components/layout/DashboardLayout';
 
 import { toast } from 'react-hot-toast';
+import Link from 'next/link';
 
 const AccountPage: NextPage = () => {
   const session = useSession({ required: true });
@@ -48,6 +49,26 @@ const AccountPage: NextPage = () => {
     });
   };
 
+  const unsubscribe = () => {
+    setInProgress(true);
+
+    fetch('/api/profile/unsubscribe', {
+      method: 'POST',
+    }).then((res) => {
+      if (res.ok) {
+        toast.success('Unsubscribed!');
+      } else {
+        toast.error('Failed to unsubscribe, please contact us directly');
+      }
+
+      /* hack to reload profile data */
+      const event = new Event('visibilitychange');
+      document.dispatchEvent(event);
+
+      setInProgress(false);
+    });
+  };
+
   return (
     <DashboardLayout title="Account">
       <div className="flex w-full flex-col px-6">
@@ -61,7 +82,7 @@ const AccountPage: NextPage = () => {
           <label className="flex flex-col gap-y-2">
             <span className="text-sm font-semibold">Name</span>
             <input
-              className="moddermore-input"
+              className="moddermore-input max-w-prose"
               type="text"
               value={name || ''}
               onChange={(e) => {
@@ -73,7 +94,7 @@ const AccountPage: NextPage = () => {
           <label className="flex flex-col gap-y-2">
             <span className="text-sm font-semibold">Profile picture</span>
             <input
-              className="moddermore-input"
+              className="moddermore-input max-w-prose"
               type="url"
               value={profilePicture || ''}
               onChange={(e) => {
@@ -91,6 +112,23 @@ const AccountPage: NextPage = () => {
             Save
           </button>
         </form>
+
+        {session.data.extraProfile.plan !== 'pro' ? (
+          <Link
+            className="primaryish-button pls-subscribe mb-12 self-start"
+            href="/pro"
+          >
+            Subscribe to Pro
+          </Link>
+        ) : (
+          <button
+            className="primaryish-button oh-no mb-12 self-start"
+            disabled={inProgress}
+            onClick={unsubscribe}
+          >
+            Unsubscribe from Pro
+          </button>
+        )}
 
         <button
           className="primaryish-button oh-no self-start px-4 py-2 text-lg font-semibold"
