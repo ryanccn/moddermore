@@ -176,7 +176,7 @@
   }
 
   .moddermore-footer {
-    @apply mt-4 flex w-full flex-col items-start gap-y-4 bg-neutral-100 px-20 py-16 dark:bg-neutral-800;
+    @apply mt-40 flex w-full flex-col items-start gap-y-4 bg-neutral-100 px-20 py-16 dark:bg-neutral-800;
   }
 
   .moddermore-footer > p,
