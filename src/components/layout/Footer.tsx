@@ -4,7 +4,7 @@ import { PoweredByVercel } from '../PoweredByVercel';
 export const Footer = ({ isLandingPage }: { isLandingPage?: boolean }) => {
   return (
     <footer className="moddermore-footer">
-      <div className="mb-4 flex flex-col items-center gap-4 md:flex-row">
+      <div className="mb-4 flex flex-col items-start gap-4 md:flex-row md:items-center">
         <a
           href="https://discord.gg/uf6kxSawfc"
           className="primaryish-button bg-[#5865F2]"
