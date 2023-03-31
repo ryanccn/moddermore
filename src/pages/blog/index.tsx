@@ -40,7 +40,7 @@ const BlogIndexPage: NextPage<PageProps> = ({ data }) => {
               />
             )}
 
-            <div className="absolute bottom-0 left-0 m-8 flex flex-col gap-y-3 text-black dark:text-white">
+            <div className="absolute bottom-0 left-0 m-8 flex flex-col gap-y-3 text-white">
               <h1 className="text-2xl font-bold">{post.data.title}</h1>
               <p className="text-base font-medium">{post.data.date}</p>
             </div>
