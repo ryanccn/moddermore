@@ -23,7 +23,7 @@ const BlogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
     <GlobalLayout title={`${data.title} / Blog`} displayTitle={false}>
       <article className="prose prose-neutral max-w-none dark:prose-invert">
         <div
-          className="not-prose mb-12 flex flex-col gap-y-3 bg-cover p-8 pt-40 text-white"
+          className="not-prose mb-12 flex flex-col gap-y-3 rounded-2xl bg-cover p-8 pt-40 text-white"
           style={{
             backgroundImage: data.cover
               ? `url('${data.cover.src}')`
