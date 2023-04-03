@@ -47,10 +47,11 @@ export const GlobalLayout = ({
   return (
     <>
       <Head>
+        <link rel="icon" href="/icons/moddermore-positive.png" />
         <link
           rel="icon"
-          type="image/png"
-          href="/icons/moddermore-positive.png"
+          media="(prefers-color-scheme: dark)"
+          href="/icons/moddermore-mono-white.svg"
         />
         <link rel="apple-touch-icon" href="/icons/moddermore-negative.png" />
         <meta name="apple-mobile-web-app-title" content="Moddermore" />
