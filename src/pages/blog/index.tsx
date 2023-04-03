@@ -1,6 +1,5 @@
 import { GetStaticProps, type NextPage } from 'next';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 
@@ -24,26 +23,20 @@ interface PageProps {
 const BlogIndexPage: NextPage<PageProps> = ({ data }) => {
   return (
     <GlobalLayout title="Blog">
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-1">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {data.map((post) => (
           <Link
-            className="group relative overflow-hidden rounded-2xl"
+            className="flex flex-col gap-y-3 rounded-2xl bg-cover p-8 pt-40 text-white"
+            style={{
+              backgroundImage: post.cover
+                ? `url('${post.cover.src}')`
+                : undefined,
+            }}
             href={`/blog/${post.slug}`}
             key={post.slug}
           >
-            {post.cover && (
-              <Image
-                {...post.cover}
-                alt=""
-                className="aspect-[2/1] h-auto w-full object-cover transition-all group-hover:brightness-[.85]"
-                priority
-              />
-            )}
-
-            <div className="absolute bottom-0 left-0 m-8 flex flex-col gap-y-3 text-white">
-              <h1 className="text-2xl font-bold">{post.data.title}</h1>
-              <p className="text-base font-medium">{post.data.date}</p>
-            </div>
+            <h1 className="text-2xl font-bold">{post.data.title}</h1>
+            <p className="text-base font-medium">{post.data.date}</p>
           </Link>
         ))}
       </div>
