@@ -84,7 +84,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
           <span className="text-lg font-bold">Lists created</span>
           <span className="text-5xl font-black">{numberFormat(lists)}</span>
         </div>
-      </div> */}
+      </div>
 
       <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:p-20">
         <h2 className="text-4xl font-bold">Import from many platforms</h2>
@@ -182,15 +182,15 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
   );
 };
 
-// export const getStaticProps: GetStaticProps<PageProps> = async () => {
-//   return {
-//     props: {
-//       pageviews: await getPageviews(),
-//       users: await getUsers(),
-//       lists: await getLists(),
-//     },
-//     revalidate: 5 * 60,
-//   };
-// };
+export const getStaticProps: GetStaticProps<PageProps> = async () => {
+  return {
+    props: {
+      pageviews: await getPageviews(),
+      users: await getUsers(),
+      lists: await getLists(),
+    },
+    revalidate: 5 * 60,
+  };
+};
 
 export default Home;
