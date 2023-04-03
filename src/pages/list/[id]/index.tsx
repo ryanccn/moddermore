@@ -876,9 +876,7 @@ name=${data.title}`
               {searchResults.map((res) =>
                 resolvedMods.some(
                   (m) => m.id === res.id && m.provider === res.provider
-                ) ? (
-                  <></>
-                ) : (
+                ) ? null : (
                   <li className="w-full" key={res.id}>
                     <RichModDisplay
                       data={res}

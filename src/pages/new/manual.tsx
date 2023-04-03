@@ -171,9 +171,7 @@ const NewList: NextPage = () => {
               {searchResults.map((res) =>
                 inputMods.some(
                   (m) => m.id === res.id && m.provider === res.provider
-                ) ? (
-                  <></>
-                ) : (
+                ) ? null : (
                   <RichModDisplay
                     data={res}
                     key={res.id}
