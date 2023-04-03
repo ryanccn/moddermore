@@ -149,6 +149,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
               type="text"
               placeholder={data.id}
               value={customSlug}
+              minLength={5}
               onChange={(e) => {
                 setCustomSlug(e.target.value);
               }}

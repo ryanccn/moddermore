@@ -49,6 +49,7 @@ export const ModListUpdate = z.object({
   customSlug: z
     .string()
     .regex(/^[\dA-Za-z-]+$/)
+    .min(5)
     .optional(),
 });
 
