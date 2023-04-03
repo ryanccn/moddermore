@@ -42,7 +42,9 @@ const PlusPage: NextPage = () => {
 
     setPurchaseBtnDisabled(true);
     window.open(
-      `${process.env.NEXT_PUBLIC_LEMON_SQUEEZY_CHECKOUT_URL}?checkout[email]=${sess.data.user.email}`
+      `${
+        process.env.NEXT_PUBLIC_LEMON_SQUEEZY_CHECKOUT_URL
+      }?checkout[email]=${encodeURIComponent(sess.data.user.email)}`
     );
     setPurchaseBtnDisabled(false);
   }, [sess]);
