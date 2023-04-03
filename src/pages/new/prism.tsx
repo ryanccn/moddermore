@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { type FormEventHandler, useState } from 'react';
+import { type FormEventHandler, useState, useCallback } from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -31,45 +31,56 @@ const PrismInstanceImportPage: NextPage = () => {
 
   const router = useRouter();
 
-  const submitHandle: FormEventHandler = async (e) => {
-    e.preventDefault();
-    if (!sess.data) return;
+  const submitHandle: FormEventHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!sess.data) return;
 
-    setSubmitting(true);
+      setSubmitting(true);
 
-    const aaa = await instanceFile?.arrayBuffer();
-    if (!aaa) throw aaa;
+      const aaa = await instanceFile?.arrayBuffer();
+      if (!aaa) throw aaa;
 
-    const parseResponse = await parsePrismInstance({
-      f: await loadAsync(new Uint8Array(aaa)),
+      const parseResponse = await parsePrismInstance({
+        f: await loadAsync(new Uint8Array(aaa)),
+        useMetadata,
+        setProgress,
+      });
+
+      if (!parseResponse) {
+        return;
+      }
+
+      const a = await fetch('/api/list/create', {
+        method: 'POST',
+        body: JSON.stringify({
+          title,
+          gameVersion,
+          modloader: modLoader,
+          mods: parseResponse.filter(Boolean) as Mod[],
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!a.ok) {
+        toast.error("Couldn't create the list");
+        return;
+      }
+
+      const { id } = await a.json();
+
+      router.push(`/list/${id}`);
+    },
+    [
+      gameVersion,
+      instanceFile,
+      modLoader,
+      router,
+      sess.data,
+      title,
       useMetadata,
-      setProgress,
-    });
-
-    if (!parseResponse) {
-      return;
-    }
-
-    const a = await fetch('/api/list/create', {
-      method: 'POST',
-      body: JSON.stringify({
-        title,
-        gameVersion,
-        modloader: modLoader,
-        mods: parseResponse.filter(Boolean) as Mod[],
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    if (!a.ok) {
-      toast.error("Couldn't create the list");
-      return;
-    }
-
-    const { id } = await a.json();
-
-    router.push(`/list/${id}`);
-  };
+    ]
+  );
 
   return (
     <GlobalLayout title="Import from MultiMC / Prism" displayTitle={false}>

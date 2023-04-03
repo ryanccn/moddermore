@@ -32,32 +32,35 @@ const NewList: NextPage = () => {
 
   const router = useRouter();
 
-  const submitHandle: FormEventHandler = async (e) => {
-    e.preventDefault();
-    if (!session.data) return;
+  const submitHandle: FormEventHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!session.data) return;
 
-    setSubmitting(true);
+      setSubmitting(true);
 
-    const a = await fetch('/api/list/create', {
-      method: 'POST',
-      body: JSON.stringify({
-        title,
-        gameVersion,
-        modloader: modLoader,
-        mods: inputMods.map((elem) => richModToMod(elem)),
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    });
+      const a = await fetch('/api/list/create', {
+        method: 'POST',
+        body: JSON.stringify({
+          title,
+          gameVersion,
+          modloader: modLoader,
+          mods: inputMods.map((elem) => richModToMod(elem)),
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    if (!a.ok) {
-      toast.error("Couldn't create the list");
-      return;
-    }
+      if (!a.ok) {
+        toast.error("Couldn't create the list");
+        return;
+      }
 
-    const { id } = await a.json();
+      const { id } = await a.json();
 
-    router.push(`/list/${id}`);
-  };
+      router.push(`/list/${id}`);
+    },
+    [gameVersion, inputMods, modLoader, router, session.data, title]
+  );
 
   const updateSearch = useCallback(() => {
     search({

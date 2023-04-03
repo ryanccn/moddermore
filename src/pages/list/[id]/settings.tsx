@@ -1,7 +1,7 @@
 import { type GetServerSideProps, type NextPage } from 'next';
 
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { ArrowLeftIcon, DocumentIcon } from '@heroicons/react/20/solid';
@@ -39,7 +39,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
     }
   }, [session, router, data]);
 
-  const saveSettings = () => {
+  const saveSettings = useCallback(() => {
     setInProgress(true);
 
     fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
@@ -68,7 +68,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
       setInProgress(false);
       router.push(`/list/${customSlug || data.id}`);
     });
-  };
+  }, [data, router, title, gameVersion, modLoader, customSlug]);
 
   return (
     <GlobalLayout title={`Settings for ${data.title}`}>
