@@ -1,7 +1,6 @@
 import { GetStaticPaths, GetStaticProps, type NextPage } from 'next';
 
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote';
-import Image from 'next/image';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 
 import { getBlogPost, listBlogPosts } from '~/lib/blog';
@@ -23,20 +22,16 @@ const BlogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
   return (
     <GlobalLayout title={`${data.title} / Blog`} displayTitle={false}>
       <article className="prose prose-neutral max-w-none dark:prose-invert">
-        <div className="group relative">
-          {data.cover && (
-            <Image
-              {...data.cover}
-              alt=""
-              className="not-prose -mt-12 aspect-[2/1] h-auto w-full rounded-2xl object-cover transition-all group-hover:brightness-[.85]"
-              priority
-            />
-          )}
-
-          <div className="not-prose absolute bottom-0 left-0 m-8 flex flex-col gap-y-3 text-white">
-            <h1 className="text-4xl font-bold">{data.title}</h1>
-            <p className="text-lg font-medium">{data.date}</p>
-          </div>
+        <div
+          className="not-prose mb-12 flex flex-col gap-y-3 bg-cover p-8 pt-40 text-white"
+          style={{
+            backgroundImage: data.cover
+              ? `url('${data.cover.src}')`
+              : undefined,
+          }}
+        >
+          <h1 className="text-4xl font-bold">{data.title}</h1>
+          <p className="text-lg font-medium">{data.date}</p>
         </div>
         <MDXRemote {...mdx} />
       </article>
