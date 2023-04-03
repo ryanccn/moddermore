@@ -17,7 +17,8 @@ export const validateLSRequest = async (req: NextApiRequest, buf: Buffer) => {
 
   try {
     return timingSafeEqual(digest, signature);
-  } catch (e) {
+  } catch (error) {
+    console.error(error);
     return false;
   }
 };

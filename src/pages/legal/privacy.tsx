@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises';
+import { readFile } from 'node:fs/promises';
 import type { GetStaticProps, NextPage } from 'next';
 
 import { remark } from 'remark';
@@ -23,7 +23,7 @@ const PrivacyPolicy: NextPage<PageProps> = ({ content }) => {
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
   const html = await remark()
     .use(remarkHtml)
-    .process(await readFile('./legal/privacy.md', { encoding: 'utf-8' }))
+    .process(await readFile('./legal/privacy.md', { encoding: 'utf8' }))
     .then((vfile) => vfile.toString());
 
   return { props: { content: html } };

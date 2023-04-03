@@ -92,9 +92,12 @@ export const getIndexTOML = async (id: string) => {
 };
 
 export const getModrinthTOML = async (data: ProviderSpecificOptions) => {
-  const res = (await getModrinthDownload(data)).filter(
-    (dl) => !('error' in dl) && dl.provider === 'modrinth'
-  ) as ModrinthDownload[];
+  const res = await getModrinthDownload(data).then(
+    (k) =>
+      k.filter(
+        (dl) => !('error' in dl) && dl.provider === 'modrinth'
+      ) as ModrinthDownload[]
+  );
   if (!res || res.length === 0) return null;
 
   const f = res[0];
@@ -113,9 +116,12 @@ export const getModrinthTOML = async (data: ProviderSpecificOptions) => {
 };
 
 export const getCurseForgeTOML = async (data: ProviderSpecificOptions) => {
-  const res = (await getCFDownload(data)).filter(
-    (dl) => !('error' in dl) && dl.provider === 'curseforge'
-  ) as CurseForgeDownload[];
+  const res = await getCFDownload(data).then(
+    (k) =>
+      k.filter(
+        (dl) => !('error' in dl) && dl.provider === 'curseforge'
+      ) as CurseForgeDownload[]
+  );
   if (!res || res.length === 0) return null;
 
   const f = res[0];

@@ -83,8 +83,8 @@ export const parseModFolder = async ({ f, setProgress }: InputData) => {
         try {
           const modFile = await f.files[mod].async('uint8array');
           ret.push(await parseMod(modFile));
-        } catch (e) {
-          console.error(e);
+        } catch (error) {
+          console.error(error);
         }
 
         setProgress((oldVal) => ({ value: oldVal.value + 1, max: oldVal.max }));

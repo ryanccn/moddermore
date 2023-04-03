@@ -44,7 +44,7 @@ const NewList: NextPage = () => {
         title,
         gameVersion,
         modloader: modLoader,
-        mods: inputMods.map(richModToMod),
+        mods: inputMods.map((elem) => richModToMod(elem)),
       }),
       headers: { 'Content-Type': 'application/json' },
     });
@@ -169,9 +169,9 @@ const NewList: NextPage = () => {
           {searchResults.length > 0 && (
             <ul className="flex flex-col gap-y-2">
               {searchResults.map((res) =>
-                inputMods.filter(
+                inputMods.some(
                   (m) => m.id === res.id && m.provider === res.provider
-                ).length > 0 ? (
+                ) ? (
                   <></>
                 ) : (
                   <RichModDisplay

@@ -48,7 +48,7 @@ export const ModListUpdate = z.object({
   mods: z.array(Mod).min(1).max(150).optional(),
   customSlug: z
     .string()
-    .regex(/^[a-zA-Z0-9-]+$/)
+    .regex(/^[\dA-Za-z-]+$/)
     .optional(),
 });
 

@@ -111,7 +111,8 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
           .map((a) => lim(() => modToRichMod(a)))
       );
 
-      if (!modrinthMods) throw new Error();
+      if (modrinthMods === null)
+        throw new Error('Failed to resolve Modrinth mods');
 
       const mods = [...modrinthMods, ...curseForgeMods]
         .filter((k) => k !== null)
@@ -119,8 +120,8 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         .sort((a, b) => (a!.name > b!.name ? 1 : -1));
 
       setResolvedMods(mods as RichMod[]);
-    })().catch((e) => {
-      console.error(e);
+    })().catch((error) => {
+      console.error(error);
       toast.error('Failed to resolve mods');
     });
   }, [data]);
@@ -348,24 +349,27 @@ name=${data.title}`
       });
     }
     switch (data.modloader) {
-      case 'fabric':
+      case 'fabric': {
         mmcPack.components.push({
           uid: 'net.fabricmc.fabric-loader',
           version: await getLatestFabric(),
         });
         break;
-      case 'forge':
+      }
+      case 'forge': {
         mmcPack.components.push({
           uid: 'net.minecraftforge',
           version: await getLatestForge(),
         });
         break;
-      case 'quilt':
+      }
+      case 'quilt': {
         mmcPack.components.push({
           uid: 'org.quiltmc.quilt-loader',
           version: await getLatestQuilt(),
         });
         break;
+      }
     }
     zipfile.file('mmc-pack.json', JSON.stringify(mmcPack));
     setProgress({ value: 1, max: 2 });
@@ -464,24 +468,27 @@ name=${data.title}`
           });
         }
         switch (data.modloader) {
-          case 'fabric':
+          case 'fabric': {
             mmcPack.components.push({
               uid: 'net.fabricmc.fabric-loader',
               version: await getLatestFabric(),
             });
             break;
-          case 'forge':
+          }
+          case 'forge': {
             mmcPack.components.push({
               uid: 'net.minecraftforge',
               version: await getLatestForge(),
             });
             break;
-          case 'quilt':
+          }
+          case 'quilt': {
             mmcPack.components.push({
               uid: 'org.quiltmc.quilt-loader',
               version: await getLatestQuilt(),
             });
             break;
+          }
         }
         zipfile.file('mmc-pack.json', JSON.stringify(mmcPack));
       })(),
@@ -503,7 +510,7 @@ name=${data.title}`
       method: 'POST',
       body: JSON.stringify({
         title: data.title,
-        mods: resolvedMods.map(richModToMod),
+        mods: resolvedMods.map((elem) => richModToMod(elem)),
         gameVersion: data.gameVersion,
         modloader: data.modloader,
       }),
@@ -660,7 +667,7 @@ name=${data.title}`
                 <button
                   className="dropdown-button"
                   onClick={downloadExport}
-                  disabled={!data.mods.length}
+                  disabled={data.mods.length === 0}
                 >
                   <ArchiveBoxIcon className="block h-5 w-5" />
                   <span>Zip archive</span>
@@ -670,7 +677,7 @@ name=${data.title}`
                 <button
                   className="dropdown-button"
                   onClick={modrinthExportInit}
-                  disabled={!data.mods.length}
+                  disabled={data.mods.length === 0}
                 >
                   <ModrinthIcon className="block h-5 w-5" />
                   <span>Modrinth pack</span>
@@ -681,7 +688,7 @@ name=${data.title}`
                   className="dropdown-button"
                   onClick={packwizExport}
                   disabled={
-                    !data.mods.length ||
+                    data.mods.length === 0 ||
                     session.data?.extraProfile.plan !== 'plus'
                   }
                 >
@@ -694,7 +701,7 @@ name=${data.title}`
                 <button
                   className="dropdown-button"
                   onClick={prismStaticExport}
-                  disabled={!data.mods.length}
+                  disabled={data.mods.length === 0}
                 >
                   <PrismIcon className="block h-5 w-5" />
                   <span>MultiMC</span>
@@ -705,7 +712,7 @@ name=${data.title}`
                   className="dropdown-button"
                   onClick={prismExport}
                   disabled={
-                    !data.mods.length ||
+                    data.mods.length === 0 ||
                     session.data?.extraProfile.plan !== 'plus'
                   }
                 >
@@ -735,7 +742,7 @@ name=${data.title}`
                 <button
                   className="dropdown-button"
                   onClick={copyMarkdownList}
-                  disabled={!data.mods.length}
+                  disabled={data.mods.length === 0}
                 >
                   <KeyIcon className="block h-5 w-5" />
                   <span>Markdown list</span>
@@ -745,7 +752,7 @@ name=${data.title}`
                 <button
                   className="dropdown-button"
                   onClick={copyJSON}
-                  disabled={!data.mods.length}
+                  disabled={data.mods.length === 0}
                 >
                   <WrenchIcon className="block h-5 w-5" />
                   <span>JSON</span>
@@ -867,9 +874,9 @@ name=${data.title}`
           {resolvedMods && searchResults.length > 0 && (
             <ul className="flex flex-wrap gap-y-2">
               {searchResults.map((res) =>
-                resolvedMods.filter(
+                resolvedMods.some(
                   (m) => m.id === res.id && m.provider === res.provider
-                ).length > 0 ? (
+                ) ? (
                   <></>
                 ) : (
                   <li className="w-full" key={res.id}>
