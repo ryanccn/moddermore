@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { type FormEventHandler, useState } from 'react';
+import { type FormEventHandler, useState, useCallback } from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -29,40 +29,43 @@ const FeriumImportPage: NextPage = () => {
 
   const router = useRouter();
 
-  const submitHandle: FormEventHandler = async (e) => {
-    e.preventDefault();
+  const submitHandle: FormEventHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    if (!sess.data) return;
-    setSubmitting(true);
+      if (!sess.data) return;
+      setSubmitting(true);
 
-    const aaa = await modZipFile?.arrayBuffer();
-    if (!aaa) throw aaa;
+      const aaa = await modZipFile?.arrayBuffer();
+      if (!aaa) throw aaa;
 
-    const parsedMods = (await parseModFolder({
-      f: await loadAsync(new Uint8Array(aaa)),
-      setProgress,
-    }).then((r) => r.filter((k) => k !== null))) as Mod[];
+      const parsedMods = (await parseModFolder({
+        f: await loadAsync(new Uint8Array(aaa)),
+        setProgress,
+      }).then((r) => r.filter((k) => k !== null))) as Mod[];
 
-    const a = await fetch('/api/list/create', {
-      method: 'POST',
-      body: JSON.stringify({
-        title,
-        gameVersion,
-        modloader: modLoader,
-        mods: parsedMods,
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    });
+      const a = await fetch('/api/list/create', {
+        method: 'POST',
+        body: JSON.stringify({
+          title,
+          gameVersion,
+          modloader: modLoader,
+          mods: parsedMods,
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    if (!a.ok) {
-      toast.error("Couldn't create the list");
-      return;
-    }
+      if (!a.ok) {
+        toast.error("Couldn't create the list");
+        return;
+      }
 
-    const { id } = await a.json();
+      const { id } = await a.json();
 
-    router.push(`/list/${id}`);
-  };
+      router.push(`/list/${id}`);
+    },
+    [title, gameVersion, modLoader, sess, modZipFile, router]
+  );
 
   return (
     <GlobalLayout title="Import from folder" displayTitle={false}>

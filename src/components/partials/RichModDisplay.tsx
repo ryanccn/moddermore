@@ -10,6 +10,7 @@ import {
   ArrowUpRightIcon,
 } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
+import { useMemo } from 'react';
 
 interface Props {
   data: RichMod;
@@ -26,10 +27,14 @@ export const RichModDisplay = ({
   className,
   parent,
 }: Props) => {
-  const incompatible =
-    parent &&
-    data.gameVersions &&
-    !data.gameVersions.includes(parent.gameVersion);
+  const incompatible = useMemo(
+    () =>
+      parent &&
+      data.gameVersions &&
+      !data.gameVersions.includes(parent.gameVersion),
+    [parent, data.gameVersions]
+  );
+
   return (
     <div
       className={clsx(
@@ -82,6 +87,7 @@ export const RichModDisplay = ({
               </p>
             </div>
           )}
+
           <div className="flex flex-col sm:items-end">
             {onClick && (
               <>
@@ -94,6 +100,7 @@ export const RichModDisplay = ({
                     <span>Delete</span>
                   </button>
                 )}
+
                 {buttonType === 'add' && (
                   <button
                     className="primaryish-button mb-2 bg-green-500"

@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { type FormEventHandler, useState } from 'react';
+import { type FormEventHandler, useState, useCallback } from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -23,32 +23,35 @@ const FeriumImportPage: NextPage = () => {
 
   const router = useRouter();
 
-  const submitHandle: FormEventHandler = async (e) => {
-    e.preventDefault();
-    if (!sess.data) return;
+  const submitHandle: FormEventHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!sess.data) return;
 
-    setSubmitting(true);
+      setSubmitting(true);
 
-    const a = await fetch('/api/list/create', {
-      method: 'POST',
-      body: JSON.stringify({
-        title,
-        gameVersion,
-        modloader: modLoader,
-        mods: parseFerium(feriumCopyPaste),
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    });
+      const a = await fetch('/api/list/create', {
+        method: 'POST',
+        body: JSON.stringify({
+          title,
+          gameVersion,
+          modloader: modLoader,
+          mods: parseFerium(feriumCopyPaste),
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    if (!a.ok) {
-      toast.error("Couldn't create the list");
-      return;
-    }
+      if (!a.ok) {
+        toast.error("Couldn't create the list");
+        return;
+      }
 
-    const { id } = await a.json();
+      const { id } = await a.json();
 
-    router.push(`/list/${id}`);
-  };
+      router.push(`/list/${id}`);
+    },
+    [title, gameVersion, modLoader, feriumCopyPaste, sess, router]
+  );
 
   return (
     <GlobalLayout title="Ferium import" displayTitle={false}>

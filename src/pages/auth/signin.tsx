@@ -1,7 +1,7 @@
 import { type NextPage } from 'next';
 
 import { useRouter } from 'next/router';
-import { type FormEventHandler, useState, useEffect } from 'react';
+import { type FormEventHandler, useState, useEffect, useCallback } from 'react';
 
 import { signIn, useSession } from 'next-auth/react';
 
@@ -39,18 +39,21 @@ const SigninPage: NextPage = () => {
     }
   }, [sess, router]);
 
-  const signin: FormEventHandler = async (e) => {
-    e.preventDefault();
-    setDS(true);
+  const signin: FormEventHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setDS(true);
 
-    await signIn('email', {
-      email,
-      callbackUrl:
-        typeof router.query.callbackUrl === 'string'
-          ? router.query.callbackUrl
-          : undefined,
-    });
-  };
+      await signIn('email', {
+        email,
+        callbackUrl:
+          typeof router.query.callbackUrl === 'string'
+            ? router.query.callbackUrl
+            : undefined,
+      });
+    },
+    [email, router.query.callbackUrl]
+  );
 
   return (
     <GlobalLayout title="Sign in" isAuthPage>

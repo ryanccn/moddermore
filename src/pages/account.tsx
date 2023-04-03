@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useSession, signOut } from 'next-auth/react';
 
@@ -26,11 +26,7 @@ const AccountPage: NextPage = () => {
     setInProgress(false);
   }, [session.data]);
 
-  if (session.status === 'loading') {
-    return <FullLoadingScreen />;
-  }
-
-  const saveProfile = () => {
+  const saveProfile = useCallback(() => {
     setInProgress(true);
     fetch('/api/profile/update', {
       method: 'POST',
@@ -47,9 +43,9 @@ const AccountPage: NextPage = () => {
       }
       setInProgress(false);
     });
-  };
+  }, [name, profilePicture]);
 
-  const unsubscribe = () => {
+  const unsubscribe = useCallback(() => {
     setInProgress(true);
 
     fetch('/api/profile/unsubscribe', {
@@ -67,7 +63,11 @@ const AccountPage: NextPage = () => {
 
       setInProgress(false);
     });
-  };
+  }, []);
+
+  if (session.status === 'loading') {
+    return <FullLoadingScreen />;
+  }
 
   return (
     <DashboardLayout title="Account">

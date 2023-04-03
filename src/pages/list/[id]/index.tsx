@@ -30,7 +30,6 @@ import Link from 'next/link';
 import Head from 'next/head';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { LegacyBadge } from '~/components/partials/LegacyBadge';
 import { PlusBadge } from '~/components/partials/PlusBadge';
@@ -142,7 +141,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
   const showModal = useMemo(() => status === 'result', [status]);
 
-  const downloadExport = async () => {
+  const downloadExport = useCallback(async () => {
     if (!resolvedMods) return;
 
     setProgress({ value: 0, max: 3 });
@@ -175,7 +174,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     saveAs(zipBlob, `${data.title}.zip`);
 
     setStatus('result');
-  };
+  }, [resolvedMods, data]);
 
   const exportZip = async (zipfile: JSZip, urls: ExportReturnData) => {
     const modFolder = zipfile.folder('mods');
@@ -500,27 +499,30 @@ name=${data.title}`
     setStatus('result');
   };
 
-  const submitHandle: FormEventHandler = async (e) => {
-    e.preventDefault();
-    if (!session.data || !resolvedMods) return;
+  const submitHandle: FormEventHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!session.data || !resolvedMods) return;
 
-    setIsSaving(true);
+      setIsSaving(true);
 
-    await fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
-      method: 'POST',
-      body: JSON.stringify({
-        title: data.title,
-        mods: resolvedMods.map((elem) => richModToMod(elem)),
-        gameVersion: data.gameVersion,
-        modloader: data.modloader,
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    });
+      await fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
+        method: 'POST',
+        body: JSON.stringify({
+          title: data.title,
+          mods: resolvedMods.map((elem) => richModToMod(elem)),
+          gameVersion: data.gameVersion,
+          modloader: data.modloader,
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    toast.success('Updated!');
-    setIsSaving(false);
-    setIsEditing(false);
-  };
+      toast.success('Updated!');
+      setIsSaving(false);
+      setIsEditing(false);
+    },
+    [session, resolvedMods, data]
+  );
 
   const updateSearch = useCallback(() => {
     search({
@@ -533,7 +535,7 @@ name=${data.title}`
     });
   }, [searchProvider, searchQuery, data]);
 
-  const copyMarkdownList = () => {
+  const copyMarkdownList = useCallback(() => {
     if (!resolvedMods) return;
 
     const text = resolvedMods
@@ -543,9 +545,9 @@ name=${data.title}`
     navigator.clipboard.writeText(text).then(() => {
       toast.success('Copied Markdown to clipboard!');
     });
-  };
+  }, [resolvedMods]);
 
-  const copyJSON = () => {
+  const copyJSON = useCallback(() => {
     navigator.clipboard
       .writeText(
         JSON.stringify({
@@ -558,9 +560,9 @@ name=${data.title}`
       .then(() => {
         toast.success('Copied JSON to clipboard!');
       });
-  };
+  }, [data]);
 
-  const toggleLikeStatus = () => {
+  const toggleLikeStatus = useCallback(() => {
     if (session.status !== 'authenticated') {
       signIn();
       return;
@@ -575,9 +577,9 @@ name=${data.title}`
         if (r.ok) setHasLiked(true);
       });
     }
-  };
+  }, [session, data.id, hasLiked]);
 
-  const remixList = () => {
+  const remixList = useCallback(() => {
     if (session.status !== 'authenticated') {
       signIn();
       return;
@@ -602,9 +604,9 @@ name=${data.title}`
       .catch(() => {
         toast.error('Failed to remix list!');
       });
-  };
+  }, [data, session, router]);
 
-  const deleteCurrentList = async () => {
+  const deleteCurrentList = useCallback(async () => {
     if (!data || !session.data) return;
 
     const a = await fetch(`/api/list/${data.id}/delete`);
@@ -614,11 +616,7 @@ name=${data.title}`
       toast.error(`Failed to delete ${data.title} (${data.id})!`);
     }
     router.push('/lists');
-  };
-
-  if (!data) {
-    return <FullLoadingScreen />;
-  }
+  }, [router, data, session]);
 
   return (
     <GlobalLayout title={data.title}>

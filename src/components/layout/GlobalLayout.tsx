@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 
 interface Props {
   title: string;
@@ -25,7 +25,10 @@ export const GlobalLayout = ({
   isAuthPage = false,
   children,
 }: Props) => {
-  const derivedTitle = titleSuffix ? `${title} / Moddermore` : title;
+  const derivedTitle = useMemo(
+    () => (titleSuffix ? `${title} / Moddermore` : title),
+    [title, titleSuffix]
+  );
 
   const [showDowntimeMessage, setShowDowntimeMessage] = useState(false);
 
