@@ -11,7 +11,7 @@ const getObjFromVersion = (
   v: ModrinthVersion,
   type: 'direct' | 'dependency'
 ): Download => {
-  const primary = v.files.filter((f) => f.primary)[0] ?? v.files[0];
+  const primary = v.files.find((f) => f.primary) ?? v.files[0];
 
   return {
     provider: 'modrinth',
@@ -68,12 +68,12 @@ export const callModrinthAPI = async ({
 
   const data = (await res.json()) as ModrinthVersion[];
 
-  let latest = data.filter((v) => v.version_type === 'release')[0];
+  let latest = data.find((v) => v.version_type === 'release');
   if (!latest) {
-    latest = data.filter((v) => v.version_type === 'beta')[0];
+    latest = data.find((v) => v.version_type === 'beta');
   }
   if (!latest) {
-    latest = data.filter((v) => v.version_type === 'alpha')[0];
+    latest = data.find((v) => v.version_type === 'alpha');
   }
 
   return latest ?? null;
@@ -161,7 +161,7 @@ export const getModrinthDownload = async ({
   */
 
   // Fabric API to QSL swap
-  if (loader === 'quilt' && ret.filter((t) => t.id === 'P7dR8mSH').length > 0) {
+  if (loader === 'quilt' && ret.some((t) => t.id === 'P7dR8mSH')) {
     ret = ret.filter((t) => t.id !== 'P7dR8mSH');
     ret.push(
       ...(await getModrinthDownload({

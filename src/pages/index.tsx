@@ -100,7 +100,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
               id: 'AANobbMI',
               description:
                 'Modern rendering engine and client-side optimization mod for Minecraft',
-              downloads: 795496,
+              downloads: 795_496,
               iconUrl: 'https://cdn.modrinth.com/data/AANobbMI/icon.png',
             }}
             className="lg:w-1/2"
@@ -113,7 +113,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
               id: '263420',
               description:
                 "Displays the nearby world terrain, players, mobs, entities in the corner of your screen. Lets you create waypoints which help you find the locations you've marked.",
-              downloads: 48426867,
+              downloads: 48_426_867,
               iconUrl:
                 'https://media.forgecdn.net/avatars/thumbnails/92/854/256/256/636258666554688823.png',
             }}

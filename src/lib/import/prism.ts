@@ -81,8 +81,8 @@ export const parsePrismInstance = async ({
           try {
             const modFile = await pwIndexDir.files[mod].async('text');
             ret.push(parsePackwizTOML(modFile));
-          } catch (e) {
-            console.error(e);
+          } catch (error) {
+            console.error(error);
           }
 
           setProgress((oldVal) => ({

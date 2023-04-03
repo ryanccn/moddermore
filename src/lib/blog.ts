@@ -42,7 +42,7 @@ export const listBlogPosts = async () => {
     fileList.map((fileName) =>
       lim(async () => {
         const { data } = dorian(
-          await readFile(join('./blog', fileName), { encoding: 'utf-8' })
+          await readFile(join('./blog', fileName), { encoding: 'utf8' })
         );
 
         return {
@@ -63,7 +63,7 @@ export const getBlogPost = async (slug: string) => {
   if (!(await exists(srcPath))) return null;
 
   const rawMarkdown = await readFile(srcPath, {
-    encoding: 'utf-8',
+    encoding: 'utf8',
   });
 
   const { data, content } = dorian(rawMarkdown);

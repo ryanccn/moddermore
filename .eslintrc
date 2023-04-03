@@ -2,10 +2,17 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:unicorn/recommended",
     "prettier",
     "next/core-web-vitals"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
-  "root": true
+  "plugins": ["@typescript-eslint", "unicorn"],
+  "root": true,
+  "rules": {
+    "unicorn/prevent-abbreviations": 0,
+    "unicorn/filename-case": 0,
+    "unicorn/no-null": 0,
+    "unicorn/no-negated-condition": 0
+  }
 }

@@ -81,9 +81,9 @@ export const getCFDownload = async ({
     return [{ error: 'notfound', name, id }];
   }
 
-  let latest = data.filter((v) => v.releaseType === 1)[0];
-  if (!latest) latest = data.filter((v) => v.releaseType === 2)[0];
-  if (!latest) latest = data.filter((v) => v.releaseType === 3)[0];
+  let latest = data.find((v) => v.releaseType === 1);
+  if (!latest) latest = data.find((v) => v.releaseType === 2);
+  if (!latest) latest = data.find((v) => v.releaseType === 3);
 
   if (!latest) return [{ error: 'notfound', name, id }];
   if (!latest.isAvailable) return [{ error: 'unavailable', name, id }];
@@ -96,7 +96,8 @@ export const getCFDownload = async ({
       url: latest.downloadUrl,
       type: 'direct',
       fileSize: latest.fileLength,
-      sha1: latest.hashes.filter((k) => k.algo === 1)[0].value,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      sha1: latest.hashes.find((k) => k.algo === 1)!.value,
       projectId: latest.modId,
       fileId: latest.id,
       displayName: latest.displayName ?? latest.fileName,

@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/numeric-separators-style */
+
 export const curseforgeHash = async (data: Uint8Array): Promise<number> => {
   const treatedData = data.filter(
     (v) => v !== 9 && v !== 10 && v !== 13 && v !== 32
@@ -32,15 +34,25 @@ export const curseforgeHash = async (data: Uint8Array): Promise<number> => {
     i += 1;
   }
 
-  if (len === 1) {
-    hash ^= treatedData[i] & 0xff;
-    hash =
-      (hash & 0xffff) * 0x5bd1e995 +
-      ((((hash >>> 16) * 0x5bd1e995) & 0xffff) << 16);
-  } else if (len === 2) {
-    hash ^= (treatedData[i + 1] & 0xff) << 8;
-  } else if (len === 3) {
-    hash ^= (treatedData[i + 2] & 0xff) << 16;
+  switch (len) {
+    case 1: {
+      hash ^= treatedData[i] & 0xff;
+      hash =
+        (hash & 0xffff) * 0x5bd1e995 +
+        ((((hash >>> 16) * 0x5bd1e995) & 0xffff) << 16);
+
+      break;
+    }
+    case 2: {
+      hash ^= (treatedData[i + 1] & 0xff) << 8;
+
+      break;
+    }
+    case 3: {
+      hash ^= (treatedData[i + 2] & 0xff) << 16;
+
+      break;
+    }
   }
 
   hash ^= hash >>> 13;

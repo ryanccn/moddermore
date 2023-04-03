@@ -1,3 +1,6 @@
+/* eslint-disable unicorn/prefer-top-level-await */
+/* eslint-disable unicorn/no-process-exit */
+
 import { getProfilesCollection, getUsersCollection } from '~/lib/db/client';
 import { blue, red } from 'kleur/colors';
 
@@ -32,7 +35,7 @@ import { blue, red } from 'kleur/colors';
   .then(() => {
     process.exit(0);
   })
-  .catch((e) => {
-    console.error(e);
+  .catch((error) => {
+    console.error(error);
     process.exit(1);
   });
