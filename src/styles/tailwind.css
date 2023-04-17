@@ -237,3 +237,10 @@
 #nprogress .spinner-icon {
   display: none;
 }
+
+.react-hot-toast {
+  column-gap: 0.625rem;
+}
+.react-hot-toast > [role='status'] {
+  justify-content: flex-start;
+}

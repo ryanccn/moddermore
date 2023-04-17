@@ -41,6 +41,7 @@ function MyApp({
               color: 'var(--react-hot-toast-fg)',
               backgroundColor: 'var(--react-hot-toast-bg)',
             },
+            className: 'react-hot-toast',
             success: {
               icon: (
                 <CheckCircleIcon className="block h-5 w-5 text-green-400" />
