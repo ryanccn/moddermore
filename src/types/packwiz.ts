@@ -11,13 +11,16 @@ export interface ModPwToml {
   /** Information about how to download this mod. */
   download: {
     /** A hashing format used to detect if a file has changed. You may use your own hash format, but the valid values here should be supported and expected for most packs, especially SHA-256 and Murmur2. Possible values are: `md5`, `murmur2`, `sha1`, `sha256`, `sha512`. */
-    'hash-format': 'md5' | 'murmur2' | 'sha1' | 'sha256' | 'sha512';
+    'hash-format'?: 'md5' | 'murmur2' | 'sha1' | 'sha256' | 'sha512';
 
     /** The hash of the specified file, as a string. Binary hashes should be stored as hexadecimal, and case should be ignored during parsing. Numeric hashes (e.g. Murmur2) should still be stored as a string, to ensure the value is preserved correctly. */
-    hash: string;
+    hash?: string;
 
     /** A URI reference compliant to RFC 2396; specifically RFC 2396 amended by RFC 2732 for IPv6 support. This ensures compatibility with older URI parsers that do not support RFC 3986 - if your URI implementation complies with RFC 3986 make sure that it correctly encodes [ and ] to %5B and %5D respectively. */
-    url: string;
+    url?: string;
+
+    /** This is cursed */
+    mode?: 'metadata:curseforge';
   };
 
   /** Information about the optional state of this mod. When excluded, this indicates that the mod is not optional. */

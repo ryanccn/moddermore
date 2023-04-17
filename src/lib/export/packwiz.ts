@@ -1,4 +1,4 @@
-import { type AnyJson, stringify } from '@iarna/toml';
+import { type AnyJson, stringify, JsonMap } from '@iarna/toml';
 
 import { getSpecificList } from '~/lib/db';
 import { sha512 } from '~/lib/sha512';
@@ -17,6 +17,7 @@ import type {
   ModrinthDownload,
   ProviderSpecificOptions,
 } from './types';
+import type { ModPwToml } from '~/types/packwiz';
 
 export const getPackTOML = async (id: string) => {
   const list = await getSpecificList(id);
@@ -64,7 +65,7 @@ export const getIndexTOML = async (id: string) => {
 
             return {
               file: `mods/${mod.provider}-${mod.id}.pw.toml`,
-              hash: await sha512(stringify(txt)),
+              hash: await sha512(stringify(txt as unknown as JsonMap)),
               metafile: true,
             };
           } else if (mod.provider === 'curseforge') {
@@ -79,7 +80,7 @@ export const getIndexTOML = async (id: string) => {
 
             return {
               file: `mods/${mod.provider}-${mod.id}.pw.toml`,
-              hash: await sha512(stringify(txt)),
+              hash: await sha512(stringify(txt as unknown as JsonMap)),
               metafile: true,
             };
           }
@@ -91,7 +92,9 @@ export const getIndexTOML = async (id: string) => {
   });
 };
 
-export const getModrinthTOML = async (data: ProviderSpecificOptions) => {
+export const getModrinthTOML = async (
+  data: ProviderSpecificOptions
+): Promise<ModPwToml | null> => {
   const res = await getModrinthDownload(data).then(
     (k) =>
       k.filter(
@@ -115,7 +118,9 @@ export const getModrinthTOML = async (data: ProviderSpecificOptions) => {
   };
 };
 
-export const getCurseForgeTOML = async (data: ProviderSpecificOptions) => {
+export const getCurseForgeTOML = async (
+  data: ProviderSpecificOptions
+): Promise<ModPwToml | null> => {
   const res = await getCFDownload(data).then(
     (k) =>
       k.filter(
