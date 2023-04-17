@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/async';
 
 import { getListsCollection } from './client';
 import type {
@@ -95,7 +95,7 @@ export const createList = async (
   userId: string
 ): Promise<string> => {
   const collection = await getListsCollection();
-  const id = nanoid(12);
+  const id = await nanoid(12);
 
   await collection.insertOne({
     ...list,
