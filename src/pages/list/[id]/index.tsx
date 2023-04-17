@@ -47,6 +47,7 @@ import {
   HeartIcon,
   Square2StackIcon,
   ClipboardIcon,
+  CodeBracketIcon,
 } from '@heroicons/react/20/solid';
 
 import toast from 'react-hot-toast';
@@ -56,7 +57,6 @@ import type JSZip from 'jszip';
 import { search } from '~/lib/import/search';
 import type { ExportReturnData } from '~/lib/export/types';
 import clsx from 'clsx';
-import { CodeBracketIcon } from '@heroicons/react/24/solid';
 
 interface PageProps {
   data: ModListWithOwnerData;
