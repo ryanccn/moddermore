@@ -35,7 +35,7 @@ import { LegacyBadge } from '~/components/partials/LegacyBadge';
 import { PlusBadge } from '~/components/partials/PlusBadge';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 
-import { ModrinthIcon, PrismIcon } from '~/components/icons';
+import { MarkdownIcon, ModrinthIcon, PrismIcon } from '~/components/icons';
 import {
   FolderArrowDownIcon,
   PencilIcon,
@@ -46,8 +46,6 @@ import {
   CogIcon,
   HeartIcon,
   Square2StackIcon,
-  KeyIcon,
-  WrenchIcon,
   ClipboardIcon,
 } from '@heroicons/react/20/solid';
 
@@ -58,6 +56,7 @@ import type JSZip from 'jszip';
 import { search } from '~/lib/import/search';
 import type { ExportReturnData } from '~/lib/export/types';
 import clsx from 'clsx';
+import { CodeBracketIcon } from '@heroicons/react/24/solid';
 
 interface PageProps {
   data: ModListWithOwnerData;
@@ -748,7 +747,7 @@ name=${data.title}`
                   onClick={copyMarkdownList}
                   disabled={data.mods.length === 0}
                 >
-                  <KeyIcon className="block h-5 w-5" />
+                  <MarkdownIcon className="block h-5 w-5" />
                   <span>Markdown list</span>
                 </button>
               </DropdownMenu.Item>
@@ -758,7 +757,7 @@ name=${data.title}`
                   onClick={copyJSON}
                   disabled={data.mods.length === 0}
                 >
-                  <WrenchIcon className="block h-5 w-5" />
+                  <CodeBracketIcon className="block h-5 w-5" />
                   <span>JSON</span>
                 </button>
               </DropdownMenu.Item>
