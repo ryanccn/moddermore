@@ -545,7 +545,7 @@ name=${data.title}`
 
 ${
   addedMods.length > 0
-    ? addedMods.map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
+    ? addedMods.map((k) => `- [${k.name}](${k.href}) - ${k.description}`).join('\n')
     : '*None*'
 }
 
@@ -553,7 +553,7 @@ ${
 
 ${
   removedMods.length > 0
-    ? removedMods.map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
+    ? removedMods.map((k) => `- [${k.name}](${k.href}) - ${k.description}`).join('\n')
     : '*None*'
 }
       `.trim();
