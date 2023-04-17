@@ -67,6 +67,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const session = useSession();
 
   const [resolvedMods, setResolvedMods] = useState<RichMod[] | null>(null);
+  const [oldMods, setOldMods] = useState<RichMod[] | null>(null);
 
   const [status, setStatus] = useState<
     | 'idle'
@@ -118,6 +119,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         .sort((a, b) => (a!.name > b!.name ? 1 : -1));
 
       setResolvedMods(mods as RichMod[]);
+      setOldMods(mods as RichMod[]);
     })().catch((error) => {
       console.error(error);
       toast.error('Failed to resolve mods');
@@ -501,26 +503,81 @@ name=${data.title}`
   const submitHandle: FormEventHandler = useCallback(
     async (e) => {
       e.preventDefault();
-      if (!session.data || !resolvedMods) return;
+      if (!session.data || !resolvedMods || !oldMods) return;
 
       setIsSaving(true);
 
-      await fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
-        method: 'POST',
-        body: JSON.stringify({
-          title: data.title,
-          mods: resolvedMods.map((elem) => richModToMod(elem)),
-          gameVersion: data.gameVersion,
-          modloader: data.modloader,
-        }),
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const res = await fetch(
+        `/api/list/${encodeURIComponent(data.id)}/update`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            title: data.title,
+            mods: resolvedMods.map((elem) => richModToMod(elem)),
+            gameVersion: data.gameVersion,
+            modloader: data.modloader,
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
 
-      toast.success('Updated!');
+      if (!res.ok) {
+        toast.error('Failed to update mods!');
+        return;
+      }
+
+      const removedMods = oldMods.filter(
+        (oldMod) =>
+          !resolvedMods.some(
+            (k) => k.id === oldMod.id && k.provider === oldMod.provider
+          )
+      );
+      const addedMods = resolvedMods.filter(
+        (resolvedMod) =>
+          !oldMods.some(
+            (k) =>
+              k.id === resolvedMod.id && k.provider === resolvedMod.provider
+          )
+      );
+
+      const changelog = `
+# Added mods
+
+${
+  addedMods.length > 0
+    ? addedMods.map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
+    : '*None*'
+}
+
+# Removed mods
+
+${
+  removedMods.length > 0
+    ? removedMods.map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
+    : '*None*'
+}
+      `.trim();
+
+      toast.success(
+        <div className="flex flex-col gap-y-1">
+          <span>List updated!</span>
+          <button
+            className="text-xs font-semibold text-blue-500 transition-colors hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-200"
+            onClick={() => {
+              navigator.clipboard.writeText(changelog);
+            }}
+          >
+            Copy changelog
+          </button>
+        </div>,
+        { duration: 5000 }
+      );
+
       setIsSaving(false);
       setIsEditing(false);
+      setOldMods(resolvedMods);
     },
-    [session, resolvedMods, data]
+    [session, resolvedMods, oldMods, data]
   );
 
   const updateSearch = useCallback(() => {
