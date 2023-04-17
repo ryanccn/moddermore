@@ -74,10 +74,12 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
     <GlobalLayout title={`Settings for ${data.title}`}>
       <Link
         href={`/list/${data.customSlug ?? data.id}`}
-        className="mb-2 flex flex-row gap-x-2"
+        className="mb-8 flex flex-row items-center gap-x-1"
       >
         <ArrowLeftIcon className="block h-3 w-3" />
-        <span>Back</span>
+        <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          Back
+        </span>
       </Link>
       <form
         className="mb-16 flex flex-col gap-y-4"
