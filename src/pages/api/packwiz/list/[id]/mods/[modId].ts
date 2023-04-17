@@ -1,4 +1,4 @@
-import { stringify } from '@iarna/toml';
+import { stringify, type JsonMap } from '@iarna/toml';
 import type { NextApiHandler } from 'next';
 
 import { getSpecificList } from '~/lib/db';
@@ -59,7 +59,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  res.send(stringify(data));
+  res.send(stringify(data as unknown as JsonMap));
 };
 
 export default h;
