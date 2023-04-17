@@ -632,16 +632,22 @@ name=${data.title}`
         </p>
         {data.ownersExtraData && (
           <div className="mt-2 flex flex-row items-center gap-x-3">
-            <img
-              src={data.ownersExtraData.profilePicture}
-              width={32}
-              height={32}
-              className="rounded-full"
-              alt=""
-            />
+            {data.ownersExtraData.profilePicture ? (
+              <img
+                src={data.ownersExtraData.profilePicture}
+                width={32}
+                height={32}
+                className="rounded-full"
+                alt=""
+              />
+            ) : (
+              <div className="h-[32px] w-[32px] rounded-full bg-neutral-100 dark:bg-neutral-700" />
+            )}
+
             <strong className="font-semibold">
               {data.ownersExtraData.name}
             </strong>
+
             {data.ownersExtraData.plus && <PlusBadge />}
           </div>
         )}
