@@ -20,8 +20,6 @@ import { blue, red } from 'kleur/colors';
         userId: user._id.toString(),
         name: null,
         profilePicture: null,
-        plan: null,
-        subscriptionId: null,
         likes: [],
       });
       console.log('Built profile for', blue(user.email));

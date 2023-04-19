@@ -7,7 +7,6 @@ import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { DashboardLayout } from '~/components/layout/DashboardLayout';
 
 import { toast } from 'react-hot-toast';
-import Link from 'next/link';
 
 const AccountPage: NextPage = () => {
   const session = useSession({ required: true });
@@ -44,26 +43,6 @@ const AccountPage: NextPage = () => {
       setInProgress(false);
     });
   }, [name, profilePicture]);
-
-  const unsubscribe = useCallback(() => {
-    setInProgress(true);
-
-    fetch('/api/profile/unsubscribe', {
-      method: 'POST',
-    }).then((res) => {
-      if (res.ok) {
-        toast.success('Unsubscribed!');
-      } else {
-        toast.error('Failed to unsubscribe, please contact us directly');
-      }
-
-      /* hack to reload profile data */
-      const event = new Event('visibilitychange');
-      document.dispatchEvent(event);
-
-      setInProgress(false);
-    });
-  }, []);
 
   if (session.status === 'loading') {
     return <FullLoadingScreen />;
@@ -112,23 +91,6 @@ const AccountPage: NextPage = () => {
             Save
           </button>
         </form>
-
-        {session.data.extraProfile.plan !== 'plus' ? (
-          <Link
-            className="primaryish-button pls-subscribe mb-12 self-start"
-            href="/plus"
-          >
-            Subscribe to Plus
-          </Link>
-        ) : (
-          <button
-            className="primaryish-button oh-no mb-12 self-start"
-            disabled={inProgress}
-            onClick={unsubscribe}
-          >
-            Unsubscribe from Plus
-          </button>
-        )}
 
         <button
           className="primaryish-button oh-no self-start px-4 py-2 text-lg font-semibold"

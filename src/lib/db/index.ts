@@ -6,7 +6,6 @@ import type {
   ModListCreate,
   ModListUpdate,
   ModListWithOwnerData,
-  UserProfile,
 } from '~/types/moddermore';
 import { getUserProfile } from './users';
 
@@ -37,27 +36,9 @@ export const getSpecificList = async (
   id: string
 ): Promise<ModListWithOwnerData | null> => {
   const collection = await getListsCollection();
-  let list = await collection.findOne({ customSlug: id });
-
-  let ownerProfile: UserProfile | null = null;
-
-  if (!list) {
-    list = await collection.findOne({ id });
-    if (list?.customSlug && list?.owner) {
-      ownerProfile = await getUserProfile(list.owner);
-      if (ownerProfile?.plan === 'plus') return null;
-    }
-  }
-
+  const list = await collection.findOne({ id });
   if (!list) return null;
-
-  if (list.customSlug && list.owner) {
-    ownerProfile = await getUserProfile(list.owner);
-    if (ownerProfile?.plan !== 'plus') return null;
-  }
-
-  if (!ownerProfile && list.owner)
-    ownerProfile = await getUserProfile(list.owner);
+  const ownerProfile = list.owner ? await getUserProfile(list.owner) : null;
 
   return {
     id: list.id,
@@ -67,14 +48,12 @@ export const getSpecificList = async (
     modloader: list.modloader,
     owner: list.owner,
     created_at: list.created_at,
-    customSlug: list.customSlug ?? null,
     ownersExtraData: ownerProfile
       ? {
           ...(ownerProfile.name ? { name: ownerProfile.name } : {}),
           ...(ownerProfile.profilePicture
             ? { profilePicture: ownerProfile.profilePicture }
             : {}),
-          plus: ownerProfile.plan === 'plus',
         }
       : {},
   };

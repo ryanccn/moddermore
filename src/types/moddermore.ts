@@ -46,11 +46,6 @@ export const ModListUpdate = z.object({
     .union([z.literal('forge'), z.literal('fabric'), z.literal('quilt')])
     .optional(),
   mods: z.array(Mod).min(1).max(150).optional(),
-  customSlug: z
-    .string()
-    .regex(/^[\dA-Za-z-]+$/)
-    .min(5)
-    .optional(),
 });
 
 export type ModListUpdate = z.infer<typeof ModListUpdate>;
@@ -63,12 +58,10 @@ export interface ModList {
   owner: string | null;
   modloader: ModLoader;
   mods: Mod[];
-  customSlug?: string | null;
-  legacy?: string | null;
 }
 
 export interface ModListWithOwnerData extends ModList {
-  ownersExtraData: { name?: string; profilePicture?: string; plus?: boolean };
+  ownersExtraData: { name?: string; profilePicture?: string };
 }
 
 export interface RichModList {
@@ -79,8 +72,6 @@ export interface RichModList {
   gameVersion: string;
   modloader: ModLoader;
   mods: RichMod[];
-  customSlug?: string | null;
-  legacy?: string | null;
 }
 
 export const UserEditableProfileData = z.object({
@@ -91,8 +82,6 @@ export const UserEditableProfileData = z.object({
 export type UserEditableProfileData = z.infer<typeof UserEditableProfileData>;
 
 export interface UserProfileData extends UserEditableProfileData {
-  plan: 'plus' | null;
-  subscriptionId: string | null;
   likes?: string[];
 }
 

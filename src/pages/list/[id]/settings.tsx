@@ -12,7 +12,6 @@ import minecraftVersions from '~/lib/minecraftVersions.json';
 import type { ModLoader, ModList } from '~/types/moddermore';
 import { toast } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
-import { PlusBadge } from '~/components/partials/PlusBadge';
 import Link from 'next/link';
 
 interface PageProps {
@@ -25,7 +24,6 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   const [title, setTitle] = useState(data.title);
   const [gameVersion, setGameVersion] = useState(data.gameVersion);
   const [modLoader, setModLoader] = useState<ModLoader>(data.modloader);
-  const [customSlug, setCustomSlug] = useState(data.customSlug || '');
 
   const [inProgress, setInProgress] = useState(false);
 
@@ -48,7 +46,6 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         title,
         gameVersion,
         modloader: modLoader,
-        ...(customSlug ? { customSlug } : {}),
       }),
       headers: { 'Content-Type': 'application/json' },
     }).then(async (res) => {
@@ -66,14 +63,14 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
 
       toast.success('Updated list settings!');
       setInProgress(false);
-      router.push(`/list/${customSlug || data.id}`);
+      router.push(`/list/${data.id}`);
     });
-  }, [data, router, title, gameVersion, modLoader, customSlug]);
+  }, [data, router, title, gameVersion, modLoader]);
 
   return (
     <GlobalLayout title={`Settings for ${data.title}`}>
       <Link
-        href={`/list/${data.customSlug ?? data.id}`}
+        href={`/list/${data.id}`}
         className="mb-8 flex flex-row items-center gap-x-1"
       >
         <ArrowLeftIcon className="block h-3 w-3" />
@@ -138,28 +135,6 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
           </select>
         </label>
 
-        <label className="moddermore-form-label">
-          <div className="flex flex-row items-center gap-x-2">
-            <span>Custom URL</span>
-            <PlusBadge />
-          </div>
-          <div className="flex flex-row items-center gap-x-2">
-            <span className="text-neutral-500 dark:text-neutral-400">
-              moddermore.net/list/
-            </span>
-            <input
-              type="text"
-              placeholder={data.id}
-              value={customSlug}
-              minLength={5}
-              onChange={(e) => {
-                setCustomSlug(e.target.value);
-              }}
-              disabled={session.data?.extraProfile.plan !== 'plus'}
-            />
-          </div>
-        </label>
-
         <button
           type="submit"
           className="primaryish-button mt-4 self-start"
@@ -187,7 +162,7 @@ export const getServerSideProps: GetServerSideProps<
 
   return {
     props: {
-      data: { ...data, legacy: data.legacy ? 'redacted' : null },
+      data: { ...data },
     },
   };
 };
