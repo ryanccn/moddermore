@@ -2,7 +2,6 @@ import { stringify, type JsonMap } from '@iarna/toml';
 import type { NextApiHandler } from 'next';
 
 import { getSpecificList } from '~/lib/db';
-import { isPlus } from '~/lib/db/users';
 import { getCurseForgeTOML, getModrinthTOML } from '~/lib/export/packwiz';
 
 const h: NextApiHandler = async (req, res) => {
@@ -26,11 +25,6 @@ const h: NextApiHandler = async (req, res) => {
 
   if (!list) {
     res.status(404).end();
-    return;
-  }
-
-  if (!list.owner || !(await isPlus(list.owner))) {
-    res.status(401).end();
     return;
   }
 

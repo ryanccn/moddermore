@@ -31,8 +31,6 @@ import Head from 'next/head';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
-import { LegacyBadge } from '~/components/partials/LegacyBadge';
-import { PlusBadge } from '~/components/partials/PlusBadge';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 
 import { MarkdownIcon, ModrinthIcon, PrismIcon } from '~/components/icons';
@@ -291,7 +289,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
   const getPackwizUrl = (document: Document) => {
     const url = new URL(document.URL);
-    url.pathname = `/list/${data.customSlug ?? data.id}/packwiz/pack.toml`;
+    url.pathname = `/list/${data.id}/packwiz/pack.toml`;
     return url.href;
   };
 
@@ -545,7 +543,9 @@ name=${data.title}`
 
 ${
   addedMods.length > 0
-    ? addedMods.map((k) => `- [${k.name}](${k.href}) - ${k.description}`).join('\n')
+    ? addedMods
+        .map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
+        .join('\n')
     : '*None*'
 }
 
@@ -553,7 +553,9 @@ ${
 
 ${
   removedMods.length > 0
-    ? removedMods.map((k) => `- [${k.name}](${k.href}) - ${k.description}`).join('\n')
+    ? removedMods
+        .map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
+        .join('\n')
     : '*None*'
 }
       `.trim();
@@ -676,7 +678,6 @@ ${
 
   return (
     <GlobalLayout title={data.title}>
-      {data.legacy && <LegacyBadge className="mb-4" />}
       <div className="data-list mb-8">
         <p>
           For Minecraft <strong>{data.gameVersion}</strong> with{' '}
@@ -703,8 +704,6 @@ ${
             <strong className="font-semibold">
               {data.ownersExtraData.name}
             </strong>
-
-            {data.ownersExtraData.plus && <PlusBadge />}
           </div>
         )}
       </div>
@@ -747,14 +746,10 @@ ${
                 <button
                   className="dropdown-button"
                   onClick={packwizExport}
-                  disabled={
-                    data.mods.length === 0 ||
-                    session.data?.extraProfile.plan !== 'plus'
-                  }
+                  disabled={data.mods.length === 0}
                 >
                   <LinkIcon className="block h-5 w-5" />
                   <span>Copy packwiz link</span>
-                  <PlusBadge />
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
@@ -771,14 +766,10 @@ ${
                 <button
                   className="dropdown-button"
                   onClick={prismExport}
-                  disabled={
-                    data.mods.length === 0 ||
-                    session.data?.extraProfile.plan !== 'plus'
-                  }
+                  disabled={data.mods.length === 0}
                 >
                   <PrismIcon className="block h-5 w-5" />
                   <span>MultiMC (auto-updating)</span>
-                  <PlusBadge />
                 </button>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
@@ -865,7 +856,7 @@ ${
 
             <Link
               className="primaryish-button secondaryish-instead"
-              href={`/list/${data.customSlug ?? data.id}/settings`}
+              href={`/list/${data.id}/settings`}
             >
               <CogIcon className="block h-5 w-5" />
               <span>Settings</span>
@@ -1143,7 +1134,7 @@ export const getServerSideProps: GetServerSideProps<
 
   return {
     props: {
-      data: { ...data, legacy: data.legacy ? 'redacted' : null },
+      data: { ...data },
     },
   };
 };

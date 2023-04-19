@@ -10,22 +10,13 @@ export const getUserProfile = async (id: string) => {
     await col.insertOne({
       userId: id,
       name: null,
-      plan: null,
       profilePicture: null,
-      subscriptionId: null,
     });
 
     res = await col.findOne({ userId: id });
   }
 
   return res;
-};
-
-export const isPlus = async (id: string) => {
-  const col = await getProfilesCollection();
-  const profile = await col.findOne({ userId: id });
-
-  return profile?.plan === 'plus';
 };
 
 export const updateUserProfile = async (

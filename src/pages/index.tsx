@@ -20,7 +20,6 @@ import {
 
 import { getLists, getPageviews, getUsers } from '~/lib/stats';
 import { numberFormat } from '~/lib/strings';
-import { PlusBadge } from '~/components/partials/PlusBadge';
 
 interface PageProps {
   pageviews: number | null;
@@ -67,7 +66,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         <ArrowDownIcon className="block h-5 w-5 stroke-2 text-neutral-600 dark:text-neutral-400" />
       </div>
 
-      <div className="mb-12 flex flex-col items-center gap-y-16 gap-x-24 self-center p-6 lg:flex-row lg:p-20">
+      <div className="mb-12 flex flex-col items-center gap-x-24 gap-y-16 self-center p-6 lg:flex-row lg:p-20">
         {pageviews && (
           <div className="flex flex-col items-center gap-y-2">
             <span className="text-lg font-bold">Monthly pageviews</span>
@@ -129,7 +128,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         </h3>
       </div>
 
-      <div className="mt-24 mb-10 flex flex-col items-start gap-y-4 p-6 lg:p-20">
+      <div className="mb-10 mt-24 flex flex-col items-start gap-y-4 p-6 lg:p-20">
         <h2 className="text-4xl font-bold">Export to anywhere</h2>
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Publishing to Modrinth? Importing to Prism Launcher? We{"'"}ve got you
@@ -147,9 +146,8 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
           <div className="primaryish-button showcase idk-blue-themed">
             <ArchiveBoxIcon className="block h-5 w-5" />
             <span>packwiz</span>
-            <PlusBadge />
           </div>
-          <div className="primaryish-button showcase fuchsia-themed opacity-80">
+          <div className="primaryish-button showcase fuchsia-themed select-none opacity-80">
             <QuestionMarkCircleIcon className="block h-5 w-5" />
             <span className="blur-sm">asdfghjkl</span>
           </div>
