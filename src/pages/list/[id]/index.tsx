@@ -32,6 +32,7 @@ import Head from 'next/head';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
+import { DonationMessage } from '~/components/partials/DonationMessage';
 
 import { MarkdownIcon, ModrinthIcon, PrismIcon } from '~/components/icons';
 import {
@@ -943,6 +944,8 @@ ${
           )}
         </div>
       )}
+
+      <DonationMessage />
 
       <ul className="flex flex-col gap-y-4">
         {resolvedMods ? (
