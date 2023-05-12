@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 const LEMONSQUEEZY_URL =
-  'https://moddermore.lemonsqueezy.com/checkout/buy/9e7702df-0b25-4d37-995d-f71ad174c276';
+  'https://moddermore.lemonsqueezy.com/checkout/buy/4c187f24-0c1f-4468-b7f1-c2a06057a318';
 const KOFI_URL = 'https://ko-fi.com/RyanCaoDev';
 
 const LOCALSTORAGE_ID = '1251279C-5C7B-4EE8-AE2A-3254EE386C77';
