@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps, type NextPage } from 'next';
 
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { DonationMessage } from '~/components/partials/DonationMessage';
 
 import { getBlogPost, listBlogPosts } from '~/lib/blog';
 
@@ -33,7 +34,7 @@ const BlogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
           <h1 className="text-4xl font-bold">{data.title}</h1>
           <p className="text-lg font-medium">{data.date}</p>
         </div>
-        <MDXRemote {...mdx} components={{}} />
+        <MDXRemote {...mdx} components={{ DonationMessage }} />
       </article>
     </GlobalLayout>
   );
