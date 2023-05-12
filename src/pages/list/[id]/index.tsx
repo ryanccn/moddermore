@@ -947,7 +947,7 @@ ${
 
       <DonationMessage />
 
-      <ul className="flex flex-col gap-y-4">
+      <ul className="mt-8 flex flex-col gap-y-4">
         {resolvedMods ? (
           resolvedMods.map((mod) => (
             <li className="w-full" key={mod.id}>
