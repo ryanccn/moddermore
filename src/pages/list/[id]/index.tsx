@@ -86,6 +86,10 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [searchResults, setSearchResults] = useState<RichMod[]>([]);
 
   const [hasLiked, setHasLiked] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDeleteTimeoutID, setConfirmDeleteTimeoutID] = useState<
+    number | null
+  >(null);
 
   const [mrpackName, setMrpackName] = useState(data.title);
   const [mrpackVersion, setMrpackVersion] = useState('0.0.1');
@@ -666,6 +670,18 @@ ${
   const deleteCurrentList = useCallback(async () => {
     if (!data || !session.data) return;
 
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      setConfirmDeleteTimeoutID(
+        window.setTimeout(() => {
+          setConfirmDelete(false);
+        }, 3000)
+      );
+      return;
+    }
+
+    if (confirmDeleteTimeoutID) window.clearTimeout(confirmDeleteTimeoutID);
+
     const a = await fetch(`/api/list/${data.id}/delete`);
     if (a.ok) {
       toast.success(`Deleted ${data.title} (${data.id})!`);
@@ -673,7 +689,15 @@ ${
       toast.error(`Failed to delete ${data.title} (${data.id})!`);
     }
     router.push('/lists');
-  }, [router, data, session]);
+  }, [
+    router,
+    data,
+    session,
+    confirmDelete,
+    confirmDeleteTimeoutID,
+    setConfirmDelete,
+    setConfirmDeleteTimeoutID,
+  ]);
 
   return (
     <GlobalLayout title={data.title}>
@@ -866,7 +890,11 @@ ${
               onClick={deleteCurrentList}
             >
               <TrashIcon className="block h-5 w-5" />
-              <span>Delete</span>
+              {confirmDelete ? (
+                <span>Confirm deletion?</span>
+              ) : (
+                <span>Delete</span>
+              )}
             </button>
           </>
         )}
