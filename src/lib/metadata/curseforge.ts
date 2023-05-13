@@ -37,7 +37,7 @@ export const getInfos = async (ids: string[]): Promise<RichMod[]> => {
   const res = await fetch(`https://api.curseforge.com/v1/mods`, {
     method: 'POST',
     body: JSON.stringify({ modIds: ids }),
-    headers: { 'x-api-key': API_KEY },
+    headers: { 'x-api-key': API_KEY, 'Content-Type': 'application/json' },
   });
 
   if (!res.ok) {
