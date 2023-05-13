@@ -29,3 +29,32 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
     downloads: data.downloadCount,
   };
 };
+
+export const getInfos = async (ids: string[]): Promise<RichMod[]> => {
+  const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
+  if (!API_KEY) throw new Error('No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!');
+
+  const res = await fetch(`https://api.curseforge.com/v1/mods`, {
+    method: 'POST',
+    body: JSON.stringify({ modIds: ids }),
+    headers: { 'x-api-key': API_KEY },
+  });
+
+  if (!res.ok) {
+    return [];
+  }
+
+  const data = (await res
+    .json()
+    .then((json) => json.data)) as CurseForgeProject[];
+
+  return data.map((mod) => ({
+    id: mod.id.toString(),
+    href: `https://curseforge.com/minecraft/mc-mods/${mod.slug}`,
+    iconUrl: mod.logo.thumbnailUrl ?? undefined,
+    provider: 'curseforge',
+    name: mod.name,
+    description: mod.summary,
+    downloads: mod.downloadCount,
+  }));
+};

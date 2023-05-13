@@ -8,8 +8,9 @@ import type {
   RichMod,
 } from '~/types/moddermore';
 
-import { modToRichMod, richModToMod } from '~/lib/db/conversions';
+import { richModToMod } from '~/lib/db/conversions';
 import { getInfos as getModrinthInfos } from '~/lib/metadata/modrinth';
+import { getInfos as getCurseForgeInfos } from '~/lib/metadata/curseforge';
 import { loaderFormat } from '~/lib/strings';
 
 import pLimit from 'p-limit';
@@ -97,17 +98,14 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
   useEffect(() => {
     (async () => {
-      const lim = pLimit(8);
-
-      const modrinthMods = await getModrinthInfos(
-        data.mods.filter((k) => k.provider === 'modrinth').map((k) => k.id)
-      );
-
-      const curseForgeMods = await Promise.all(
-        data.mods
-          .filter((k) => k.provider === 'curseforge')
-          .map((a) => lim(() => modToRichMod(a)))
-      );
+      const [modrinthMods, curseForgeMods] = await Promise.all([
+        getModrinthInfos(
+          data.mods.filter((k) => k.provider === 'modrinth').map((k) => k.id)
+        ),
+        getCurseForgeInfos(
+          data.mods.filter((k) => k.provider === 'curseforge').map((k) => k.id)
+        ),
+      ]);
 
       if (modrinthMods === null)
         throw new Error('Failed to resolve Modrinth mods');
