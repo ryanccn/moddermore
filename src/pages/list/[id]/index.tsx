@@ -540,7 +540,7 @@ name=${data.title}`
       );
 
       const changelog = `
-# Added mods
+## Added mods
 
 ${
   addedMods.length > 0
@@ -550,7 +550,7 @@ ${
     : '*None*'
 }
 
-# Removed mods
+## Removed mods
 
 ${
   removedMods.length > 0
