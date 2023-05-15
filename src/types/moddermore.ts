@@ -34,7 +34,7 @@ export const ModListCreate = z.object({
     z.literal('fabric'),
     z.literal('quilt'),
   ]),
-  mods: z.array(Mod).min(1).max(150),
+  mods: z.array(Mod).min(1).max(500),
 });
 
 export type ModListCreate = z.infer<typeof ModListCreate>;
@@ -45,7 +45,7 @@ export const ModListUpdate = z.object({
   modloader: z
     .union([z.literal('forge'), z.literal('fabric'), z.literal('quilt')])
     .optional(),
-  mods: z.array(Mod).min(1).max(150).optional(),
+  mods: z.array(Mod).min(1).max(500).optional(),
 });
 
 export type ModListUpdate = z.infer<typeof ModListUpdate>;
