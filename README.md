@@ -30,7 +30,7 @@ Share the mods you use with anyone.
 - [TypeScript](https://www.typescriptlang.org/)
 - [Prettier](https://prettier.io/)
 - [ESLint](https://eslint.org/)
-- [Yarn](https://classic.yarnpkg.com/lang/en/)
+- [pnpm](https://pnpm.dev/)
 - [Plausible](https://plausible.io/)
 - and a ton of other open source libraries and services!
 
@@ -40,31 +40,15 @@ Big thanks to all of the contributors to those projects who have made this proje
 
 We welcome all contributors to the project! Feel free to open PRs if you see something you can improve 😁
 
-Run `yarn install` to install dependencies, and run `yarn dev` to start the development server.
+Run `pnpm install` to install dependencies, and run `pnpm dev` to start the development server.
 
 You will need to register for a few services and set a few environment variables (e.g. via `.env.local`) to start contributing.
 
 We use [MongoDB](https://www.mongodb.com/) as our primary database. We also access the [CurseForge](https://curseforge.com/) and [Modrinth](https://modrinth.com/) APIs, and the CurseForge Core API requires an API key which you can apply for [in this form](https://forms.monday.com/forms/dce5ccb7afda9a1c21dab1a1aa1d84eb). Don't worry - this key is meant to be public!
 
-```
-# MongoDB
-MONGODB_URI=""
-
-# GitHub
-GITHUB_CLIENT_ID=""
-GITHUB_CLIENT_SECRET=""
-
-# CurseForge
-NEXT_PUBLIC_CURSEFORGE_API_KEY=""
-
-# Email
-EMAIL_SERVER=""
-EMAIL_FROM=""
-```
-
 There are also a few maintenance scripts available:
 
-- `yarn utils:minecraftVersions`: updates available Minecraft versions from Mojang
+- `pnpm run utils:minecraftVersions`: updates available Minecraft versions from Mojang
 
 ## Stats
 

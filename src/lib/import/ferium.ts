@@ -7,7 +7,7 @@ export const parseFerium = (str: string) => {
   const ret: Mod[] = [];
 
   for (const mod of matrix) {
-    const rawProvider = mod[mod.length - 2];
+    const rawProvider = mod.at(-2);
 
     const provider: ModProvider | null =
       rawProvider === 'Modrinth'
@@ -17,7 +17,8 @@ export const parseFerium = (str: string) => {
         : null;
 
     if (provider) {
-      ret.push({ id: mod[mod.length - 1], provider });
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      ret.push({ id: mod.at(-1)!, provider });
     }
   }
 
