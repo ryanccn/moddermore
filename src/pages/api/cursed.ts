@@ -20,27 +20,10 @@ const h = async (req: Request) => {
   }
 
   const proxiedResp = await fetch(originalURL, {
-    headers: {
-      'User-Agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36',
-    },
+    headers: structuredClone(req.headers),
   });
 
-  if (!proxiedResp.ok) {
-    return new Response(proxiedResp.body, {
-      status: proxiedResp.status,
-      headers: {
-        'content-type': proxiedResp.headers.get('content-type') ?? '',
-      },
-    });
-  }
-
-  return new Response(proxiedResp.body, {
-    headers: {
-      'cache-control': 's-maxage=3600, stale-while-revalidate=3600',
-      'content-type': proxiedResp.headers.get('content-type') ?? '',
-    },
-  });
+  return proxiedResp.clone();
 };
 
 export default h;
