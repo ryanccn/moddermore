@@ -35,12 +35,12 @@ const LikesPage: NextPage = () => {
             ))}
           </ul>
         ) : (
-          <div className="rounded bg-transparent p-8 text-center text-lg shadow dark:bg-neutral-800">
+          <div className="rounded w-full h-fit m-6 bg-transparent font-medium px-2 py-16 text-center text-lg shadow dark:bg-neutral-800">
             No liked lists yet!
           </div>
         )
       ) : (
-        <div className="w-full" />
+        <div className="w-full m-6" />
       )}
     </DashboardLayout>
   );
