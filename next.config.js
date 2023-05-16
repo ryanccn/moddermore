@@ -72,6 +72,7 @@ const nextConfig = withPlausibleProxy()(
 
     async redirects() {
       return [
+        { source: '/dashboard', destination: '/lists', permanent: false },
         { source: '/new/polymc', destination: '/new/prism', permanent: true },
       ];
     },
