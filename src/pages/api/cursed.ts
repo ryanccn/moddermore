@@ -20,7 +20,10 @@ const h = async (req: Request) => {
   }
 
   const proxiedResp = await fetch(originalURL, {
-    headers: structuredClone(req.headers),
+    headers: {
+      'User-Agent': req.headers.get('User-Agent') ?? '',
+      Referer: req.headers.get('Referer') ?? '',
+    },
   });
 
   return proxiedResp.clone();
