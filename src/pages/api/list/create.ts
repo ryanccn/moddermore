@@ -1,9 +1,49 @@
 import type { NextApiHandler } from 'next';
 
-import { getServerSession } from 'next-auth';
+import { getServerSession, type User } from 'next-auth';
 import { authOptions } from '~/lib/authOptions';
 import { createList } from '~/lib/db';
+
 import { ModListCreate } from '~/types/moddermore';
+
+import { RESTPostAPIWebhookWithTokenJSONBody as DiscordWebhookBody } from 'discord-api-types/rest';
+import { loaderFormat } from '~/lib/strings';
+const logToDiscord = async ({
+  data,
+  id,
+  user,
+}: {
+  data: ModListCreate;
+  id: string;
+  user: User;
+}) => {
+  if (!process.env.DISCORD_WEBHOOK) return;
+
+  const body = {
+    embeds: [
+      {
+        title: data.title,
+        author: {
+          name: user.name
+            ? `${user.name} (${user.email})`
+            : user.email ?? `id${user.id}`,
+        },
+        url: `https://moddermore.net/list/${id}`,
+        fields: [
+          { name: 'Game version', value: data.gameVersion },
+          { name: 'Loader', value: loaderFormat(data.modloader) },
+          { name: 'Mods', value: data.mods.length.toString() },
+        ],
+      },
+    ],
+  } satisfies DiscordWebhookBody;
+
+  await fetch(process.env.DISCORD_WEBHOOK, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: { 'content-type': 'application/json' },
+  });
+};
 
 const h: NextApiHandler = async (req, res) => {
   if (req.method !== 'POST') {
@@ -25,8 +65,10 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const lists = await createList(parsedData.data, sess.user.id);
-  res.status(200).json({ id: lists });
+  const listId = await createList(parsedData.data, sess.user.id);
+  res.status(200).json({ id: listId });
+
+  await logToDiscord({ data: parsedData.data, id: listId, user: sess.user });
 };
 
 export default h;

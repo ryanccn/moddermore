@@ -20,6 +20,7 @@ declare global {
       NEXT_PUBLIC_CURSEFORGE_API_KEY: string;
 
       PLAUSIBLE_TOKEN?: string;
+      DISCORD_WEBHOOK?: string;
 
       /** Only available when deployed */
       NEXT_PUBLIC_VERCEL_ENV?: 'production' | 'preview' | 'development';

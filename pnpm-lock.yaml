@@ -96,6 +96,9 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.23)
+  discord-api-types:
+    specifier: ^0.37.42
+    version: 0.37.42
   dotenv:
     specifier: ^16.0.3
     version: 16.0.3
@@ -1881,6 +1884,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       path-type: 4.0.0
+    dev: true
+
+  /discord-api-types@0.37.42:
+    resolution: {integrity: sha512-1Huaj9cQ1W7/uryS8MZs/tZemnoKB94thM1cE40lep3rpU3q7WHqkdjN/veX0prTkYlPhcyLd/DeF/pBO8X8oQ==}
     dev: true
 
   /dlv@1.1.3:
