@@ -32,8 +32,17 @@ const logToDiscord = async ({
         fields: [
           { name: 'Game version', value: data.gameVersion },
           { name: 'Loader', value: loaderFormat(data.modloader) },
-          { name: 'Mods', value: data.mods.length.toString() },
+          {
+            name: 'Mods',
+            value: `**Total (${data.mods.length})**\nModrinth (${
+              data.mods.filter((k) => k.provider === 'modrinth').length
+            })\nCurseForge (${
+              data.mods.filter((k) => k.provider === 'curseforge').length
+            })`,
+          },
         ],
+        // eslint-disable-next-line unicorn/numeric-separators-style
+        color: 0x4ade80,
       },
     ],
   } satisfies DiscordWebhookBody;
