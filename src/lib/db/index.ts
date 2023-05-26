@@ -1,11 +1,11 @@
 import { nanoid } from 'nanoid/async';
 
-import { getListsCollection } from './client';
+import { getListsCollection, getProfilesCollection } from './client';
 import type {
   ModList,
   ModListCreate,
   ModListUpdate,
-  ModListWithOwnerData,
+  ModListWithExtraData,
 } from '~/types/moddermore';
 import { getUserProfile } from './users';
 
@@ -34,11 +34,14 @@ export const getSpecificListByID = async (trueId: string) => {
 
 export const getSpecificList = async (
   id: string
-): Promise<ModListWithOwnerData | null> => {
+): Promise<ModListWithExtraData | null> => {
   const collection = await getListsCollection();
   const list = await collection.findOne({ id });
   if (!list) return null;
   const ownerProfile = list.owner ? await getUserProfile(list.owner) : null;
+
+  const profilesCollection = await getProfilesCollection();
+  const likeCount = await profilesCollection.countDocuments({ likes: id });
 
   return {
     id: list.id,
@@ -48,6 +51,7 @@ export const getSpecificList = async (
     modloader: list.modloader,
     owner: list.owner,
     created_at: list.created_at,
+    likes: likeCount,
     ownersExtraData: ownerProfile
       ? {
           ...(ownerProfile.name ? { name: ownerProfile.name } : {}),

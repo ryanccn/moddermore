@@ -4,7 +4,7 @@ import type { GetServerSideProps, NextPage } from 'next';
 
 import type {
   ModListCreate,
-  ModListWithOwnerData,
+  ModListWithExtraData,
   RichMod,
 } from '~/types/moddermore';
 
@@ -59,7 +59,7 @@ import type { ExportReturnData } from '~/lib/export/types';
 import clsx from 'clsx';
 
 interface PageProps {
-  data: ModListWithOwnerData;
+  data: ModListWithExtraData;
 }
 
 const ListPage: NextPage<PageProps> = ({ data }) => {
@@ -709,6 +709,9 @@ ${
         <p>
           Last updated on{' '}
           <strong>{new Date(data.created_at).toDateString()}</strong>
+        </p>
+        <p>
+          <strong>{data.likes}</strong> {data.likes === 1 ? 'like' : 'likes'}
         </p>
         {data.ownersExtraData && (
           <div className="mt-2 flex flex-row items-center gap-x-3">

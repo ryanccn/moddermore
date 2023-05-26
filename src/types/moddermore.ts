@@ -60,7 +60,8 @@ export interface ModList {
   mods: Mod[];
 }
 
-export interface ModListWithOwnerData extends ModList {
+export interface ModListWithExtraData extends ModList {
+  likes: number;
   ownersExtraData: { name?: string; profilePicture?: string };
 }
 
