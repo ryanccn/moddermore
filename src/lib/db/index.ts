@@ -52,7 +52,7 @@ export const getSpecificList = async (
     owner: list.owner,
     created_at: list.created_at,
     likes: likeCount,
-    ownersExtraData: ownerProfile
+    ownerProfile: ownerProfile
       ? {
           ...(ownerProfile.name ? { name: ownerProfile.name } : {}),
           ...(ownerProfile.profilePicture

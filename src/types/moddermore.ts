@@ -62,7 +62,7 @@ export interface ModList {
 
 export interface ModListWithExtraData extends ModList {
   likes: number;
-  ownersExtraData: { name?: string; profilePicture?: string };
+  ownerProfile: { name?: string; profilePicture?: string };
 }
 
 export interface RichModList {

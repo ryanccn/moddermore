@@ -713,11 +713,11 @@ ${
         <p>
           <strong>{data.likes}</strong> {data.likes === 1 ? 'like' : 'likes'}
         </p>
-        {data.ownersExtraData && (
+        {data.ownerProfile && (
           <div className="mt-2 flex flex-row items-center gap-x-3">
-            {data.ownersExtraData.profilePicture ? (
+            {data.ownerProfile.profilePicture ? (
               <img
-                src={data.ownersExtraData.profilePicture}
+                src={data.ownerProfile.profilePicture}
                 width={32}
                 height={32}
                 className="rounded-full"
@@ -727,9 +727,7 @@ ${
               <div className="h-[32px] w-[32px] rounded-full bg-neutral-100 dark:bg-neutral-700" />
             )}
 
-            <strong className="font-semibold">
-              {data.ownersExtraData.name}
-            </strong>
+            <strong className="font-semibold">{data.ownerProfile.name}</strong>
           </div>
         )}
       </div>
