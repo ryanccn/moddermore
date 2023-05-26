@@ -17,7 +17,7 @@ import { PaperClipIcon } from '@heroicons/react/24/solid';
 import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
 
-const PrismInstanceImportPage: NextPage = () => {
+const PrismImportPage: NextPage = () => {
   const sess = useSession({ required: true });
 
   const [title, setTitle] = useState('');
@@ -38,11 +38,11 @@ const PrismInstanceImportPage: NextPage = () => {
 
       setSubmitting(true);
 
-      const aaa = await instanceFile?.arrayBuffer();
-      if (!aaa) throw aaa;
+      const zipFileContent = await instanceFile?.arrayBuffer();
+      if (!zipFileContent) throw zipFileContent;
 
       const parseResponse = await parsePrismInstance({
-        f: await loadAsync(new Uint8Array(aaa)),
+        f: await loadAsync(new Uint8Array(zipFileContent)),
         useMetadata,
         setProgress,
       });
@@ -51,7 +51,7 @@ const PrismInstanceImportPage: NextPage = () => {
         return;
       }
 
-      const a = await fetch('/api/list/create', {
+      const res = await fetch('/api/list/create', {
         method: 'POST',
         body: JSON.stringify({
           title,
@@ -62,12 +62,12 @@ const PrismInstanceImportPage: NextPage = () => {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      if (!a.ok) {
+      if (!res.ok) {
         toast.error("Couldn't create the list");
         return;
       }
 
-      const { id } = await a.json();
+      const { id } = await res.json();
 
       router.push(`/list/${id}`);
     },
@@ -191,4 +191,4 @@ const PrismInstanceImportPage: NextPage = () => {
   );
 };
 
-export default PrismInstanceImportPage;
+export default PrismImportPage;

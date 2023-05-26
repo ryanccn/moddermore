@@ -16,7 +16,7 @@ import { ArrowUpTrayIcon } from '@heroicons/react/20/solid';
 import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 
-const FeriumImportPage: NextPage = () => {
+const FolderImportPage: NextPage = () => {
   const sess = useSession({ required: true });
 
   const [title, setTitle] = useState('');
@@ -36,15 +36,15 @@ const FeriumImportPage: NextPage = () => {
       if (!sess.data) return;
       setSubmitting(true);
 
-      const aaa = await modZipFile?.arrayBuffer();
-      if (!aaa) throw aaa;
+      const zipFileContent = await modZipFile?.arrayBuffer();
+      if (!zipFileContent) throw zipFileContent;
 
       const parsedMods = (await parseModFolder({
-        f: await loadAsync(new Uint8Array(aaa)),
+        f: await loadAsync(new Uint8Array(zipFileContent)),
         setProgress,
       }).then((r) => r.filter((k) => k !== null))) as Mod[];
 
-      const a = await fetch('/api/list/create', {
+      const res = await fetch('/api/list/create', {
         method: 'POST',
         body: JSON.stringify({
           title,
@@ -55,12 +55,12 @@ const FeriumImportPage: NextPage = () => {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      if (!a.ok) {
+      if (!res.ok) {
         toast.error("Couldn't create the list");
         return;
       }
 
-      const { id } = await a.json();
+      const { id } = await res.json();
 
       router.push(`/list/${id}`);
     },
@@ -160,4 +160,4 @@ const FeriumImportPage: NextPage = () => {
   );
 };
 
-export default FeriumImportPage;
+export default FolderImportPage;

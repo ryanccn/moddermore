@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-module */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const { withPlausibleProxy } = require('next-plausible');
@@ -49,7 +50,7 @@ const securityHeaders = [
   },
   {
     key: 'Content-Security-Policy',
-    value: csp.replace(/\s{2,}/g, ' ').trim(),
+    value: csp.replaceAll(/\s{2,}/g, ' ').trim(),
   },
 ];
 

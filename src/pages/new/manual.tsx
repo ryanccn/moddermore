@@ -15,7 +15,7 @@ import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 import { richModToMod } from '~/lib/db/conversions';
 import toast from 'react-hot-toast';
 
-const NewList: NextPage = () => {
+const ManualImportPage: NextPage = () => {
   const session = useSession({ required: true });
 
   const [title, setTitle] = useState('');
@@ -39,7 +39,7 @@ const NewList: NextPage = () => {
 
       setSubmitting(true);
 
-      const a = await fetch('/api/list/create', {
+      const res = await fetch('/api/list/create', {
         method: 'POST',
         body: JSON.stringify({
           title,
@@ -50,12 +50,12 @@ const NewList: NextPage = () => {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      if (!a.ok) {
+      if (!res.ok) {
         toast.error("Couldn't create the list");
         return;
       }
 
-      const { id } = await a.json();
+      const { id } = await res.json();
 
       router.push(`/list/${id}`);
     },
@@ -214,4 +214,4 @@ const NewList: NextPage = () => {
   );
 };
 
-export default NewList;
+export default ManualImportPage;

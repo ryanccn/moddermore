@@ -682,8 +682,8 @@ ${
 
     if (confirmDeleteTimeoutID) window.clearTimeout(confirmDeleteTimeoutID);
 
-    const a = await fetch(`/api/list/${data.id}/delete`);
-    if (a.ok) {
+    const res = await fetch(`/api/list/${data.id}/delete`);
+    if (res.ok) {
       toast.success(`Deleted ${data.title} (${data.id})!`);
     } else {
       toast.error(`Failed to delete ${data.title} (${data.id})!`);

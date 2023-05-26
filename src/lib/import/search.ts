@@ -60,7 +60,7 @@ export const search = async ({
     const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
     if (!API_KEY) throw new Error('No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!');
 
-    const modLoaderTypeCringe =
+    const modLoaderType =
       loader === 'forge'
         ? 1
         : loader === 'fabric'
@@ -72,7 +72,7 @@ export const search = async ({
     const data = await fetch(
       `https://api.curseforge.com/v1/mods/search?gameId=432&classId=6&pageSize=10&sortField=2&sortOrder=desc&searchFilter=${encodeURIComponent(
         query
-      )}&modLoaderType=${modLoaderTypeCringe}&gameVersion=${encodeURIComponent(
+      )}&modLoaderType=${modLoaderType}&gameVersion=${encodeURIComponent(
         gameVersion
       )}`,
       { headers: { 'x-api-key': API_KEY } }

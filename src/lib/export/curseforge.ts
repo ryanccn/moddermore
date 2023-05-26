@@ -10,7 +10,7 @@ export const callCurseForgeAPI = async ({
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
   if (!API_KEY) throw new Error('No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!');
 
-  const modLoaderTypeCringe =
+  const modLoaderType =
     loader === 'forge'
       ? 1
       : loader === 'fabric'
@@ -25,7 +25,7 @@ export const callCurseForgeAPI = async ({
         id
       )}/files/${encodeURIComponent(version)}?gameVersion=${encodeURIComponent(
         gameVersions[0]
-      )}&modLoaderType=${modLoaderTypeCringe}`,
+      )}&modLoaderType=${modLoaderType}`,
       {
         headers: { 'x-api-key': API_KEY },
       }
@@ -45,7 +45,7 @@ export const callCurseForgeAPI = async ({
   const res = await fetch(
     `https://api.curseforge.com/v1/mods/${id}/files?gameVersion=${encodeURIComponent(
       gameVersions[0]
-    )}&modLoaderType=${modLoaderTypeCringe}`,
+    )}&modLoaderType=${modLoaderType}`,
     {
       headers: { 'x-api-key': API_KEY },
     }

@@ -30,7 +30,7 @@ const FeriumImportPage: NextPage = () => {
 
       setSubmitting(true);
 
-      const a = await fetch('/api/list/create', {
+      const res = await fetch('/api/list/create', {
         method: 'POST',
         body: JSON.stringify({
           title,
@@ -41,12 +41,12 @@ const FeriumImportPage: NextPage = () => {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      if (!a.ok) {
+      if (!res.ok) {
         toast.error("Couldn't create the list");
         return;
       }
 
-      const { id } = await a.json();
+      const { id } = await res.json();
 
       router.push(`/list/${id}`);
     },
