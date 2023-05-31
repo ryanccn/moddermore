@@ -37,14 +37,14 @@
     "@tailwindcss/typography": "^0.5.9",
     "@total-typescript/ts-reset": "^0.4.2",
     "@types/file-saver": "^2.0.5",
-    "@types/node": "20.2.4",
+    "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
-    "@typescript-eslint/eslint-plugin": "^5.59.7",
-    "@typescript-eslint/parser": "^5.59.7",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
     "autoprefixer": "^10.4.14",
-    "discord-api-types": "^0.37.42",
-    "dotenv": "^16.0.3",
+    "discord-api-types": "^0.37.43",
+    "dotenv": "^16.1.0",
     "eslint": "^8.41.0",
     "eslint-config-next": "13.4.4",
     "eslint-config-prettier": "^8.8.0",
@@ -54,9 +54,9 @@
     "kleur": "^4.1.5",
     "mongodb": "^5.5.0",
     "node-fetch": "^3.3.1",
-    "nodemailer": "^6.9.2",
+    "nodemailer": "^6.9.3",
     "p-limit": "^4.0.0",
-    "postcss": "^8.4.23",
+    "postcss": "^8.4.24",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0",
     "remark": "^14.0.3",
@@ -66,5 +66,5 @@
     "typescript": "^5.0.4",
     "zod": "^3.21.4"
   },
-  "packageManager": "pnpm@8.5.0"
+  "packageManager": "pnpm@8.6.0"
 }
