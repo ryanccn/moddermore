@@ -3,6 +3,7 @@
 import Head from 'next/head';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { AdvisoryDrawer } from './AdvisoryDrawer';
 
 import { useMemo, type ReactNode } from 'react';
 
@@ -84,6 +85,8 @@ export const GlobalLayout = ({
       </main>
 
       <Footer isLandingPage={isLandingPage} />
+
+      <AdvisoryDrawer />
     </>
   );
 };
