@@ -23,8 +23,11 @@ jobs:
       - name: Update versions
         run: pnpm run utils:minecraftVersions
 
-      - name: Commit & push
-        uses: actions-js/push@master
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          message: 'chore: autoupdate Minecraft versions'
+          title: 'chore: autoupdate Minecraft versions'
+          body: ''
+          commit-message: 'chore: autoupdate Minecraft versions'
+          branch: update-minecraft-versions
+          reviewers: ryanccn
