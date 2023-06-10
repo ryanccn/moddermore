@@ -31,3 +31,4 @@ jobs:
           commit-message: 'chore: autoupdate Minecraft versions'
           branch: update-minecraft-versions
           reviewers: ryanccn
+          signoff: true
