@@ -2,7 +2,7 @@ name: Update Minecraft versions
 
 on:
   schedule:
-    - cron: '0 */2 * * *'
+    - cron: "0 */2 * * *"
   workflow_dispatch:
 
 jobs:
@@ -26,9 +26,12 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          title: 'chore: autoupdate Minecraft versions'
-          body: ''
-          commit-message: 'chore: autoupdate Minecraft versions'
+          token: ${{ secrets.GH_PR_TOKEN }}
+          title: "chore: autoupdate Minecraft versions"
+          body: ""
+          author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          commit-message: "chore: autoupdate Minecraft versions"
           branch: update-minecraft-versions
           reviewers: ryanccn
           signoff: true
