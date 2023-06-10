@@ -9,18 +9,19 @@ jobs:
   minecraft:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
-          persist-credentials: false
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
+          node-version: 20
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install
+
       - name: Update versions
-        run: yarn utils:minecraftVersions
+        run: pnpm run utils:minecraftVersions
 
       - name: Commit & push
         uses: actions-js/push@master
