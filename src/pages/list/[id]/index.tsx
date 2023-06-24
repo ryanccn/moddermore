@@ -640,7 +640,7 @@ ${
     }
   }, [session, data.id, hasLiked]);
 
-  const remixList = useCallback(() => {
+  const duplicateList = useCallback(() => {
     if (session.status !== 'authenticated') {
       signIn();
       return;
@@ -660,10 +660,10 @@ ${
         if (!res.ok) return;
         const { id } = (await res.json()) as { id: string };
         router.push(`/list/${id}`);
-        toast.success('Remixed list!');
+        toast.success('Duplicated list!');
       })
       .catch(() => {
-        toast.error('Failed to remix list!');
+        toast.error('Failed to duplicate list!');
       });
   }, [data, session, router]);
 
@@ -849,9 +849,9 @@ ${
           <span>{!hasLiked ? 'Like' : 'Unlike'}</span>
         </button>
 
-        <button className="primaryish-button" onClick={remixList}>
+        <button className="primaryish-button" onClick={duplicateList}>
           <Square2StackIcon className="block h-5 w-5" />
-          <span>Remix</span>
+          <span>Duplicate</span>
         </button>
 
         {session && session.data?.user.id === data.owner && (
