@@ -32,6 +32,7 @@ const ADVISORIES = [
         .
       </>
     ),
+    disabled: true,
   },
 ] satisfies Advisory[];
 
