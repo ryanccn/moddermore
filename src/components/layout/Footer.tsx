@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { PoweredByVercel } from '../PoweredByVercel';
 
-export const Footer = ({ isLandingPage }: { isLandingPage?: boolean }) => {
+export const Footer = () => {
   return (
     <footer className="moddermore-footer">
       <div className="mb-4 flex flex-col items-start gap-4 md:flex-row md:items-center">
@@ -65,7 +65,7 @@ export const Footer = ({ isLandingPage }: { isLandingPage?: boolean }) => {
       >
         Code open source under AGPLv3
       </a>
-      {!isLandingPage && <PoweredByVercel />}
+      <PoweredByVercel />
     </footer>
   );
 };

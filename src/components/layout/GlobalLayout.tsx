@@ -84,7 +84,7 @@ export const GlobalLayout = ({
         {children}
       </main>
 
-      <Footer isLandingPage={isLandingPage} />
+      <Footer />
 
       <AdvisoryDrawer />
     </>

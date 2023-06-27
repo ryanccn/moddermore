@@ -28,6 +28,7 @@ export interface RichMod {
 
 export const ModListCreate = z.object({
   title: z.string().min(1),
+  description: z.string().min(1).optional(),
   gameVersion: z.string().min(1),
   modloader: z.union([
     z.literal('forge'),
@@ -41,6 +42,7 @@ export type ModListCreate = z.infer<typeof ModListCreate>;
 
 export const ModListUpdate = z.object({
   title: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
   gameVersion: z.string().min(1).optional(),
   modloader: z
     .union([z.literal('forge'), z.literal('fabric'), z.literal('quilt')])
@@ -55,6 +57,7 @@ export interface ModList {
   created_at: string;
   title: string;
   gameVersion: string;
+  description: string | null;
   owner: string | null;
   modloader: ModLoader;
   mods: Mod[];
@@ -69,6 +72,7 @@ export interface RichModList {
   id: string;
   created_at: string;
   title: string;
+  description: string | null;
   owner: string | null;
   gameVersion: string;
   modloader: ModLoader;

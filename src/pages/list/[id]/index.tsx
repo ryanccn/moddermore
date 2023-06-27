@@ -26,6 +26,7 @@ import { signIn, useSession } from 'next-auth/react';
 
 import * as Dialog from '@radix-ui/react-dialog';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import Markdown from 'react-markdown';
 
 import Link from 'next/link';
 import Head from 'next/head';
@@ -650,6 +651,7 @@ ${
       method: 'POST',
       body: JSON.stringify({
         title: `${data.title} (copy)`,
+        description: data.description ?? undefined,
         gameVersion: data.gameVersion,
         modloader: data.modloader,
         mods: data.mods,
@@ -701,7 +703,18 @@ ${
 
   return (
     <GlobalLayout title={data.title}>
-      <div className="data-list mb-8">
+      {data.description && (
+        <div className="-mt-6 text-lg font-medium mb-8">
+          <Markdown
+            skipHtml
+            disallowedElements={['h1', 'h2', 'h3', 'h4', 'h5', 'h6']}
+          >
+            {data.description}
+          </Markdown>
+        </div>
+      )}
+
+      <div className="data-list">
         <p>
           For Minecraft <strong>{data.gameVersion}</strong> with{' '}
           <strong>{loaderFormat(data.modloader)}</strong>
@@ -713,24 +726,25 @@ ${
         <p>
           <strong>{data.likes}</strong> {data.likes === 1 ? 'like' : 'likes'}
         </p>
-        {data.ownerProfile && (
-          <div className="mt-2 flex flex-row items-center gap-x-3">
-            {data.ownerProfile.profilePicture ? (
-              <img
-                src={data.ownerProfile.profilePicture}
-                width={32}
-                height={32}
-                className="rounded-full"
-                alt=""
-              />
-            ) : (
-              <div className="h-[32px] w-[32px] rounded-full bg-neutral-100 dark:bg-neutral-700" />
-            )}
-
-            <strong className="font-semibold">{data.ownerProfile.name}</strong>
-          </div>
-        )}
       </div>
+
+      {data.ownerProfile && (
+        <div className="mt-6 flex flex-row items-center gap-x-3 mb-8">
+          {data.ownerProfile.profilePicture ? (
+            <img
+              src={data.ownerProfile.profilePicture}
+              width={32}
+              height={32}
+              className="rounded-full"
+              alt=""
+            />
+          ) : (
+            <div className="h-[32px] w-[32px] rounded-full bg-neutral-100 dark:bg-neutral-700" />
+          )}
+
+          <strong className="font-semibold">{data.ownerProfile.name}</strong>
+        </div>
+      )}
 
       <div className="mb-16 flex flex-wrap gap-4">
         <DropdownMenu.Root>

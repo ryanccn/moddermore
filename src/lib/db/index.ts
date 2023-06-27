@@ -46,6 +46,7 @@ export const getSpecificList = async (
   return {
     id: list.id,
     title: list.title,
+    description: list.description,
     mods: list.mods,
     gameVersion: list.gameVersion,
     modloader: list.modloader,
@@ -83,6 +84,7 @@ export const createList = async (
   await collection.insertOne({
     ...list,
     id,
+    description: list.description ?? null,
     owner: userId,
     created_at: new Date().toISOString(),
   });

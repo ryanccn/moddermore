@@ -22,6 +22,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   const session = useSession({ required: true });
 
   const [title, setTitle] = useState(data.title);
+  const [description, setDescription] = useState(data.description);
   const [gameVersion, setGameVersion] = useState(data.gameVersion);
   const [modLoader, setModLoader] = useState<ModLoader>(data.modloader);
 
@@ -44,6 +45,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
       method: 'POST',
       body: JSON.stringify({
         title,
+        description: description || undefined,
         gameVersion,
         modloader: modLoader,
       }),
@@ -65,7 +67,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
       setInProgress(false);
       router.push(`/list/${data.id}`);
     });
-  }, [data, router, title, gameVersion, modLoader]);
+  }, [data, router, title, gameVersion, modLoader, description]);
 
   return (
     <GlobalLayout title={`Settings for ${data.title}`}>
@@ -94,6 +96,18 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
             required
             onChange={(e) => {
               setTitle(e.target.value);
+            }}
+            disabled={inProgress}
+          />
+        </label>
+
+        <label className="moddermore-form-label">
+          <span>Description</span>
+          <textarea
+            className="moddermore-input"
+            value={description || ''}
+            onChange={(e) => {
+              setDescription(e.target.value);
             }}
             disabled={inProgress}
           />
