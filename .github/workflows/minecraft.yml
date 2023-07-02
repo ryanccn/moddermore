@@ -8,6 +8,9 @@ on:
 jobs:
   minecraft:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -18,20 +21,13 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Update versions
         run: pnpm run utils:minecraftVersions
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+      - name: Commit & push
+        uses: actions-js/push@master
         with:
-          token: ${{ secrets.GH_PR_TOKEN }}
-          title: "chore: autoupdate Minecraft versions"
-          body: ""
-          author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
-          committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
-          commit-message: "chore: autoupdate Minecraft versions"
-          branch: update-minecraft-versions
-          reviewers: ryanccn
-          signoff: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: "chore: autoupdate Minecraft versions"
