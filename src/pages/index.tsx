@@ -6,13 +6,17 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { ModrinthIcon, TutanotaIcon, VercelIcon } from '~/components/icons';
+import {
+  ModrinthIcon,
+  PrismIcon,
+  TutanotaIcon,
+  VercelIcon,
+} from '~/components/icons';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 
 import {
   ArchiveBoxIcon,
-  QuestionMarkCircleIcon,
   FolderArrowDownIcon,
   PlusCircleIcon,
   ArrowDownIcon,
@@ -147,9 +151,9 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
             <ArchiveBoxIcon className="block h-5 w-5" />
             <span>packwiz</span>
           </div>
-          <div className="primaryish-button showcase fuchsia-themed select-none opacity-80">
-            <QuestionMarkCircleIcon className="block h-5 w-5" />
-            <span className="blur-sm">asdfghjkl</span>
+          <div className="primaryish-button showcase fuchsia-themed">
+            <PrismIcon className="block h-5 w-5" />
+            <span className="blur-sm">MultiMC / Prism</span>
           </div>
         </div>
       </div>
