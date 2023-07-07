@@ -316,11 +316,14 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     const zipfile = new JSZip();
     zipfile.file(
       'instance.cfg',
-      `OverrideCommands=true
+      `
+InstanceType=OneSix
+OverrideCommands=true
 PreLaunchCommand="$INST_JAVA" -jar packwiz-installer-bootstrap.jar ${getPackwizUrl(
         document
       )}
-name=${data.title}`
+name=${data.title}
+`.trim()
     );
     const meta = await fetch(
       `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`
