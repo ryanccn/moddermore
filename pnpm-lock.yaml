@@ -48,8 +48,8 @@ dependencies:
     specifier: ^4.4.1
     version: 4.4.1(react-dom@18.2.0)(react@18.2.0)
   next-plausible:
-    specifier: ^3.8.0
-    version: 3.8.0(next@13.4.8)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^3.10.0
+    version: 3.10.0(next@13.4.8)(react-dom@18.2.0)(react@18.2.0)
   nextjs-progressbar:
     specifier: ^0.0.16
     version: 0.0.16(next@13.4.8)(react@18.2.0)
@@ -4078,8 +4078,8 @@ packages:
       - supports-color
     dev: false
 
-  /next-plausible@3.8.0(next@13.4.8)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-fOSI5dRwQkDcARAPqwCM2nqYf2bCP5ITUrX/jj2owkggi7LHAaKku4k/6CoKHAygs7EumYiGOuPt+qaTxxo+YA==}
+  /next-plausible@3.10.0(next@13.4.8)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-iXnt0+whmegBDCjcoSxMWpnBfdDKGKoYGXnFnS0miRxv5J5yzOi1nWQcDUOIYCk39tcclpBpC5hwtI4f3cZfNw==}
     peerDependencies:
       next: ^11.1.0 || ^12.0.0 || ^13.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
