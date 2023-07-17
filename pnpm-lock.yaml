@@ -107,8 +107,8 @@ devDependencies:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.24)
   discord-api-types:
-    specifier: ^0.37.47
-    version: 0.37.47
+    specifier: ^0.37.49
+    version: 0.37.49
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
@@ -2054,8 +2054,8 @@ packages:
       path-type: 4.0.0
     dev: true
 
-  /discord-api-types@0.37.47:
-    resolution: {integrity: sha512-rNif8IAv6duS2z47BMXq/V9kkrLfkAoiwpFY3sLxxbyKprk065zqf3HLTg4bEoxRSmi+Lhc7yqGDrG8C3j8GFA==}
+  /discord-api-types@0.37.49:
+    resolution: {integrity: sha512-a2vvjgmE/1cPtXOuOh5zHlLe+qheu0uO625K+FyZVFomoCmpV1xNpadC48S98K30CnQ4/XJyFGnOZLXxAyBbCQ==}
     dev: true
 
   /dlv@1.1.3:
