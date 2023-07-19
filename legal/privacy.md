@@ -1,6 +1,6 @@
 # Privacy policy
 
-> **Last updated:** December 21, 2022
+> **Last updated:** July 19, 2023
 
 The privacy of your data is very important to us. In this policy, we go over our GDPR compliance; what information we collect; how we store your data; and third parties we utilize.
 
@@ -64,11 +64,9 @@ On our database provider, [MongoDB Atlas](https://www.mongodb.com/atlas), all ne
 
 Your user data and information are stored on [MongoDB Atlas](https://mongodb.com/atlas). There is a [Data Processing Agreement](https://www.mongodb.com/legal/dpa) available on their website.
 
-We utilize [Twilio](https://twilio.com/)’s SendGrid services to send transactional emails. Feel free to take a look at [their privacy policy](https://www.twilio.com/legal/privacy).
+We utilize [AWS SES](https://aws.amazon.com/ses/) to send transactional emails. Feel free to take a look at [their Data Processing Agreement](https://d1.awsstatic.com/legal/aws-gdpr/AWS_GDPR_DPA.pdf).
 
 This site and its preview deploys are hosted on [Vercel](https://vercel.com/). They have a pre-signed [Data Processing Agreement](https://vercel.com/legal/dpa) you can view on their website.
-
-We use [Sentry](https://sentry.io/) to track errors and provide timely support. They provide a [Data Processing Addendum](https://sentry.io/legal/dpa/).
 
 ## Anonymized analytics
 
