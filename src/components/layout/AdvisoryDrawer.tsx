@@ -34,6 +34,22 @@ const ADVISORIES = [
     ),
     disabled: true,
   },
+  {
+    id: '43D66819-9088-4BF4-971E-9E9DAE24F459',
+    content: (
+      <>
+        A serious security vulnerability was discovered in popular mods in 1.7.10/1.12.2 Forge.
+        For more information, read{' '}
+        <a
+          className="underline"
+          href="https://blog.mmpa.info/posts/bleeding-pipe/"
+        >
+          this blog post by MMPA
+        </a>
+        .
+      </>
+    ),
+  },
 ] satisfies Advisory[];
 
 export const AdvisoryDrawer = () => {
