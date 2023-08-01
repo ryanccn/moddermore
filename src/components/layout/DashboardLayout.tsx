@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 import { GlobalLayout } from './GlobalLayout';
 import { buttonVariants } from '../ui/Button';
-import { HeartIcon, ListIcon, UserIcon } from 'lucide-react';
+import { HeartIcon, ListIcon, UserIcon, SearchIcon } from 'lucide-react';
 
 interface Props {
   title: string;
@@ -45,6 +45,11 @@ export const DashboardLayout = ({ title, children }: Props) => {
             title="Lists"
             href="/lists"
             icon={<ListIcon className="block h-5 w-5" />}
+          />
+          <DashboardLink
+            title="Search"
+            href="/search"
+            icon={<SearchIcon className="block h-5 w-5" />}
           />
           <DashboardLink
             title="Likes"
