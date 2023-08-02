@@ -10,12 +10,12 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const csp = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline';
-  style-src 'self' fonts.bunny.net 'unsafe-inline';
+  script-src *;
+  style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
   child-src 'none';
   media-src 'none';
-  font-src 'self' fonts.bunny.net;
+  font-src 'self';
   connect-src *;
 `;
 
@@ -86,7 +86,7 @@ const nextConfig = withPlausibleProxy()(
         },
       ];
     },
-  })
+  }),
 );
 
 module.exports = nextConfig;
