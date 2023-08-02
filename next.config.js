@@ -8,6 +8,17 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   openAnalyzer: false,
 });
 
+const csp = `
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' 'unsafe-eval';
+  style-src 'self' 'unsafe-inline';
+  img-src * blob: data:;
+  child-src 'none';
+  media-src 'none';
+  font-src 'self';
+  connect-src *;
+`;
+
 const securityHeaders = [
   {
     key: 'X-DNS-Prefetch-Control',
@@ -36,6 +47,10 @@ const securityHeaders = [
   {
     key: 'Referrer-Policy',
     value: 'origin-when-cross-origin',
+  },
+  {
+    key: 'Content-Security-Policy',
+    value: csp.replaceAll(/\s{2,}/g, ' ').trim(),
   },
 ];
 
