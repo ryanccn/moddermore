@@ -3,7 +3,6 @@
 import Head from 'next/head';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
-import { AdvisoryDrawer } from './AdvisoryDrawer';
 
 import { useMemo, type ReactNode } from 'react';
 
@@ -28,7 +27,7 @@ export const GlobalLayout = ({
 }: Props) => {
   const derivedTitle = useMemo(
     () => (titleSuffix ? `${title} / Moddermore` : title),
-    [title, titleSuffix]
+    [title, titleSuffix],
   );
 
   return (
@@ -85,8 +84,6 @@ export const GlobalLayout = ({
       </main>
 
       <Footer />
-
-      <AdvisoryDrawer />
     </>
   );
 };
