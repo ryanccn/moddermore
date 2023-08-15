@@ -26,9 +26,7 @@ const DashboardLink = ({
     <Link
       href={href}
       className={
-        router.pathname.startsWith(href)
-          ? 'primaryish-button'
-          : 'primaryish-button secondaryish-instead'
+        router.pathname.startsWith(href) ? 'mm-button' : 'mm-button secondary'
       }
     >
       {icon}
@@ -41,7 +39,7 @@ export const DashboardLayout = ({ title, children }: Props) => {
   return (
     <GlobalLayout title={title} displayTitle={false} isLandingPage>
       <div className="flex w-full flex-col gap-4 lg:flex-row">
-        <div className="flex flex-col gap-y-2 border-r-2 border-neutral-100 p-4 dark:border-neutral-800 lg:min-h-screen lg:w-1/4 lg:grow-0">
+        <div className="flex flex-col gap-y-2 border-r-2 border-neutral-100 p-4 dark:border-neutral-800 lg:min-h-screen w-64 lg:grow-0 lg:shrink-0">
           <DashboardLink
             title="Lists"
             href="/lists"
@@ -58,7 +56,7 @@ export const DashboardLayout = ({ title, children }: Props) => {
             icon={<UserIcon className="block h-5 w-5" />}
           />
         </div>
-        {children}
+        <div className="py-8 w-full">{children}</div>
       </div>
     </GlobalLayout>
   );

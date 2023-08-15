@@ -98,17 +98,17 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     useState('skip');
   const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [result, setResult] = useState<{ success: string[]; failed: string[] }>(
-    { success: [], failed: [] }
+    { success: [], failed: [] },
   );
 
   useEffect(() => {
     (async () => {
       const [modrinthMods, curseForgeMods] = await Promise.all([
         getModrinthInfos(
-          data.mods.filter((k) => k.provider === 'modrinth').map((k) => k.id)
+          data.mods.filter((k) => k.provider === 'modrinth').map((k) => k.id),
         ),
         getCurseForgeInfos(
-          data.mods.filter((k) => k.provider === 'curseforge').map((k) => k.id)
+          data.mods.filter((k) => k.provider === 'curseforge').map((k) => k.id),
         ),
       ]);
 
@@ -162,7 +162,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
     const urls = await getDownloadURLs(
       { ...data, mods: resolvedMods },
-      setProgress
+      setProgress,
     );
 
     setProgress({ value: 0, max: data.mods.length });
@@ -205,7 +205,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
           const fileContents = await fetch(
             downloadData.provider === 'curseforge'
               ? `/api/cursed?url=${encodeURIComponent(downloadData.url)}`
-              : downloadData.url
+              : downloadData.url,
           ).then((r) => {
             if (!r.ok) {
               return null;
@@ -238,8 +238,8 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
             ...a,
             success: [...a.success, downloadData.name],
           }));
-        })
-      )
+        }),
+      ),
     );
   };
 
@@ -265,7 +265,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
     const urls = await getDownloadURLs(
       { ...data, mods: resolvedMods },
-      setProgress
+      setProgress,
     );
 
     const mrpack = await generateModrinthPack(
@@ -275,7 +275,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         name: mrpackName,
         version: mrpackVersion,
         cfStrategy: mrpackCurseForgeStrategy,
-      }
+      },
     );
     saveAs(mrpack, `${data.title}.mrpack`);
 
@@ -320,13 +320,13 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 InstanceType=OneSix
 OverrideCommands=true
 PreLaunchCommand="$INST_JAVA" -jar packwiz-installer-bootstrap.jar ${getPackwizUrl(
-        document
+        document,
       )}
 name=${data.title}
-`.trim()
+`.trim(),
     );
     const meta = await fetch(
-      `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`
+      `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`,
     );
     if (!meta.ok) {
       throw new Error('failed to fetch meta for minecraft');
@@ -385,7 +385,7 @@ name=${data.title}
     }
 
     const packwizInstallerBootstrapJar = await fetch(
-      '/packwiz-installer-bootstrap.jar'
+      '/packwiz-installer-bootstrap.jar',
     );
     if (!packwizInstallerBootstrapJar.ok) {
       throw new Error('Failed to download packwiz-installer-bootstrap.jar');
@@ -393,7 +393,7 @@ name=${data.title}
 
     dotMinecraftFolder.file(
       'packwiz-installer-bootstrap.jar',
-      packwizInstallerBootstrapJar.blob()
+      packwizInstallerBootstrapJar.blob(),
     );
     setProgress({ value: 2, max: 2 });
 
@@ -425,7 +425,7 @@ name=${data.title}
 
     const urls = await getDownloadURLs(
       { ...data, mods: resolvedMods },
-      setProgress
+      setProgress,
     );
 
     setProgress({ value: 0, max: data.mods.length });
@@ -445,7 +445,7 @@ name=${data.title}
       exportZip(dotMinecraftFolder, urls),
       (async () => {
         const meta = await fetch(
-          `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`
+          `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`,
         );
         if (!meta.ok) {
           throw new Error('failed to fetch meta for minecraft');
@@ -523,7 +523,7 @@ name=${data.title}
             modloader: data.modloader,
           }),
           headers: { 'Content-Type': 'application/json' },
-        }
+        },
       );
 
       if (!res.ok) {
@@ -534,15 +534,15 @@ name=${data.title}
       const removedMods = oldMods.filter(
         (oldMod) =>
           !resolvedMods.some(
-            (k) => k.id === oldMod.id && k.provider === oldMod.provider
-          )
+            (k) => k.id === oldMod.id && k.provider === oldMod.provider,
+          ),
       );
       const addedMods = resolvedMods.filter(
         (resolvedMod) =>
           !oldMods.some(
             (k) =>
-              k.id === resolvedMod.id && k.provider === resolvedMod.provider
-          )
+              k.id === resolvedMod.id && k.provider === resolvedMod.provider,
+          ),
       );
 
       const changelog = `
@@ -579,14 +579,14 @@ ${
             Copy changelog
           </button>
         </div>,
-        { duration: 5000 }
+        { duration: 5000 },
       );
 
       setIsSaving(false);
       setIsEditing(false);
       setOldMods(resolvedMods);
     },
-    [session, resolvedMods, oldMods, data]
+    [session, resolvedMods, oldMods, data],
   );
 
   const updateSearch = useCallback(() => {
@@ -620,7 +620,7 @@ ${
           modloader: data.modloader,
           gameVersion: data.gameVersion,
           mods: data.mods,
-        })
+        }),
       )
       .then(() => {
         toast.success('Copied JSON to clipboard!');
@@ -680,7 +680,7 @@ ${
       setConfirmDeleteTimeoutID(
         window.setTimeout(() => {
           setConfirmDelete(false);
-        }, 3000)
+        }, 3000),
       );
       return;
     }
@@ -752,7 +752,7 @@ ${
       <div className="mb-16 flex flex-wrap gap-4">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild disabled={!resolvedMods}>
-            <button className="primaryish-button">
+            <button className="mm-button">
               <FolderArrowDownIcon className="block h-5 w-5" />
               <span>Export as...</span>
             </button>
@@ -819,7 +819,7 @@ ${
 
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
-            <button className="primaryish-button" disabled={!resolvedMods}>
+            <button className="mm-button" disabled={!resolvedMods}>
               <ClipboardIcon className="block h-5 w-5" />
               <span>Copy as...</span>
             </button>
@@ -854,19 +854,19 @@ ${
           </DropdownMenu.Portal>
         </DropdownMenu.Root>
 
-        <button className="primaryish-button" onClick={toggleLikeStatus}>
+        <button className="mm-button" onClick={toggleLikeStatus}>
           <HeartIcon
             className={clsx(
               'block h-5 w-5',
               hasLiked
                 ? 'fill-current stroke-none'
-                : 'fill-none stroke-current stroke-[1.5]'
+                : 'fill-none stroke-current stroke-[1.5]',
             )}
           />
           <span>{!hasLiked ? 'Like' : 'Unlike'}</span>
         </button>
 
-        <button className="primaryish-button" onClick={duplicateList}>
+        <button className="mm-button" onClick={duplicateList}>
           <Square2StackIcon className="block h-5 w-5" />
           <span>Duplicate</span>
         </button>
@@ -875,7 +875,7 @@ ${
           <>
             {!isEditing ? (
               <button
-                className="primaryish-button secondaryish-instead"
+                className="mm-button secondary"
                 onClick={() => {
                   setIsEditing(true);
                 }}
@@ -886,7 +886,7 @@ ${
               </button>
             ) : (
               <button
-                className="primaryish-button greenish"
+                className="mm-button greenish"
                 onClick={submitHandle}
                 disabled={isSaving}
               >
@@ -896,17 +896,14 @@ ${
             )}
 
             <Link
-              className="primaryish-button secondaryish-instead"
+              className="mm-button secondary"
               href={`/list/${data.id}/settings`}
             >
               <CogIcon className="block h-5 w-5" />
               <span>Settings</span>
             </Link>
 
-            <button
-              className="primaryish-button oh-no"
-              onClick={deleteCurrentList}
-            >
+            <button className="mm-button danger" onClick={deleteCurrentList}>
               <TrashIcon className="block h-5 w-5" />
               {confirmDelete ? (
                 <span>Confirm deletion?</span>
@@ -958,11 +955,7 @@ ${
               }}
             />
 
-            <button
-              type="button"
-              className="primaryish-button"
-              onClick={updateSearch}
-            >
+            <button type="button" className="mm-button" onClick={updateSearch}>
               Search
             </button>
           </div>
@@ -971,7 +964,7 @@ ${
             <ul className="flex flex-wrap gap-y-2">
               {searchResults.map((res) =>
                 resolvedMods.some(
-                  (m) => m.id === res.id && m.provider === res.provider
+                  (m) => m.id === res.id && m.provider === res.provider,
                 ) ? null : (
                   <li className="w-full" key={res.id}>
                     <RichModDisplay
@@ -982,7 +975,7 @@ ${
                       }}
                     />
                   </li>
-                )
+                ),
               )}
             </ul>
           )}
@@ -1107,7 +1100,7 @@ ${
 
               <button
                 type="submit"
-                className="primaryish-button modrinth-themed self-start"
+                className="mm-button modrinth-themed self-start"
               >
                 <ModrinthIcon className="block h-5 w-5" />
                 <span>Start export</span>
@@ -1152,7 +1145,7 @@ ${
               </div>
 
               <button
-                className="primaryish-button self-center"
+                className="mm-button self-center"
                 onClick={() => {
                   setStatus('idle');
                 }}

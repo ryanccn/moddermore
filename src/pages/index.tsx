@@ -61,7 +61,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
 
         <Link
           href="/new"
-          className="primaryish-button mb-16 self-start px-6 py-4 text-xl shadow-xl shadow-indigo-500/30"
+          className="mm-button mb-16 self-start px-6 py-4 text-xl shadow-xl shadow-indigo-500/30"
         >
           <PlusCircleIcon className="block h-8 w-8" />
           <span>Create a new list</span>
@@ -139,19 +139,19 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
           covered.
         </h3>
         <div className="flex flex-col gap-6 lg:flex-row">
-          <div className="primaryish-button showcase">
+          <div className="mm-button showcase">
             <FolderArrowDownIcon className="block h-5 w-5" />
             <span>ZIP archive</span>
           </div>
-          <div className="primaryish-button showcase modrinth-themed">
+          <div className="mm-button showcase modrinth-themed">
             <ModrinthIcon className="block h-5 w-5" />
             <span>Modrinth pack</span>
           </div>
-          <div className="primaryish-button showcase idk-blue-themed">
+          <div className="mm-button showcase blue-themed">
             <ArchiveBoxIcon className="block h-5 w-5" />
             <span>packwiz</span>
           </div>
-          <div className="primaryish-button showcase fuchsia-themed">
+          <div className="mm-button showcase fuchsia-themed">
             <PrismIcon className="block h-5 w-5" />
             <span className="blur-sm">MultiMC / Prism</span>
           </div>

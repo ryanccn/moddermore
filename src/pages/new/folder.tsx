@@ -64,7 +64,7 @@ const FolderImportPage: NextPage = () => {
 
       router.push(`/list/${id}`);
     },
-    [title, gameVersion, modLoader, sess, modZipFile, router]
+    [title, gameVersion, modLoader, sess, modZipFile, router],
   );
 
   return (
@@ -127,7 +127,7 @@ const FolderImportPage: NextPage = () => {
           <label>
             <div
               role="button"
-              className="primaryish-button flex cursor-auto hover:cursor-pointer"
+              className="mm-button flex cursor-auto hover:cursor-pointer"
             >
               <ArrowUpTrayIcon className="block h-5 w-5" />
               <span>Choose file</span>

@@ -57,7 +57,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
           <div className="flex flex-col gap-y-1">
             <p className="font-semibold">Failed to update list settings!</p>
             <p className="text-sm">{error}</p>
-          </div>
+          </div>,
         );
         setInProgress(false);
         return;
@@ -151,7 +151,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
 
         <button
           type="submit"
-          className="primaryish-button mt-4 self-start"
+          className="mm-button mt-4 self-start"
           disabled={inProgress}
         >
           <DocumentIcon className="block h-4 w-4" />

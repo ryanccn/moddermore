@@ -85,7 +85,7 @@ const AccountPage: NextPage = () => {
 
           <button
             type="submit"
-            className="primaryish-button mt-2 self-start"
+            className="mm-button mt-2 self-start"
             disabled={inProgress}
           >
             Save
@@ -93,7 +93,7 @@ const AccountPage: NextPage = () => {
         </form>
 
         <button
-          className="primaryish-button oh-no self-start px-4 py-2 text-lg font-semibold"
+          className="mm-button danger self-start px-4 py-2 text-lg font-semibold"
           onClick={() => {
             signOut();
           }}

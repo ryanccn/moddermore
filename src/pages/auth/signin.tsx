@@ -52,7 +52,7 @@ const SigninPage: NextPage = () => {
             : undefined,
       });
     },
-    [email, router.query.callbackUrl]
+    [email, router.query.callbackUrl],
   );
 
   return (
@@ -68,7 +68,7 @@ const SigninPage: NextPage = () => {
           </p>
         )}
         <button
-          className="primaryish-button bg-black text-white"
+          className="mm-button bg-black text-white"
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
@@ -84,7 +84,7 @@ const SigninPage: NextPage = () => {
           <span>Sign in with GitHub</span>
         </button>
         <button
-          className="primaryish-button bg-[#5865F2] text-white"
+          className="mm-button bg-[#5865F2] text-white"
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
@@ -100,7 +100,7 @@ const SigninPage: NextPage = () => {
           <span>Sign in with Discord</span>
         </button>
         <button
-          className="primaryish-button mb-4 bg-[#4285F4] text-white"
+          className="mm-button mb-4 bg-[#4285F4] text-white"
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
@@ -132,7 +132,7 @@ const SigninPage: NextPage = () => {
           />
           <button
             type="submit"
-            className="primaryish-button shrink-0"
+            className="mm-button shrink-0"
             disabled={disableSubmit}
           >
             Sign in with email

@@ -33,14 +33,14 @@ const Navbar = () => {
         {status !== 'loading' ? (
           data ? (
             <>
-              <Link href="/new" className="primaryish-button">
+              <Link href="/new" className="mm-button">
                 <PlusIcon className="block h-5 w-5" />
                 <span>Create</span>
               </Link>
             </>
           ) : (
             <button
-              className="primaryish-button"
+              className="mm-button"
               onClick={() => {
                 nextAuthSignIn();
               }}
@@ -50,7 +50,7 @@ const Navbar = () => {
             </button>
           )
         ) : (
-          <div className="primaryish-button skeleton bg-neutral-300 px-16 dark:bg-neutral-700">
+          <div className="mm-button skeleton bg-neutral-300 px-16 dark:bg-neutral-700">
             &nbsp;
           </div>
         )}

@@ -79,7 +79,7 @@ const PrismImportPage: NextPage = () => {
       sess.data,
       title,
       useMetadata,
-    ]
+    ],
   );
 
   return (
@@ -142,7 +142,7 @@ const PrismImportPage: NextPage = () => {
           <label>
             <div
               role="button"
-              className="primaryish-button flex cursor-auto hover:cursor-pointer"
+              className="mm-button flex cursor-auto hover:cursor-pointer"
             >
               <PaperClipIcon className="block h-5 w-5" />
               <span>Choose file</span>

@@ -7,7 +7,7 @@ export const Footer = () => {
       <div className="mb-4 flex flex-col items-start gap-4 md:flex-row md:items-center">
         <a
           href="https://discord.gg/uf6kxSawfc"
-          className="primaryish-button bg-[#5865F2]"
+          className="mm-button bg-[#5865F2]"
           rel="noreferrer"
         >
           <svg
@@ -24,7 +24,7 @@ export const Footer = () => {
         </a>
         <a
           href="https://twitter.com/moddermore"
-          className="primaryish-button bg-[#1DA1F2]"
+          className="mm-button bg-[#1DA1F2]"
           rel="me noreferrer"
         >
           <svg
@@ -41,7 +41,7 @@ export const Footer = () => {
         </a>
         <a
           href="https://floss.social/@moddermore"
-          className="primaryish-button bg-[#6364FF]"
+          className="mm-button bg-[#6364FF]"
           rel="me noreferrer"
         >
           <svg

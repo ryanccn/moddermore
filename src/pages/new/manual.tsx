@@ -59,7 +59,7 @@ const ManualImportPage: NextPage = () => {
 
       router.push(`/list/${id}`);
     },
-    [gameVersion, inputMods, modLoader, router, session.data, title]
+    [gameVersion, inputMods, modLoader, router, session.data, title],
   );
 
   const updateSearch = useCallback(() => {
@@ -160,11 +160,7 @@ const ManualImportPage: NextPage = () => {
               }}
             />
 
-            <button
-              type="button"
-              className="primaryish-button"
-              onClick={updateSearch}
-            >
+            <button type="button" className="mm-button" onClick={updateSearch}>
               Search
             </button>
           </div>
@@ -173,7 +169,7 @@ const ManualImportPage: NextPage = () => {
             <ul className="flex flex-col gap-y-2">
               {searchResults.map((res) =>
                 inputMods.some(
-                  (m) => m.id === res.id && m.provider === res.provider
+                  (m) => m.id === res.id && m.provider === res.provider,
                 ) ? null : (
                   <RichModDisplay
                     data={res}
@@ -183,7 +179,7 @@ const ManualImportPage: NextPage = () => {
                       setInputMods([...inputMods, res]);
                     }}
                   />
-                )
+                ),
               )}
             </ul>
           )}

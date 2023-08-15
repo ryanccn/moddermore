@@ -32,7 +32,7 @@ export const RichModDisplay = ({
       parent &&
       data.gameVersions &&
       !data.gameVersions.includes(parent.gameVersion),
-    [parent, data.gameVersions]
+    [parent, data.gameVersions],
   );
 
   return (
@@ -40,7 +40,7 @@ export const RichModDisplay = ({
       className={clsx(
         'flex justify-between rounded-2xl border-none bg-neutral-100 p-5 shadow-sm transition-all dark:bg-neutral-800',
         incompatible ? 'ring-2 ring-red-400/70 hover:ring-red-400/80' : null,
-        className
+        className,
       )}
     >
       <div className="shrink-0">
@@ -92,10 +92,7 @@ export const RichModDisplay = ({
             {onClick && (
               <>
                 {buttonType === 'delete' && (
-                  <button
-                    className="primaryish-button oh-no mb-2"
-                    onClick={onClick}
-                  >
+                  <button className="mm-button danger mb-2" onClick={onClick}>
                     <TrashIcon className="block h-5 w-5" />
                     <span>Delete</span>
                   </button>
@@ -103,7 +100,7 @@ export const RichModDisplay = ({
 
                 {buttonType === 'add' && (
                   <button
-                    className="primaryish-button mb-2 bg-green-500"
+                    className="mm-button mb-2 bg-green-500"
                     onClick={onClick}
                   >
                     <PlusIcon className="block h-5 w-5" />

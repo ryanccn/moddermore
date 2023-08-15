@@ -6,11 +6,7 @@ interface Props {
 
 export const NewSubmitButton = ({ disabled }: Props) => {
   return (
-    <button
-      type="submit"
-      className="primaryish-button mt-14"
-      disabled={disabled}
-    >
+    <button type="submit" className="mm-button mt-14" disabled={disabled}>
       <CloudArrowUpIcon className="block h-5 w-5" />
       <span>Submit</span>
     </button>
