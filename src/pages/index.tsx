@@ -23,7 +23,7 @@ import {
   ArrowDownIcon,
   CloudIcon,
   FolderArchiveIcon,
-  PlusCircleIcon,
+  PlusIcon,
 } from 'lucide-react';
 
 interface PageProps {
@@ -49,7 +49,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
     >
       <div className="mb-14 flex min-h-screen flex-col justify-center p-6 lg:px-20">
         <div className="mb-20 flex flex-col">
-          <h2 className="mb-10 text-6xl font-bold">
+          <h2 className="mb-10 text-6xl font-extrabold tracking-tight">
             Share the mods you use with{' '}
             <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text font-extrabold text-transparent">
               anyone
@@ -69,33 +69,33 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
             }),
           )}
         >
-          <PlusCircleIcon className="block h-8 w-8" />
+          <PlusIcon className="block h-8 w-8" />
           <span>Create a new list</span>
         </Link>
 
         <ArrowDownIcon className="block h-5 w-5 stroke-2 text-neutral-600 dark:text-neutral-400" />
       </div>
 
-      <div className="mb-12 flex flex-col items-center gap-x-24 gap-y-16 self-center p-6 lg:flex-row lg:p-20">
+      <div className="mb-12 flex flex-col items-center gap-x-24 gap-y-16 self-start p-6 lg:flex-row lg:px-20">
         {pageviews && (
-          <div className="flex flex-col items-center gap-y-2">
-            <span className="text-lg font-bold">Monthly pageviews</span>
-            <span className="text-5xl font-black">
+          <div className="flex flex-col items-start gap-y-2">
+            <span className="text-xl font-bold">Monthly pageviews</span>
+            <span className="text-6xl font-black">
               {numberFormat(pageviews)}
             </span>
           </div>
         )}
-        <div className="flex flex-col items-center gap-y-2">
-          <span className="text-lg font-bold">Active users</span>
-          <span className="text-5xl font-black">{numberFormat(users)}</span>
+        <div className="flex flex-col items-start gap-y-2">
+          <span className="text-xl font-bold">Active users</span>
+          <span className="text-6xl font-black">{numberFormat(users)}</span>
         </div>
-        <div className="flex flex-col items-center gap-y-2">
-          <span className="text-lg font-bold">Lists created</span>
-          <span className="text-5xl font-black">{numberFormat(lists)}</span>
+        <div className="flex flex-col items-start gap-y-2">
+          <span className="text-xl font-bold">Lists created</span>
+          <span className="text-6xl font-black">{numberFormat(lists)}</span>
         </div>
       </div>
 
-      <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:p-20">
+      <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="text-4xl font-bold">Import from many platforms</h2>
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           All of your mods, but in the same place.
@@ -131,14 +131,14 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         </div>
       </div>
 
-      <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:p-20">
+      <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="text-4xl font-bold">Share with your friends</h2>
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Or just publish the link publicly anywhere you want!
         </h3>
       </div>
 
-      <div className="mb-10 mt-24 flex flex-col items-start gap-y-4 p-6 lg:p-20">
+      <div className="mb-24 mt-24 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="text-4xl font-bold">Export to anywhere</h2>
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Publishing to Modrinth? Importing to Prism Launcher? We{"'"}ve got you
@@ -171,7 +171,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         </div>
       </div>
 
-      <div className="mb-36 flex flex-col gap-y-16 p-6 lg:p-20">
+      <div className="mb-24 flex flex-col gap-y-16 p-6 lg:px-20">
         <h2 className="text-4xl font-bold">Our sponsors</h2>
 
         <div className="flex flex-col gap-24 lg:flex-row">
