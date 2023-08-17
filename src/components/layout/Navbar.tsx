@@ -2,34 +2,78 @@ import ModdermoreIcon from '../../../public/icons/moddermore-negative.png';
 
 import Image from 'next/image';
 import Link from 'next/link';
-
-import { useSession, signIn as nextAuthSignIn } from 'next-auth/react';
 import { Button, buttonVariants } from '../ui/Button';
+import {
+  LaptopIcon,
+  MoonIcon,
+  PlusIcon,
+  SunIcon,
+  UserIcon,
+} from 'lucide-react';
+
+import { useCallback, useEffect, useState } from 'react';
+import { useSession, signIn as nextAuthSignIn } from 'next-auth/react';
+import { useTheme } from 'next-themes';
+
 import { twMerge } from 'tailwind-merge';
-import { PlusIcon, UserIcon } from 'lucide-react';
+
+const ThemeButton = () => {
+  const { theme, setTheme } = useTheme();
+  const [renderSelf, setRenderSelf] = useState(false);
+
+  useEffect(() => {
+    setRenderSelf(true);
+  }, []);
+
+  const nextTheme = useCallback(() => {
+    setTheme(
+      theme === 'system' ? 'light' : theme === 'light' ? 'dark' : 'system',
+    );
+  }, [theme, setTheme]);
+
+  if (!renderSelf) return null;
+
+  return (
+    <button onClick={nextTheme} className="p-2">
+      {theme === 'system' ? (
+        <LaptopIcon className="block w-4 h-4" />
+      ) : theme === 'light' ? (
+        <SunIcon className="block w-4 h-4" />
+      ) : (
+        <MoonIcon className="block w-4 h-4" />
+      )}
+    </button>
+  );
+};
 
 const Navbar = () => {
   const { data, status } = useSession();
 
   return (
-    <nav
-      className={'flex w-full items-center justify-between px-6 py-4 shadow-sm'}
-    >
-      <Link
-        href={data ? '/lists' : '/'}
-        className="flex items-center gap-x-3 p-2"
-      >
-        <Image
-          src={ModdermoreIcon}
-          width="32"
-          height="32"
-          className="rounded-full"
-          alt=""
-        />
-        <span className="text-2xl font-extrabold tracking-tight text-neutral-800 dark:text-neutral-200">
-          Moddermore
-        </span>
-      </Link>
+    <nav className="flex flex-col md:flex-row w-full md:items-center md:justify-between px-6 py-4 border-b border-b-neutral-200 dark:border-b-neutral-800 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center gap-4">
+        <Link
+          href={data ? '/lists' : '/'}
+          className="flex items-center gap-x-3 p-2"
+        >
+          <Image
+            src={ModdermoreIcon}
+            width="32"
+            height="32"
+            className="rounded-full"
+            alt=""
+          />
+          <span className="text-2xl font-extrabold tracking-tight text-neutral-800 dark:text-neutral-200">
+            Moddermore
+          </span>
+        </Link>
+
+        <Link className="px-3 py-2 font-medium" href="/blog">
+          Blog
+        </Link>
+
+        <ThemeButton />
+      </div>
 
       <div className="flex items-center gap-x-2">
         {status !== 'loading' ? (

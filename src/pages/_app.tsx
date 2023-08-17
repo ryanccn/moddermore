@@ -2,7 +2,9 @@ import '~/styles/tailwind.css';
 import '~/styles/radix.css';
 import type { AppProps } from 'next/app';
 
+import { ThemeProvider } from 'next-themes';
 import PlausibleProvider from 'next-plausible';
+import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 
 import { Toaster } from 'react-hot-toast';
@@ -10,7 +12,6 @@ import Script from 'next/script';
 import NextNProgress from 'nextjs-progressbar';
 
 import { useEffect } from 'react';
-import { Session } from 'next-auth';
 import { AlertCircleIcon, CheckCircleIcon } from 'lucide-react';
 
 function MyApp({
@@ -30,30 +31,34 @@ function MyApp({
   return (
     <PlausibleProvider domain="moddermore.net">
       <SessionProvider session={session}>
-        <NextNProgress color="#6366F1" />
-        <Script
-          src="https://umami.ryanccn.dev/script.js"
-          data-website-id="e38dabf4-89a9-43cf-88ff-eafd855851c6"
-        />
-        <Component {...pageProps} />
-        <Toaster
-          position="bottom-right"
-          toastOptions={{
-            style: {
-              color: 'var(--react-hot-toast-fg)',
-              backgroundColor: 'var(--react-hot-toast-bg)',
-            },
-            className: 'react-hot-toast',
-            success: {
-              icon: (
-                <CheckCircleIcon className="block h-5 w-5 text-green-500 dark:text-green-400" />
-              ),
-            },
-            error: {
-              icon: <AlertCircleIcon className="block h-5 w-5 text-red-400" />,
-            },
-          }}
-        />
+        <ThemeProvider attribute="class">
+          <NextNProgress color="#6366F1" />
+          <Script
+            src="https://umami.ryanccn.dev/script.js"
+            data-website-id="e38dabf4-89a9-43cf-88ff-eafd855851c6"
+          />
+          <Component {...pageProps} />
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              style: {
+                color: 'var(--react-hot-toast-fg)',
+                backgroundColor: 'var(--react-hot-toast-bg)',
+              },
+              className: 'react-hot-toast',
+              success: {
+                icon: (
+                  <CheckCircleIcon className="block h-5 w-5 text-green-500 dark:text-green-400" />
+                ),
+              },
+              error: {
+                icon: (
+                  <AlertCircleIcon className="block h-5 w-5 text-red-400" />
+                ),
+              },
+            }}
+          />
+        </ThemeProvider>
       </SessionProvider>
     </PlausibleProvider>
   );
