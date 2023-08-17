@@ -23,11 +23,9 @@
     --react-hot-toast-bg: theme(colors.white);
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --react-hot-toast-fg: theme(colors.white);
-      --react-hot-toast-bg: theme(colors.neutral.800);
-    }
+  .dark {
+    --react-hot-toast-fg: theme(colors.white);
+    --react-hot-toast-bg: theme(colors.neutral.800);
   }
 }
 
