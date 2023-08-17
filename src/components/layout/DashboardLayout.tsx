@@ -40,7 +40,7 @@ export const DashboardLayout = ({ title, children }: Props) => {
   return (
     <GlobalLayout title={title} displayTitle={false} isLandingPage>
       <div className="flex w-full flex-col gap-4 md:flex-row">
-        <div className="flex flex-col gap-y-2 md:border-r-2 border-neutral-100 p-4 dark:border-neutral-800 md:min-h-screen md:w-64 md:grow-0 md:shrink-0">
+        <div className="flex flex-col gap-y-2 md:border-r-2 border-neutral-100 p-4 dark:border-neutral-800 md:min-h-screen md:w-72 md:grow-0 md:shrink-0">
           <DashboardLink
             title="Lists"
             href="/lists"

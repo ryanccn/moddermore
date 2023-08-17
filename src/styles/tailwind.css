@@ -35,7 +35,7 @@
   button,
   textarea,
   select:not(.mm-input) {
-    @apply focus:outline-none focus:ring focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-neutral-900;
+    @apply outline-transparent focus:outline-none focus-visible:outline-none focus:ring focus:ring-indigo-400 focus:ring-offset-4 focus:ring-offset-white dark:focus:ring-offset-neutral-900;
   }
 
   .title {

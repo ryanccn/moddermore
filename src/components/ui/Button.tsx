@@ -17,15 +17,15 @@ const buttonVariants = cva(
       variant: {
         primary: 'bg-indigo-500 text-white hover:bg-indigo-400',
         secondary:
-          'bg-transparent text-black hover:bg-indigo-500/10 hover:text-indigo-400 focus:ring-indigo-400/40 dark:text-white',
-        danger: 'bg-red-500 text-white hover:bg-red-400 focus:ring-red-400/50',
+          'bg-transparent text-black hover:bg-indigo-500/10 hover:text-indigo-400 focus:ring-indigo-400 dark:text-white',
+        danger: 'bg-red-500 text-white hover:bg-red-400 focus:ring-red-400',
         modrinth:
-          'text-white bg-[hsl(155,58%,38%)] hover:bg-[hsl(155,58%,48%)] focus:ring-[hsla(155,58%,38%,60%)]',
-        sky: 'text-white bg-sky-500 hover:bg-sky-400 focus:ring-sky-500/60',
+          'text-white bg-[hsl(155,58%,38%)] hover:bg-[hsl(155,58%,48%)] focus:ring-[hsl(155,58%,38%)]',
+        sky: 'text-white bg-sky-500 hover:bg-sky-400 focus:ring-sky-500',
         fuchsia:
-          'text-white bg-fuchsia-500 hover:bg-fuchsia-400 focus:ring-fuchsia-500/60',
+          'text-white bg-fuchsia-500 hover:bg-fuchsia-400 focus:ring-fuchsia-500',
         green:
-          'text-white bg-green-500 hover:bg-green-400 focus:ring-green-500/60',
+          'text-white bg-green-500 hover:bg-green-400 focus:ring-green-500',
       },
     },
     defaultVariants: {

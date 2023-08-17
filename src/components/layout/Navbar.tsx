@@ -50,11 +50,11 @@ const Navbar = () => {
   const { data, status } = useSession();
 
   return (
-    <nav className="flex flex-col md:flex-row w-full md:items-center md:justify-between px-6 py-4 border-b border-b-neutral-200 dark:border-b-neutral-800 gap-4">
-      <div className="flex flex-col md:flex-row md:items-center gap-4">
+    <nav className="flex flex-col md:flex-row w-full md:items-center md:justify-between px-6 py-4 border-b border-b-neutral-200 dark:border-b-neutral-800 gap-8">
+      <div className="flex flex-col md:flex-row md:items-center gap-8">
         <Link
           href={data ? '/lists' : '/'}
-          className="flex items-center gap-x-3 p-2"
+          className="flex items-center gap-x-2 px-2 py-1"
         >
           <Image
             src={ModdermoreIcon}
@@ -68,44 +68,44 @@ const Navbar = () => {
           </span>
         </Link>
 
-        <Link className="px-3 py-2 font-medium" href="/blog">
-          Blog
-        </Link>
+        <div className="flex flex-row flex-wrap items-center gap-x-2">
+          <Link className="px-2 py-1 font-medium" href="/blog">
+            Blog
+          </Link>
 
-        <ThemeButton />
+          <ThemeButton />
+        </div>
       </div>
 
-      <div className="flex items-center gap-x-2">
-        {status !== 'loading' ? (
-          data ? (
-            <>
-              <Link href="/new" className={buttonVariants()}>
-                <PlusIcon className="block h-5 w-5" />
-                <span>Create</span>
-              </Link>
-            </>
-          ) : (
-            <Button
-              onClick={() => {
-                nextAuthSignIn();
-              }}
-            >
-              <UserIcon className="block h-5 w-5" />
-              <span>Sign in</span>
-            </Button>
-          )
+      {status !== 'loading' ? (
+        data ? (
+          <>
+            <Link href="/new" className={buttonVariants()}>
+              <PlusIcon className="block h-5 w-5" />
+              <span>Create</span>
+            </Link>
+          </>
         ) : (
-          <div
-            className={twMerge(
-              buttonVariants({
-                className: 'skeleton bg-neutral-300 px-16 dark:bg-neutral-700',
-              }),
-            )}
+          <Button
+            onClick={() => {
+              nextAuthSignIn();
+            }}
           >
-            &nbsp;
-          </div>
-        )}
-      </div>
+            <UserIcon className="block h-5 w-5" />
+            <span>Sign in</span>
+          </Button>
+        )
+      ) : (
+        <div
+          className={twMerge(
+            buttonVariants({
+              className: 'skeleton bg-neutral-300 px-16 dark:bg-neutral-700',
+            }),
+          )}
+        >
+          &nbsp;
+        </div>
+      )}
     </nav>
   );
 };
