@@ -88,6 +88,7 @@ export type UserEditableProfileData = z.infer<typeof UserEditableProfileData>;
 
 export interface UserProfileData extends UserEditableProfileData {
   likes?: string[];
+  banned?: boolean;
 }
 
 export interface UserProfile extends UserProfileData {

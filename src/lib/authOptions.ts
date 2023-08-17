@@ -42,6 +42,9 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
 
+      const extraProfile = await getUserProfile(user.id);
+      if (extraProfile?.banned) return false;
+
       return true;
     },
     async session({ session, user }) {
