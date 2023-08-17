@@ -1,4 +1,5 @@
-import { CloudArrowUpIcon } from '@heroicons/react/20/solid';
+import { Button } from '../ui/Button';
+import { UploadIcon } from 'lucide-react';
 
 interface Props {
   disabled?: boolean;
@@ -6,9 +7,9 @@ interface Props {
 
 export const NewSubmitButton = ({ disabled }: Props) => {
   return (
-    <button type="submit" className="mm-button mt-14" disabled={disabled}>
-      <CloudArrowUpIcon className="block h-5 w-5" />
+    <Button type="submit" className="mt-14" disabled={disabled}>
+      <UploadIcon className="block h-5 w-5" />
       <span>Submit</span>
-    </button>
+    </Button>
   );
 };

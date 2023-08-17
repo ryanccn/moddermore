@@ -3,14 +3,15 @@
 import type { ModList, RichMod } from '~/types/moddermore';
 
 import { providerFormat, numberFormat } from '~/lib/strings';
+import { twMerge } from 'tailwind-merge';
+import { useMemo } from 'react';
+import { Button } from '../ui/Button';
 import {
+  ArrowUpRightIcon,
+  DownloadIcon,
   PlusIcon,
   TrashIcon,
-  ArrowDownTrayIcon,
-  ArrowUpRightIcon,
-} from '@heroicons/react/20/solid';
-import clsx from 'clsx';
-import { useMemo } from 'react';
+} from 'lucide-react';
 
 interface Props {
   data: RichMod;
@@ -37,7 +38,7 @@ export const RichModDisplay = ({
 
   return (
     <div
-      className={clsx(
+      className={twMerge(
         'flex justify-between rounded-2xl border-none bg-neutral-100 p-5 shadow-sm transition-all dark:bg-neutral-800',
         incompatible ? 'ring-2 ring-red-400/70 hover:ring-red-400/80' : null,
         className,
@@ -81,7 +82,7 @@ export const RichModDisplay = ({
         <div className="min-w-fit">
           {data.downloads && (
             <div className="mb-2 flex items-center sm:justify-end">
-              <ArrowDownTrayIcon className="mr-1 h-4 w-4" />
+              <DownloadIcon className="mr-1 h-4 w-4" />
               <p className="font-medium">
                 <strong>{numberFormat(data.downloads)}</strong> downloads
               </p>
@@ -92,20 +93,17 @@ export const RichModDisplay = ({
             {onClick && (
               <>
                 {buttonType === 'delete' && (
-                  <button className="mm-button danger mb-2" onClick={onClick}>
+                  <Button variant="danger" onClick={onClick}>
                     <TrashIcon className="block h-5 w-5" />
                     <span>Delete</span>
-                  </button>
+                  </Button>
                 )}
 
                 {buttonType === 'add' && (
-                  <button
-                    className="mm-button mb-2 bg-green-500"
-                    onClick={onClick}
-                  >
+                  <Button variant="green" onClick={onClick}>
                     <PlusIcon className="block h-5 w-5" />
                     <span>Add</span>
-                  </button>
+                  </Button>
                 )}
               </>
             )}

@@ -15,15 +15,16 @@ import {
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 
-import {
-  ArchiveBoxIcon,
-  FolderArrowDownIcon,
-  PlusCircleIcon,
-  ArrowDownIcon,
-} from '@heroicons/react/24/solid';
-
 import { getLists, getPageviews, getUsers } from '~/lib/stats';
 import { numberFormat } from '~/lib/strings';
+import { buttonVariants } from '~/components/ui/Button';
+import { twMerge } from 'tailwind-merge';
+import {
+  ArrowDownIcon,
+  CloudIcon,
+  FolderArchiveIcon,
+  PlusCircleIcon,
+} from 'lucide-react';
 
 interface PageProps {
   pageviews: number | null;
@@ -61,7 +62,12 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
 
         <Link
           href="/new"
-          className="mm-button mb-16 self-start px-6 py-4 text-xl shadow-xl shadow-indigo-500/30"
+          className={twMerge(
+            buttonVariants({
+              className:
+                'mb-16 self-start px-6 py-4 text-xl shadow-xl shadow-indigo-500/30',
+            }),
+          )}
         >
           <PlusCircleIcon className="block h-8 w-8" />
           <span>Create a new list</span>
@@ -139,21 +145,28 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
           covered.
         </h3>
         <div className="flex flex-col gap-6 lg:flex-row">
-          <div className="mm-button showcase">
-            <FolderArrowDownIcon className="block h-5 w-5" />
+          <div className={buttonVariants({ size: 'showcase' })}>
+            <FolderArchiveIcon className="block h-5 w-5" />
             <span>ZIP archive</span>
           </div>
-          <div className="mm-button showcase modrinth-themed">
+          <div
+            className={buttonVariants({
+              size: 'showcase',
+              variant: 'modrinth',
+            })}
+          >
             <ModrinthIcon className="block h-5 w-5" />
             <span>Modrinth pack</span>
           </div>
-          <div className="mm-button showcase blue-themed">
-            <ArchiveBoxIcon className="block h-5 w-5" />
+          <div className={buttonVariants({ size: 'showcase', variant: 'sky' })}>
+            <CloudIcon className="block h-5 w-5" />
             <span>packwiz</span>
           </div>
-          <div className="mm-button showcase fuchsia-themed">
+          <div
+            className={buttonVariants({ size: 'showcase', variant: 'fuchsia' })}
+          >
             <PrismIcon className="block h-5 w-5" />
-            <span className="blur-sm">MultiMC / Prism</span>
+            <span>MultiMC / Prism</span>
           </div>
         </div>
       </div>

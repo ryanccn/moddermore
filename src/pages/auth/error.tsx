@@ -1,4 +1,4 @@
-import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
+import { AlertTriangleIcon } from 'lucide-react';
 import { type NextPage } from 'next';
 import { useRouter } from 'next/router';
 
@@ -14,7 +14,7 @@ const SigninPage: NextPage = () => {
       title="An error occurred!"
       isAuthPage
       titleIcon={
-        <ExclamationTriangleIcon className="mb-2 block h-12 w-12 text-red-400" />
+        <AlertTriangleIcon className="mb-2 block h-12 w-12 text-red-400" />
       }
     >
       <p className="text-lg">

@@ -3,13 +3,13 @@ import Link from 'next/link';
 
 import { useSession } from 'next-auth/react';
 
-import {
-  CommandLineIcon,
-  ArchiveBoxIcon,
-  FolderIcon,
-} from '@heroicons/react/20/solid';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { PrismIcon } from '~/components/icons';
+import {
+  FolderArchiveIcon,
+  FolderIcon,
+  HexagonIcon,
+  TerminalIcon,
+} from 'lucide-react';
 
 const NewIndex: NextPage = () => {
   useSession({ required: true });
@@ -18,11 +18,11 @@ const NewIndex: NextPage = () => {
     <GlobalLayout title="Create a new list">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Link href="/new/prism" className="new-card">
-          <PrismIcon className="block h-10 w-10 stroke-[1.5]" />
+          <HexagonIcon className="block h-10 w-10 stroke-[1.5]" />
           <span>MultiMC / Prism Instance</span>
         </Link>
         <Link href="/new/ferium" className="new-card">
-          <CommandLineIcon className="block h-10 w-10 stroke-[1.5]" />
+          <TerminalIcon className="block h-10 w-10 stroke-[1.5]" />
           <span>Ferium</span>
         </Link>
         <Link href="/new/folder" className="new-card">
@@ -30,7 +30,7 @@ const NewIndex: NextPage = () => {
           <span>Folder</span>
         </Link>
         <Link href="/new/manual" className="new-card">
-          <ArchiveBoxIcon className="block h-10 w-10 stroke-[1.5]" />
+          <FolderArchiveIcon className="block h-10 w-10 stroke-[1.5]" />
           <span>Manual</span>
         </Link>
       </div>

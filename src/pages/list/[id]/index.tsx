@@ -35,21 +35,24 @@ import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { DonationMessage } from '~/components/partials/DonationMessage';
+import { Spinner } from '~/components/partials/Spinner';
+import { Button, buttonVariants } from '~/components/ui/Button';
 
-import { MarkdownIcon, ModrinthIcon, PrismIcon } from '~/components/icons';
+import { MarkdownIcon, ModrinthIcon } from '~/components/icons';
 import {
-  FolderArrowDownIcon,
-  PencilIcon,
-  TrashIcon,
-  LinkIcon,
-  ArchiveBoxIcon,
-  RocketLaunchIcon,
-  CogIcon,
-  HeartIcon,
-  Square2StackIcon,
   ClipboardIcon,
-  CodeBracketIcon,
-} from '@heroicons/react/20/solid';
+  CloudIcon,
+  CodeIcon,
+  CopyIcon,
+  DownloadIcon,
+  EditIcon,
+  FolderArchiveIcon,
+  HeartIcon,
+  HexagonIcon,
+  SaveIcon,
+  SettingsIcon,
+  TrashIcon,
+} from 'lucide-react';
 
 import toast from 'react-hot-toast';
 import { getSpecificList } from '~/lib/db';
@@ -57,7 +60,7 @@ import type JSZip from 'jszip';
 
 import { search } from '~/lib/import/search';
 import type { ExportReturnData } from '~/lib/export/types';
-import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 interface PageProps {
   data: ModListWithExtraData;
@@ -82,6 +85,9 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
+  const [isDuplicating, setIsDuplicating] = useState(false);
+
   const [searchProvider, setSearchProvider] = useState('modrinth');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<RichMod[]>([]);
@@ -96,6 +102,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [mrpackVersion, setMrpackVersion] = useState('0.0.1');
   const [mrpackCurseForgeStrategy, setMrpackCurseForgeStrategy] =
     useState('skip');
+
   const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [result, setResult] = useState<{ success: string[]; failed: string[] }>(
     { success: [], failed: [] },
@@ -528,6 +535,8 @@ name=${data.title}
 
       if (!res.ok) {
         toast.error('Failed to update mods!');
+        setIsSaving(false);
+        setIsEditing(false);
         return;
       }
 
@@ -570,14 +579,14 @@ ${
       toast.success(
         <div className="flex flex-col gap-y-1">
           <span>List updated!</span>
-          <button
+          <Button
             className="text-xs font-semibold text-blue-500 transition-colors hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-200"
             onClick={() => {
               navigator.clipboard.writeText(changelog);
             }}
           >
             Copy changelog
-          </button>
+          </Button>
         </div>,
         { duration: 5000 },
       );
@@ -633,13 +642,21 @@ ${
       return;
     }
 
+    setIsLiking(true);
+
     if (hasLiked) {
       fetch(`/api/likes/dislike?id=${data.id}`).then((r) => {
-        if (r.ok) setHasLiked(false);
+        if (r.ok) {
+          setHasLiked(false);
+          setIsLiking(false);
+        }
       });
     } else {
       fetch(`/api/likes/like?id=${data.id}`).then((r) => {
-        if (r.ok) setHasLiked(true);
+        if (r.ok) {
+          setHasLiked(true);
+          setIsLiking(false);
+        }
       });
     }
   }, [session, data.id, hasLiked]);
@@ -649,6 +666,8 @@ ${
       signIn();
       return;
     }
+
+    setIsDuplicating(true);
 
     fetch('/api/list/create', {
       method: 'POST',
@@ -669,6 +688,9 @@ ${
       })
       .catch(() => {
         toast.error('Failed to duplicate list!');
+      })
+      .finally(() => {
+        setIsDuplicating(false);
       });
   }, [data, session, router]);
 
@@ -749,33 +771,33 @@ ${
         </div>
       )}
 
-      <div className="mb-16 flex flex-wrap gap-4">
+      <div className="mb-16 flex flex-wrap gap-2">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild disabled={!resolvedMods}>
-            <button className="mm-button">
-              <FolderArrowDownIcon className="block h-5 w-5" />
+            <Button>
+              <DownloadIcon className="block h-5 w-5" />
               <span>Export as...</span>
-            </button>
+            </Button>
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Portal>
             <DropdownMenu.Content
               align="start"
-              className="dropdown-menu-content z-40 mt-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800"
+              className="radix-dropdown-menu-content"
             >
               <DropdownMenu.Item asChild>
                 <button
-                  className="dropdown-button"
+                  className="radix-dropdown-button"
                   onClick={downloadExport}
                   disabled={data.mods.length === 0}
                 >
-                  <ArchiveBoxIcon className="block h-5 w-5" />
+                  <FolderArchiveIcon className="block h-5 w-5" />
                   <span>Zip archive</span>
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
                 <button
-                  className="dropdown-button"
+                  className="radix-dropdown-button"
                   onClick={modrinthExportInit}
                   disabled={data.mods.length === 0}
                 >
@@ -785,31 +807,34 @@ ${
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
                 <button
-                  className="dropdown-button"
+                  className="radix-dropdown-button"
                   onClick={packwizExport}
                   disabled={data.mods.length === 0}
                 >
-                  <LinkIcon className="block h-5 w-5" />
+                  <CloudIcon className="block h-5 w-5" />
                   <span>Copy packwiz link</span>
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
                 <button
-                  className="dropdown-button"
+                  className="radix-dropdown-button"
                   onClick={prismStaticExport}
                   disabled={data.mods.length === 0}
                 >
-                  <PrismIcon className="block h-5 w-5" />
+                  <HexagonIcon className="block h-5 w-5" />
                   <span>MultiMC</span>
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
                 <button
-                  className="dropdown-button"
+                  className="radix-dropdown-button"
                   onClick={prismExport}
                   disabled={data.mods.length === 0}
                 >
-                  <PrismIcon className="block h-5 w-5" />
+                  <div className="relative">
+                    <HexagonIcon className="block h-5 w-5" />
+                    <CloudIcon className="block h-3 w-3 fill-current absolute right-0 bottom-0" />
+                  </div>
                   <span>MultiMC (auto-updating)</span>
                 </button>
               </DropdownMenu.Item>
@@ -819,20 +844,20 @@ ${
 
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
-            <button className="mm-button" disabled={!resolvedMods}>
+            <Button disabled={!resolvedMods}>
               <ClipboardIcon className="block h-5 w-5" />
               <span>Copy as...</span>
-            </button>
+            </Button>
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Portal>
             <DropdownMenu.Content
               align="start"
-              className="dropdown-menu-content z-40 mt-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800"
+              className="radix-dropdown-menu-content z-40 mt-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800"
             >
               <DropdownMenu.Item asChild>
                 <button
-                  className="dropdown-button"
+                  className="radix-dropdown-button"
                   onClick={copyMarkdownList}
                   disabled={data.mods.length === 0}
                 >
@@ -842,11 +867,11 @@ ${
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
                 <button
-                  className="dropdown-button"
+                  className="radix-dropdown-button"
                   onClick={copyJSON}
                   disabled={data.mods.length === 0}
                 >
-                  <CodeBracketIcon className="block h-5 w-5" />
+                  <CodeIcon className="block h-5 w-5" />
                   <span>JSON</span>
                 </button>
               </DropdownMenu.Item>
@@ -854,63 +879,79 @@ ${
           </DropdownMenu.Portal>
         </DropdownMenu.Root>
 
-        <button className="mm-button" onClick={toggleLikeStatus}>
-          <HeartIcon
-            className={clsx(
-              'block h-5 w-5',
-              hasLiked
-                ? 'fill-current stroke-none'
-                : 'fill-none stroke-current stroke-[1.5]',
-            )}
-          />
+        <Button onClick={toggleLikeStatus}>
+          {!isLiking ? (
+            <HeartIcon
+              className={twMerge(
+                'block h-5 w-5',
+                hasLiked
+                  ? 'fill-current stroke-none'
+                  : 'fill-none stroke-current stroke-[1.5]',
+              )}
+            />
+          ) : (
+            <Spinner className="block h-5 w-5 fill-current" />
+          )}
           <span>{!hasLiked ? 'Like' : 'Unlike'}</span>
-        </button>
+        </Button>
 
-        <button className="mm-button" onClick={duplicateList}>
-          <Square2StackIcon className="block h-5 w-5" />
+        <Button onClick={duplicateList}>
+          {isDuplicating ? (
+            <Spinner className="block h-5 w-5 fill-current" />
+          ) : (
+            <CopyIcon className="block h-5 w-5" />
+          )}
           <span>Duplicate</span>
-        </button>
+        </Button>
 
         {session && session.data?.user.id === data.owner && (
           <>
             {!isEditing ? (
-              <button
-                className="mm-button secondary"
+              <Button
+                variant="secondary"
                 onClick={() => {
                   setIsEditing(true);
                 }}
                 disabled={isSaving}
               >
-                <PencilIcon className="block h-5 w-5" />
+                {isSaving ? (
+                  <Spinner className="block h-5 w-5 fill-current" />
+                ) : (
+                  <EditIcon className="block h-5 w-5" />
+                )}
                 <span>Edit</span>
-              </button>
+              </Button>
             ) : (
-              <button
-                className="mm-button greenish"
+              <Button
+                variant="green"
                 onClick={submitHandle}
                 disabled={isSaving}
               >
-                <RocketLaunchIcon className="block h-5 w-5" />
+                {isSaving ? (
+                  <Spinner className="block h-5 w-5 fill-current" />
+                ) : (
+                  <SaveIcon className="block h-5 w-5" />
+                )}
                 <span>Save</span>
-              </button>
+              </Button>
             )}
 
             <Link
-              className="mm-button secondary"
+              className={buttonVariants({ variant: 'secondary' })}
               href={`/list/${data.id}/settings`}
             >
-              <CogIcon className="block h-5 w-5" />
+              <SettingsIcon className="block h-5 w-5" />
               <span>Settings</span>
             </Link>
 
-            <button className="mm-button danger" onClick={deleteCurrentList}>
+            <Button variant="danger" onClick={deleteCurrentList}>
               <TrashIcon className="block h-5 w-5" />
               {confirmDelete ? (
                 <span>Confirm deletion?</span>
               ) : (
                 <span>Delete</span>
               )}
-            </button>
+            </Button>
           </>
         )}
       </div>
@@ -925,7 +966,7 @@ ${
             <select
               name="searchProvider"
               value={searchProvider}
-              className="moddermore-input flex-grow-0"
+              className="mm-input flex-grow-0"
               aria-label="Select a provider to search from"
               onChange={(e) => {
                 setSearchProvider(e.target.value);
@@ -938,7 +979,7 @@ ${
             <input
               type="text"
               name="search-bar"
-              className="moddermore-input flex-grow"
+              className="mm-input flex-grow"
               placeholder="Search for mods"
               role="search"
               aria-label="Search for mods"
@@ -955,9 +996,9 @@ ${
               }}
             />
 
-            <button type="button" className="mm-button" onClick={updateSearch}>
+            <Button type="button" onClick={updateSearch}>
               Search
-            </button>
+            </Button>
           </div>
 
           {resolvedMods && searchResults.length > 0 && (
@@ -1050,7 +1091,7 @@ ${
               <label className="flex flex-col gap-y-1">
                 <span className="text-sm font-medium">Name</span>
                 <input
-                  className="moddermore-input"
+                  className="mm-input"
                   required
                   minLength={1}
                   value={mrpackName}
@@ -1063,7 +1104,7 @@ ${
                 <span className="text-sm font-medium">Version</span>
 
                 <input
-                  className="moddermore-input"
+                  className="mm-input"
                   required
                   minLength={1}
                   value={mrpackVersion}
@@ -1078,7 +1119,7 @@ ${
                 </span>
                 <select
                   id="curseforge-strategy"
-                  className="moddermore-input"
+                  className="mm-input"
                   required
                   value={mrpackCurseForgeStrategy}
                   onChange={(e) => {
@@ -1098,13 +1139,10 @@ ${
                 </div>
               )}
 
-              <button
-                type="submit"
-                className="mm-button modrinth-themed self-start"
-              >
+              <Button variant="modrinth" type="submit" className="self-start">
                 <ModrinthIcon className="block h-5 w-5" />
                 <span>Start export</span>
-              </button>
+              </Button>
             </form>
           </Dialog.Content>
         </Dialog.Portal>
@@ -1144,14 +1182,14 @@ ${
                 </details>
               </div>
 
-              <button
-                className="mm-button self-center"
+              <Button
+                className="self-center"
                 onClick={() => {
                   setStatus('idle');
                 }}
               >
                 Close
-              </button>
+              </Button>
             </div>
           </Dialog.Content>
         </Dialog.Portal>

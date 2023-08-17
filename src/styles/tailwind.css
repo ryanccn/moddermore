@@ -36,28 +36,30 @@
   input,
   button,
   textarea,
-  select:not(.moddermore-input) {
-    @apply focus:outline-none focus:ring focus:ring-indigo-400/60;
+  select:not(.mm-input) {
+    @apply focus:outline-none focus:ring focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-neutral-900;
   }
 
   .title {
-    @apply mb-10 text-4xl font-bold;
+    @apply mb-10 text-5xl font-extrabold tracking-tight;
+    text-wrap: pretty;
   }
 
   .layout {
     @apply mx-auto mb-40 flex max-w-[75ch] flex-col px-6;
   }
 
-  :not(select).moddermore-input {
+  :not(select).mm-input {
     @apply w-full rounded bg-neutral-100 px-3 py-2 shadow-sm dark:bg-neutral-800;
     @apply border-2 border-transparent;
   }
 
-  .moddermore-input.invalid {
+  .mm-input.invalid,
+  .mm-input:invalid {
     @apply border-red-500;
   }
 
-  select.moddermore-input {
+  select.mm-input {
     @apply form-select block rounded border-none bg-neutral-100 shadow-sm dark:bg-neutral-800;
     @apply focus:outline-none focus:ring focus:ring-indigo-400/60;
   }
@@ -71,47 +73,7 @@
   }
 
   .moddermore-form-label :is(input, select) {
-    @apply moddermore-input;
-  }
-
-  .mm-button {
-    @apply flex items-center gap-x-3 rounded-md px-3 py-2 transition-all;
-    @apply text-sm font-medium tracking-tight;
-    @apply bg-indigo-500 text-white hover:bg-indigo-400 disabled:opacity-80;
-  }
-
-  .mm-button.secondary {
-    @apply bg-transparent text-black hover:bg-indigo-500/10 hover:text-indigo-400 focus:ring-indigo-400/40 dark:text-white;
-  }
-
-  .mm-button.danger {
-    @apply bg-red-500 text-white hover:bg-red-400 focus:ring-red-400/50;
-  }
-
-  .mm-button.modrinth-themed {
-    @apply bg-[hsl(155,58%,38%)] hover:bg-[hsl(155,58%,48%)] focus:ring-[hsla(155,58%,38%,60%)];
-  }
-
-  .mm-button.blue-themed {
-    @apply bg-sky-500 hover:bg-sky-400 focus:ring-sky-500/60;
-  }
-
-  .mm-button.fuchsia-themed {
-    @apply bg-fuchsia-500 hover:bg-fuchsia-400 focus:ring-fuchsia-500/60;
-  }
-
-  .mm-button.greenish {
-    @apply bg-green-500 hover:bg-green-400 focus:ring-green-500/60;
-  }
-
-  .mm-button.showcase {
-    @apply px-6 py-4 text-lg disabled:scale-100;
-  }
-
-  button.dropdown-button {
-    @apply flex flex-row items-center gap-x-2 px-3 py-2 text-sm font-medium;
-    @apply w-full bg-zinc-50 text-black dark:bg-neutral-700 dark:text-white;
-    @apply focus:ring-0 disabled:opacity-75;
+    @apply mm-input;
   }
 
   .landing-page-fade-out {
@@ -140,13 +102,13 @@
   }
 
   .new-card {
-    @apply bg-neutral-100 px-5 py-8 dark:bg-neutral-800;
-    @apply flex flex-col items-center gap-y-2 rounded;
+    @apply bg-neutral-100 px-5 py-10 dark:bg-neutral-800;
+    @apply flex flex-col items-center gap-y-4 rounded;
     @apply transition-shadow;
   }
 
   .new-card > span {
-    @apply text-xl font-semibold;
+    @apply text-xl font-bold tracking-tight;
   }
 
   .results-list {
@@ -236,7 +198,7 @@
 }
 
 .react-hot-toast {
-  column-gap: 0.625rem;
+  row-gap: 0.45rem;
 }
 .react-hot-toast > [role='status'] {
   justify-content: flex-start;

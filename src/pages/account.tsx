@@ -7,6 +7,7 @@ import { FullLoadingScreen } from '~/components/FullLoadingScreen';
 import { DashboardLayout } from '~/components/layout/DashboardLayout';
 
 import { toast } from 'react-hot-toast';
+import { Button } from '~/components/ui/Button';
 
 const AccountPage: NextPage = () => {
   const session = useSession({ required: true });
@@ -61,7 +62,7 @@ const AccountPage: NextPage = () => {
           <label className="flex flex-col gap-y-2">
             <span className="text-sm font-semibold">Name</span>
             <input
-              className="moddermore-input max-w-prose"
+              className="mm-input max-w-prose"
               type="text"
               value={name || ''}
               onChange={(e) => {
@@ -73,7 +74,7 @@ const AccountPage: NextPage = () => {
           <label className="flex flex-col gap-y-2">
             <span className="text-sm font-semibold">Profile picture</span>
             <input
-              className="moddermore-input max-w-prose"
+              className="mm-input max-w-prose"
               type="url"
               value={profilePicture || ''}
               onChange={(e) => {
@@ -83,23 +84,24 @@ const AccountPage: NextPage = () => {
             />
           </label>
 
-          <button
+          <Button
             type="submit"
-            className="mm-button mt-2 self-start"
+            className="mt-2 self-start"
             disabled={inProgress}
           >
             Save
-          </button>
+          </Button>
         </form>
 
-        <button
-          className="mm-button danger self-start px-4 py-2 text-lg font-semibold"
+        <Button
+          variant="danger"
+          className="self-start px-4 py-2 text-lg font-semibold"
           onClick={() => {
             signOut();
           }}
         >
           Sign out
-        </button>
+        </Button>
       </div>
     </DashboardLayout>
   );

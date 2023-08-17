@@ -10,11 +10,8 @@ import Script from 'next/script';
 import NextNProgress from 'nextjs-progressbar';
 
 import { useEffect } from 'react';
-import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-} from '@heroicons/react/20/solid';
 import { Session } from 'next-auth';
+import { AlertCircleIcon, CheckCircleIcon } from 'lucide-react';
 
 function MyApp({
   Component,
@@ -49,13 +46,11 @@ function MyApp({
             className: 'react-hot-toast',
             success: {
               icon: (
-                <CheckCircleIcon className="block h-5 w-5 text-green-400" />
+                <CheckCircleIcon className="block h-5 w-5 text-green-500 dark:text-green-400" />
               ),
             },
             error: {
-              icon: (
-                <ExclamationCircleIcon className="block h-5 w-5 text-red-400" />
-              ),
+              icon: <AlertCircleIcon className="block h-5 w-5 text-red-400" />,
             },
           }}
         />

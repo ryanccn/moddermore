@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { ArrowLeftIcon, DocumentIcon } from '@heroicons/react/20/solid';
 
 import { getSpecificList } from '~/lib/db';
 import minecraftVersions from '~/lib/minecraftVersions.json';
@@ -13,6 +12,8 @@ import type { ModLoader, ModList } from '~/types/moddermore';
 import { toast } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { Button } from '~/components/ui/Button';
+import { ArrowLeftIcon, SaveIcon } from 'lucide-react';
 
 interface PageProps {
   data: ModList;
@@ -90,7 +91,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         <label className="moddermore-form-label">
           <span>Title</span>
           <input
-            className="moddermore-input"
+            className="mm-input"
             type="text"
             value={title}
             required
@@ -104,7 +105,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         <label className="moddermore-form-label">
           <span>Description</span>
           <textarea
-            className="moddermore-input"
+            className="mm-input min-h-[12rem]"
             value={description || ''}
             onChange={(e) => {
               setDescription(e.target.value);
@@ -149,14 +150,10 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
           </select>
         </label>
 
-        <button
-          type="submit"
-          className="mm-button mt-4 self-start"
-          disabled={inProgress}
-        >
-          <DocumentIcon className="block h-4 w-4" />
+        <Button type="submit" className="mt-4 self-start" disabled={inProgress}>
+          <SaveIcon className="block h-4 w-4" />
           <span>Save</span>
-        </button>
+        </Button>
       </form>
     </GlobalLayout>
   );

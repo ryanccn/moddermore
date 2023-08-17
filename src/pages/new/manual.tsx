@@ -14,6 +14,7 @@ import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 
 import { richModToMod } from '~/lib/db/conversions';
 import toast from 'react-hot-toast';
+import { Button } from '~/components/ui/Button';
 
 const ManualImportPage: NextPage = () => {
   const session = useSession({ required: true });
@@ -96,7 +97,7 @@ const ManualImportPage: NextPage = () => {
           <select
             name="game-version"
             value={gameVersion}
-            className="moddermore-input"
+            className="mm-input"
             aria-label="Game version"
             required
             onChange={(e) => {
@@ -113,7 +114,7 @@ const ManualImportPage: NextPage = () => {
           <select
             name="modloader"
             value={modLoader}
-            className="moddermore-input"
+            className="mm-input"
             aria-label="Mod loader"
             onChange={(e) => {
               setModLoader(e.target.value as ModLoader);
@@ -130,7 +131,7 @@ const ManualImportPage: NextPage = () => {
             <select
               name="searchProvider"
               value={searchProvider}
-              className="moddermore-input flex-grow-0"
+              className="mm-input flex-grow-0"
               aria-label="Select a provider to search from"
               onChange={(e) => {
                 setSearchProvider(e.target.value);
@@ -143,7 +144,7 @@ const ManualImportPage: NextPage = () => {
             <input
               type="text"
               name="search-bar"
-              className="moddermore-input flex-grow"
+              className="mm-input flex-grow"
               placeholder="Search for mods"
               role="search"
               aria-label="Search for mods"
@@ -160,9 +161,9 @@ const ManualImportPage: NextPage = () => {
               }}
             />
 
-            <button type="button" className="mm-button" onClick={updateSearch}>
+            <Button type="button" onClick={updateSearch}>
               Search
-            </button>
+            </Button>
           </div>
 
           {searchResults.length > 0 && (

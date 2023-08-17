@@ -50,7 +50,7 @@ const FeriumImportPage: NextPage = () => {
 
       router.push(`/list/${id}`);
     },
-    [title, gameVersion, modLoader, feriumCopyPaste, sess, router]
+    [title, gameVersion, modLoader, feriumCopyPaste, sess, router],
   );
 
   return (
@@ -76,7 +76,7 @@ const FeriumImportPage: NextPage = () => {
           <select
             name="game-version"
             value={gameVersion}
-            className="moddermore-input"
+            className="mm-input"
             aria-label="Game version"
             required
             onChange={(e) => {
@@ -93,7 +93,7 @@ const FeriumImportPage: NextPage = () => {
           <select
             name="modloader"
             value={modLoader}
-            className="moddermore-input"
+            className="mm-input"
             aria-label="Mod loader"
             onChange={(e) => {
               setModLoader(e.target.value as ModLoader);
@@ -108,7 +108,7 @@ const FeriumImportPage: NextPage = () => {
         <textarea
           name="ferium-copy-paste"
           value={feriumCopyPaste}
-          className="moddermore-input min-h-[10rem] w-full resize-y font-mono"
+          className="mm-input min-h-[10rem] w-full resize-y font-mono"
           placeholder="Paste the output of `ferium list` here."
           aria-label="The output of `ferium list`"
           required

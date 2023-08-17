@@ -11,10 +11,12 @@ import type { Mod, ModLoader } from '~/types/moddermore';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
-import { ArrowUpTrayIcon } from '@heroicons/react/20/solid';
 
 import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
+import { twMerge } from 'tailwind-merge';
+import { buttonVariants } from '~/components/ui/Button';
+import { UploadIcon } from 'lucide-react';
 
 const FolderImportPage: NextPage = () => {
   const sess = useSession({ required: true });
@@ -90,7 +92,7 @@ const FolderImportPage: NextPage = () => {
           <select
             name="game-version"
             value={gameVersion}
-            className="moddermore-input"
+            className="mm-input"
             aria-label="Game version"
             required
             onChange={(e) => {
@@ -107,7 +109,7 @@ const FolderImportPage: NextPage = () => {
           <select
             name="modloader"
             value={modLoader}
-            className="moddermore-input"
+            className="mm-input"
             aria-label="Mod loader"
             onChange={(e) => {
               setModLoader(e.target.value as ModLoader);
@@ -127,9 +129,13 @@ const FolderImportPage: NextPage = () => {
           <label>
             <div
               role="button"
-              className="mm-button flex cursor-auto hover:cursor-pointer"
+              className={twMerge(
+                buttonVariants({
+                  className: 'flex cursor-auto hover:cursor-pointer',
+                }),
+              )}
             >
-              <ArrowUpTrayIcon className="block h-5 w-5" />
+              <UploadIcon className="block h-5 w-5" />
               <span>Choose file</span>
             </div>
 

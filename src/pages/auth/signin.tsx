@@ -8,6 +8,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { DiscordIcon, GitHubIcon, GoogleIcon } from '~/components/icons';
 import toast from 'react-hot-toast';
+import { Button } from '~/components/ui/Button';
 
 const errors = {
   Signin: 'Try signing in with a different account.',
@@ -67,8 +68,8 @@ const SigninPage: NextPage = () => {
               : router.query.error}
           </p>
         )}
-        <button
-          className="mm-button bg-black text-white"
+        <Button
+          className="bg-black hover:bg-black text-white"
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
@@ -82,9 +83,9 @@ const SigninPage: NextPage = () => {
         >
           <GitHubIcon className="block h-5 w-5 fill-current stroke-transparent" />
           <span>Sign in with GitHub</span>
-        </button>
-        <button
-          className="mm-button bg-[#5865F2] text-white"
+        </Button>
+        <Button
+          className="bg-[#5865F2] hover:bg-[#5865F2] text-white"
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
@@ -98,9 +99,9 @@ const SigninPage: NextPage = () => {
         >
           <DiscordIcon className="block h-5 w-5 fill-current stroke-transparent" />
           <span>Sign in with Discord</span>
-        </button>
-        <button
-          className="mm-button mb-4 bg-[#4285F4] text-white"
+        </Button>
+        <Button
+          className="mb-4 bg-[#4285F4] hover:bg-[#4285F4] text-white"
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
@@ -114,7 +115,7 @@ const SigninPage: NextPage = () => {
         >
           <GoogleIcon className="block h-5 w-5 fill-current stroke-transparent" />
           <span>Sign in with Google</span>
-        </button>
+        </Button>
 
         <form className="flex items-center gap-x-2" onSubmit={signin}>
           <input
@@ -122,7 +123,7 @@ const SigninPage: NextPage = () => {
             id="email"
             name="email"
             aria-label="Email"
-            className="moddermore-input"
+            className="mm-input"
             placeholder="hello@moddermore.net"
             value={email}
             onChange={(e) => {
@@ -130,13 +131,10 @@ const SigninPage: NextPage = () => {
             }}
             required
           />
-          <button
-            type="submit"
-            className="mm-button shrink-0"
-            disabled={disableSubmit}
-          >
+
+          <Button type="submit" className="shrink-0" disabled={disableSubmit}>
             Sign in with email
-          </button>
+          </Button>
         </form>
       </div>
     </GlobalLayout>

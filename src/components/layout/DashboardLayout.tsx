@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { GlobalLayout } from './GlobalLayout';
-import { HeartIcon, ListBulletIcon, UserIcon } from '@heroicons/react/24/solid';
+import { buttonVariants } from '../ui/Button';
+import { HeartIcon, ListIcon, UserIcon } from 'lucide-react';
 
 interface Props {
   title: string;
@@ -25,9 +26,9 @@ const DashboardLink = ({
   return (
     <Link
       href={href}
-      className={
-        router.pathname.startsWith(href) ? 'mm-button' : 'mm-button secondary'
-      }
+      className={buttonVariants({
+        variant: router.pathname.startsWith(href) ? 'primary' : 'secondary',
+      })}
     >
       {icon}
       <span>{title}</span>
@@ -38,12 +39,12 @@ const DashboardLink = ({
 export const DashboardLayout = ({ title, children }: Props) => {
   return (
     <GlobalLayout title={title} displayTitle={false} isLandingPage>
-      <div className="flex w-full flex-col gap-4 lg:flex-row">
-        <div className="flex flex-col gap-y-2 border-r-2 border-neutral-100 p-4 dark:border-neutral-800 lg:min-h-screen w-64 lg:grow-0 lg:shrink-0">
+      <div className="flex w-full flex-col gap-4 md:flex-row">
+        <div className="flex flex-col gap-y-2 md:border-r-2 border-neutral-100 p-4 dark:border-neutral-800 md:min-h-screen md:w-64 md:grow-0 md:shrink-0">
           <DashboardLink
             title="Lists"
             href="/lists"
-            icon={<ListBulletIcon className="block h-5 w-5" />}
+            icon={<ListIcon className="block h-5 w-5" />}
           />
           <DashboardLink
             title="Likes"

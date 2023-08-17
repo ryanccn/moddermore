@@ -12,10 +12,12 @@ import type { Mod, ModLoader } from '~/types/moddermore';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
-import { PaperClipIcon } from '@heroicons/react/24/solid';
 
 import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
+import { twMerge } from 'tailwind-merge';
+import { buttonVariants } from '~/components/ui/Button';
+import { PaperclipIcon } from 'lucide-react';
 
 const PrismImportPage: NextPage = () => {
   const sess = useSession({ required: true });
@@ -105,7 +107,7 @@ const PrismImportPage: NextPage = () => {
           <select
             name="game-version"
             value={gameVersion}
-            className="moddermore-input"
+            className="mm-input"
             aria-label="Game version"
             required
             onChange={(e) => {
@@ -122,7 +124,7 @@ const PrismImportPage: NextPage = () => {
           <select
             name="modloader"
             value={modLoader}
-            className="moddermore-input"
+            className="mm-input"
             aria-label="Mod loader"
             onChange={(e) => {
               setModLoader(e.target.value as ModLoader);
@@ -142,9 +144,13 @@ const PrismImportPage: NextPage = () => {
           <label>
             <div
               role="button"
-              className="mm-button flex cursor-auto hover:cursor-pointer"
+              className={twMerge(
+                buttonVariants({
+                  className: 'flex cursor-auto hover:cursor-pointer',
+                }),
+              )}
             >
-              <PaperClipIcon className="block h-5 w-5" />
+              <PaperclipIcon className="block h-5 w-5" />
               <span>Choose file</span>
             </div>
 
