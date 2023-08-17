@@ -33,10 +33,12 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const ok = await updateList(id, parsedData.data, sess.user.id);
-
-  if (ok) res.status(200).json({ ok: true });
-  else res.status(400).json({ ok: false });
+  try {
+    await updateList(id, parsedData.data, sess.user.id);
+    res.status(200).json({ ok: true });
+  } catch {
+    res.status(400).json({ ok: false });
+  }
 };
 
 export default h;
