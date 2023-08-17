@@ -33,7 +33,7 @@ const sha512 = async (f: ArrayBuffer) => {
 export const generateModrinthPack = async (
   list: RichModList,
   urls: ExportReturnData,
-  extraData: { name?: string; version?: string; cfStrategy?: string }
+  extraData: { name?: string; version?: string; cfStrategy?: string },
 ) => {
   const mrIndex = {
     formatVersion: 1,
@@ -43,7 +43,7 @@ export const generateModrinthPack = async (
     summary: 'Generated from Moddermore (https://moddermore.net/)',
     files: (
       urls.filter(
-        (dl) => !('error' in dl) && dl.provider === 'modrinth'
+        (dl) => !('error' in dl) && dl.provider === 'modrinth',
       ) as ModrinthDownload[]
     ).map((dl) => {
       return {
@@ -56,7 +56,7 @@ export const generateModrinthPack = async (
     dependencies: {
       minecraft: list.gameVersion,
       ...(list.modloader === 'forge'
-        ? { forge: await getLatestForge() }
+        ? { forge: await getLatestForge(list.gameVersion) }
         : list.modloader === 'fabric'
         ? { 'fabric-loader': await getLatestFabric() }
         : list.modloader === 'quilt'
@@ -69,12 +69,12 @@ export const generateModrinthPack = async (
 
   if (extraData.cfStrategy === 'embed') {
     const cfDownloads = urls.filter(
-      (dl) => !('error' in dl) && dl.provider === 'curseforge'
+      (dl) => !('error' in dl) && dl.provider === 'curseforge',
     ) as CurseForgeDownload[];
 
     for (const url of cfDownloads) {
       const fileContents = await fetch(
-        `/api/cursed?url=${encodeURIComponent(url.url)}`
+        `/api/cursed?url=${encodeURIComponent(url.url)}`,
       ).then((r) => {
         if (!r.ok) {
           return null;
@@ -89,12 +89,12 @@ export const generateModrinthPack = async (
     }
   } else if (extraData.cfStrategy === 'links') {
     const cfDownloads = urls.filter(
-      (dl) => !('error' in dl) && dl.provider === 'curseforge'
+      (dl) => !('error' in dl) && dl.provider === 'curseforge',
     ) as CurseForgeDownload[];
 
     for (const url of cfDownloads) {
       const fileContents = await fetch(
-        `/api/cursed?url=${encodeURIComponent(url.url)}`
+        `/api/cursed?url=${encodeURIComponent(url.url)}`,
       ).then((r) => {
         if (!r.ok) {
           return null;

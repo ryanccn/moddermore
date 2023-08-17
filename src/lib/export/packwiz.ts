@@ -35,7 +35,9 @@ export const getPackTOML = async (id: string) => {
         ? { fabric: await getLatestFabric() }
         : {}),
       ...(list.modloader === 'quilt' ? { quilt: await getLatestQuilt() } : {}),
-      ...(list.modloader === 'forge' ? { forge: await getLatestForge() } : {}),
+      ...(list.modloader === 'forge'
+        ? { forge: await getLatestForge(list.gameVersion) }
+        : {}),
     },
     index: { file: 'index.toml', 'hash-format': 'sha512', hash: indexHash },
   });
@@ -86,20 +88,20 @@ export const getIndexTOML = async (id: string) => {
           }
 
           return null;
-        })
-      )
+        }),
+      ),
     ).then((res) => res.filter(Boolean) as AnyJson),
   });
 };
 
 export const getModrinthTOML = async (
-  data: ProviderSpecificOptions
+  data: ProviderSpecificOptions,
 ): Promise<ModPwToml | null> => {
   const res = await getModrinthDownload(data).then(
     (k) =>
       k.filter(
-        (dl) => !('error' in dl) && dl.provider === 'modrinth'
-      ) as ModrinthDownload[]
+        (dl) => !('error' in dl) && dl.provider === 'modrinth',
+      ) as ModrinthDownload[],
   );
   if (!res || res.length === 0) return null;
 
@@ -119,13 +121,13 @@ export const getModrinthTOML = async (
 };
 
 export const getCurseForgeTOML = async (
-  data: ProviderSpecificOptions
+  data: ProviderSpecificOptions,
 ): Promise<ModPwToml | null> => {
   const res = await getCFDownload(data).then(
     (k) =>
       k.filter(
-        (dl) => !('error' in dl) && dl.provider === 'curseforge'
-      ) as CurseForgeDownload[]
+        (dl) => !('error' in dl) && dl.provider === 'curseforge',
+      ) as CurseForgeDownload[],
   );
   if (!res || res.length === 0) return null;
 

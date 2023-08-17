@@ -371,7 +371,7 @@ name=${data.title}
       case 'forge': {
         mmcPack.components.push({
           uid: 'net.minecraftforge',
-          version: await getLatestForge(),
+          version: await getLatestForge(data.gameVersion),
         });
         break;
       }
@@ -490,7 +490,7 @@ name=${data.title}
           case 'forge': {
             mmcPack.components.push({
               uid: 'net.minecraftforge',
-              version: await getLatestForge(),
+              version: await getLatestForge(data.gameVersion),
             });
             break;
           }
