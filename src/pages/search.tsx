@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 
 import { DashboardLayout } from '~/components/layout/DashboardLayout';
 import { ModListInList } from '~/components/partials/ModListInList';
+import { Button } from '~/components/ui/Button';
 
 import { toast } from 'react-hot-toast';
 import type { ModList } from '~/types/moddermore';
@@ -30,12 +31,12 @@ const SearchPage: NextPage = () => {
 
   return (
     <DashboardLayout title="Search">
-      <div className="flex flex-col gap-y-8 items-stretch w-full">
+      <div className="flex flex-col gap-y-8 px-6 items-stretch w-full">
         <div className="mb-12 flex w-full items-center justify-start gap-x-2">
           <input
             type="text"
             name="search-bar"
-            className="moddermore-input flex-grow"
+            className="mm-input flex-grow"
             placeholder="Search for public lists"
             role="search"
             aria-label="Search for public lists"
@@ -52,13 +53,9 @@ const SearchPage: NextPage = () => {
             }}
           />
 
-          <button
-            type="button"
-            className="primaryish-button"
-            onClick={updateSearch}
-          >
+          <Button type="button" onClick={updateSearch}>
             Search
-          </button>
+          </Button>
         </div>
 
         {lists.length > 0 ? (
@@ -67,11 +64,7 @@ const SearchPage: NextPage = () => {
               <ModListInList list={list} key={list.id} />
             ))}
           </ul>
-        ) : (
-          <div className="rounded w-full h-fit m-6 bg-transparent font-medium px-2 py-16 text-center text-lg shadow dark:bg-neutral-800">
-            No lists found!
-          </div>
-        )}
+        ) : null}
       </div>
     </DashboardLayout>
   );

@@ -3,17 +3,15 @@ import { type NextApiHandler } from 'next';
 import { z } from 'zod';
 import { getListsCollection } from '~/lib/db/client';
 
-const search = async (term: string) => {
+const search = async (query: string) => {
   const collection = await getListsCollection();
   const resp = collection.aggregate([
     {
       $search: {
         index: 'search_index',
         text: {
-          query: term,
-          path: {
-            wildcard: '*',
-          },
+          query,
+          path: ['title', 'description'],
         },
       },
     },
