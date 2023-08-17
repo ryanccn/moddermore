@@ -579,14 +579,14 @@ ${
       toast.success(
         <div className="flex flex-col gap-y-1">
           <span>List updated!</span>
-          <Button
+          <button
             className="text-xs font-semibold text-blue-500 transition-colors hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-200"
             onClick={() => {
               navigator.clipboard.writeText(changelog);
             }}
           >
             Copy changelog
-          </Button>
+          </button>
         </div>,
         { duration: 5000 },
       );
