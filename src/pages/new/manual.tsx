@@ -4,6 +4,7 @@ import type { RichMod, ModLoader } from '~/types/moddermore';
 
 import minecraftVersions from '~/lib/minecraftVersions.json';
 import { search } from '~/lib/import/search';
+import { richModToMod } from '~/lib/db/conversions';
 
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -11,10 +12,9 @@ import { useSession } from 'next-auth/react';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
-
-import { richModToMod } from '~/lib/db/conversions';
-import toast from 'react-hot-toast';
 import { Button } from '~/components/ui/Button';
+
+import toast from 'react-hot-toast';
 
 const ManualImportPage: NextPage = () => {
   const session = useSession({ required: true });

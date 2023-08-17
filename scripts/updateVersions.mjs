@@ -1,30 +1,22 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import fetch from 'node-fetch';
+
 import { format } from 'prettier';
-import { writeFile } from 'fs/promises';
+import { writeFile } from 'node:fs/promises';
 
-(async () => {
-  const res = await fetch(
-    'https://piston-meta.mojang.com/mc/game/version_manifest.json'
-  );
+const res = await fetch(
+  'https://piston-meta.mojang.com/mc/game/version_manifest.json',
+);
 
-  if (!res.ok) {
-    console.error('Failed to fetch version manifest!');
-    process.exit(1);
-  }
+if (!res.ok) {
+  throw new Error('Failed to fetch version manifest!');
+}
 
-  const data = await res.json();
+const data = await res.json();
 
-  const versions = data.versions
-    .filter((v) => v.type === 'release')
-    .map((v) => v.id);
+const versions = data.versions
+  .filter((v) => v.type === 'release')
+  .map((v) => v.id);
 
-  await writeFile(
-    './src/lib/minecraftVersions.json',
-    format(JSON.stringify(versions), { parser: 'json' })
-  );
-})().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+const serialized = await format(JSON.stringify(versions), { parser: 'json' });
+
+await writeFile('./src/lib/minecraftVersions.json', serialized);

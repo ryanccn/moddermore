@@ -21,9 +21,10 @@ const PrivacyPolicy: NextPage<PageProps> = ({ content }) => {
 };
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
+  const markdown = await readFile('./legal/privacy.md', { encoding: 'utf8' });
   const html = await remark()
     .use(remarkHtml)
-    .process(await readFile('./legal/privacy.md', { encoding: 'utf8' }))
+    .process(markdown)
     .then((vfile) => vfile.toString());
 
   return { props: { content: html } };

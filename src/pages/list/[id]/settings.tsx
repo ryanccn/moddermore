@@ -2,18 +2,18 @@ import { type GetServerSideProps, type NextPage } from 'next';
 
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { Button } from '~/components/ui/Button';
+import { ArrowLeftIcon, SaveIcon } from 'lucide-react';
+import Link from 'next/link';
 
+import { toast } from 'react-hot-toast';
 import { getSpecificList } from '~/lib/db';
 import minecraftVersions from '~/lib/minecraftVersions.json';
 
 import type { ModLoader, ModList } from '~/types/moddermore';
-import { toast } from 'react-hot-toast';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { Button } from '~/components/ui/Button';
-import { ArrowLeftIcon, SaveIcon } from 'lucide-react';
 
 interface PageProps {
   data: ModList;

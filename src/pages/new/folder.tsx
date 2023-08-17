@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import { type FormEventHandler, useState, useCallback } from 'react';
 
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 import { loadAsync } from 'jszip';
 import { parseModFolder } from '~/lib/import/parseModFolder';
@@ -11,12 +12,12 @@ import type { Mod, ModLoader } from '~/types/moddermore';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
+import { buttonVariants } from '~/components/ui/Button';
 
-import { useSession } from 'next-auth/react';
+import { UploadIcon } from 'lucide-react';
+
 import toast from 'react-hot-toast';
 import { twMerge } from 'tailwind-merge';
-import { buttonVariants } from '~/components/ui/Button';
-import { UploadIcon } from 'lucide-react';
 
 const FolderImportPage: NextPage = () => {
   const sess = useSession({ required: true });

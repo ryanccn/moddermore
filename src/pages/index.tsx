@@ -2,29 +2,26 @@ import type { GetStaticProps, NextPage } from 'next';
 
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
-
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 
-import {
-  ModrinthIcon,
-  PrismIcon,
-  TutanotaIcon,
-  VercelIcon,
-} from '~/components/icons';
+import { twMerge } from 'tailwind-merge';
+
+import Link from 'next/link';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
-
-import { getLists, getPageviews, getUsers } from '~/lib/stats';
-import { numberFormat } from '~/lib/strings';
 import { buttonVariants } from '~/components/ui/Button';
-import { twMerge } from 'tailwind-merge';
+
+import { ModrinthIcon, TutanotaIcon, VercelIcon } from '~/components/icons';
 import {
   ArrowDownIcon,
   CloudIcon,
   FolderArchiveIcon,
+  HexagonIcon,
   PlusIcon,
 } from 'lucide-react';
+
+import { getLists, getPageviews, getUsers } from '~/lib/stats';
+import { numberFormat } from '~/lib/strings';
 
 interface PageProps {
   pageviews: number | null;
@@ -165,7 +162,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
           <div
             className={buttonVariants({ size: 'showcase', variant: 'fuchsia' })}
           >
-            <PrismIcon className="block h-5 w-5" />
+            <HexagonIcon className="block h-5 w-5" />
             <span>MultiMC / Prism</span>
           </div>
         </div>

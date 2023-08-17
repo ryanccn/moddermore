@@ -2,6 +2,8 @@ import type { NextPage } from 'next';
 import { type FormEventHandler, useState, useCallback } from 'react';
 
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
+import toast from 'react-hot-toast';
 
 import { parseFerium } from '~/lib/import/ferium';
 import minecraftVersions from '~/lib/minecraftVersions.json';
@@ -9,8 +11,6 @@ import type { ModLoader } from '~/types/moddermore';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
-import { useSession } from 'next-auth/react';
-import toast from 'react-hot-toast';
 
 const FeriumImportPage: NextPage = () => {
   const sess = useSession({ required: true });

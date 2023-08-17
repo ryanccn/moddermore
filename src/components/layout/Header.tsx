@@ -46,7 +46,7 @@ const ThemeButton = () => {
   );
 };
 
-const Navbar = () => {
+const Header = () => {
   const { data, status } = useSession();
 
   return (
@@ -110,4 +110,4 @@ const Navbar = () => {
   );
 };
 
-export { Navbar };
+export { Header };

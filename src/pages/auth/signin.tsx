@@ -3,11 +3,11 @@ import { type NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { type FormEventHandler, useState, useEffect, useCallback } from 'react';
 
+import toast from 'react-hot-toast';
 import { signIn, useSession } from 'next-auth/react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { DiscordIcon, GitHubIcon, GoogleIcon } from '~/components/icons';
-import toast from 'react-hot-toast';
 import { Button } from '~/components/ui/Button';
 
 const errors = {

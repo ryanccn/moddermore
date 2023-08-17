@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import Head from 'next/head';
-import { Navbar } from './Navbar';
+import { Header } from './Header';
 import { Footer } from './Footer';
 
 import { useMemo, type ReactNode } from 'react';
@@ -58,7 +58,7 @@ export const GlobalLayout = ({
         <meta name="twitter:image" content="https://moddermore.net/cover.png" />
       </Head>
 
-      <Navbar />
+      <Header />
 
       <main
         className={
