@@ -6,10 +6,7 @@ const Spinner = ({ className }: { className?: string }) => {
       role="status"
       aria-label="Loading..."
       aria-hidden="true"
-      className={twMerge(
-        'animate-spin-fast h-8 w-8 fill-indigo-500 dark:fill-indigo-400',
-        className,
-      )}
+      className={twMerge('animate-spin-fast fill-current', className)}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

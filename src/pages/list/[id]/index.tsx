@@ -928,7 +928,7 @@ ${
                 disabled={isSaving}
               >
                 {isSaving ? (
-                  <Spinner className="block h-5 w-5 fill-current" />
+                  <Spinner className="block h-5 w-5" />
                 ) : (
                   <SaveIcon className="block h-5 w-5" />
                 )}

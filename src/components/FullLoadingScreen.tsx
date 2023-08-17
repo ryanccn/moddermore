@@ -19,7 +19,7 @@ export const FullLoadingScreen = ({
         </Head>
       )}
       <div className="flex flex-col items-center gap-y-6">
-        <Spinner className="mb-4" />
+        <Spinner className="block w-8 h-8 fill-indigo-500 dark:fill-indigo-400 mb-4" />
         <span
           className={
             !label ? 'sr-only' : 'text-neutral-700 dark:text-neutral-300'
