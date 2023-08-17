@@ -1,11 +1,17 @@
 import { type NextApiHandler } from 'next';
 
+import pLimit from 'p-limit';
 import { z } from 'zod';
+
+import { getSpecificList } from '~/lib/db';
 import { getListsCollection } from '~/lib/db/client';
+import { type ModList } from '~/types/moddermore';
+
+const lim = pLimit(16);
 
 const search = async (query: string) => {
   const collection = await getListsCollection();
-  const resp = collection.aggregate([
+  const resp = collection.aggregate<ModList>([
     {
       $search: {
         index: 'search_index',
@@ -22,7 +28,10 @@ const search = async (query: string) => {
     // },
   ]);
 
-  return resp.toArray();
+  const arr = await resp.toArray();
+  return Promise.all(arr.map((k) => lim(() => getSpecificList(k.id)))).then(
+    (k) => k.filter(Boolean),
+  );
 };
 
 const validate = z.object({ query: z.string().min(1) });

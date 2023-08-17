@@ -9,12 +9,12 @@ import { ModListInList } from '~/components/partials/ModListInList';
 import { Button } from '~/components/ui/Button';
 
 import { toast } from 'react-hot-toast';
-import type { ModList } from '~/types/moddermore';
+import type { ModListWithExtraData } from '~/types/moddermore';
 
 const SearchPage: NextPage = () => {
   useSession({ required: true });
   const [query, setQuery] = useState('');
-  const [lists, setLists] = useState<ModList[]>([]);
+  const [lists, setLists] = useState<ModListWithExtraData[]>([]);
 
   const updateSearch = useCallback(() => {
     fetch('/api/search', {
@@ -22,7 +22,7 @@ const SearchPage: NextPage = () => {
       body: JSON.stringify({ query }),
       headers: { 'content-type': 'application/json' },
     })
-      .then((a) => a.json() as Promise<ModList[]>)
+      .then((a) => a.json() as Promise<ModListWithExtraData[]>)
       .then(setLists)
       .catch(() => {
         toast.error('Failed to fetch lists!');
@@ -59,9 +59,9 @@ const SearchPage: NextPage = () => {
         </div>
 
         {lists.length > 0 ? (
-          <ul className="grid h-fit w-full grid-cols-1 gap-4 px-6 lg:grid-cols-3">
+          <ul className="grid h-fit w-full grid-cols-1 gap-4 lg:grid-cols-3">
             {lists.map((list) => (
-              <ModListInList list={list} key={list.id} />
+              <ModListInList listWithExtra={list} key={list.id} />
             ))}
           </ul>
         ) : null}
