@@ -22,6 +22,9 @@ import {
   useState,
 } from 'react';
 import { useRouter } from 'next/router';
+
+import { getServerSession } from 'next-auth';
+import { authOptions } from '~/lib/authOptions';
 import { signIn, useSession } from 'next-auth/react';
 
 import * as Dialog from '@radix-ui/react-dialog';
@@ -1200,11 +1203,18 @@ ${
 
 export const getServerSideProps: GetServerSideProps<
   PageProps | { notFound: true }
-> = async ({ query }) => {
+> = async ({ query, req, res }) => {
   if (typeof query.id !== 'string') throw new Error('?');
   const data = await getSpecificList(query.id);
 
   if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const sess = await getServerSession(req, res, authOptions);
+  if (data.visibility === 'private' && sess?.user.id !== data.owner) {
     return {
       notFound: true,
     };

@@ -22,13 +22,13 @@ export const callCurseForgeAPI = async ({
   if (version) {
     const res = await fetch(
       `https://api.curseforge.com/v1/mods/${encodeURIComponent(
-        id
+        id,
       )}/files/${encodeURIComponent(version)}?gameVersion=${encodeURIComponent(
-        gameVersions[0]
+        gameVersions[0],
       )}&modLoaderType=${modLoaderType}`,
       {
         headers: { 'x-api-key': API_KEY },
-      }
+      },
     );
 
     if (res.status === 404) {
@@ -44,11 +44,11 @@ export const callCurseForgeAPI = async ({
 
   const res = await fetch(
     `https://api.curseforge.com/v1/mods/${id}/files?gameVersion=${encodeURIComponent(
-      gameVersions[0]
+      gameVersions[0],
     )}&modLoaderType=${modLoaderType}`,
     {
       headers: { 'x-api-key': API_KEY },
-    }
+    },
   );
 
   if (res.status === 404) {

@@ -47,6 +47,11 @@ export const ModListUpdate = z.object({
   modloader: z
     .union([z.literal('forge'), z.literal('fabric'), z.literal('quilt')])
     .optional(),
+  visibility: z.union([
+    z.literal('private'),
+    z.literal('unlisted'),
+    z.literal('public'),
+  ]),
   mods: z.array(Mod).min(1).max(500).optional(),
 });
 
@@ -59,6 +64,7 @@ export interface ModList {
   gameVersion: string;
   description: string | null;
   owner: string | null;
+  visibility: 'private' | 'unlisted' | 'public';
   modloader: ModLoader;
   mods: Mod[];
 }

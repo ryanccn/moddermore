@@ -2,12 +2,16 @@ import { type GetServerSideProps, type NextPage } from 'next';
 
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
 
+import { getServerSession } from 'next-auth';
+import { useSession } from 'next-auth/react';
+import { authOptions } from '~/lib/authOptions';
+
+import Link from 'next/link';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { Button } from '~/components/ui/Button';
+import { Spinner } from '~/components/partials/Spinner';
 import { ArrowLeftIcon, SaveIcon } from 'lucide-react';
-import Link from 'next/link';
 
 import { toast } from 'react-hot-toast';
 import { getSpecificList } from '~/lib/db';
@@ -25,7 +29,12 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   const [title, setTitle] = useState(data.title);
   const [description, setDescription] = useState(data.description);
   const [gameVersion, setGameVersion] = useState(data.gameVersion);
-  const [modLoader, setModLoader] = useState<ModLoader>(data.modloader);
+  const [modLoader, setModLoader] = useState<typeof data.modloader>(
+    data.modloader,
+  );
+  const [visibility, setVisibility] = useState<typeof data.visibility>(
+    data.visibility,
+  );
 
   const [inProgress, setInProgress] = useState(false);
 
@@ -47,6 +56,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
       body: JSON.stringify({
         title,
         description: description || undefined,
+        visibility,
         gameVersion,
         modloader: modLoader,
       }),
@@ -54,12 +64,14 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
     }).then(async (res) => {
       if (!res.ok) {
         const { error } = await res.json();
+
         toast.error(
           <div className="flex flex-col gap-y-1">
             <p className="font-semibold">Failed to update list settings!</p>
             <p className="text-sm">{error}</p>
           </div>,
         );
+
         setInProgress(false);
         return;
       }
@@ -68,7 +80,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
       setInProgress(false);
       router.push(`/list/${data.id}`);
     });
-  }, [data, router, title, gameVersion, modLoader, description]);
+  }, [data, router, title, gameVersion, modLoader, description, visibility]);
 
   return (
     <GlobalLayout title={`Settings for ${data.title}`}>
@@ -115,6 +127,23 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         </label>
 
         <label className="moddermore-form-label">
+          <span>Visibility</span>
+          <select
+            name="visibility"
+            value={visibility}
+            aria-label="Visibility"
+            required
+            onChange={(e) => {
+              setVisibility(e.target.value as typeof visibility);
+            }}
+          >
+            <option value="private">Private</option>
+            <option value="unlisted">Unlisted</option>
+            <option value="public">Public</option>
+          </select>
+        </label>
+
+        <label className="moddermore-form-label">
           <span>Game version</span>
           <select
             name="game-version"
@@ -151,7 +180,11 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         </label>
 
         <Button type="submit" className="mt-4 self-start" disabled={inProgress}>
-          <SaveIcon className="block h-4 w-4" />
+          {inProgress ? (
+            <Spinner className="w-4 h-4" />
+          ) : (
+            <SaveIcon className="block h-4 w-4" />
+          )}
           <span>Save</span>
         </Button>
       </form>
@@ -161,11 +194,18 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
 
 export const getServerSideProps: GetServerSideProps<
   PageProps | { notFound: true }
-> = async ({ query }) => {
+> = async ({ query, req, res }) => {
   if (typeof query.id !== 'string') throw new Error('?');
   const data = await getSpecificList(query.id);
 
   if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const sess = await getServerSession(req, res, authOptions);
+  if (sess?.user.id !== data.owner) {
     return {
       notFound: true,
     };

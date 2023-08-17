@@ -4,11 +4,12 @@ import type { ExportReturnData } from './types';
 import pLimit from 'p-limit';
 import { getCFDownload } from './curseforge';
 import { getModrinthDownload } from './modrinth';
+
 import type { SetStateFn } from '~/types/react';
 
 export const getDownloadURLs = async (
   list: RichModList,
-  setProgress: SetStateFn<{ value: number; max: number }>
+  setProgress: SetStateFn<{ value: number; max: number }>,
 ) => {
   let ret: ExportReturnData = [];
 
@@ -38,8 +39,8 @@ export const getDownloadURLs = async (
         }
 
         setProgress((old) => ({ value: old.value + 1, max: old.max }));
-      })
-    )
+      }),
+    ),
   );
 
   return ret;

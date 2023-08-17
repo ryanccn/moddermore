@@ -21,11 +21,11 @@ const search = async (query: string) => {
         },
       },
     },
-    // {
-    //   $match: {
-    //     visibility: 'public',
-    //   },
-    // },
+    {
+      $match: {
+        visibility: 'public',
+      },
+    },
   ]);
 
   const arr = await resp.toArray();
