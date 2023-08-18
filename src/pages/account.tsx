@@ -8,6 +8,8 @@ import { DashboardLayout } from '~/components/layout/DashboardLayout';
 
 import { toast } from 'react-hot-toast';
 import { Button } from '~/components/ui/Button';
+import { LogOutIcon, SaveIcon } from 'lucide-react';
+import { Spinner } from '~/components/partials/Spinner';
 
 const AccountPage: NextPage = () => {
   const session = useSession({ required: true });
@@ -89,7 +91,12 @@ const AccountPage: NextPage = () => {
             className="mt-2 self-start"
             disabled={inProgress}
           >
-            Save
+            {inProgress ? (
+              <Spinner className="block w-4 h-4" />
+            ) : (
+              <SaveIcon className="block w-4 h-4" />
+            )}
+            <span>Save</span>
           </Button>
         </form>
 
@@ -100,7 +107,8 @@ const AccountPage: NextPage = () => {
             signOut();
           }}
         >
-          Sign out
+          <LogOutIcon className="block w-4 h-4" />
+          <span>Sign out</span>
         </Button>
       </div>
     </DashboardLayout>
