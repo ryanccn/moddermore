@@ -94,14 +94,14 @@ export const RichModDisplay = ({
               <>
                 {buttonType === 'delete' && (
                   <Button type="button" variant="danger" onClick={onClick}>
-                    <TrashIcon className="block h-5 w-5" />
+                    <TrashIcon className="block w-5 h-5" />
                     <span>Delete</span>
                   </Button>
                 )}
 
                 {buttonType === 'add' && (
                   <Button type="button" variant="green" onClick={onClick}>
-                    <PlusIcon className="block h-5 w-5" />
+                    <PlusIcon className="block w-5 h-5" />
                     <span>Add</span>
                   </Button>
                 )}

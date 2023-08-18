@@ -44,17 +44,17 @@ export const DashboardLayout = ({ title, children }: Props) => {
           <DashboardLink
             title="Lists"
             href="/lists"
-            icon={<ListIcon className="block h-5 w-5" />}
+            icon={<ListIcon className="block w-5 h-5" />}
           />
           <DashboardLink
             title="Likes"
             href="/likes"
-            icon={<HeartIcon className="block h-5 w-5" />}
+            icon={<HeartIcon className="block w-5 h-5" />}
           />
           <DashboardLink
             title="Account"
             href="/account"
-            icon={<UserIcon className="block h-5 w-5" />}
+            icon={<UserIcon className="block w-5 h-5" />}
           />
         </div>
         <div className="py-8 w-full">{children}</div>

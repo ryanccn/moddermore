@@ -181,7 +181,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
 
         <Button type="submit" className="mt-4 self-start" disabled={inProgress}>
           {inProgress ? (
-            <Spinner className="w-4 h-4" />
+            <Spinner className="w-5 h-5" />
           ) : (
             <SaveIcon className="block h-4 w-4" />
           )}

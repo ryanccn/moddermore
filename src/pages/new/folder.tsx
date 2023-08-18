@@ -136,7 +136,7 @@ const FolderImportPage: NextPage = () => {
                 }),
               )}
             >
-              <UploadIcon className="block h-5 w-5" />
+              <UploadIcon className="block w-5 h-5" />
               <span>Choose file</span>
             </div>
 

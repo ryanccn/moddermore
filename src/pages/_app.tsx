@@ -48,12 +48,12 @@ function MyApp({
               className: 'react-hot-toast',
               success: {
                 icon: (
-                  <CheckCircleIcon className="block h-5 w-5 text-green-500 dark:text-green-400" />
+                  <CheckCircleIcon className="block w-5 h-5 text-green-500 dark:text-green-400" />
                 ),
               },
               error: {
                 icon: (
-                  <AlertCircleIcon className="block h-5 w-5 text-red-400" />
+                  <AlertCircleIcon className="block w-5 h-5 text-red-400" />
                 ),
               },
             }}

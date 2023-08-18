@@ -81,7 +81,7 @@ const SigninPage: NextPage = () => {
             });
           }}
         >
-          <GitHubIcon className="block h-5 w-5 fill-current stroke-transparent" />
+          <GitHubIcon className="block w-5 h-5 fill-current stroke-transparent" />
           <span>Sign in with GitHub</span>
         </Button>
         <Button
@@ -97,7 +97,7 @@ const SigninPage: NextPage = () => {
             });
           }}
         >
-          <DiscordIcon className="block h-5 w-5 fill-current stroke-transparent" />
+          <DiscordIcon className="block w-5 h-5 fill-current stroke-transparent" />
           <span>Sign in with Discord</span>
         </Button>
         <Button
@@ -113,7 +113,7 @@ const SigninPage: NextPage = () => {
             });
           }}
         >
-          <GoogleIcon className="block h-5 w-5 fill-current stroke-transparent" />
+          <GoogleIcon className="block w-5 h-5 fill-current stroke-transparent" />
           <span>Sign in with Google</span>
         </Button>
 

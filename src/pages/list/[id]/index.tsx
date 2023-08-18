@@ -86,6 +86,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
   const [isDuplicating, setIsDuplicating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [hasLiked, setHasLiked] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -348,12 +349,16 @@ ${
 
     if (confirmDeleteTimeoutID) window.clearTimeout(confirmDeleteTimeoutID);
 
+    setIsDeleting(true);
+
     const res = await fetch(`/api/list/${data.id}/delete`);
+
     if (res.ok) {
       toast.success(`Deleted ${data.title} (${data.id})!`);
     } else {
       toast.error(`Failed to delete ${data.title} (${data.id})!`);
     }
+
     router.push('/lists');
   }, [
     router,
@@ -414,7 +419,7 @@ ${
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild disabled={!resolvedMods}>
             <Button>
-              <DownloadIcon className="block h-5 w-5" />
+              <DownloadIcon className="block w-5 h-5" />
               <span>Export as...</span>
             </Button>
           </DropdownMenu.Trigger>
@@ -437,7 +442,7 @@ ${
                       });
                   }}
                 >
-                  <FolderArchiveIcon className="block h-5 w-5" />
+                  <FolderArchiveIcon className="block w-5 h-5" />
                   <span>Zip archive</span>
                 </button>
               </DropdownMenu.Item>
@@ -446,7 +451,7 @@ ${
                   className="radix-dropdown-button"
                   onClick={modrinthExportInit}
                 >
-                  <ModrinthIcon className="block h-5 w-5" />
+                  <ModrinthIcon className="block w-5 h-5" />
                   <span>Modrinth pack</span>
                 </button>
               </DropdownMenu.Item>
@@ -456,7 +461,7 @@ ${
                   onClick={packwizExport}
                   disabled={data.visibility === 'private'}
                 >
-                  <CloudIcon className="block h-5 w-5" />
+                  <CloudIcon className="block w-5 h-5" />
                   <span>Copy packwiz link</span>
                 </button>
               </DropdownMenu.Item>
@@ -473,7 +478,7 @@ ${
                       });
                   }}
                 >
-                  <HexagonIcon className="block h-5 w-5" />
+                  <HexagonIcon className="block w-5 h-5" />
                   <span>MultiMC</span>
                 </button>
               </DropdownMenu.Item>
@@ -492,7 +497,7 @@ ${
                   disabled={data.visibility === 'private'}
                 >
                   <div className="relative">
-                    <HexagonIcon className="block h-5 w-5" />
+                    <HexagonIcon className="block w-5 h-5" />
                     <CloudIcon className="block h-3 w-3 fill-current absolute right-0 bottom-0" />
                   </div>
                   <span>MultiMC (auto-updating)</span>
@@ -505,7 +510,7 @@ ${
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <Button disabled={!resolvedMods}>
-              <ClipboardIcon className="block h-5 w-5" />
+              <ClipboardIcon className="block w-5 h-5" />
               <span>Copy as...</span>
             </Button>
           </DropdownMenu.Trigger>
@@ -521,7 +526,7 @@ ${
                   onClick={copyMarkdownList}
                   disabled={data.mods.length === 0}
                 >
-                  <MarkdownIcon className="block h-5 w-5" />
+                  <MarkdownIcon className="block w-5 h-5" />
                   <span>Markdown list</span>
                 </button>
               </DropdownMenu.Item>
@@ -531,7 +536,7 @@ ${
                   onClick={copyJSON}
                   disabled={data.mods.length === 0}
                 >
-                  <CodeIcon className="block h-5 w-5" />
+                  <CodeIcon className="block w-5 h-5" />
                   <span>JSON</span>
                 </button>
               </DropdownMenu.Item>
@@ -543,23 +548,23 @@ ${
           {!isLiking ? (
             <HeartIcon
               className={twMerge(
-                'block h-5 w-5',
+                'block w-5 h-5',
                 hasLiked
                   ? 'fill-current stroke-none'
-                  : 'fill-none stroke-current stroke-[1.5]',
+                  : 'fill-none stroke-current',
               )}
             />
           ) : (
-            <Spinner className="block h-5 w-5 fill-current" />
+            <Spinner className="block w-5 h-5 fill-current" />
           )}
           <span>{!hasLiked ? 'Like' : 'Unlike'}</span>
         </Button>
 
         <Button onClick={duplicateList}>
           {isDuplicating ? (
-            <Spinner className="block h-5 w-5 fill-current" />
+            <Spinner className="block w-5 h-5 fill-current" />
           ) : (
-            <CopyIcon className="block h-5 w-5" />
+            <CopyIcon className="block w-5 h-5" />
           )}
           <span>Duplicate</span>
         </Button>
@@ -575,9 +580,9 @@ ${
                 disabled={isSaving}
               >
                 {isSaving ? (
-                  <Spinner className="block h-5 w-5 fill-current" />
+                  <Spinner className="block w-5 h-5 fill-current" />
                 ) : (
-                  <EditIcon className="block h-5 w-5" />
+                  <EditIcon className="block w-5 h-5" />
                 )}
                 <span>Edit</span>
               </Button>
@@ -588,9 +593,9 @@ ${
                 disabled={isSaving}
               >
                 {isSaving ? (
-                  <Spinner className="block h-5 w-5" />
+                  <Spinner className="block w-5 h-5" />
                 ) : (
-                  <SaveIcon className="block h-5 w-5" />
+                  <SaveIcon className="block w-5 h-5" />
                 )}
                 <span>Save</span>
               </Button>
@@ -600,12 +605,20 @@ ${
               className={buttonVariants({ variant: 'secondary' })}
               href={`/list/${data.id}/settings`}
             >
-              <SettingsIcon className="block h-5 w-5" />
+              <SettingsIcon className="block w-5 h-5" />
               <span>Settings</span>
             </Link>
 
-            <Button variant="danger" onClick={deleteCurrentList}>
-              <TrashIcon className="block h-5 w-5" />
+            <Button
+              variant="danger"
+              onClick={deleteCurrentList}
+              disabled={isDeleting}
+            >
+              {isDeleting ? (
+                <Spinner className="block w-5 h-5" />
+              ) : (
+                <TrashIcon className="block w-5 h-5" />
+              )}
               {confirmDelete ? (
                 <span>Confirm deletion?</span>
               ) : (
@@ -746,7 +759,7 @@ ${
               )}
 
               <Button variant="modrinth" type="submit" className="self-start">
-                <ModrinthIcon className="block h-5 w-5" />
+                <ModrinthIcon className="block w-5 h-5" />
                 <span>Start export</span>
               </Button>
             </form>

@@ -92,9 +92,9 @@ const AccountPage: NextPage = () => {
             disabled={inProgress}
           >
             {inProgress ? (
-              <Spinner className="block w-4 h-4" />
+              <Spinner className="block w-5 h-5" />
             ) : (
-              <SaveIcon className="block w-4 h-4" />
+              <SaveIcon className="block w-5 h-5" />
             )}
             <span>Save</span>
           </Button>
@@ -107,7 +107,7 @@ const AccountPage: NextPage = () => {
             signOut();
           }}
         >
-          <LogOutIcon className="block w-4 h-4" />
+          <LogOutIcon className="block w-5 h-5" />
           <span>Sign out</span>
         </Button>
       </div>

@@ -36,11 +36,11 @@ const ThemeButton = () => {
   return (
     <button onClick={nextTheme} className="p-2">
       {theme === 'system' ? (
-        <LaptopIcon className="block w-4 h-4" />
+        <LaptopIcon className="block w-5 h-5" />
       ) : theme === 'light' ? (
-        <SunIcon className="block w-4 h-4" />
+        <SunIcon className="block w-5 h-5" />
       ) : (
-        <MoonIcon className="block w-4 h-4" />
+        <MoonIcon className="block w-5 h-5" />
       )}
     </button>
   );
@@ -84,7 +84,7 @@ const Header = () => {
         data ? (
           <>
             <Link href="/new" className={buttonVariants()}>
-              <PlusIcon className="block h-5 w-5" />
+              <PlusIcon className="block w-5 h-5" />
               <span>Create</span>
             </Link>
           </>
@@ -94,7 +94,7 @@ const Header = () => {
               nextAuthSignIn();
             }}
           >
-            <UserIcon className="block h-5 w-5" />
+            <UserIcon className="block w-5 h-5" />
             <span>Sign in</span>
           </Button>
         )

@@ -11,9 +11,9 @@ export const NewSubmitButton = ({ submitting, disabled }: Props) => {
   return (
     <Button type="submit" className="mt-14" disabled={disabled}>
       {submitting ? (
-        <Spinner className="block w-4 h-4" />
+        <Spinner className="block w-5 h-5" />
       ) : (
-        <UploadIcon className="block w-4 h-4" />
+        <UploadIcon className="block w-5 h-5" />
       )}
       <span>Submit</span>
     </Button>

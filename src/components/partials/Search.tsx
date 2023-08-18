@@ -77,9 +77,9 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
 
         <Button type="button" onClick={updateSearch} disabled={isSearching}>
           {isSearching ? (
-            <Spinner className="block w-4 h-4" />
+            <Spinner className="block w-5 h-5" />
           ) : (
-            <SearchIcon className="block w-4 h-4" />
+            <SearchIcon className="block w-5 h-5" />
           )}
           <span>Search</span>
         </Button>

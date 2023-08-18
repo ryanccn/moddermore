@@ -60,7 +60,7 @@ const SearchPage: NextPage = () => {
 
         <Button type="button" onClick={updateSearch} disabled={searching}>
           {searching ? (
-            <Spinner className="w-4 h-4" />
+            <Spinner className="w-5 h-5" />
           ) : (
             <SearchIcon className="block h-4 w-4" />
           )}
