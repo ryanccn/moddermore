@@ -75,14 +75,14 @@ export const RichModDisplay = ({
             rel="noreferrer noopener"
           >
             {providerFormat(data.provider)}
-            <ArrowUpRightIcon className="block h-4 w-4" />
+            <ArrowUpRightIcon className="block w-5 h-5" />
           </a>
         </div>
 
         <div className="min-w-fit">
           {data.downloads && (
             <div className="mb-2 flex items-center sm:justify-end">
-              <DownloadIcon className="mr-1 h-4 w-4" />
+              <DownloadIcon className="mr-1 w-5 h-5" />
               <p className="font-medium">
                 <strong>{numberFormat(data.downloads)}</strong> downloads
               </p>

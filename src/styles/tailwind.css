@@ -85,7 +85,7 @@
   }
 
   .new-card {
-    @apply bg-neutral-100 px-5 py-10 dark:bg-neutral-800;
+    @apply bg-neutral-100 px-5 py-12 dark:bg-neutral-800;
     @apply flex flex-col items-center gap-y-4 rounded;
     @apply transition-shadow;
   }

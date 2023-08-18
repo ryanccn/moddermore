@@ -183,7 +183,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
           {inProgress ? (
             <Spinner className="w-5 h-5" />
           ) : (
-            <SaveIcon className="block h-4 w-4" />
+            <SaveIcon className="block w-5 h-5" />
           )}
           <span>Save</span>
         </Button>

@@ -2,7 +2,7 @@
 
 export const curseforgeHash = async (data: Uint8Array): Promise<number> => {
   const treatedData = data.filter(
-    (v) => v !== 9 && v !== 10 && v !== 13 && v !== 32
+    (v) => v !== 9 && v !== 10 && v !== 13 && v !== 32,
   );
 
   let len = treatedData.length;

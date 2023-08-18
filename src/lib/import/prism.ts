@@ -67,7 +67,7 @@ export const parsePrismInstance = async ({
     console.log('.index folder detected, using packwiz format');
 
     const mods = Object.keys(pwIndexDir.files).filter((fn) =>
-      fn.endsWith('toml')
+      fn.endsWith('toml'),
     );
 
     const ret: (Mod | null)[] = [];
@@ -85,12 +85,9 @@ export const parsePrismInstance = async ({
             console.error(error);
           }
 
-          setProgress((oldVal) => ({
-            value: oldVal.value + 1,
-            max: oldVal.max,
-          }));
-        })
-      )
+          setProgress((prev) => ({ ...prev, value: prev.value + 1 }));
+        }),
+      ),
     );
 
     return ret;

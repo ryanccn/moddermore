@@ -27,12 +27,12 @@ export const search = async ({
 }: Options): Promise<RichMod[]> => {
   if (platform === 'modrinth') {
     const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersion.split('.').slice(0, 2).join('.'))
+      a.startsWith(gameVersion.split('.').slice(0, 2).join('.')),
     );
 
     const data = await fetch(
       `https://api.modrinth.com/v2/search?query=${encodeURIComponent(
-        query
+        query,
       )}&facets=${encodeURIComponent(
         JSON.stringify([
           [`project_type:mod`],
@@ -40,8 +40,8 @@ export const search = async ({
           loader === 'quilt'
             ? ['categories:fabric', 'categories:quilt']
             : [`categories:${loader}`],
-        ])
-      )}`
+        ]),
+      )}`,
     ).then(async (r) => {
       if (!r.ok) throw new Error(await r.text());
       return r.json() as Promise<ModrinthSearchResult>;
@@ -71,11 +71,11 @@ export const search = async ({
 
     const data = await fetch(
       `https://api.curseforge.com/v1/mods/search?gameId=432&classId=6&pageSize=10&sortField=2&sortOrder=desc&searchFilter=${encodeURIComponent(
-        query
+        query,
       )}&modLoaderType=${modLoaderType}&gameVersion=${encodeURIComponent(
-        gameVersion
+        gameVersion,
       )}`,
-      { headers: { 'x-api-key': API_KEY } }
+      { headers: { 'x-api-key': API_KEY } },
     ).then(async (r) => {
       if (!r.ok) throw new Error(await r.text());
       return r.json() as Promise<CurseForgeSearchResult>;

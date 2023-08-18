@@ -27,11 +27,11 @@ interface InputData {
   }>;
 }
 
-const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
+export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
   const mrHash = await modrinthHash(file);
   const mrRes = await fetch(
     `https://api.modrinth.com/v2/version_file/${mrHash}?algorithm=sha512`,
-    { headers: { 'User-Agent': 'Moddermore/noversion' } }
+    { headers: { 'User-Agent': 'Moddermore/noversion' } },
   );
 
   if (mrRes.ok) {
@@ -69,7 +69,7 @@ export const parseModFolder = async ({ f, setProgress }: InputData) => {
       !name.includes('__MACOSX') && // some macOS zip stuff
       !name.includes('.old') && // ferium
       !name.endsWith('.disabled') && // disabled mods
-      !f.files[name].dir
+      !f.files[name].dir,
   );
 
   const ret: (Mod | null)[] = [];
@@ -88,8 +88,8 @@ export const parseModFolder = async ({ f, setProgress }: InputData) => {
         }
 
         setProgress((oldVal) => ({ value: oldVal.value + 1, max: oldVal.max }));
-      })
-    )
+      }),
+    ),
   );
 
   return ret;

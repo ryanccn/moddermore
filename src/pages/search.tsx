@@ -62,7 +62,7 @@ const SearchPage: NextPage = () => {
           {searching ? (
             <Spinner className="w-5 h-5" />
           ) : (
-            <SearchIcon className="block h-4 w-4" />
+            <SearchIcon className="block w-5 h-5" />
           )}
           <span>Search</span>
         </Button>
