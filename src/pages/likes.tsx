@@ -35,7 +35,7 @@ const LikesPage: NextPage = () => {
             ))}
           </ul>
         ) : (
-          <div className="rounded w-full h-fit m-6 bg-transparent font-medium px-2 py-16 text-center text-lg shadow dark:bg-neutral-800">
+          <div className="rounded m-6 bg-transparent font-medium px-2 py-20 text-center text-lg shadow dark:bg-neutral-800">
             No liked lists yet!
           </div>
         )
