@@ -53,6 +53,7 @@ import {
   HeartIcon,
   HexagonIcon,
   SaveIcon,
+  SearchIcon,
   SettingsIcon,
   TrashIcon,
 } from 'lucide-react';
@@ -94,6 +95,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [searchProvider, setSearchProvider] = useState('modrinth');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<RichMod[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   const [hasLiked, setHasLiked] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -602,14 +604,19 @@ ${
   );
 
   const updateSearch = useCallback(() => {
+    setIsSearching(true);
     search({
       platform: searchProvider as 'modrinth' | 'curseforge',
       query: searchQuery,
       loader: data.modloader,
       gameVersion: data.gameVersion,
-    }).then((res) => {
-      setSearchResults(res);
-    });
+    })
+      .then((res) => {
+        setSearchResults(res);
+      })
+      .finally(() => {
+        setIsSearching(false);
+      });
   }, [searchProvider, searchQuery, data]);
 
   const copyMarkdownList = useCallback(() => {
@@ -975,6 +982,7 @@ ${
               value={searchProvider}
               className="mm-input flex-grow-0"
               aria-label="Select a provider to search from"
+              disabled={isSearching}
               onChange={(e) => {
                 setSearchProvider(e.target.value);
               }}
@@ -992,6 +1000,7 @@ ${
               aria-label="Search for mods"
               minLength={1}
               value={searchQuery}
+              disabled={isSearching}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
               }}
@@ -1003,8 +1012,13 @@ ${
               }}
             />
 
-            <Button type="button" onClick={updateSearch}>
-              Search
+            <Button type="button" onClick={updateSearch} disabled={isSearching}>
+              {isSearching ? (
+                <Spinner className="block w-4 h-4" />
+              ) : (
+                <SearchIcon className="block w-4 h-4" />
+              )}
+              <span>Search</span>
             </Button>
           </div>
 

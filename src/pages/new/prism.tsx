@@ -188,7 +188,10 @@ const PrismImportPage: NextPage = () => {
           </label>
         </div>
 
-        <NewSubmitButton disabled={sess.status === 'loading' || submitting} />
+        <NewSubmitButton
+          submitting={submitting}
+          disabled={sess.status === 'loading' || submitting}
+        />
       </form>
 
       {submitting && (

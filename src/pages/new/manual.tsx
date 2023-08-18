@@ -14,6 +14,9 @@ import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
 import { Button } from '~/components/ui/Button';
 
+import { Spinner } from '~/components/partials/Spinner';
+import { SearchIcon } from 'lucide-react';
+
 import toast from 'react-hot-toast';
 
 const ManualImportPage: NextPage = () => {
@@ -26,6 +29,7 @@ const ManualImportPage: NextPage = () => {
   const [searchProvider, setSearchProvider] = useState('modrinth');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<RichMod[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   const [inputMods, setInputMods] = useState<RichMod[]>([]);
 
@@ -64,14 +68,19 @@ const ManualImportPage: NextPage = () => {
   );
 
   const updateSearch = useCallback(() => {
+    setIsSearching(true);
     search({
       platform: searchProvider as 'modrinth' | 'curseforge',
       query: searchQuery,
       loader: modLoader,
       gameVersion: gameVersion,
-    }).then((res) => {
-      setSearchResults(res);
-    });
+    })
+      .then((res) => {
+        setSearchResults(res);
+      })
+      .finally(() => {
+        setIsSearching(false);
+      });
   }, [searchProvider, searchQuery, modLoader, gameVersion]);
 
   return (
@@ -136,6 +145,7 @@ const ManualImportPage: NextPage = () => {
               onChange={(e) => {
                 setSearchProvider(e.target.value);
               }}
+              disabled={isSearching}
             >
               <option value="modrinth">Modrinth</option>
               <option value="curseforge">CurseForge</option>
@@ -150,6 +160,7 @@ const ManualImportPage: NextPage = () => {
               aria-label="Search for mods"
               minLength={1}
               value={searchQuery}
+              disabled={isSearching}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
               }}
@@ -161,8 +172,13 @@ const ManualImportPage: NextPage = () => {
               }}
             />
 
-            <Button type="button" onClick={updateSearch}>
-              Search
+            <Button type="button" onClick={updateSearch} disabled={isSearching}>
+              {isSearching ? (
+                <Spinner className="block w-4 h-4" />
+              ) : (
+                <SearchIcon className="block w-4 h-4" />
+              )}
+              <span>Search</span>
             </Button>
           </div>
 
@@ -204,6 +220,7 @@ const ManualImportPage: NextPage = () => {
         </ul>
 
         <NewSubmitButton
+          submitting={submitting}
           disabled={session.status === 'loading' || submitting}
         />
       </form>
