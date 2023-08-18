@@ -42,7 +42,7 @@ export type ModListCreate = z.infer<typeof ModListCreate>;
 
 export const ModListUpdate = z.object({
   title: z.string().min(1).optional(),
-  description: z.string().min(1).optional(),
+  description: z.string().min(1).nullable().optional(),
   gameVersion: z.string().min(1).optional(),
   modloader: z
     .union([z.literal('forge'), z.literal('fabric'), z.literal('quilt')])

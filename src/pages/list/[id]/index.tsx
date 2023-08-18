@@ -176,10 +176,8 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         {
           method: 'POST',
           body: JSON.stringify({
-            title: data.title,
+            ...data,
             mods: resolvedMods.map((elem) => richModToMod(elem)),
-            gameVersion: data.gameVersion,
-            modloader: data.modloader,
           }),
           headers: { 'Content-Type': 'application/json' },
         },
