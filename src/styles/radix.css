@@ -8,7 +8,7 @@
 }
 
 .radix-dropdown-menu-content {
-  @apply z-50 my-4 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800;
+  @apply z-50 my-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800;
   animation-name: fadeIn;
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
