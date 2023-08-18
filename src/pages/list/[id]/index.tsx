@@ -13,7 +13,6 @@ import { getInfos as getModrinthInfos } from '~/lib/metadata/modrinth';
 import { getInfos as getCurseForgeInfos } from '~/lib/metadata/curseforge';
 import { loaderFormat } from '~/lib/strings';
 
-import pLimit from 'p-limit';
 import {
   FormEventHandler,
   useCallback,
@@ -23,9 +22,18 @@ import {
 } from 'react';
 import { useRouter } from 'next/router';
 
+import { getSpecificList } from '~/lib/db';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '~/lib/authOptions';
 import { signIn, useSession } from 'next-auth/react';
+
+import { zipExport } from '~/lib/export/formats/zip';
+import {
+  prismAutoUpdateExport,
+  prismStaticExport,
+} from '~/lib/export/formats/prism';
+import { modrinthExport } from '~/lib/export/formats/mrpack';
+import { ExportStatus } from '~/lib/export/formats/shared';
 
 import * as Dialog from '@radix-ui/react-dialog';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
@@ -61,10 +69,6 @@ import {
 import toast from 'react-hot-toast';
 import { twMerge } from 'tailwind-merge';
 
-import { getSpecificList } from '~/lib/db';
-import type JSZip from 'jszip';
-import type { ExportReturnData } from '~/lib/export/types';
-
 interface PageProps {
   data: ModListWithExtraData;
 }
@@ -76,15 +80,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [resolvedMods, setResolvedMods] = useState<RichMod[] | null>(null);
   const [oldMods, setOldMods] = useState<RichMod[] | null>(null);
 
-  const [status, setStatus] = useState<
-    | 'idle'
-    | 'resolving'
-    | 'downloading'
-    | 'result'
-    | 'loadinglibraries'
-    | 'generatingzip'
-    | 'modrinth.form'
-  >('idle');
+  const [status, setStatus] = useState<ExportStatus>(ExportStatus.Idle);
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -148,367 +144,24 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     });
   }, [data.id, session.status]);
 
-  const showModal = useMemo(() => status === 'result', [status]);
-
-  const downloadExport = useCallback(async () => {
-    if (!resolvedMods) return;
-
-    setProgress({ value: 0, max: 3 });
-    setStatus('loadinglibraries');
-
-    const { getDownloadURLs } = await import('~/lib/export');
-    setProgress({ value: 1, max: 3 });
-    const { default: JSZip } = await import('jszip');
-    setProgress({ value: 2, max: 3 });
-    const { default: saveAs } = await import('file-saver');
-    setProgress({ value: 3, max: 3 });
-
-    setProgress({ value: 0, max: data.mods.length });
-    setStatus('resolving');
-
-    const urls = await getDownloadURLs(
-      { ...data, mods: resolvedMods },
-      setProgress,
-    );
-
-    setProgress({ value: 0, max: data.mods.length });
-    setResult({ success: [], failed: [] });
-    setStatus('downloading');
-
-    const zipfile = new JSZip();
-
-    await exportZip(zipfile, urls);
-
-    const zipBlob = await zipfile.generateAsync({ type: 'blob' });
-    saveAs(zipBlob, `${data.title}.zip`);
-
-    setStatus('result');
-  }, [resolvedMods, data]);
-
-  const exportZip = async (zipfile: JSZip, urls: ExportReturnData) => {
-    const modFolder = zipfile.folder('mods');
-
-    if (!modFolder) {
-      throw new Error('f');
-    }
-
-    const lim = pLimit(8);
-
-    await Promise.all(
-      urls.map((downloadData) =>
-        lim(async () => {
-          if ('error' in downloadData) {
-            setResult((a) => ({
-              ...a,
-              failed: [
-                ...a.failed,
-                `${downloadData.name} ${downloadData.error}`,
-              ],
-            }));
-            return;
-          }
-
-          const fileContents = await fetch(
-            downloadData.provider === 'curseforge'
-              ? `/api/cursed?url=${encodeURIComponent(downloadData.url)}`
-              : downloadData.url,
-          ).then((r) => {
-            if (!r.ok) {
-              return null;
-            }
-
-            return r.blob();
-          });
-
-          if (!fileContents) {
-            setResult((a) => ({
-              ...a,
-              failed: [
-                ...a.failed,
-                `${downloadData.name} network request failed`,
-              ],
-            }));
-            return;
-          }
-
-          modFolder.file(downloadData.name, fileContents);
-
-          if (downloadData.type === 'direct') {
-            setProgress((old) => ({
-              value: old.value + 1,
-              max: old.max,
-            }));
-          }
-
-          setResult((a) => ({
-            ...a,
-            success: [...a.success, downloadData.name],
-          }));
-        }),
-      ),
-    );
-  };
+  const showResultModal = useMemo(
+    () => status === ExportStatus.Result,
+    [status],
+  );
 
   const modrinthExportInit = () => {
-    setStatus('modrinth.form');
-  };
-
-  const modrinthExport = async () => {
-    if (!data || !resolvedMods) return;
-
-    setProgress({ value: 0, max: 3 });
-    setStatus('loadinglibraries');
-
-    const { getDownloadURLs } = await import('~/lib/export');
-    setProgress({ value: 1, max: 3 });
-    const { generateModrinthPack } = await import('~/lib/export/mrpack');
-    setProgress({ value: 2, max: 3 });
-    const { default: saveAs } = await import('file-saver');
-    setProgress({ value: 3, max: 3 });
-
-    setStatus('resolving');
-    setProgress({ value: 0, max: data.mods.length });
-
-    const urls = await getDownloadURLs(
-      { ...data, mods: resolvedMods },
-      setProgress,
-    );
-
-    const mrpack = await generateModrinthPack(
-      { ...data, mods: resolvedMods },
-      urls,
-      {
-        name: mrpackName,
-        version: mrpackVersion,
-        cfStrategy: mrpackCurseForgeStrategy,
-      },
-    );
-    saveAs(mrpack, `${data.title}.mrpack`);
-
-    setStatus('idle');
+    setStatus(ExportStatus.ModrinthForm);
   };
 
   const packwizExport = async () => {
     try {
-      await navigator.clipboard.writeText(getPackwizUrl(document));
+      await navigator.clipboard.writeText(
+        new URL(`/list/${data.id}/packwiz/pack.toml`, location.href).toString(),
+      );
       toast.success('Copied link to clipboard');
     } catch {
       toast.error('Failed to copy link to clipboard');
     }
-  };
-
-  const getPackwizUrl = (document: Document) => {
-    const url = new URL(document.URL);
-    url.pathname = `/list/${data.id}/packwiz/pack.toml`;
-    return url.href;
-  };
-
-  const prismExport = async () => {
-    setProgress({ value: 0, max: 3 });
-    setStatus('loadinglibraries');
-
-    const { default: JSZip } = await import('jszip');
-    setProgress({ value: 1, max: 3 });
-    const { default: saveAs } = await import('file-saver');
-    setProgress({ value: 2, max: 3 });
-    const { getLatestFabric, getLatestForge, getLatestQuilt } = await import(
-      '~/lib/export/loaderVersions'
-    );
-    setProgress({ value: 3, max: 3 });
-
-    setProgress({ value: 0, max: 2 });
-    setStatus('generatingzip');
-
-    const zipfile = new JSZip();
-    zipfile.file(
-      'instance.cfg',
-      `
-InstanceType=OneSix
-OverrideCommands=true
-PreLaunchCommand="$INST_JAVA" -jar packwiz-installer-bootstrap.jar ${getPackwizUrl(
-        document,
-      )}
-name=${data.title}
-`.trim(),
-    );
-    const meta = await fetch(
-      `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`,
-    );
-    if (!meta.ok) {
-      throw new Error('failed to fetch meta for minecraft');
-    }
-    const parsed = await meta.json();
-    const mmcPack = {
-      components: [
-        {
-          dependencyOnly: true,
-          uid: parsed.requires[0].uid,
-          version: parsed.requires[0].suggests,
-        },
-        {
-          uid: 'net.minecraft',
-          version: data.gameVersion,
-        },
-      ],
-      formatVersion: 1,
-    };
-    if (data.modloader == 'fabric' || data.modloader == 'quilt') {
-      mmcPack.components.push({
-        dependencyOnly: true,
-        uid: 'net.fabricmc.intermediary',
-        version: data.gameVersion,
-      });
-    }
-    switch (data.modloader) {
-      case 'fabric': {
-        mmcPack.components.push({
-          uid: 'net.fabricmc.fabric-loader',
-          version: await getLatestFabric(),
-        });
-        break;
-      }
-      case 'forge': {
-        mmcPack.components.push({
-          uid: 'net.minecraftforge',
-          version: await getLatestForge(data.gameVersion),
-        });
-        break;
-      }
-      case 'quilt': {
-        mmcPack.components.push({
-          uid: 'org.quiltmc.quilt-loader',
-          version: await getLatestQuilt(),
-        });
-        break;
-      }
-    }
-    zipfile.file('mmc-pack.json', JSON.stringify(mmcPack));
-    setProgress({ value: 1, max: 2 });
-    const dotMinecraftFolder = zipfile.folder('.minecraft');
-
-    if (!dotMinecraftFolder) {
-      throw new Error('failed to create .minecraft folder in zipfile?');
-    }
-
-    const packwizInstallerBootstrapJar = await fetch(
-      '/packwiz-installer-bootstrap.jar',
-    );
-    if (!packwizInstallerBootstrapJar.ok) {
-      throw new Error('Failed to download packwiz-installer-bootstrap.jar');
-    }
-
-    dotMinecraftFolder.file(
-      'packwiz-installer-bootstrap.jar',
-      packwizInstallerBootstrapJar.blob(),
-    );
-    setProgress({ value: 2, max: 2 });
-
-    const zipBlob = await zipfile.generateAsync({ type: 'blob' });
-    saveAs(zipBlob, `${data.title}.zip`);
-
-    setStatus('idle');
-  };
-
-  const prismStaticExport = async () => {
-    if (!resolvedMods) return;
-
-    setProgress({ value: 0, max: 4 });
-    setStatus('loadinglibraries');
-
-    const { getDownloadURLs } = await import('~/lib/export');
-    setProgress({ value: 1, max: 4 });
-    const { default: JSZip } = await import('jszip');
-    setProgress({ value: 2, max: 4 });
-    const { default: saveAs } = await import('file-saver');
-    setProgress({ value: 3, max: 4 });
-    const { getLatestFabric, getLatestForge, getLatestQuilt } = await import(
-      '~/lib/export/loaderVersions'
-    );
-    setProgress({ value: 4, max: 4 });
-
-    setProgress({ value: 0, max: data.mods.length });
-    setStatus('resolving');
-
-    const urls = await getDownloadURLs(
-      { ...data, mods: resolvedMods },
-      setProgress,
-    );
-
-    setProgress({ value: 0, max: data.mods.length });
-    setResult({ success: [], failed: [] });
-    setStatus('downloading');
-
-    const zipfile = new JSZip();
-    const dotMinecraftFolder = zipfile.folder('.minecraft');
-
-    if (!dotMinecraftFolder) {
-      throw new Error('failed to create .minecraft folder in zipfile?');
-    }
-
-    zipfile.file('instance.cfg', `name=${data.title}`);
-
-    await Promise.all([
-      exportZip(dotMinecraftFolder, urls),
-      (async () => {
-        const meta = await fetch(
-          `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`,
-        );
-        if (!meta.ok) {
-          throw new Error('failed to fetch meta for minecraft');
-        }
-        const parsed = await meta.json();
-        const mmcPack = {
-          components: [
-            {
-              dependencyOnly: true,
-              uid: parsed.requires[0].uid,
-              version: parsed.requires[0].suggests,
-            },
-            {
-              uid: 'net.minecraft',
-              version: data.gameVersion,
-            },
-          ],
-          formatVersion: 1,
-        };
-        if (data.modloader == 'fabric' || data.modloader == 'quilt') {
-          mmcPack.components.push({
-            dependencyOnly: true,
-            uid: 'net.fabricmc.intermediary',
-            version: data.gameVersion,
-          });
-        }
-        switch (data.modloader) {
-          case 'fabric': {
-            mmcPack.components.push({
-              uid: 'net.fabricmc.fabric-loader',
-              version: await getLatestFabric(),
-            });
-            break;
-          }
-          case 'forge': {
-            mmcPack.components.push({
-              uid: 'net.minecraftforge',
-              version: await getLatestForge(data.gameVersion),
-            });
-            break;
-          }
-          case 'quilt': {
-            mmcPack.components.push({
-              uid: 'org.quiltmc.quilt-loader',
-              version: await getLatestQuilt(),
-            });
-            break;
-          }
-        }
-        zipfile.file('mmc-pack.json', JSON.stringify(mmcPack));
-      })(),
-    ]);
-
-    const zipBlob = await zipfile.generateAsync({ type: 'blob' });
-    saveAs(zipBlob, `${data.title}.zip`);
-
-    setStatus('result');
   };
 
   const submitHandle: FormEventHandler = useCallback(
@@ -776,8 +429,15 @@ ${
               <DropdownMenu.Item asChild>
                 <button
                   className="radix-dropdown-button"
-                  onClick={downloadExport}
-                  disabled={data.mods.length === 0}
+                  onClick={() => {
+                    if (resolvedMods)
+                      zipExport({
+                        data: { ...data, mods: resolvedMods },
+                        setProgress,
+                        setResult,
+                        setStatus,
+                      });
+                  }}
                 >
                   <FolderArchiveIcon className="block h-5 w-5" />
                   <span>Zip archive</span>
@@ -787,7 +447,6 @@ ${
                 <button
                   className="radix-dropdown-button"
                   onClick={modrinthExportInit}
-                  disabled={data.mods.length === 0}
                 >
                   <ModrinthIcon className="block h-5 w-5" />
                   <span>Modrinth pack</span>
@@ -797,9 +456,7 @@ ${
                 <button
                   className="radix-dropdown-button"
                   onClick={packwizExport}
-                  disabled={
-                    data.visibility === 'private' || data.mods.length === 0
-                  }
+                  disabled={data.visibility === 'private'}
                 >
                   <CloudIcon className="block h-5 w-5" />
                   <span>Copy packwiz link</span>
@@ -808,8 +465,15 @@ ${
               <DropdownMenu.Item asChild>
                 <button
                   className="radix-dropdown-button"
-                  onClick={prismStaticExport}
-                  disabled={data.mods.length === 0}
+                  onClick={() => {
+                    if (resolvedMods)
+                      prismStaticExport({
+                        data: { ...data, mods: resolvedMods },
+                        setProgress,
+                        setResult,
+                        setStatus,
+                      });
+                  }}
                 >
                   <HexagonIcon className="block h-5 w-5" />
                   <span>MultiMC</span>
@@ -818,10 +482,16 @@ ${
               <DropdownMenu.Item asChild>
                 <button
                   className="radix-dropdown-button"
-                  onClick={prismExport}
-                  disabled={
-                    data.visibility === 'private' || data.mods.length === 0
-                  }
+                  onClick={() => {
+                    if (resolvedMods)
+                      prismAutoUpdateExport({
+                        data: { ...data, mods: resolvedMods },
+                        setProgress,
+                        setResult,
+                        setStatus,
+                      });
+                  }}
+                  disabled={data.visibility === 'private'}
                 >
                   <div className="relative">
                     <HexagonIcon className="block h-5 w-5" />
@@ -991,23 +661,18 @@ ${
         )}
       </ul>
 
-      {status === 'resolving' ? (
+      {status === ExportStatus.Resolving ? (
         <ProgressOverlay label="Resolving mods..." {...progress} />
-      ) : status === 'downloading' ? (
+      ) : status === ExportStatus.Downloading ? (
         <ProgressOverlay label="Downloading mods..." {...progress} />
-      ) : status === 'loadinglibraries' ? (
-        <ProgressOverlay
-          label="Loading supplementary libraries..."
-          {...progress}
-        />
-      ) : status === 'generatingzip' ? (
+      ) : status === ExportStatus.GeneratingZip ? (
         <ProgressOverlay label="Getting the .zip file ready..." {...progress} />
       ) : null}
 
       <Dialog.Root
-        open={status === 'modrinth.form'}
+        open={status === ExportStatus.ModrinthForm}
         onOpenChange={(open) => {
-          if (!open) setStatus('idle');
+          if (!open) setStatus(ExportStatus.Idle);
         }}
       >
         <Dialog.Portal>
@@ -1017,7 +682,18 @@ ${
               className="flex flex-col gap-y-8"
               onSubmit={(e) => {
                 e.preventDefault();
-                modrinthExport();
+                if (resolvedMods)
+                  modrinthExport({
+                    data: { ...data, mods: resolvedMods },
+                    mrpackData: {
+                      name: mrpackName,
+                      version: mrpackVersion,
+                      cfStrategy: mrpackCurseForgeStrategy,
+                    },
+                    setProgress,
+                    setResult,
+                    setStatus,
+                  });
               }}
             >
               <label className="flex flex-col gap-y-1">
@@ -1081,9 +757,9 @@ ${
       </Dialog.Root>
 
       <Dialog.Root
-        open={showModal}
+        open={showResultModal}
         onOpenChange={(open) => {
-          if (!open) setStatus('idle');
+          if (!open) setStatus(ExportStatus.Idle);
         }}
       >
         <Dialog.Portal>
@@ -1117,7 +793,7 @@ ${
               <Button
                 className="self-center"
                 onClick={() => {
-                  setStatus('idle');
+                  setStatus(ExportStatus.Idle);
                 }}
               >
                 Close

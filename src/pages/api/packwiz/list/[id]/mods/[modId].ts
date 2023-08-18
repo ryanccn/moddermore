@@ -2,7 +2,10 @@ import { stringify, type JsonMap } from '@iarna/toml';
 import type { NextApiHandler } from 'next';
 
 import { getSpecificList } from '~/lib/db';
-import { getCurseForgeTOML, getModrinthTOML } from '~/lib/export/packwiz';
+import {
+  getCurseForgeTOML,
+  getModrinthTOML,
+} from '~/lib/export/formats/packwiz';
 
 const h: NextApiHandler = async (req, res) => {
   if (

@@ -3,14 +3,18 @@ import {
   getLatestFabric,
   getLatestForge,
   getLatestQuilt,
-} from './loaderVersions';
+} from '../upstream/loaderVersions';
+
+import { saveAs } from 'file-saver';
+import { ExportStatus, type PageStateHooks } from './shared';
+import { getDownloadURLs } from '../upstream/download';
 
 import type { RichModList } from '~/types/moddermore';
 import type {
   CurseForgeDownload,
   ExportReturnData,
   ModrinthDownload,
-} from './types';
+} from '../upstream/types';
 
 const sha1 = async (f: ArrayBuffer) => {
   const ha = await window.crypto.subtle.digest('SHA-1', f);
@@ -30,7 +34,7 @@ const sha512 = async (f: ArrayBuffer) => {
   return he;
 };
 
-export const generateModrinthPack = async (
+const generateModrinthPack = async (
   list: RichModList,
   urls: ExportReturnData,
   extraData: { name?: string; version?: string; cfStrategy?: string },
@@ -121,4 +125,24 @@ export const generateModrinthPack = async (
   mrpack.file('modrinth.index.json', indexJSON);
 
   return mrpack.generateAsync({ type: 'blob' });
+};
+
+export const modrinthExport = async ({
+  data,
+  mrpackData,
+  setProgress,
+  setStatus,
+}: {
+  data: RichModList;
+  mrpackData: { name: string; version: string; cfStrategy: string };
+} & PageStateHooks) => {
+  setStatus(ExportStatus.Resolving);
+  setProgress({ value: 0, max: data.mods.length });
+
+  const urls = await getDownloadURLs(data, setProgress);
+
+  const mrpack = await generateModrinthPack(data, urls, mrpackData);
+  saveAs(mrpack, `${data.title}.mrpack`);
+
+  setStatus(ExportStatus.Idle);
 };

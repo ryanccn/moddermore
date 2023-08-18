@@ -1,7 +1,7 @@
 import type { NextApiHandler } from 'next';
 
 import { getSpecificList } from '~/lib/db';
-import { getIndexTOML } from '~/lib/export/packwiz';
+import { getIndexTOML } from '~/lib/export/formats/packwiz';
 
 const h: NextApiHandler = async (req, res) => {
   if (typeof req.query.id !== 'string') {

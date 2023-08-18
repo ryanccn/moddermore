@@ -6,17 +6,17 @@ import {
   getLatestFabric,
   getLatestForge,
   getLatestQuilt,
-} from './loaderVersions';
+} from '../upstream/loaderVersions';
 
-import { getModrinthDownload } from './modrinth';
-import { getCFDownload } from './curseforge';
+import { getModrinthDownload } from '../upstream/modrinth';
+import { getCFDownload } from '../upstream/curseforge';
 import pLimit from 'p-limit';
 
 import type {
   CurseForgeDownload,
   ModrinthDownload,
   ProviderSpecificOptions,
-} from './types';
+} from '../upstream/types';
 import type { ModPwToml } from '~/types/packwiz';
 
 export const getPackTOML = async (id: string) => {
