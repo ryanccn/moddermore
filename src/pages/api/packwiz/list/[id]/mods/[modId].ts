@@ -32,6 +32,7 @@ const h: NextApiHandler = async (req, res) => {
   }
 
   res.setHeader('content-type', 'application/toml; charset=utf-8');
+  res.setHeader('cache-control', 's-maxage=3600');
 
   let data = null;
 
