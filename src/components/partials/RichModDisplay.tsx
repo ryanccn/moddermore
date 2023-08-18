@@ -39,7 +39,7 @@ export const RichModDisplay = ({
   return (
     <div
       className={twMerge(
-        'flex justify-between rounded-2xl border-none bg-neutral-100 p-5 shadow-sm transition-all dark:bg-neutral-800',
+        'flex justify-between rounded-2xl border-none bg-neutral-100 p-5 dark:bg-neutral-800',
         incompatible ? 'ring-2 ring-red-400/70 hover:ring-red-400/80' : null,
         className,
       )}
@@ -70,7 +70,7 @@ export const RichModDisplay = ({
           )}
 
           <a
-            className="group flex flex-wrap items-center gap-x-1 self-start underline decoration-black/50 underline-offset-2 transition-all hover:decoration-black/75 dark:decoration-white/50 dark:hover:decoration-white/75"
+            className="group flex flex-wrap items-center gap-x-1 self-start underline decoration-black/50 underline-offset-2 transition-[text-decoration-color] hover:decoration-black/75 dark:decoration-white/50 dark:hover:decoration-white/75"
             href={data.href}
             rel="noreferrer noopener"
           >

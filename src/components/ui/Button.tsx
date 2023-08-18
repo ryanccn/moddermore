@@ -4,7 +4,7 @@ import { forwardRef } from 'react';
 
 const buttonVariants = cva(
   [
-    'flex items-center gap-x-3 rounded-md transition-all',
+    'flex items-center gap-x-3 rounded-md transition-colors',
     'font-medium tracking-tight',
     'disabled:opacity-90',
   ],
