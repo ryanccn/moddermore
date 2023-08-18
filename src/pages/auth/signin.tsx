@@ -119,7 +119,7 @@ const SigninPage: NextPage = () => {
 
         <form className="flex items-center gap-x-2" onSubmit={signin}>
           <input
-            type="text"
+            type="email"
             id="email"
             name="email"
             aria-label="Email"
