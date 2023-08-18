@@ -31,6 +31,7 @@ const BlogIndexPage: NextPage<PageProps> = ({ data }) => {
               backgroundImage: post.cover
                 ? `url('${post.cover.src}')`
                 : undefined,
+              backgroundPosition: 'center',
             }}
             href={`/blog/${post.slug}`}
             key={post.slug}

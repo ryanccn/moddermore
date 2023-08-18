@@ -1,6 +1,7 @@
 import { GetStaticPaths, GetStaticProps, type NextPage } from 'next';
 
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote';
+import Head from 'next/head';
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { DonationMessage } from '~/components/partials/DonationMessage';
 
@@ -20,8 +21,20 @@ interface PageProps {
 }
 
 const BlogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
+  const absoluteCoverURL = data.cover
+    ? new URL(data.cover.src, 'https://moddermore.net').toString()
+    : null;
+
   return (
     <GlobalLayout title={`${data.title} / Blog`} displayTitle={false}>
+      <Head>
+        {absoluteCoverURL && (
+          <>
+            <meta property="og:image" content={absoluteCoverURL} />
+            <meta name="twitter:image" content={absoluteCoverURL} />
+          </>
+        )}
+      </Head>
       <article className="prose prose-neutral max-w-none dark:prose-invert">
         <div
           className="not-prose mb-12 flex flex-col gap-y-3 rounded-2xl bg-cover p-8 pt-40 text-white"
@@ -29,6 +42,7 @@ const BlogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
             backgroundImage: data.cover
               ? `url('${data.cover.src}')`
               : undefined,
+            backgroundPosition: 'center',
           }}
         >
           <h1 className="text-4xl font-bold">{data.title}</h1>
