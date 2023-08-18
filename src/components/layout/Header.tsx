@@ -69,6 +69,9 @@ const Header = () => {
         </Link>
 
         <div className="flex flex-row flex-wrap items-center gap-x-2">
+          <Link className="px-2 py-1 font-medium" href="/search">
+            Search
+          </Link>
           <Link className="px-2 py-1 font-medium" href="/blog">
             Blog
           </Link>

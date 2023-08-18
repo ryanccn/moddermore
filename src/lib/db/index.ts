@@ -14,7 +14,7 @@ export const getUserLists = async (userId: string): Promise<ModList[]> => {
   const lists = await collection.find({ owner: userId }).toArray();
 
   return lists.sort((a, b) =>
-    new Date(a.created_at) > new Date(b.created_at) ? -1 : 1
+    new Date(a.created_at) > new Date(b.created_at) ? -1 : 1,
   );
 };
 
@@ -23,7 +23,7 @@ export const getLegacyUserLists = async (email: string): Promise<ModList[]> => {
   const lists = await collection.find({ legacy: email }).toArray();
 
   return lists.sort((a, b) =>
-    new Date(a.created_at) > new Date(b.created_at) ? -1 : 1
+    new Date(a.created_at) > new Date(b.created_at) ? -1 : 1,
   );
 };
 
@@ -33,7 +33,7 @@ export const getSpecificListByID = async (trueId: string) => {
 };
 
 export const getSpecificList = async (
-  id: string
+  id: string,
 ): Promise<ModListWithExtraData | null> => {
   const collection = await getListsCollection();
   const list = await collection.findOne({ id });
@@ -52,6 +52,7 @@ export const getSpecificList = async (
     modloader: list.modloader,
     owner: list.owner,
     created_at: list.created_at,
+    visibility: list.visibility,
     likes: likeCount,
     ownerProfile: ownerProfile
       ? {
@@ -66,7 +67,7 @@ export const getSpecificList = async (
 
 export const deleteList = async (
   id: string,
-  userId: string
+  userId: string,
 ): Promise<boolean> => {
   const collection = await getListsCollection();
   const res = await collection.deleteOne({ id, owner: userId });
@@ -76,7 +77,7 @@ export const deleteList = async (
 
 export const createList = async (
   list: ModListCreate,
-  userId: string
+  userId: string,
 ): Promise<string> => {
   const collection = await getListsCollection();
   const id = await nanoid(12);
@@ -87,6 +88,7 @@ export const createList = async (
     description: list.description ?? null,
     owner: userId,
     created_at: new Date().toISOString(),
+    visibility: 'unlisted',
   });
 
   return id;
@@ -95,7 +97,7 @@ export const createList = async (
 export const updateList = async (
   id: string,
   list: ModListUpdate,
-  userId: string
+  userId: string,
 ): Promise<boolean> => {
   const collection = await getListsCollection();
   const res = await collection.updateOne({ id, owner: userId }, { $set: list });

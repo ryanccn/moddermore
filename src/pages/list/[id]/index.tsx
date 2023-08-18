@@ -22,6 +22,9 @@ import {
   useState,
 } from 'react';
 import { useRouter } from 'next/router';
+
+import { getServerSession } from 'next-auth';
+import { authOptions } from '~/lib/authOptions';
 import { signIn, useSession } from 'next-auth/react';
 
 import * as Dialog from '@radix-ui/react-dialog';
@@ -809,7 +812,9 @@ ${
                 <button
                   className="radix-dropdown-button"
                   onClick={packwizExport}
-                  disabled={data.mods.length === 0}
+                  disabled={
+                    data.visibility === 'private' || data.mods.length === 0
+                  }
                 >
                   <CloudIcon className="block h-5 w-5" />
                   <span>Copy packwiz link</span>
@@ -829,7 +834,9 @@ ${
                 <button
                   className="radix-dropdown-button"
                   onClick={prismExport}
-                  disabled={data.mods.length === 0}
+                  disabled={
+                    data.visibility === 'private' || data.mods.length === 0
+                  }
                 >
                   <div className="relative">
                     <HexagonIcon className="block h-5 w-5" />
@@ -1200,11 +1207,18 @@ ${
 
 export const getServerSideProps: GetServerSideProps<
   PageProps | { notFound: true }
-> = async ({ query }) => {
+> = async ({ query, req, res }) => {
   if (typeof query.id !== 'string') throw new Error('?');
   const data = await getSpecificList(query.id);
 
   if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const sess = await getServerSession(req, res, authOptions);
+  if (data.visibility === 'private' && sess?.user.id !== data.owner) {
     return {
       notFound: true,
     };

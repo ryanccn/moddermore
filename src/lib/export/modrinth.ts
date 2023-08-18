@@ -9,7 +9,7 @@ import minecraftVersions from '~/lib/minecraftVersions.json';
 
 const getObjFromVersion = (
   v: ModrinthVersion,
-  type: 'direct' | 'dependency'
+  type: 'direct' | 'dependency',
 ): Download => {
   const primary = v.files.find((f) => f.primary) ?? v.files[0];
 
@@ -37,7 +37,7 @@ export const callModrinthAPI = async ({
       `https://api.modrinth.com/v2/version/${encodeURIComponent(version)}`,
       {
         headers: { 'User-Agent': 'Moddermore/noversion' },
-      }
+      },
     );
 
     if (!res.ok) {
@@ -51,15 +51,15 @@ export const callModrinthAPI = async ({
 
   const res = await fetch(
     `https://api.modrinth.com/v2/project/${encodeURIComponent(
-      id
+      id,
     )}/version?loaders=["${encodeURIComponent(
-      loader
+      loader,
     )}"]&game_versions=[${encodeURIComponent(
-      gameVersions.map((a) => `"${a}"`).join(',')
+      gameVersions.map((a) => `"${a}"`).join(','),
     )}]`,
     {
       headers: { 'User-Agent': 'Moddermore/noversion' },
-    }
+    },
   );
 
   if (!res.ok) {
@@ -102,7 +102,7 @@ export const getModrinthDownload = async ({
 
   if (!latest) {
     const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersions[0].split('.').slice(0, 2).join('.'))
+      a.startsWith(gameVersions[0].split('.').slice(0, 2).join('.')),
     );
 
     latest = await callModrinthAPI({
@@ -116,7 +116,7 @@ export const getModrinthDownload = async ({
 
   if (!latest && loader === 'quilt') {
     const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersions[0].split('.').slice(0, 2).join('.'))
+      a.startsWith(gameVersions[0].split('.').slice(0, 2).join('.')),
     );
 
     latest = await callModrinthAPI({
@@ -169,7 +169,7 @@ export const getModrinthDownload = async ({
         gameVersions,
         loader,
         name,
-      }))
+      })),
     );
   }
 

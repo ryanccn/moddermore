@@ -5,11 +5,13 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 
 import { useMemo, type ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   title: string;
   titleSuffix?: boolean;
   titleIcon?: ReactNode;
+  className?: string;
   displayTitle?: boolean | string;
   isLandingPage?: boolean;
   isAuthPage?: boolean;
@@ -23,6 +25,7 @@ export const GlobalLayout = ({
   displayTitle = true,
   isLandingPage = false,
   isAuthPage = false,
+  className,
   children,
 }: Props) => {
   const derivedTitle = useMemo(
@@ -61,13 +64,14 @@ export const GlobalLayout = ({
       <Header />
 
       <main
-        className={
+        className={twMerge(
           isLandingPage
             ? 'flex flex-col'
             : isAuthPage
             ? 'layout mt-28 max-w-[45ch] items-center text-center'
-            : 'layout mt-28'
-        }
+            : 'layout mt-28',
+          className,
+        )}
       >
         {displayTitle === true ? (
           <>

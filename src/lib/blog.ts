@@ -34,15 +34,15 @@ const exists = async (f: string) => {
 
 export const listBlogPosts = async () => {
   const fileList = await readdir('./blog').then((list) =>
-    list.filter((k) => k.endsWith('.mdx'))
+    list.filter((k) => k.endsWith('.mdx')),
   );
   const lim = pLimit(10);
 
-  return await Promise.all(
+  const unsorted = await Promise.all(
     fileList.map((fileName) =>
       lim(async () => {
         const { data } = dorian(
-          await readFile(join('./blog', fileName), { encoding: 'utf8' })
+          await readFile(join('./blog', fileName), { encoding: 'utf8' }),
         );
 
         return {
@@ -53,8 +53,12 @@ export const listBlogPosts = async () => {
           },
           cover: await getPostCover(fileName.replace('.mdx', '')),
         };
-      })
-    )
+      }),
+    ),
+  );
+
+  return unsorted.sort((a, b) =>
+    new Date(a.data.date) > new Date(b.data.date) ? -1 : 1,
   );
 };
 
