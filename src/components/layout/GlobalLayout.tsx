@@ -13,7 +13,7 @@ interface Props {
   titleIcon?: ReactNode;
   className?: string;
   displayTitle?: boolean | string;
-  isLandingPage?: boolean;
+  wideLayout?: boolean;
   isAuthPage?: boolean;
   children: ReactNode | ReactNode[];
 }
@@ -23,7 +23,7 @@ export const GlobalLayout = ({
   titleSuffix = true,
   titleIcon,
   displayTitle = true,
-  isLandingPage = false,
+  wideLayout = false,
   isAuthPage = false,
   className,
   children,
@@ -65,7 +65,7 @@ export const GlobalLayout = ({
 
       <main
         className={twMerge(
-          isLandingPage
+          wideLayout
             ? 'flex flex-col'
             : isAuthPage
             ? 'layout mt-28 max-w-[45ch] items-center text-center'

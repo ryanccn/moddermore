@@ -42,7 +42,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
       title="Moddermore"
       titleSuffix={false}
       displayTitle={false}
-      isLandingPage
+      wideLayout
     >
       <div className="mb-14 flex min-h-screen flex-col justify-center p-6 lg:px-20">
         <div className="mb-20 flex flex-col">

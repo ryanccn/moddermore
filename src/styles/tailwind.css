@@ -46,7 +46,7 @@
   }
 
   .layout {
-    @apply mx-auto mb-40 flex max-w-[75ch] flex-col px-6;
+    @apply mx-auto mb-48 flex max-w-[75ch] flex-col px-6;
   }
 
   :not(select).mm-input {
@@ -118,7 +118,7 @@
   }
 
   .moddermore-footer {
-    @apply mt-40 flex w-full flex-col items-start gap-y-4 bg-neutral-100 px-6 py-16 dark:bg-neutral-800 lg:px-20;
+    @apply flex w-full flex-col items-start gap-y-4 bg-neutral-100 px-6 py-16 dark:bg-neutral-800 lg:px-20;
   }
 
   .moddermore-footer > p,
