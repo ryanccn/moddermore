@@ -40,6 +40,7 @@ import { ProgressOverlay } from '~/components/ProgressOverlay';
 import { DonationMessage } from '~/components/partials/DonationMessage';
 import { Spinner } from '~/components/partials/Spinner';
 import { Button, buttonVariants } from '~/components/ui/Button';
+import { Search } from '~/components/partials/Search';
 
 import { MarkdownIcon, ModrinthIcon } from '~/components/icons';
 import {
@@ -53,7 +54,6 @@ import {
   HeartIcon,
   HexagonIcon,
   SaveIcon,
-  SearchIcon,
   SettingsIcon,
   TrashIcon,
 } from 'lucide-react';
@@ -63,7 +63,6 @@ import { twMerge } from 'tailwind-merge';
 
 import { getSpecificList } from '~/lib/db';
 import type JSZip from 'jszip';
-import { search } from '~/lib/import/search';
 import type { ExportReturnData } from '~/lib/export/types';
 
 interface PageProps {
@@ -91,11 +90,6 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
   const [isDuplicating, setIsDuplicating] = useState(false);
-
-  const [searchProvider, setSearchProvider] = useState('modrinth');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<RichMod[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
 
   const [hasLiked, setHasLiked] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -603,22 +597,6 @@ ${
     [session, resolvedMods, oldMods, data],
   );
 
-  const updateSearch = useCallback(() => {
-    setIsSearching(true);
-    search({
-      platform: searchProvider as 'modrinth' | 'curseforge',
-      query: searchQuery,
-      loader: data.modloader,
-      gameVersion: data.gameVersion,
-    })
-      .then((res) => {
-        setSearchResults(res);
-      })
-      .finally(() => {
-        setIsSearching(false);
-      });
-  }, [searchProvider, searchQuery, data]);
-
   const copyMarkdownList = useCallback(() => {
     if (!resolvedMods) return;
 
@@ -970,78 +948,20 @@ ${
         )}
       </div>
 
-      {isEditing && (
-        <div className="mb-10 flex w-full flex-col gap-y-4">
+      {isEditing && resolvedMods && (
+        <>
           <Head>
             <title>Editing {data.title}</title>
           </Head>
-
-          <div className="mt-10 flex w-full items-center justify-start gap-x-2">
-            <select
-              name="searchProvider"
-              value={searchProvider}
-              className="mm-input flex-grow-0"
-              aria-label="Select a provider to search from"
-              disabled={isSearching}
-              onChange={(e) => {
-                setSearchProvider(e.target.value);
-              }}
-            >
-              <option value="modrinth">Modrinth</option>
-              <option value="curseforge">CurseForge</option>
-            </select>
-
-            <input
-              type="text"
-              name="search-bar"
-              className="mm-input flex-grow"
-              placeholder="Search for mods"
-              role="search"
-              aria-label="Search for mods"
-              minLength={1}
-              value={searchQuery}
-              disabled={isSearching}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  updateSearch();
-                }
-              }}
-            />
-
-            <Button type="button" onClick={updateSearch} disabled={isSearching}>
-              {isSearching ? (
-                <Spinner className="block w-4 h-4" />
-              ) : (
-                <SearchIcon className="block w-4 h-4" />
-              )}
-              <span>Search</span>
-            </Button>
-          </div>
-
-          {resolvedMods && searchResults.length > 0 && (
-            <ul className="flex flex-wrap gap-y-2">
-              {searchResults.map((res) =>
-                resolvedMods.some(
-                  (m) => m.id === res.id && m.provider === res.provider,
-                ) ? null : (
-                  <li className="w-full" key={res.id}>
-                    <RichModDisplay
-                      data={res}
-                      buttonType="add"
-                      onClick={() => {
-                        setResolvedMods([...resolvedMods, res]);
-                      }}
-                    />
-                  </li>
-                ),
-              )}
-            </ul>
-          )}
-        </div>
+          <Search
+            gameVersion={data.gameVersion}
+            modLoader={data.modloader}
+            existing={resolvedMods}
+            onAdd={(mod) => {
+              setResolvedMods((prev) => (prev ? [...prev, mod] : [mod]));
+            }}
+          />
+        </>
       )}
 
       <DonationMessage />
@@ -1054,7 +974,9 @@ ${
                 data={mod}
                 buttonType={isEditing ? 'delete' : null}
                 onClick={() => {
-                  setResolvedMods(resolvedMods.filter((a) => a.id !== mod.id));
+                  setResolvedMods((prev) =>
+                    prev ? prev.filter((a) => a.id !== mod.id) : [],
+                  );
                 }}
                 parent={data}
               />
@@ -1090,18 +1012,7 @@ ${
       >
         <Dialog.Portal>
           <Dialog.Overlay className="dialog overlay" />
-          <Dialog.Content
-            className="dialog content"
-            // onEscapeKeyDown={() => {
-            //   setStatus('idle');
-            // }}
-            // onPointerDownOutside={() => {
-            //   setStatus('idle');
-            // }}
-            // onInteractOutside={() => {
-            //   setStatus('idle');
-            // }}
-          >
+          <Dialog.Content className="dialog content">
             <form
               className="flex flex-col gap-y-8"
               onSubmit={(e) => {
