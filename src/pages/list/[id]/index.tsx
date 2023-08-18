@@ -812,7 +812,9 @@ ${
                 <button
                   className="radix-dropdown-button"
                   onClick={packwizExport}
-                  disabled={data.mods.length === 0}
+                  disabled={
+                    data.visibility === 'private' || data.mods.length === 0
+                  }
                 >
                   <CloudIcon className="block h-5 w-5" />
                   <span>Copy packwiz link</span>
@@ -832,7 +834,9 @@ ${
                 <button
                   className="radix-dropdown-button"
                   onClick={prismExport}
-                  disabled={data.mods.length === 0}
+                  disabled={
+                    data.visibility === 'private' || data.mods.length === 0
+                  }
                 >
                   <div className="relative">
                     <HexagonIcon className="block h-5 w-5" />

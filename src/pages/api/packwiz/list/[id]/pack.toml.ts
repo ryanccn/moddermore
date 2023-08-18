@@ -11,7 +11,7 @@ const h: NextApiHandler = async (req, res) => {
 
   const list = await getSpecificList(req.query.id);
 
-  if (!list) {
+  if (!list || list.visibility === 'private') {
     res.status(404).end();
     return;
   }
