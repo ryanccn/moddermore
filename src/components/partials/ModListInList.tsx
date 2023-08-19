@@ -31,7 +31,7 @@ export const ModListInList = (props: BasicProps | ExtraProps) => {
           <strong>{loaderFormat(baseData.modloader)}</strong>
         </p>
         <p>
-          Last updated{' '}
+          Created{' '}
           <strong>{new Date(baseData.created_at).toDateString()}</strong>
         </p>
       </div>

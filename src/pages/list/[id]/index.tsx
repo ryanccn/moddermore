@@ -451,8 +451,7 @@ ${
           <strong>{loaderFormat(data.modloader)}</strong>
         </p>
         <p>
-          Last updated on{' '}
-          <strong>{new Date(data.created_at).toDateString()}</strong>
+          Created <strong>{new Date(data.created_at).toDateString()}</strong>
         </p>
         <p>
           <strong>{data.likes}</strong> {data.likes === 1 ? 'like' : 'likes'}
