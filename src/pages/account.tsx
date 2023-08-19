@@ -30,6 +30,7 @@ const AccountPage: NextPage = () => {
 
   const saveProfile = useCallback(() => {
     setInProgress(true);
+
     fetch('/api/profile/update', {
       method: 'POST',
       body: JSON.stringify({
@@ -43,6 +44,7 @@ const AccountPage: NextPage = () => {
       } else {
         toast.error('Profile details could not be saved :(');
       }
+
       setInProgress(false);
     });
   }, [name, profilePicture]);
@@ -104,7 +106,7 @@ const AccountPage: NextPage = () => {
           variant="danger"
           className="self-start px-4 py-2 text-lg font-semibold"
           onClick={() => {
-            signOut();
+            signOut({ callbackUrl: '/' });
           }}
         >
           <LogOutIcon className="block w-5 h-5" />

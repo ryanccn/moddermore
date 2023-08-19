@@ -26,7 +26,7 @@ const h: NextApiHandler = async (req, res) => {
 
   const list = await getSpecificList(req.query.id);
 
-  if (!list || list.visibility === 'private') {
+  if (!list || list.visibility === 'private' || list.ownerProfile.banned) {
     res.status(404).end();
     return;
   }

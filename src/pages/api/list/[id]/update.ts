@@ -35,7 +35,12 @@ const h: NextApiHandler = async (req, res) => {
   }
 
   try {
-    await updateList(id, parsedData.data, sess.user.id);
+    await updateList(
+      id,
+      parsedData.data,
+      sess.user.id,
+      sess.extraProfile.isAdmin,
+    );
     res.status(200).json({ ok: true });
   } catch {
     res.status(400).json({ ok: false });

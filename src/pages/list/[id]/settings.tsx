@@ -1,7 +1,7 @@
 import { type GetServerSideProps, type NextPage } from 'next';
 
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
@@ -26,6 +26,14 @@ interface PageProps {
 const ListSettings: NextPage<PageProps> = ({ data }) => {
   const session = useSession({ required: true });
 
+  const hasElevatedPermissions = useMemo(
+    () =>
+      session.data &&
+      (session.data.user.id === data.owner ||
+        session.data.extraProfile.isAdmin),
+    [session.data, data.owner],
+  );
+
   const [title, setTitle] = useState(data.title);
   const [description, setDescription] = useState(data.description);
   const [gameVersion, setGameVersion] = useState(data.gameVersion);
@@ -42,11 +50,11 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
 
   useEffect(() => {
     if (session.status !== 'authenticated') return;
-    if (session.data.user.id !== data.owner) {
+    if (!hasElevatedPermissions) {
       toast.error('Unauthorized to edit list.');
       router.push(`/list/${data.id}`);
     }
-  }, [session, router, data]);
+  }, [session.status, hasElevatedPermissions, router, data.id]);
 
   const saveSettings = useCallback(() => {
     setInProgress(true);
@@ -198,14 +206,14 @@ export const getServerSideProps: GetServerSideProps<
   if (typeof query.id !== 'string') throw new Error('?');
   const data = await getSpecificList(query.id);
 
-  if (!data) {
+  if (!data || data.ownerProfile.banned) {
     return {
       notFound: true,
     };
   }
 
   const sess = await getServerSession(req, res, authOptions);
-  if (sess?.user.id !== data.owner) {
+  if (sess?.user.id !== data.owner && !sess?.extraProfile.isAdmin) {
     return {
       notFound: true,
     };

@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { ModListInList } from '~/components/partials/ModListInList';
@@ -12,9 +13,16 @@ import { toast } from 'react-hot-toast';
 import type { ModListWithExtraData } from '~/types/moddermore';
 
 const SearchPage: NextPage = () => {
+  const session = useSession();
+
   const [query, setQuery] = useState('');
   const [searching, setSearching] = useState(false);
   const [lists, setLists] = useState<ModListWithExtraData[]>([]);
+
+  const isAdmin = useMemo(
+    () => session.data?.extraProfile.isAdmin === true,
+    [session.data],
+  );
 
   const updateSearch = useCallback(() => {
     setSearching(true);
@@ -41,9 +49,9 @@ const SearchPage: NextPage = () => {
           type="text"
           name="search-bar"
           className="mm-input flex-grow"
-          placeholder="Search for public lists"
+          placeholder={isAdmin ? 'Search all lists' : 'Search for public lists'}
           role="search"
-          aria-label="Search for public lists"
+          aria-label={isAdmin ? 'Search all lists' : 'Search for public lists'}
           minLength={1}
           value={query}
           disabled={searching}

@@ -4,7 +4,9 @@ import Head from 'next/head';
 import { Header } from './Header';
 import { Footer } from './Footer';
 
+import { useSession } from 'next-auth/react';
 import { useMemo, type ReactNode } from 'react';
+
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -31,6 +33,13 @@ export const GlobalLayout = ({
   const derivedTitle = useMemo(
     () => (titleSuffix ? `${title} / Moddermore` : title),
     [title, titleSuffix],
+  );
+
+  const session = useSession();
+
+  const isAdmin = useMemo(
+    () => session.data?.extraProfile.isAdmin === true,
+    [session.data],
   );
 
   return (
@@ -84,7 +93,14 @@ export const GlobalLayout = ({
             <h1 className="title">{displayTitle}</h1>
           </>
         ) : null}
+
         {children}
+
+        {isAdmin && (
+          <div className="fixed bottom-0 right-0 m-4 text-sm font-bold bg-sky-400 text-white rounded px-2 py-1 z-[999] select-none">
+            Admin access
+          </div>
+        )}
       </main>
 
       <Footer />

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { twMerge } from 'tailwind-merge';
 
 import Link from 'next/link';
+
 import { GlobalLayout } from '~/components/layout/GlobalLayout';
 import { RichModDisplay } from '~/components/partials/RichModDisplay';
 import { buttonVariants } from '~/components/ui/Button';

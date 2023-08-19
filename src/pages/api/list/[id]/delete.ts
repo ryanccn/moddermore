@@ -24,7 +24,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const lists = await deleteList(id, sess.user.id);
+  const lists = await deleteList(id, sess.user.id, sess.extraProfile.isAdmin);
   res.status(200).json(lists);
 };
 

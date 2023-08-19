@@ -54,23 +54,23 @@ export const getSpecificList = async (
     created_at: list.created_at,
     visibility: list.visibility,
     likes: likeCount,
-    ownerProfile: ownerProfile
-      ? {
-          ...(ownerProfile.name ? { name: ownerProfile.name } : {}),
-          ...(ownerProfile.profilePicture
-            ? { profilePicture: ownerProfile.profilePicture }
-            : {}),
-        }
-      : {},
+    ownerProfile: {
+      name: ownerProfile?.name ?? null,
+      profilePicture: ownerProfile?.profilePicture ?? null,
+      banned: ownerProfile?.banned ?? false,
+    },
   };
 };
 
 export const deleteList = async (
   id: string,
   userId: string,
+  isAdmin?: boolean,
 ): Promise<boolean> => {
   const collection = await getListsCollection();
-  const res = await collection.deleteOne({ id, owner: userId });
+  const res = await collection.deleteOne(
+    isAdmin ? { id } : { id, owner: userId },
+  );
 
   return !!res.deletedCount;
 };
@@ -98,9 +98,13 @@ export const updateList = async (
   id: string,
   list: ModListUpdate,
   userId: string,
+  isAdmin?: boolean,
 ): Promise<boolean> => {
   const collection = await getListsCollection();
-  const res = await collection.updateOne({ id, owner: userId }, { $set: list });
+  const res = await collection.updateOne(
+    isAdmin ? { id } : { id, owner: userId },
+    { $set: list },
+  );
 
   return !!res.modifiedCount;
 };

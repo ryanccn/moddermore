@@ -71,7 +71,11 @@ export interface ModList {
 
 export interface ModListWithExtraData extends ModList {
   likes: number;
-  ownerProfile: { name?: string; profilePicture?: string };
+  ownerProfile: {
+    name: string | null;
+    profilePicture: string | null;
+    banned: boolean | null;
+  };
 }
 
 export interface RichModList {
@@ -95,6 +99,7 @@ export type UserEditableProfileData = z.infer<typeof UserEditableProfileData>;
 export interface UserProfileData extends UserEditableProfileData {
   likes?: string[];
   banned?: boolean;
+  isAdmin?: boolean;
 }
 
 export interface UserProfile extends UserProfileData {

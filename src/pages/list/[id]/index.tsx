@@ -59,6 +59,7 @@ import {
   DownloadIcon,
   EditIcon,
   FolderArchiveIcon,
+  HammerIcon,
   HeartIcon,
   HexagonIcon,
   SaveIcon,
@@ -77,6 +78,19 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const router = useRouter();
   const session = useSession();
 
+  const hasElevatedPermissions = useMemo(
+    () =>
+      session.data &&
+      (session.data.user.id === data.owner ||
+        session.data.extraProfile.isAdmin),
+    [session.data, data.owner],
+  );
+
+  const isAdmin = useMemo(
+    () => session.data?.extraProfile.isAdmin === true,
+    [session.data],
+  );
+
   const [resolvedMods, setResolvedMods] = useState<RichMod[] | null>(null);
   const [oldMods, setOldMods] = useState<RichMod[] | null>(null);
 
@@ -87,12 +101,19 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [isLiking, setIsLiking] = useState(false);
   const [isDuplicating, setIsDuplicating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isBanning, setIsBanning] = useState(false);
 
   const [hasLiked, setHasLiked] = useState(false);
+
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmDeleteTimeoutID, setConfirmDeleteTimeoutID] = useState<
     number | null
   >(null);
+
+  const [confirmBan, setConfirmBan] = useState(false);
+  const [confirmBanTimeoutID, setConfirmBanTimeoutID] = useState<number | null>(
+    null,
+  );
 
   const [mrpackName, setMrpackName] = useState(data.title);
   const [mrpackVersion, setMrpackVersion] = useState('0.0.1');
@@ -322,8 +343,10 @@ ${
     })
       .then(async (res) => {
         if (!res.ok) return;
+
         const { id } = (await res.json()) as { id: string };
         router.push(`/list/${id}`);
+
         toast.success('Duplicated list!');
       })
       .catch(() => {
@@ -368,6 +391,45 @@ ${
     confirmDeleteTimeoutID,
     setConfirmDelete,
     setConfirmDeleteTimeoutID,
+  ]);
+
+  const ban = useCallback(async () => {
+    if (!data || !session.data) return;
+
+    if (!confirmBan) {
+      setConfirmBan(true);
+      setConfirmBanTimeoutID(
+        window.setTimeout(() => {
+          setConfirmBan(false);
+        }, 3000),
+      );
+      return;
+    }
+
+    if (confirmBanTimeoutID) window.clearTimeout(confirmBanTimeoutID);
+
+    setIsBanning(true);
+
+    const res = await fetch(`/api/ban`, {
+      method: 'POST',
+      body: JSON.stringify({ id: data.owner }),
+      headers: { 'content-type': 'application/json' },
+    });
+
+    if (res.ok) {
+      toast.success(`Banned ${data.owner}!`);
+      router.push('/lists');
+    } else {
+      toast.error(`Failed to ban ${data.owner}!`);
+    }
+  }, [
+    router,
+    data,
+    session,
+    confirmBan,
+    confirmBanTimeoutID,
+    setConfirmBan,
+    setConfirmBanTimeoutID,
   ]);
 
   return (
@@ -569,7 +631,7 @@ ${
           <span>Duplicate</span>
         </Button>
 
-        {session && session.data?.user.id === data.owner && (
+        {hasElevatedPermissions && (
           <>
             {!isEditing ? (
               <Button
@@ -625,6 +687,17 @@ ${
                 <span>Delete</span>
               )}
             </Button>
+
+            {isAdmin && (
+              <Button variant="danger" onClick={ban} disabled={isBanning}>
+                {isBanning ? (
+                  <Spinner className="block w-5 h-5" />
+                ) : (
+                  <HammerIcon className="block w-5 h-5" />
+                )}
+                {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
+              </Button>
+            )}
           </>
         )}
       </div>
@@ -823,14 +896,18 @@ export const getServerSideProps: GetServerSideProps<
   if (typeof query.id !== 'string') throw new Error('?');
   const data = await getSpecificList(query.id);
 
-  if (!data) {
+  if (!data || data.ownerProfile.banned) {
     return {
       notFound: true,
     };
   }
 
   const sess = await getServerSession(req, res, authOptions);
-  if (data.visibility === 'private' && sess?.user.id !== data.owner) {
+  if (
+    data.visibility === 'private' &&
+    sess?.user.id !== data.owner &&
+    !sess?.extraProfile.isAdmin
+  ) {
     return {
       notFound: true,
     };
