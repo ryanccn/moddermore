@@ -179,10 +179,3 @@
 #nprogress .spinner-icon {
   display: none;
 }
-
-.react-hot-toast {
-  row-gap: 0.45rem;
-}
-.react-hot-toast > [role='status'] {
-  justify-content: flex-start;
-}
