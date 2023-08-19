@@ -30,13 +30,15 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
 };
 
 export const getInfos = async (ids: string[]): Promise<RichMod[] | null> => {
+  if (ids.length === 0) return [];
+
   const res = await fetch(
     `https://api.modrinth.com/v2/projects?ids=${encodeURIComponent(
-      JSON.stringify(ids)
+      JSON.stringify(ids),
     )}`,
     {
       headers: { 'User-Agent': 'Moddermore/noversion' },
-    }
+    },
   );
 
   if (!res.ok) {

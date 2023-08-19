@@ -34,6 +34,8 @@ export const getInfos = async (ids: string[]): Promise<RichMod[]> => {
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
   if (!API_KEY) throw new Error('No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!');
 
+  if (ids.length === 0) return [];
+
   const res = await fetch(`https://api.curseforge.com/v1/mods`, {
     method: 'POST',
     body: JSON.stringify({ modIds: ids }),
