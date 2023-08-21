@@ -1,6 +1,7 @@
 import type { NextApiHandler } from 'next';
 
 import { getServerSession } from 'next-auth';
+import { safeParse } from 'valibot';
 import { authOptions } from '~/lib/authOptions';
 
 import { updateUserProfile } from '~/lib/db/users';
@@ -13,7 +14,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const parsedBody = UserEditableProfileData.safeParse(req.body);
+  const parsedBody = safeParse(UserEditableProfileData, req.body);
 
   if (!parsedBody.success) {
     res.status(400).end();

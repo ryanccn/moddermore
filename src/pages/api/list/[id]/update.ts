@@ -1,5 +1,7 @@
 import type { NextApiHandler } from 'next';
 
+import { safeParse } from 'valibot';
+
 import { getServerSession } from 'next-auth';
 import { authOptions } from '~/lib/authOptions';
 import { updateList } from '~/lib/db';
@@ -26,10 +28,10 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const parsedData = ModListUpdate.safeParse(req.body);
+  const parsedData = safeParse(ModListUpdate, req.body);
 
   if (!parsedData.success) {
-    console.error(parsedData.error.errors);
+    console.error(parsedData.error);
     res.status(400).json({ error: 'Bad request' });
     return;
   }

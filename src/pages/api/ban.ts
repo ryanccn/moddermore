@@ -1,14 +1,14 @@
 import { type NextApiHandler } from 'next';
 import { getServerSession } from 'next-auth';
 
-import { z } from 'zod';
+import * as v from 'valibot';
 import { authOptions } from '~/lib/authOptions';
 import { getProfilesCollection } from '~/lib/db/client';
 
-const validate = z.object({ id: z.string().min(1) });
+const validate = v.object({ id: v.string([v.minLength(1)]) });
 
 const handler: NextApiHandler = async (req, res) => {
-  const parsedBody = validate.safeParse(req.body);
+  const parsedBody = v.safeParse(validate, req.body);
   if (!parsedBody.success) {
     res.status(400).json({ error: 'bad request' });
     return;

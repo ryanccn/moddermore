@@ -32,7 +32,8 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-markdown": "^8.0.7",
-    "tailwind-merge": "^1.14.0"
+    "tailwind-merge": "^1.14.0",
+    "valibot": "^0.12.0"
   },
   "devDependencies": {
     "@lukeed/uuid": "^2.0.1",
@@ -68,8 +69,7 @@
     "remark-html": "^15.0.2",
     "tailwindcss": "^3.3.3",
     "tsx": "^3.12.7",
-    "typescript": "^5.1.6",
-    "zod": "^3.22.1"
+    "typescript": "^5.1.6"
   },
   "packageManager": "pnpm@8.6.12"
 }

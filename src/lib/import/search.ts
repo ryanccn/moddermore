@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import * as v from 'valibot';
 
 import minecraftVersions from '../minecraftVersions.json';
 
@@ -6,18 +6,18 @@ import type { RichMod } from '~/types/moddermore';
 import type { ModrinthSearchResult } from '~/types/modrinth';
 import type { CurseForgeSearchResult } from '~/types/curseforge';
 
-export const optionsZ = z.object({
-  platform: z.union([z.literal('modrinth'), z.literal('curseforge')]),
-  query: z.string(),
-  loader: z.union([
-    z.literal('quilt'),
-    z.literal('fabric'),
-    z.literal('forge'),
+export const optionsZ = v.object({
+  platform: v.union([v.literal('modrinth'), v.literal('curseforge')]),
+  query: v.string(),
+  loader: v.union([
+    v.literal('quilt'),
+    v.literal('fabric'),
+    v.literal('forge'),
   ]),
-  gameVersion: z.string(),
+  gameVersion: v.string(),
 });
 
-type Options = z.infer<typeof optionsZ>;
+type Options = v.Input<typeof optionsZ>;
 
 export const search = async ({
   platform,

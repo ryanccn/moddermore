@@ -1,38 +1,38 @@
 import { loadAsync } from 'jszip';
-import { z } from 'zod';
+import * as v from 'valibot';
 
 import { parseMod } from './parseModFolder';
 
 import type { Mod } from '~/types/moddermore';
 import type { SetStateFn } from '~/types/react';
 
-const ModrinthSideType = z.union([
-  z.literal('required'),
-  z.literal('optional'),
-  z.literal('unsupposted'),
+const ModrinthSideType = v.union([
+  v.literal('required'),
+  v.literal('optional'),
+  v.literal('unsupposted'),
 ]);
 
-const ModrinthPackIndex = z.object({
-  formatVersion: z.literal(1),
-  game: z.literal('minecraft'),
-  versionId: z.string(),
-  name: z.string(),
-  summary: z.string().optional(),
-  files: z
-    .object({
-      path: z.string(),
-      hashes: z.object({ sha1: z.string(), sha512: z.string() }),
-      env: z
-        .object({ client: ModrinthSideType, server: ModrinthSideType })
-        .optional(),
-      downloads: z.string().url().array().min(1),
-      fileSize: z.number(),
-    })
-    .array(),
-  dependencies: z.record(z.string()),
+const ModrinthPackIndex = v.object({
+  formatVersion: v.literal(1),
+  game: v.literal('minecraft'),
+  versionId: v.string(),
+  name: v.string(),
+  summary: v.optional(v.string()),
+  files: v.array(
+    v.object({
+      path: v.string(),
+      hashes: v.object({ sha1: v.string(), sha512: v.string() }),
+      env: v.optional(
+        v.object({ client: ModrinthSideType, server: ModrinthSideType }),
+      ),
+      downloads: v.array(v.string([v.url()]), [v.minLength(1)]),
+      fileSize: v.number(),
+    }),
+  ),
+  dependencies: v.record(v.string()),
 });
 
-type ModrinthPackIndex = z.infer<typeof ModrinthPackIndex>;
+type ModrinthPackIndex = v.Input<typeof ModrinthPackIndex>;
 
 const modrinthCdnRegex = new RegExp(
   '^https://cdn\\.modrinth\\.com/data/([\\w]+)/versions/[\\w]+/',
@@ -53,7 +53,7 @@ export const importMrpack = async ({
   const mrIndex = zippy.file('modrinth.index.json');
   if (!mrIndex) throw new Error('Invalid mrpack');
   const mrIndexString = await mrIndex.async('string');
-  const mrIndexData = ModrinthPackIndex.parse(JSON.parse(mrIndexString));
+  const mrIndexData = v.parse(ModrinthPackIndex, JSON.parse(mrIndexString));
 
   const result: Mod[] = [];
 

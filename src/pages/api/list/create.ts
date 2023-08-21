@@ -1,5 +1,7 @@
 import type { NextApiHandler } from 'next';
 
+import { safeParse } from 'valibot';
+
 import { getServerSession, type User } from 'next-auth';
 import { authOptions } from '~/lib/authOptions';
 import { createList } from '~/lib/db';
@@ -8,6 +10,7 @@ import { ModListCreate } from '~/types/moddermore';
 
 import { RESTPostAPIWebhookWithTokenJSONBody as DiscordWebhookBody } from 'discord-api-types/rest';
 import { loaderFormat } from '~/lib/strings';
+
 const logToDiscord = async ({
   data,
   id,
@@ -67,7 +70,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const parsedData = ModListCreate.safeParse(req.body);
+  const parsedData = safeParse(ModListCreate, req.body);
 
   if (!parsedData.success) {
     res.status(400).json({ error: 'Bad request' });

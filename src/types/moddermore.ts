@@ -1,11 +1,11 @@
-import { z } from 'zod';
+import * as v from 'valibot';
 
 export type ModProvider = 'modrinth' | 'curseforge';
 export type ModLoader = 'quilt' | 'fabric' | 'forge';
 
-const Mod = z.object({
-  id: z.string(),
-  provider: z.union([z.literal('modrinth'), z.literal('curseforge')]),
+const Mod = v.object({
+  id: v.string(),
+  provider: v.union([v.literal('modrinth'), v.literal('curseforge')]),
 });
 
 export interface Mod {
@@ -26,36 +26,36 @@ export interface RichMod {
   gameVersions?: string[];
 }
 
-export const ModListCreate = z.object({
-  title: z.string().min(1),
-  description: z.string().min(1).optional(),
-  gameVersion: z.string().min(1),
-  modloader: z.union([
-    z.literal('forge'),
-    z.literal('fabric'),
-    z.literal('quilt'),
+export const ModListCreate = v.object({
+  title: v.string([v.minLength(1)]),
+  description: v.optional(v.string([v.minLength(1)])),
+  gameVersion: v.string([v.minLength(1)]),
+  modloader: v.union([
+    v.literal('forge'),
+    v.literal('fabric'),
+    v.literal('quilt'),
   ]),
-  mods: z.array(Mod).min(1).max(500),
+  mods: v.array(Mod, [v.minLength(1), v.maxLength(500)]),
 });
 
-export type ModListCreate = z.infer<typeof ModListCreate>;
+export type ModListCreate = v.Input<typeof ModListCreate>;
 
-export const ModListUpdate = z.object({
-  title: z.string().min(1).optional(),
-  description: z.string().min(1).nullable().optional(),
-  gameVersion: z.string().min(1).optional(),
-  modloader: z
-    .union([z.literal('forge'), z.literal('fabric'), z.literal('quilt')])
-    .optional(),
-  visibility: z.union([
-    z.literal('private'),
-    z.literal('unlisted'),
-    z.literal('public'),
+export const ModListUpdate = v.object({
+  title: v.optional(v.string([v.minLength(1)])),
+  description: v.optional(v.nullable(v.string([v.minLength(1)]))),
+  gameVersion: v.optional(v.string([v.minLength(1)])),
+  modloader: v.optional(
+    v.union([v.literal('forge'), v.literal('fabric'), v.literal('quilt')]),
+  ),
+  visibility: v.union([
+    v.literal('private'),
+    v.literal('unlisted'),
+    v.literal('public'),
   ]),
-  mods: z.array(Mod).min(1).max(500).optional(),
+  mods: v.optional(v.array(Mod, [v.minLength(1), v.maxLength(500)])),
 });
 
-export type ModListUpdate = z.infer<typeof ModListUpdate>;
+export type ModListUpdate = v.Input<typeof ModListUpdate>;
 
 export interface ModList {
   id: string;
@@ -89,12 +89,12 @@ export interface RichModList {
   mods: RichMod[];
 }
 
-export const UserEditableProfileData = z.object({
-  name: z.union([z.string(), z.literal(null)]),
-  profilePicture: z.union([z.string().url(), z.literal(null)]),
+export const UserEditableProfileData = v.object({
+  name: v.union([v.string(), v.nullType()]),
+  profilePicture: v.union([v.string([v.url()]), v.nullType()]),
 });
 
-export type UserEditableProfileData = z.infer<typeof UserEditableProfileData>;
+export type UserEditableProfileData = v.Input<typeof UserEditableProfileData>;
 
 export interface UserProfileData extends UserEditableProfileData {
   likes?: string[];

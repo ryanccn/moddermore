@@ -2,7 +2,7 @@ import { type NextApiHandler } from 'next';
 import { getServerSession } from 'next-auth';
 
 import pLimit from 'p-limit';
-import { z } from 'zod';
+import * as v from 'valibot';
 import { authOptions } from '~/lib/authOptions';
 
 import { getSpecificList } from '~/lib/db';
@@ -40,10 +40,10 @@ const search = async (query: string, isAdmin?: boolean) => {
   );
 };
 
-const validate = z.object({ query: z.string().min(1) });
+const validate = v.object({ query: v.string([v.minLength(1)]) });
 
 const handler: NextApiHandler = async (req, res) => {
-  const parsedBody = validate.safeParse(req.body);
+  const parsedBody = v.safeParse(validate, req.body);
   if (!parsedBody.success) {
     res.status(400).json({ error: 'bad request' });
     return;
