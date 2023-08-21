@@ -48,7 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
     "autoprefixer": "^10.4.15",
-    "discord-api-types": "^0.37.53",
+    "discord-api-types": "^0.37.54",
     "dotenv": "^16.3.1",
     "eslint": "^8.47.0",
     "eslint-config-next": "13.4.16",
