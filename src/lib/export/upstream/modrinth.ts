@@ -1,20 +1,16 @@
-import type { ModrinthVersion } from '~/types/modrinth';
-import type {
-  Download,
-  ExportReturnData,
-  ProviderSpecificOptions,
-} from './types';
+import type { ModrinthVersion } from "~/types/modrinth";
+import type { Download, ExportReturnData, ProviderSpecificOptions } from "./types";
 
-import minecraftVersions from '~/lib/minecraftVersions.json';
+import minecraftVersions from "~/lib/minecraftVersions.json";
 
 const getObjFromVersion = (
   v: ModrinthVersion,
-  type: 'direct' | 'dependency',
+  type: "direct" | "dependency",
 ): Download => {
   const primary = v.files.find((f) => f.primary) ?? v.files[0];
 
   return {
-    provider: 'modrinth',
+    provider: "modrinth",
     name: primary.filename,
     id: v.project_id,
     url: primary.url,
@@ -36,7 +32,7 @@ export const callModrinthAPI = async ({
     const res = await fetch(
       `https://api.modrinth.com/v2/version/${encodeURIComponent(version)}`,
       {
-        headers: { 'User-Agent': 'Moddermore/noversion' },
+        headers: { "User-Agent": "Moddermore/noversion" },
       },
     );
 
@@ -50,15 +46,21 @@ export const callModrinthAPI = async ({
   }
 
   const res = await fetch(
-    `https://api.modrinth.com/v2/project/${encodeURIComponent(
-      id,
-    )}/version?loaders=["${encodeURIComponent(
-      loader,
-    )}"]&game_versions=[${encodeURIComponent(
-      gameVersions.map((a) => `"${a}"`).join(','),
-    )}]`,
+    `https://api.modrinth.com/v2/project/${
+      encodeURIComponent(
+        id,
+      )
+    }/version?loaders=["${
+      encodeURIComponent(
+        loader,
+      )
+    }"]&game_versions=[${
+      encodeURIComponent(
+        gameVersions.map((a) => `"${a}"`).join(","),
+      )
+    }]`,
     {
-      headers: { 'User-Agent': 'Moddermore/noversion' },
+      headers: { "User-Agent": "Moddermore/noversion" },
     },
   );
 
@@ -68,12 +70,12 @@ export const callModrinthAPI = async ({
 
   const data = (await res.json()) as ModrinthVersion[];
 
-  let latest = data.find((v) => v.version_type === 'release');
+  let latest = data.find((v) => v.version_type === "release");
   if (!latest) {
-    latest = data.find((v) => v.version_type === 'beta');
+    latest = data.find((v) => v.version_type === "beta");
   }
   if (!latest) {
-    latest = data.find((v) => v.version_type === 'alpha');
+    latest = data.find((v) => v.version_type === "alpha");
   }
 
   return latest ?? null;
@@ -90,11 +92,11 @@ export const getModrinthDownload = async ({
 
   latest = await callModrinthAPI({ id, gameVersions, loader, name, version });
 
-  if (!latest && loader === 'quilt') {
+  if (!latest && loader === "quilt") {
     latest = await callModrinthAPI({
       id,
       gameVersions,
-      loader: 'fabric',
+      loader: "fabric",
       name,
       version,
     });
@@ -102,7 +104,7 @@ export const getModrinthDownload = async ({
 
   if (!latest) {
     const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersions[0].split('.').slice(0, 2).join('.')),
+      a.startsWith(gameVersions[0].split(".").slice(0, 2).join("."))
     );
 
     latest = await callModrinthAPI({
@@ -114,26 +116,26 @@ export const getModrinthDownload = async ({
     });
   }
 
-  if (!latest && loader === 'quilt') {
+  if (!latest && loader === "quilt") {
     const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersions[0].split('.').slice(0, 2).join('.')),
+      a.startsWith(gameVersions[0].split(".").slice(0, 2).join("."))
     );
 
     latest = await callModrinthAPI({
       id,
       gameVersions: compatGameVersions,
-      loader: 'fabric',
+      loader: "fabric",
       name,
       version,
     });
   }
 
   if (!latest) {
-    return [{ error: 'notfound', name, id }];
+    return [{ error: "notfound", name, id }];
   }
 
   let ret: ExportReturnData = [];
-  ret.push(getObjFromVersion(latest, 'direct'));
+  ret.push(getObjFromVersion(latest, "direct"));
 
   /*
   if (latest.dependencies) {
@@ -161,11 +163,11 @@ export const getModrinthDownload = async ({
   */
 
   // Fabric API to QSL swap
-  if (loader === 'quilt' && ret.some((t) => t.id === 'P7dR8mSH')) {
-    ret = ret.filter((t) => t.id !== 'P7dR8mSH');
+  if (loader === "quilt" && ret.some((t) => t.id === "P7dR8mSH")) {
+    ret = ret.filter((t) => t.id !== "P7dR8mSH");
     ret.push(
       ...(await getModrinthDownload({
-        id: 'qvIfYCYJ',
+        id: "qvIfYCYJ",
         gameVersions,
         loader,
         name,

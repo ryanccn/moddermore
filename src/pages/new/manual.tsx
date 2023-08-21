@@ -1,26 +1,26 @@
-import type { NextPage } from 'next';
-import { type FormEventHandler, useState, useCallback } from 'react';
-import type { RichMod, ModLoader } from '~/types/moddermore';
+import type { NextPage } from "next";
+import { type FormEventHandler, useCallback, useState } from "react";
+import type { ModLoader, RichMod } from "~/types/moddermore";
 
-import minecraftVersions from '~/lib/minecraftVersions.json';
-import { richModToMod } from '~/lib/db/conversions';
+import { richModToMod } from "~/lib/db/conversions";
+import minecraftVersions from "~/lib/minecraftVersions.json";
 
-import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { RichModDisplay } from '~/components/partials/RichModDisplay';
-import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
+import { RichModDisplay } from "~/components/partials/RichModDisplay";
 
-import toast from 'react-hot-toast';
-import { Search } from '~/components/partials/Search';
+import toast from "react-hot-toast";
+import { Search } from "~/components/partials/Search";
 
 const ManualImportPage: NextPage = () => {
   const session = useSession({ required: true });
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
-  const [modLoader, setModLoader] = useState<ModLoader>('quilt');
+  const [modLoader, setModLoader] = useState<ModLoader>("quilt");
 
   const [inputMods, setInputMods] = useState<RichMod[]>([]);
 
@@ -35,15 +35,15 @@ const ManualImportPage: NextPage = () => {
 
       setSubmitting(true);
 
-      const res = await fetch('/api/list/create', {
-        method: 'POST',
+      const res = await fetch("/api/list/create", {
+        method: "POST",
         body: JSON.stringify({
           title,
           gameVersion,
           modloader: modLoader,
           mods: inputMods.map((elem) => richModToMod(elem)),
         }),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
 
       if (!res.ok) {
@@ -138,7 +138,7 @@ const ManualImportPage: NextPage = () => {
 
         <NewSubmitButton
           submitting={submitting}
-          disabled={session.status === 'loading' || submitting}
+          disabled={session.status === "loading" || submitting}
         />
       </form>
     </GlobalLayout>

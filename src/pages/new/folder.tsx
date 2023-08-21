@@ -1,31 +1,31 @@
-import type { NextPage } from 'next';
-import { type FormEventHandler, useState, useCallback } from 'react';
+import type { NextPage } from "next";
+import { type FormEventHandler, useCallback, useState } from "react";
 
-import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-import { loadAsync } from 'jszip';
-import { parseModFolder } from '~/lib/import/parseModFolder';
-import minecraftVersions from '~/lib/minecraftVersions.json';
-import type { Mod, ModLoader } from '~/types/moddermore';
+import { loadAsync } from "jszip";
+import { parseModFolder } from "~/lib/import/parseModFolder";
+import minecraftVersions from "~/lib/minecraftVersions.json";
+import type { Mod, ModLoader } from "~/types/moddermore";
 
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { ProgressOverlay } from '~/components/ProgressOverlay';
-import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
-import { buttonVariants } from '~/components/ui/Button';
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
+import { ProgressOverlay } from "~/components/ProgressOverlay";
+import { buttonVariants } from "~/components/ui/Button";
 
-import { UploadIcon } from 'lucide-react';
+import { UploadIcon } from "lucide-react";
 
-import toast from 'react-hot-toast';
-import { twMerge } from 'tailwind-merge';
+import toast from "react-hot-toast";
+import { twMerge } from "tailwind-merge";
 
 const FolderImportPage: NextPage = () => {
   const sess = useSession({ required: true });
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
   const [modZipFile, setModZipFile] = useState<File | null>(null);
-  const [modLoader, setModLoader] = useState<ModLoader>('quilt');
+  const [modLoader, setModLoader] = useState<ModLoader>("quilt");
 
   const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [submitting, setSubmitting] = useState(false);
@@ -47,15 +47,15 @@ const FolderImportPage: NextPage = () => {
         setProgress,
       }).then((r) => r.filter((k) => k !== null))) as Mod[];
 
-      const res = await fetch('/api/list/create', {
-        method: 'POST',
+      const res = await fetch("/api/list/create", {
+        method: "POST",
         body: JSON.stringify({
           title,
           gameVersion,
           modloader: modLoader,
           mods: parsedMods,
         }),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
 
       if (!res.ok) {
@@ -132,7 +132,7 @@ const FolderImportPage: NextPage = () => {
               role="button"
               className={twMerge(
                 buttonVariants({
-                  className: 'flex cursor-auto hover:cursor-pointer',
+                  className: "flex cursor-auto hover:cursor-pointer",
                 }),
               )}
             >
@@ -152,20 +152,16 @@ const FolderImportPage: NextPage = () => {
             />
           </label>
 
-          {modZipFile && (
-            <span className="text-lg font-medium">{modZipFile.name}</span>
-          )}
+          {modZipFile && <span className="text-lg font-medium">{modZipFile.name}</span>}
         </div>
 
         <NewSubmitButton
           submitting={submitting}
-          disabled={sess.status === 'loading' || submitting}
+          disabled={sess.status === "loading" || submitting}
         />
       </form>
 
-      {submitting && (
-        <ProgressOverlay label="Searching for mods..." {...progress} />
-      )}
+      {submitting && <ProgressOverlay label="Searching for mods..." {...progress} />}
     </GlobalLayout>
   );
 };

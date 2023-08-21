@@ -1,11 +1,11 @@
-import type { NextApiHandler } from 'next';
+import type { NextApiHandler } from "next";
 
-import { getServerSession } from 'next-auth';
-import { safeParse } from 'valibot';
-import { authOptions } from '~/lib/authOptions';
+import { getServerSession } from "next-auth";
+import { safeParse } from "valibot";
+import { authOptions } from "~/lib/authOptions";
 
-import { updateUserProfile } from '~/lib/db/users';
-import { UserEditableProfileData } from '~/types/moddermore';
+import { updateUserProfile } from "~/lib/db/users";
+import { UserEditableProfileData } from "~/types/moddermore";
 
 const h: NextApiHandler = async (req, res) => {
   const session = await getServerSession(req, res, authOptions);

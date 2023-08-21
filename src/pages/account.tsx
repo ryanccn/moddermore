@@ -1,15 +1,15 @@
-import type { NextPage } from 'next';
-import { useCallback, useEffect, useState } from 'react';
+import type { NextPage } from "next";
+import { useCallback, useEffect, useState } from "react";
 
-import { useSession, signOut } from 'next-auth/react';
+import { signOut, useSession } from "next-auth/react";
 
-import { FullLoadingScreen } from '~/components/FullLoadingScreen';
-import { DashboardLayout } from '~/components/layout/DashboardLayout';
+import { FullLoadingScreen } from "~/components/FullLoadingScreen";
+import { DashboardLayout } from "~/components/layout/DashboardLayout";
 
-import { toast } from 'react-hot-toast';
-import { Button } from '~/components/ui/Button';
-import { LogOutIcon, SaveIcon } from 'lucide-react';
-import { Spinner } from '~/components/partials/Spinner';
+import { LogOutIcon, SaveIcon } from "lucide-react";
+import { toast } from "react-hot-toast";
+import { Spinner } from "~/components/partials/Spinner";
+import { Button } from "~/components/ui/Button";
 
 const AccountPage: NextPage = () => {
   const session = useSession({ required: true });
@@ -31,25 +31,25 @@ const AccountPage: NextPage = () => {
   const saveProfile = useCallback(() => {
     setInProgress(true);
 
-    fetch('/api/profile/update', {
-      method: 'POST',
+    fetch("/api/profile/update", {
+      method: "POST",
       body: JSON.stringify({
         name: name || null,
         profilePicture: profilePicture || null,
       }),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     }).then((res) => {
       if (res.ok) {
-        toast.success('Profile details saved!');
+        toast.success("Profile details saved!");
       } else {
-        toast.error('Profile details could not be saved :(');
+        toast.error("Profile details could not be saved :(");
       }
 
       setInProgress(false);
     });
   }, [name, profilePicture]);
 
-  if (session.status === 'loading') {
+  if (session.status === "loading") {
     return <FullLoadingScreen />;
   }
 
@@ -68,7 +68,7 @@ const AccountPage: NextPage = () => {
             <input
               className="mm-input max-w-prose"
               type="text"
-              value={name || ''}
+              value={name || ""}
               onChange={(e) => {
                 setName(e.target.value);
               }}
@@ -80,7 +80,7 @@ const AccountPage: NextPage = () => {
             <input
               className="mm-input max-w-prose"
               type="url"
-              value={profilePicture || ''}
+              value={profilePicture || ""}
               onChange={(e) => {
                 setProfilePicture(e.target.value);
               }}
@@ -93,11 +93,9 @@ const AccountPage: NextPage = () => {
             className="mt-2 self-start"
             disabled={inProgress}
           >
-            {inProgress ? (
-              <Spinner className="block w-5 h-5" />
-            ) : (
-              <SaveIcon className="block w-5 h-5" />
-            )}
+            {inProgress
+              ? <Spinner className="block w-5 h-5" />
+              : <SaveIcon className="block w-5 h-5" />}
             <span>Save</span>
           </Button>
         </form>
@@ -106,7 +104,7 @@ const AccountPage: NextPage = () => {
           variant="danger"
           className="self-start px-4 py-2 text-lg font-semibold"
           onClick={() => {
-            signOut({ callbackUrl: '/' });
+            signOut({ callbackUrl: "/" });
           }}
         >
           <LogOutIcon className="block w-5 h-5" />

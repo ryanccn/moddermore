@@ -1,12 +1,12 @@
-import { useCallback, useState } from 'react';
-import { search } from '~/lib/import/search';
+import { useCallback, useState } from "react";
+import { search } from "~/lib/import/search";
 
-import { Button } from '../ui/Button';
-import { Spinner } from './Spinner';
-import { SearchIcon } from 'lucide-react';
-import { RichModDisplay } from './RichModDisplay';
+import { SearchIcon } from "lucide-react";
+import { Button } from "../ui/Button";
+import { RichModDisplay } from "./RichModDisplay";
+import { Spinner } from "./Spinner";
 
-import type { Mod, ModLoader, RichMod } from '~/types/moddermore';
+import type { Mod, ModLoader, RichMod } from "~/types/moddermore";
 
 interface Props {
   modLoader: ModLoader;
@@ -16,15 +16,15 @@ interface Props {
 }
 
 const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
-  const [searchProvider, setSearchProvider] = useState('modrinth');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchProvider, setSearchProvider] = useState("modrinth");
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<RichMod[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
   const updateSearch = useCallback(() => {
     setIsSearching(true);
     search({
-      platform: searchProvider as 'modrinth' | 'curseforge',
+      platform: searchProvider as "modrinth" | "curseforge",
       query: searchQuery,
       loader: modLoader,
       gameVersion: gameVersion,
@@ -68,7 +68,7 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
             setSearchQuery(e.target.value);
           }}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               e.preventDefault();
               updateSearch();
             }
@@ -76,11 +76,9 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
         />
 
         <Button type="button" onClick={updateSearch} disabled={isSearching}>
-          {isSearching ? (
-            <Spinner className="block w-5 h-5" />
-          ) : (
-            <SearchIcon className="block w-5 h-5" />
-          )}
+          {isSearching
+            ? <Spinner className="block w-5 h-5" />
+            : <SearchIcon className="block w-5 h-5" />}
           <span>Search</span>
         </Button>
       </div>
@@ -88,19 +86,21 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
       {searchResults.length > 0 && (
         <ul className="flex flex-col gap-y-2">
           {searchResults.map((res) =>
-            existing &&
-            existing.some(
-              (m) => m.id === res.id && m.provider === res.provider,
-            ) ? null : (
-              <RichModDisplay
-                data={res}
-                key={res.id}
-                buttonType="add"
-                onClick={() => {
-                  onAdd(res);
-                }}
-              />
-            ),
+            existing
+              && existing.some(
+                (m) => m.id === res.id && m.provider === res.provider,
+              )
+              ? null
+              : (
+                <RichModDisplay
+                  data={res}
+                  key={res.id}
+                  buttonType="add"
+                  onClick={() => {
+                    onAdd(res);
+                  }}
+                />
+              )
           )}
         </ul>
       )}

@@ -1,24 +1,24 @@
-import type { NextPage } from 'next';
-import { type FormEventHandler, useState, useCallback } from 'react';
+import type { NextPage } from "next";
+import { type FormEventHandler, useCallback, useState } from "react";
 
-import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
-import toast from 'react-hot-toast';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
-import { parseFerium } from '~/lib/import/ferium';
-import minecraftVersions from '~/lib/minecraftVersions.json';
-import type { ModLoader } from '~/types/moddermore';
+import { parseFerium } from "~/lib/import/ferium";
+import minecraftVersions from "~/lib/minecraftVersions.json";
+import type { ModLoader } from "~/types/moddermore";
 
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
 
 const FeriumImportPage: NextPage = () => {
   const sess = useSession({ required: true });
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
-  const [modLoader, setModLoader] = useState<ModLoader>('quilt');
-  const [feriumCopyPaste, setFeriumCopyPaste] = useState('');
+  const [modLoader, setModLoader] = useState<ModLoader>("quilt");
+  const [feriumCopyPaste, setFeriumCopyPaste] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
@@ -30,15 +30,15 @@ const FeriumImportPage: NextPage = () => {
 
       setSubmitting(true);
 
-      const res = await fetch('/api/list/create', {
-        method: 'POST',
+      const res = await fetch("/api/list/create", {
+        method: "POST",
         body: JSON.stringify({
           title,
           gameVersion,
           modloader: modLoader,
           mods: parseFerium(feriumCopyPaste),
         }),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
 
       if (!res.ok) {
@@ -119,7 +119,7 @@ const FeriumImportPage: NextPage = () => {
 
         <NewSubmitButton
           submitting={submitting}
-          disabled={sess.status === 'loading' || submitting}
+          disabled={sess.status === "loading" || submitting}
         />
       </form>
     </GlobalLayout>

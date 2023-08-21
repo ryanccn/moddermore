@@ -1,6 +1,6 @@
-import { UserProfile } from './moddermore';
+import { UserProfile } from "./moddermore";
 
-declare module 'next-auth' {
+declare module "next-auth" {
   interface Session {
     user: {
       /** The user's internal database ID */

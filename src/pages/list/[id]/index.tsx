@@ -1,56 +1,42 @@
 /* eslint-disable @next/next/no-img-element */
 
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from "next";
 
-import type {
-  ModListCreate,
-  ModListWithExtraData,
-  RichMod,
-} from '~/types/moddermore';
+import type { ModListCreate, ModListWithExtraData, RichMod } from "~/types/moddermore";
 
-import { richModToMod } from '~/lib/db/conversions';
-import { getInfos as getModrinthInfos } from '~/lib/metadata/modrinth';
-import { getInfos as getCurseForgeInfos } from '~/lib/metadata/curseforge';
-import { loaderFormat } from '~/lib/strings';
+import { richModToMod } from "~/lib/db/conversions";
+import { getInfos as getCurseForgeInfos } from "~/lib/metadata/curseforge";
+import { getInfos as getModrinthInfos } from "~/lib/metadata/modrinth";
+import { loaderFormat } from "~/lib/strings";
 
-import {
-  FormEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
+import { FormEventHandler, useCallback, useEffect, useMemo, useState } from "react";
 
-import { getSpecificList } from '~/lib/db';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '~/lib/authOptions';
-import { signIn, useSession } from 'next-auth/react';
+import { getServerSession } from "next-auth";
+import { signIn, useSession } from "next-auth/react";
+import { authOptions } from "~/lib/authOptions";
+import { getSpecificList } from "~/lib/db";
 
-import { zipExport } from '~/lib/export/formats/zip';
-import {
-  prismAutoUpdateExport,
-  prismStaticExport,
-} from '~/lib/export/formats/prism';
-import { modrinthExport } from '~/lib/export/formats/mrpack';
-import { ExportStatus } from '~/lib/export/formats/shared';
+import { modrinthExport } from "~/lib/export/formats/mrpack";
+import { prismAutoUpdateExport, prismStaticExport } from "~/lib/export/formats/prism";
+import { ExportStatus } from "~/lib/export/formats/shared";
+import { zipExport } from "~/lib/export/formats/zip";
 
-import * as Dialog from '@radix-ui/react-dialog';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import Markdown from 'react-markdown';
+import * as Dialog from "@radix-ui/react-dialog";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import Markdown from "react-markdown";
 
-import Link from 'next/link';
-import Head from 'next/head';
+import Head from "next/head";
+import Link from "next/link";
 
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { RichModDisplay } from '~/components/partials/RichModDisplay';
-import { ProgressOverlay } from '~/components/ProgressOverlay';
-import { DonationMessage } from '~/components/partials/DonationMessage';
-import { Spinner } from '~/components/partials/Spinner';
-import { Button, buttonVariants } from '~/components/ui/Button';
-import { Search } from '~/components/partials/Search';
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { DonationMessage } from "~/components/partials/DonationMessage";
+import { RichModDisplay } from "~/components/partials/RichModDisplay";
+import { Search } from "~/components/partials/Search";
+import { Spinner } from "~/components/partials/Spinner";
+import { ProgressOverlay } from "~/components/ProgressOverlay";
+import { Button, buttonVariants } from "~/components/ui/Button";
 
-import { MarkdownIcon, ModrinthIcon } from '~/components/icons';
 import {
   ClipboardIcon,
   CloudIcon,
@@ -65,10 +51,11 @@ import {
   SaveIcon,
   SettingsIcon,
   TrashIcon,
-} from 'lucide-react';
+} from "lucide-react";
+import { MarkdownIcon, ModrinthIcon } from "~/components/icons";
 
-import toast from 'react-hot-toast';
-import { twMerge } from 'tailwind-merge';
+import toast from "react-hot-toast";
+import { twMerge } from "tailwind-merge";
 
 interface PageProps {
   data: ModListWithExtraData;
@@ -80,9 +67,9 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
   const hasElevatedPermissions = useMemo(
     () =>
-      session.data &&
-      (session.data.user.id === data.owner ||
-        session.data.extraProfile.isAdmin),
+      session.data
+      && (session.data.user.id === data.owner
+        || session.data.extraProfile.isAdmin),
     [session.data, data.owner],
   );
 
@@ -116,9 +103,8 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   );
 
   const [mrpackName, setMrpackName] = useState(data.title);
-  const [mrpackVersion, setMrpackVersion] = useState('0.0.1');
-  const [mrpackCurseForgeStrategy, setMrpackCurseForgeStrategy] =
-    useState('skip');
+  const [mrpackVersion, setMrpackVersion] = useState("0.0.1");
+  const [mrpackCurseForgeStrategy, setMrpackCurseForgeStrategy] = useState("skip");
 
   const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [result, setResult] = useState<{ success: string[]; failed: string[] }>(
@@ -129,15 +115,16 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     (async () => {
       const [modrinthMods, curseForgeMods] = await Promise.all([
         getModrinthInfos(
-          data.mods.filter((k) => k.provider === 'modrinth').map((k) => k.id),
+          data.mods.filter((k) => k.provider === "modrinth").map((k) => k.id),
         ),
         getCurseForgeInfos(
-          data.mods.filter((k) => k.provider === 'curseforge').map((k) => k.id),
+          data.mods.filter((k) => k.provider === "curseforge").map((k) => k.id),
         ),
       ]);
 
-      if (modrinthMods === null)
-        throw new Error('Failed to resolve Modrinth mods');
+      if (modrinthMods === null) {
+        throw new Error("Failed to resolve Modrinth mods");
+      }
 
       const mods = [...modrinthMods, ...curseForgeMods]
         .filter((k) => k !== null)
@@ -148,16 +135,16 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
       setOldMods(mods as RichMod[]);
     })().catch((error) => {
       console.error(error);
-      toast.error('Failed to resolve mods');
+      toast.error("Failed to resolve mods");
     });
   }, [data]);
 
   useEffect(() => {
-    if (session.status !== 'authenticated') return;
+    if (session.status !== "authenticated") return;
 
     fetch(`/api/likes/status?id=${data.id}`).then(async (r) => {
       if (!r.ok) {
-        toast.error('Error fetching like status');
+        toast.error("Error fetching like status");
         return;
       }
 
@@ -180,9 +167,9 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
       await navigator.clipboard.writeText(
         new URL(`/list/${data.id}/packwiz/pack.toml`, location.href).toString(),
       );
-      toast.success('Copied link to clipboard');
+      toast.success("Copied link to clipboard");
     } catch {
-      toast.error('Failed to copy link to clipboard');
+      toast.error("Failed to copy link to clipboard");
     }
   };
 
@@ -196,17 +183,17 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
       const res = await fetch(
         `/api/list/${encodeURIComponent(data.id)}/update`,
         {
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify({
             ...data,
             mods: resolvedMods.map((elem) => richModToMod(elem)),
           }),
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
         },
       );
 
       if (!res.ok) {
-        toast.error('Failed to update mods!');
+        toast.error("Failed to update mods!");
         setIsSaving(false);
         setIsEditing(false);
         return;
@@ -221,8 +208,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
       const addedMods = resolvedMods.filter(
         (resolvedMod) =>
           !oldMods.some(
-            (k) =>
-              k.id === resolvedMod.id && k.provider === resolvedMod.provider,
+            (k) => k.id === resolvedMod.id && k.provider === resolvedMod.provider,
           ),
       );
 
@@ -230,22 +216,22 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 ## Added mods
 
 ${
-  addedMods.length > 0
-    ? addedMods
-        .map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
-        .join('\n')
-    : '*None*'
-}
+        addedMods.length > 0
+          ? addedMods
+            .map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
+            .join("\n")
+          : "*None*"
+      }
 
 ## Removed mods
 
 ${
-  removedMods.length > 0
-    ? removedMods
-        .map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
-        .join('\n')
-    : '*None*'
-}
+        removedMods.length > 0
+          ? removedMods
+            .map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
+            .join("\n")
+          : "*None*"
+      }
       `.trim();
 
       toast.success(
@@ -275,10 +261,10 @@ ${
 
     const text = resolvedMods
       .map((k) => `- [**${k.name}**](${k.href}) - ${k.description}`)
-      .join('\n');
+      .join("\n");
 
     navigator.clipboard.writeText(text).then(() => {
-      toast.success('Copied Markdown to clipboard!');
+      toast.success("Copied Markdown to clipboard!");
     });
   }, [resolvedMods]);
 
@@ -293,12 +279,12 @@ ${
         }),
       )
       .then(() => {
-        toast.success('Copied JSON to clipboard!');
+        toast.success("Copied JSON to clipboard!");
       });
   }, [data]);
 
   const toggleLikeStatus = useCallback(() => {
-    if (session.status !== 'authenticated') {
+    if (session.status !== "authenticated") {
       signIn();
       return;
     }
@@ -323,23 +309,25 @@ ${
   }, [session, data.id, hasLiked]);
 
   const duplicateList = useCallback(() => {
-    if (session.status !== 'authenticated') {
+    if (session.status !== "authenticated") {
       signIn();
       return;
     }
 
     setIsDuplicating(true);
 
-    fetch('/api/list/create', {
-      method: 'POST',
-      body: JSON.stringify({
-        title: `${data.title} (copy)`,
-        description: data.description ?? undefined,
-        gameVersion: data.gameVersion,
-        modloader: data.modloader,
-        mods: data.mods,
-      } satisfies ModListCreate),
-      headers: { 'Content-Type': 'application/json' },
+    fetch("/api/list/create", {
+      method: "POST",
+      body: JSON.stringify(
+        {
+          title: `${data.title} (copy)`,
+          description: data.description ?? undefined,
+          gameVersion: data.gameVersion,
+          modloader: data.modloader,
+          mods: data.mods,
+        } satisfies ModListCreate,
+      ),
+      headers: { "Content-Type": "application/json" },
     })
       .then(async (res) => {
         if (!res.ok) return;
@@ -347,10 +335,10 @@ ${
         const { id } = (await res.json()) as { id: string };
         router.push(`/list/${id}`);
 
-        toast.success('Duplicated list!');
+        toast.success("Duplicated list!");
       })
       .catch(() => {
-        toast.error('Failed to duplicate list!');
+        toast.error("Failed to duplicate list!");
       })
       .finally(() => {
         setIsDuplicating(false);
@@ -382,7 +370,7 @@ ${
       toast.error(`Failed to delete ${data.title} (${data.id})!`);
     }
 
-    router.push('/lists');
+    router.push("/lists");
   }, [
     router,
     data,
@@ -411,14 +399,14 @@ ${
     setIsBanning(true);
 
     const res = await fetch(`/api/ban`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ id: data.owner }),
-      headers: { 'content-type': 'application/json' },
+      headers: { "content-type": "application/json" },
     });
 
     if (res.ok) {
       toast.success(`Banned ${data.owner}!`);
-      router.push('/lists');
+      router.push("/lists");
     } else {
       toast.error(`Failed to ban ${data.owner}!`);
     }
@@ -438,7 +426,7 @@ ${
         <div className="-mt-6 text-lg font-medium mb-8">
           <Markdown
             skipHtml
-            disallowedElements={['h1', 'h2', 'h3', 'h4', 'h5', 'h6']}
+            disallowedElements={["h1", "h2", "h3", "h4", "h5", "h6"]}
           >
             {data.description}
           </Markdown>
@@ -447,30 +435,30 @@ ${
 
       <div className="data-list">
         <p>
-          For Minecraft <strong>{data.gameVersion}</strong> with{' '}
+          For Minecraft <strong>{data.gameVersion}</strong> with{" "}
           <strong>{loaderFormat(data.modloader)}</strong>
         </p>
         <p>
           Created <strong>{new Date(data.created_at).toDateString()}</strong>
         </p>
         <p>
-          <strong>{data.likes}</strong> {data.likes === 1 ? 'like' : 'likes'}
+          <strong>{data.likes}</strong> {data.likes === 1 ? "like" : "likes"}
         </p>
       </div>
 
       {data.ownerProfile && (
         <div className="mt-6 flex flex-row items-center gap-x-3 mb-8">
-          {data.ownerProfile.profilePicture ? (
-            <img
-              src={data.ownerProfile.profilePicture}
-              width={32}
-              height={32}
-              className="rounded-full"
-              alt=""
-            />
-          ) : (
-            <div className="h-[32px] w-[32px] rounded-full bg-neutral-100 dark:bg-neutral-700" />
-          )}
+          {data.ownerProfile.profilePicture
+            ? (
+              <img
+                src={data.ownerProfile.profilePicture}
+                width={32}
+                height={32}
+                className="rounded-full"
+                alt=""
+              />
+            )
+            : <div className="h-[32px] w-[32px] rounded-full bg-neutral-100 dark:bg-neutral-700" />}
 
           <strong className="font-semibold">{data.ownerProfile.name}</strong>
         </div>
@@ -494,13 +482,14 @@ ${
                 <button
                   className="radix-dropdown-button"
                   onClick={() => {
-                    if (resolvedMods)
+                    if (resolvedMods) {
                       zipExport({
                         data: { ...data, mods: resolvedMods },
                         setProgress,
                         setResult,
                         setStatus,
                       });
+                    }
                   }}
                 >
                   <FolderArchiveIcon className="block w-5 h-5" />
@@ -520,7 +509,7 @@ ${
                 <button
                   className="radix-dropdown-button"
                   onClick={packwizExport}
-                  disabled={data.visibility === 'private'}
+                  disabled={data.visibility === "private"}
                 >
                   <CloudIcon className="block w-5 h-5" />
                   <span>Copy packwiz link</span>
@@ -530,13 +519,14 @@ ${
                 <button
                   className="radix-dropdown-button"
                   onClick={() => {
-                    if (resolvedMods)
+                    if (resolvedMods) {
                       prismStaticExport({
                         data: { ...data, mods: resolvedMods },
                         setProgress,
                         setResult,
                         setStatus,
                       });
+                    }
                   }}
                 >
                   <HexagonIcon className="block w-5 h-5" />
@@ -547,15 +537,16 @@ ${
                 <button
                   className="radix-dropdown-button"
                   onClick={() => {
-                    if (resolvedMods)
+                    if (resolvedMods) {
                       prismAutoUpdateExport({
                         data: { ...data, mods: resolvedMods },
                         setProgress,
                         setResult,
                         setStatus,
                       });
+                    }
                   }}
-                  disabled={data.visibility === 'private'}
+                  disabled={data.visibility === "private"}
                 >
                   <div className="relative">
                     <HexagonIcon className="block w-5 h-5" />
@@ -606,64 +597,60 @@ ${
         </DropdownMenu.Root>
 
         <Button onClick={toggleLikeStatus}>
-          {!isLiking ? (
-            <HeartIcon
-              className={twMerge(
-                'block w-5 h-5',
-                hasLiked
-                  ? 'fill-current stroke-none'
-                  : 'fill-none stroke-current',
-              )}
-            />
-          ) : (
-            <Spinner className="block w-5 h-5 fill-current" />
-          )}
-          <span>{!hasLiked ? 'Like' : 'Unlike'}</span>
+          {!isLiking
+            ? (
+              <HeartIcon
+                className={twMerge(
+                  "block w-5 h-5",
+                  hasLiked
+                    ? "fill-current stroke-none"
+                    : "fill-none stroke-current",
+                )}
+              />
+            )
+            : <Spinner className="block w-5 h-5 fill-current" />}
+          <span>{!hasLiked ? "Like" : "Unlike"}</span>
         </Button>
 
         <Button onClick={duplicateList}>
-          {isDuplicating ? (
-            <Spinner className="block w-5 h-5 fill-current" />
-          ) : (
-            <CopyIcon className="block w-5 h-5" />
-          )}
+          {isDuplicating
+            ? <Spinner className="block w-5 h-5 fill-current" />
+            : <CopyIcon className="block w-5 h-5" />}
           <span>Duplicate</span>
         </Button>
 
         {hasElevatedPermissions && (
           <>
-            {!isEditing ? (
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setIsEditing(true);
-                }}
-                disabled={isSaving}
-              >
-                {isSaving ? (
-                  <Spinner className="block w-5 h-5 fill-current" />
-                ) : (
-                  <EditIcon className="block w-5 h-5" />
-                )}
-                <span>Edit</span>
-              </Button>
-            ) : (
-              <Button
-                variant="green"
-                onClick={submitHandle}
-                disabled={isSaving}
-              >
-                {isSaving ? (
-                  <Spinner className="block w-5 h-5" />
-                ) : (
-                  <SaveIcon className="block w-5 h-5" />
-                )}
-                <span>Save</span>
-              </Button>
-            )}
+            {!isEditing
+              ? (
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setIsEditing(true);
+                  }}
+                  disabled={isSaving}
+                >
+                  {isSaving
+                    ? <Spinner className="block w-5 h-5 fill-current" />
+                    : <EditIcon className="block w-5 h-5" />}
+                  <span>Edit</span>
+                </Button>
+              )
+              : (
+                <Button
+                  variant="green"
+                  onClick={submitHandle}
+                  disabled={isSaving}
+                >
+                  {isSaving
+                    ? <Spinner className="block w-5 h-5" />
+                    : <SaveIcon className="block w-5 h-5" />}
+                  <span>Save</span>
+                </Button>
+              )}
 
             <Link
-              className={buttonVariants({ variant: 'secondary' })}
+              className={buttonVariants({ variant: "secondary" })}
               href={`/list/${data.id}/settings`}
             >
               <SettingsIcon className="block w-5 h-5" />
@@ -675,25 +662,17 @@ ${
               onClick={deleteCurrentList}
               disabled={isDeleting}
             >
-              {isDeleting ? (
-                <Spinner className="block w-5 h-5" />
-              ) : (
-                <TrashIcon className="block w-5 h-5" />
-              )}
-              {confirmDelete ? (
-                <span>Confirm deletion?</span>
-              ) : (
-                <span>Delete</span>
-              )}
+              {isDeleting
+                ? <Spinner className="block w-5 h-5" />
+                : <TrashIcon className="block w-5 h-5" />}
+              {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
             </Button>
 
             {isAdmin && (
               <Button variant="danger" onClick={ban} disabled={isBanning}>
-                {isBanning ? (
-                  <Spinner className="block w-5 h-5" />
-                ) : (
-                  <HammerIcon className="block w-5 h-5" />
-                )}
+                {isBanning
+                  ? <Spinner className="block w-5 h-5" />
+                  : <HammerIcon className="block w-5 h-5" />}
                 {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
               </Button>
             )}
@@ -720,37 +699,37 @@ ${
       <DonationMessage />
 
       <ul className="mt-8 flex flex-col gap-y-4">
-        {resolvedMods ? (
-          resolvedMods.map((mod) => (
-            <li className="w-full" key={mod.id}>
-              <RichModDisplay
-                data={mod}
-                buttonType={isEditing ? 'delete' : null}
-                onClick={() => {
-                  setResolvedMods((prev) =>
-                    prev ? prev.filter((a) => a.id !== mod.id) : [],
-                  );
-                }}
-                parent={data}
-              />
-            </li>
-          ))
-        ) : (
-          <>
-            {data.mods.map(({ provider, id }) => (
-              <li className="skeleton h-36" key={`${provider}-${id}`} />
-            ))}
-          </>
-        )}
+        {resolvedMods
+          ? (
+            resolvedMods.map((mod) => (
+              <li className="w-full" key={mod.id}>
+                <RichModDisplay
+                  data={mod}
+                  buttonType={isEditing ? "delete" : null}
+                  onClick={() => {
+                    setResolvedMods((prev) => prev ? prev.filter((a) => a.id !== mod.id) : []);
+                  }}
+                  parent={data}
+                />
+              </li>
+            ))
+          )
+          : (
+            <>
+              {data.mods.map(({ provider, id }) => (
+                <li className="skeleton h-36" key={`${provider}-${id}`} />
+              ))}
+            </>
+          )}
       </ul>
 
-      {status === ExportStatus.Resolving ? (
-        <ProgressOverlay label="Resolving mods..." {...progress} />
-      ) : status === ExportStatus.Downloading ? (
-        <ProgressOverlay label="Downloading mods..." {...progress} />
-      ) : status === ExportStatus.GeneratingZip ? (
-        <ProgressOverlay label="Getting the .zip file ready..." {...progress} />
-      ) : null}
+      {status === ExportStatus.Resolving
+        ? <ProgressOverlay label="Resolving mods..." {...progress} />
+        : status === ExportStatus.Downloading
+        ? <ProgressOverlay label="Downloading mods..." {...progress} />
+        : status === ExportStatus.GeneratingZip
+        ? <ProgressOverlay label="Getting the .zip file ready..." {...progress} />
+        : null}
 
       <Dialog.Root
         open={status === ExportStatus.ModrinthForm}
@@ -765,7 +744,7 @@ ${
               className="flex flex-col gap-y-8"
               onSubmit={(e) => {
                 e.preventDefault();
-                if (resolvedMods)
+                if (resolvedMods) {
                   modrinthExport({
                     data: { ...data, mods: resolvedMods },
                     mrpackData: {
@@ -777,6 +756,7 @@ ${
                     setResult,
                     setStatus,
                   });
+                }
               }}
             >
               <label className="flex flex-col gap-y-1">
@@ -822,11 +802,11 @@ ${
                   <option value="skip">Skip</option>
                 </select>
               </label>
-              {mrpackCurseForgeStrategy !== 'skip' && (
+              {mrpackCurseForgeStrategy !== "skip" && (
                 <div className="rounded bg-yellow-100 p-4 font-semibold text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100">
-                  {mrpackCurseForgeStrategy === 'embed'
-                    ? 'Make sure you have the rights to embed these files in your modpack distribution!'
-                    : 'This modpack will be ineligible for publication on Modrinth.'}
+                  {mrpackCurseForgeStrategy === "embed"
+                    ? "Make sure you have the rights to embed these files in your modpack distribution!"
+                    : "This modpack will be ineligible for publication on Modrinth."}
                 </div>
               )}
 
@@ -855,9 +835,7 @@ ${
                     {result.success.length} successful downloads
                   </summary>
                   <ul>
-                    {result.success.map((a) => (
-                      <li key={a}>{a}</li>
-                    ))}
+                    {result.success.map((a) => <li key={a}>{a}</li>)}
                   </ul>
                 </details>
 
@@ -866,9 +844,7 @@ ${
                     {result.failed.length} failed
                   </summary>
                   <ul>
-                    {result.failed.map((a) => (
-                      <li key={a}>{a}</li>
-                    ))}
+                    {result.failed.map((a) => <li key={a}>{a}</li>)}
                   </ul>
                 </details>
               </div>
@@ -892,7 +868,7 @@ ${
 export const getServerSideProps: GetServerSideProps<
   PageProps | { notFound: true }
 > = async ({ query, req, res }) => {
-  if (typeof query.id !== 'string') throw new Error('?');
+  if (typeof query.id !== "string") throw new Error("?");
   const data = await getSpecificList(query.id);
 
   if (!data || data.ownerProfile.banned) {
@@ -903,9 +879,9 @@ export const getServerSideProps: GetServerSideProps<
 
   const sess = await getServerSession(req, res, authOptions);
   if (
-    data.visibility === 'private' &&
-    sess?.user.id !== data.owner &&
-    !sess?.extraProfile.isAdmin
+    data.visibility === "private"
+    && sess?.user.id !== data.owner
+    && !sess?.extraProfile.isAdmin
   ) {
     return {
       notFound: true,

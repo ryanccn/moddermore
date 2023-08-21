@@ -6,12 +6,12 @@ export interface ModPwToml {
   filename: string;
 
   /** A physical Minecraft side. Server applies to the dedicated server, client applies to the client (and integrated server), and both applies to every installation. Possible values are: `both`, `client`, `server`. */
-  side?: 'both' | 'client' | 'server';
+  side?: "both" | "client" | "server";
 
   /** Information about how to download this mod. */
   download: {
     /** A hashing format used to detect if a file has changed. You may use your own hash format, but the valid values here should be supported and expected for most packs, especially SHA-256 and Murmur2. Possible values are: `md5`, `murmur2`, `sha1`, `sha256`, `sha512`. */
-    'hash-format'?: 'md5' | 'murmur2' | 'sha1' | 'sha256' | 'sha512';
+    "hash-format"?: "md5" | "murmur2" | "sha1" | "sha256" | "sha512";
 
     /** The hash of the specified file, as a string. Binary hashes should be stored as hexadecimal, and case should be ignored during parsing. Numeric hashes (e.g. Murmur2) should still be stored as a string, to ensure the value is preserved correctly. */
     hash?: string;
@@ -20,7 +20,7 @@ export interface ModPwToml {
     url?: string;
 
     /** This is cursed */
-    mode?: 'metadata:curseforge';
+    mode?: "metadata:curseforge";
   };
 
   /** Information about the optional state of this mod. When excluded, this indicates that the mod is not optional. */
@@ -38,9 +38,9 @@ export interface ModPwToml {
   /** Information about how to update the download details of this mod with tools. The information stored is specific to the update interface. */
   update?: {
     /** An update value for updating mods downloaded from CurseForge. */
-    curseforge?: { 'project-id': string | number; 'file-id': string | number };
+    curseforge?: { "project-id": string | number; "file-id": string | number };
 
     /** An update value for updating mods downloaded from Modrinth. */
-    modrinth?: { 'mod-id': string; version: string };
+    modrinth?: { "mod-id": string; version: string };
   };
 }

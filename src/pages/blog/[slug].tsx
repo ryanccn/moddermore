@@ -1,11 +1,11 @@
-import { GetStaticPaths, GetStaticProps, type NextPage } from 'next';
+import { GetStaticPaths, GetStaticProps, type NextPage } from "next";
 
-import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote';
-import Head from 'next/head';
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { DonationMessage } from '~/components/partials/DonationMessage';
+import { MDXRemote, type MDXRemoteSerializeResult } from "next-mdx-remote";
+import Head from "next/head";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { DonationMessage } from "~/components/partials/DonationMessage";
 
-import { getBlogPost, listBlogPosts } from '~/lib/blog';
+import { getBlogPost, listBlogPosts } from "~/lib/blog";
 
 interface PageProps {
   data: {
@@ -22,7 +22,7 @@ interface PageProps {
 
 const BlogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
   const absoluteCoverURL = data.cover
-    ? new URL(data.cover.src, 'https://moddermore.net').toString()
+    ? new URL(data.cover.src, "https://moddermore.net").toString()
     : null;
 
   return (
@@ -42,7 +42,7 @@ const BlogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
             backgroundImage: data.cover
               ? `url('${data.cover.src}')`
               : undefined,
-            backgroundPosition: 'center',
+            backgroundPosition: "center",
           }}
         >
           <h1 className="text-4xl font-bold">{data.title}</h1>
@@ -56,7 +56,7 @@ const BlogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
 
 export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
   const slug = params?.slug;
-  if (typeof slug !== 'string') throw new Error('oof');
+  if (typeof slug !== "string") throw new Error("oof");
 
   const data = await getBlogPost(slug);
 

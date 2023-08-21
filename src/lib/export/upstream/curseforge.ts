@@ -1,5 +1,5 @@
-import type { ExportReturnData, ProviderSpecificOptions } from './types';
-import type { CurseForgeVersion } from '~/types/curseforge';
+import type { CurseForgeVersion } from "~/types/curseforge";
+import type { ExportReturnData, ProviderSpecificOptions } from "./types";
 
 export const callCurseForgeAPI = async ({
   id,
@@ -8,26 +8,29 @@ export const callCurseForgeAPI = async ({
   version,
 }: ProviderSpecificOptions) => {
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
-  if (!API_KEY) throw new Error('No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!');
+  if (!API_KEY) throw new Error("No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!");
 
-  const modLoaderType =
-    loader === 'forge'
-      ? 1
-      : loader === 'fabric'
-      ? 4
-      : loader === 'quilt'
-      ? 5
-      : -1;
+  const modLoaderType = loader === "forge"
+    ? 1
+    : loader === "fabric"
+    ? 4
+    : loader === "quilt"
+    ? 5
+    : -1;
 
   if (version) {
     const res = await fetch(
-      `https://api.curseforge.com/v1/mods/${encodeURIComponent(
-        id,
-      )}/files/${encodeURIComponent(version)}?gameVersion=${encodeURIComponent(
-        gameVersions[0],
-      )}&modLoaderType=${modLoaderType}`,
+      `https://api.curseforge.com/v1/mods/${
+        encodeURIComponent(
+          id,
+        )
+      }/files/${encodeURIComponent(version)}?gameVersion=${
+        encodeURIComponent(
+          gameVersions[0],
+        )
+      }&modLoaderType=${modLoaderType}`,
       {
-        headers: { 'x-api-key': API_KEY },
+        headers: { "x-api-key": API_KEY },
       },
     );
 
@@ -43,11 +46,13 @@ export const callCurseForgeAPI = async ({
   }
 
   const res = await fetch(
-    `https://api.curseforge.com/v1/mods/${id}/files?gameVersion=${encodeURIComponent(
-      gameVersions[0],
-    )}&modLoaderType=${modLoaderType}`,
+    `https://api.curseforge.com/v1/mods/${id}/files?gameVersion=${
+      encodeURIComponent(
+        gameVersions[0],
+      )
+    }&modLoaderType=${modLoaderType}`,
     {
-      headers: { 'x-api-key': API_KEY },
+      headers: { "x-api-key": API_KEY },
     },
   );
 
@@ -78,29 +83,27 @@ export const getCFDownload = async ({
   });
 
   if (!data) {
-    return [{ error: 'notfound', name, id }];
+    return [{ error: "notfound", name, id }];
   }
 
   let latest = data.find((v) => v.releaseType === 1);
   if (!latest) latest = data.find((v) => v.releaseType === 2);
   if (!latest) latest = data.find((v) => v.releaseType === 3);
 
-  if (!latest) return [{ error: 'notfound', name, id }];
-  if (!latest.isAvailable) return [{ error: 'unavailable', name, id }];
+  if (!latest) return [{ error: "notfound", name, id }];
+  if (!latest.isAvailable) return [{ error: "unavailable", name, id }];
 
-  return [
-    {
-      provider: 'curseforge',
-      name: latest.fileName,
-      id,
-      url: latest.downloadUrl,
-      type: 'direct',
-      fileSize: latest.fileLength,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      sha1: latest.hashes.find((k) => k.algo === 1)!.value,
-      projectId: latest.modId,
-      fileId: latest.id,
-      displayName: latest.displayName ?? latest.fileName,
-    },
-  ];
+  return [{
+    provider: "curseforge",
+    name: latest.fileName,
+    id,
+    url: latest.downloadUrl,
+    type: "direct",
+    fileSize: latest.fileLength,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    sha1: latest.hashes.find((k) => k.algo === 1)!.value,
+    projectId: latest.modId,
+    fileId: latest.id,
+    displayName: latest.displayName ?? latest.fileName,
+  }];
 };

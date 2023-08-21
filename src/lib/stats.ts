@@ -1,7 +1,7 @@
-import { getListsCollection, getUsersCollection } from '~/lib/db/client';
+import { getListsCollection, getUsersCollection } from "~/lib/db/client";
 
 const plausibleUrl =
-  'https://plausible.io/api/v1/stats/aggregate?metrics=pageviews&site_id=moddermore.net&period=30d';
+  "https://plausible.io/api/v1/stats/aggregate?metrics=pageviews&site_id=moddermore.net&period=30d";
 
 export const getPageviews = async (): Promise<number | null> => {
   if (!process.env.PLAUSIBLE_TOKEN) return null;
@@ -13,12 +13,11 @@ export const getPageviews = async (): Promise<number | null> => {
   } = await fetch(plausibleUrl, {
     headers: { Authorization: `Bearer ${process.env.PLAUSIBLE_TOKEN}` },
   }).then(async (r) => {
-    if (!r.ok)
+    if (!r.ok) {
       throw new Error(
-        `Error fetching ${r.url}: ${r.status} ${
-          r.statusText
-        }\n${await r.text()}`
+        `Error fetching ${r.url}: ${r.status} ${r.statusText}\n${await r.text()}`,
       );
+    }
 
     return r.json();
   });

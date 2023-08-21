@@ -1,11 +1,11 @@
 /* eslint-disable unicorn/prefer-top-level-await */
 /* eslint-disable unicorn/no-process-exit */
 
-import { getListsCollection } from '~/lib/db/client';
+import { getListsCollection } from "~/lib/db/client";
 
 (async () => {
   const lists = await getListsCollection();
-  await lists.updateMany({}, { $set: { visibility: 'unlisted' } });
+  await lists.updateMany({}, { $set: { visibility: "unlisted" } });
 })()
   .then(() => {
     process.exit(0);

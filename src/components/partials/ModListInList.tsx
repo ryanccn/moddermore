@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 
-import Link from 'next/link';
+import Link from "next/link";
 
-import { loaderFormat } from '~/lib/strings';
-import type { ModList, ModListWithExtraData } from '~/types/moddermore';
+import { loaderFormat } from "~/lib/strings";
+import type { ModList, ModListWithExtraData } from "~/types/moddermore";
 
 interface BasicProps {
   list: ModList;
@@ -14,7 +14,7 @@ interface ExtraProps {
 }
 
 export const ModListInList = (props: BasicProps | ExtraProps) => {
-  const baseData = 'listWithExtra' in props ? props.listWithExtra : props.list;
+  const baseData = "listWithExtra" in props ? props.listWithExtra : props.list;
 
   return (
     <Link
@@ -27,28 +27,27 @@ export const ModListInList = (props: BasicProps | ExtraProps) => {
       </h2>
       <div className="data-list text-sm">
         <p>
-          For Minecraft <strong>{baseData.gameVersion}</strong> with{' '}
+          For Minecraft <strong>{baseData.gameVersion}</strong> with{" "}
           <strong>{loaderFormat(baseData.modloader)}</strong>
         </p>
         <p>
-          Created{' '}
-          <strong>{new Date(baseData.created_at).toDateString()}</strong>
+          Created <strong>{new Date(baseData.created_at).toDateString()}</strong>
         </p>
       </div>
 
-      {'listWithExtra' in props && props.listWithExtra.ownerProfile && (
+      {"listWithExtra" in props && props.listWithExtra.ownerProfile && (
         <div className="mt-4 flex flex-row items-center gap-x-3">
-          {props.listWithExtra.ownerProfile.profilePicture ? (
-            <img
-              src={props.listWithExtra.ownerProfile.profilePicture}
-              width={24}
-              height={24}
-              className="rounded-full"
-              alt=""
-            />
-          ) : (
-            <div className="h-[24px] w-[24px] rounded-full bg-neutral-100 dark:bg-neutral-700" />
-          )}
+          {props.listWithExtra.ownerProfile.profilePicture
+            ? (
+              <img
+                src={props.listWithExtra.ownerProfile.profilePicture}
+                width={24}
+                height={24}
+                className="rounded-full"
+                alt=""
+              />
+            )
+            : <div className="h-[24px] w-[24px] rounded-full bg-neutral-100 dark:bg-neutral-700" />}
 
           <span className="text-sm font-semibold">
             {props.listWithExtra.ownerProfile.name}

@@ -1,4 +1,4 @@
-import type { ModLoader } from '~/types/moddermore';
+import type { ModLoader } from "~/types/moddermore";
 
 export interface ProviderSpecificOptions {
   id: string;
@@ -12,8 +12,8 @@ export interface ModrinthDownload {
   name: string;
   id: string;
   url: string;
-  type: 'direct' | 'dependency';
-  provider: 'modrinth';
+  type: "direct" | "dependency";
+  provider: "modrinth";
   fileSize: number;
   hashes: {
     sha1: string;
@@ -27,8 +27,8 @@ export interface CurseForgeDownload {
   name: string;
   id: string;
   url: string;
-  type: 'direct' | 'dependency';
-  provider: 'curseforge';
+  type: "direct" | "dependency";
+  provider: "curseforge";
   fileSize: number;
   sha1: string;
   projectId: number;
@@ -39,7 +39,7 @@ export interface CurseForgeDownload {
 export type Download = ModrinthDownload | CurseForgeDownload;
 
 export interface DownloadError {
-  error: 'unavailable' | 'notfound';
+  error: "unavailable" | "notfound";
   name: string;
   id: string;
 }

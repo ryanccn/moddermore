@@ -1,23 +1,23 @@
-import { type GetServerSideProps, type NextPage } from 'next';
+import { type GetServerSideProps, type NextPage } from "next";
 
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { getServerSession } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import { authOptions } from '~/lib/authOptions';
+import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { authOptions } from "~/lib/authOptions";
 
-import Link from 'next/link';
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { Button } from '~/components/ui/Button';
-import { Spinner } from '~/components/partials/Spinner';
-import { ArrowLeftIcon, SaveIcon } from 'lucide-react';
+import { ArrowLeftIcon, SaveIcon } from "lucide-react";
+import Link from "next/link";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { Spinner } from "~/components/partials/Spinner";
+import { Button } from "~/components/ui/Button";
 
-import { toast } from 'react-hot-toast';
-import { getSpecificList } from '~/lib/db';
-import minecraftVersions from '~/lib/minecraftVersions.json';
+import { toast } from "react-hot-toast";
+import { getSpecificList } from "~/lib/db";
+import minecraftVersions from "~/lib/minecraftVersions.json";
 
-import type { ModLoader, ModList } from '~/types/moddermore';
+import type { ModList, ModLoader } from "~/types/moddermore";
 
 interface PageProps {
   data: ModList;
@@ -28,9 +28,9 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
 
   const hasElevatedPermissions = useMemo(
     () =>
-      session.data &&
-      (session.data.user.id === data.owner ||
-        session.data.extraProfile.isAdmin),
+      session.data
+      && (session.data.user.id === data.owner
+        || session.data.extraProfile.isAdmin),
     [session.data, data.owner],
   );
 
@@ -49,9 +49,9 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (session.status !== 'authenticated') return;
+    if (session.status !== "authenticated") return;
     if (!hasElevatedPermissions) {
-      toast.error('Unauthorized to edit list.');
+      toast.error("Unauthorized to edit list.");
       router.push(`/list/${data.id}`);
     }
   }, [session.status, hasElevatedPermissions, router, data.id]);
@@ -60,7 +60,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
     setInProgress(true);
 
     fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({
         title,
         description: description || undefined,
@@ -68,7 +68,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         gameVersion,
         modloader: modLoader,
       }),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     }).then(async (res) => {
       if (!res.ok) {
         const { error } = await res.json();
@@ -84,7 +84,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         return;
       }
 
-      toast.success('Updated list settings!');
+      toast.success("Updated list settings!");
       setInProgress(false);
       router.push(`/list/${data.id}`);
     });
@@ -126,7 +126,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
           <span>Description</span>
           <textarea
             className="mm-input min-h-[12rem]"
-            value={description || ''}
+            value={description || ""}
             onChange={(e) => {
               setDescription(e.target.value);
             }}
@@ -188,11 +188,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         </label>
 
         <Button type="submit" className="mt-4 self-start" disabled={inProgress}>
-          {inProgress ? (
-            <Spinner className="w-5 h-5" />
-          ) : (
-            <SaveIcon className="block w-5 h-5" />
-          )}
+          {inProgress ? <Spinner className="w-5 h-5" /> : <SaveIcon className="block w-5 h-5" />}
           <span>Save</span>
         </Button>
       </form>
@@ -203,7 +199,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
 export const getServerSideProps: GetServerSideProps<
   PageProps | { notFound: true }
 > = async ({ query, req, res }) => {
-  if (typeof query.id !== 'string') throw new Error('?');
+  if (typeof query.id !== "string") throw new Error("?");
   const data = await getSpecificList(query.id);
 
   if (!data || data.ownerProfile.banned) {

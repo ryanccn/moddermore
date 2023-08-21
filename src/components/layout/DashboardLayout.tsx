@@ -1,11 +1,11 @@
-import { type ReactNode } from 'react';
+import { type ReactNode } from "react";
 
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { GlobalLayout } from './GlobalLayout';
-import { buttonVariants } from '../ui/Button';
-import { HeartIcon, ListIcon, UserIcon } from 'lucide-react';
+import { HeartIcon, ListIcon, UserIcon } from "lucide-react";
+import { buttonVariants } from "../ui/Button";
+import { GlobalLayout } from "./GlobalLayout";
 
 interface Props {
   title: string;
@@ -27,7 +27,7 @@ const DashboardLink = ({
     <Link
       href={href}
       className={buttonVariants({
-        variant: router.pathname.startsWith(href) ? 'primary' : 'secondary',
+        variant: router.pathname.startsWith(href) ? "primary" : "secondary",
       })}
     >
       {icon}

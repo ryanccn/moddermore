@@ -1,35 +1,27 @@
-import JSZip from 'jszip';
-import {
-  getLatestFabric,
-  getLatestForge,
-  getLatestQuilt,
-} from '../upstream/loaderVersions';
+import JSZip from "jszip";
+import { getLatestFabric, getLatestForge, getLatestQuilt } from "../upstream/loaderVersions";
 
-import { saveAs } from 'file-saver';
-import { ExportStatus, type PageStateHooks } from './shared';
-import { getDownloadURLs } from '../upstream/download';
+import { saveAs } from "file-saver";
+import { getDownloadURLs } from "../upstream/download";
+import { ExportStatus, type PageStateHooks } from "./shared";
 
-import type { RichModList } from '~/types/moddermore';
-import type {
-  CurseForgeDownload,
-  ExportReturnData,
-  ModrinthDownload,
-} from '../upstream/types';
+import type { RichModList } from "~/types/moddermore";
+import type { CurseForgeDownload, ExportReturnData, ModrinthDownload } from "../upstream/types";
 
 const sha1 = async (f: ArrayBuffer) => {
-  const ha = await window.crypto.subtle.digest('SHA-1', f);
+  const ha = await window.crypto.subtle.digest("SHA-1", f);
   const he = [...new Uint8Array(ha)]
-    .map((x) => x.toString(16).padStart(2, '0'))
-    .join('');
+    .map((x) => x.toString(16).padStart(2, "0"))
+    .join("");
 
   return he;
 };
 
 const sha512 = async (f: ArrayBuffer) => {
-  const ha = await window.crypto.subtle.digest('SHA-512', f);
+  const ha = await window.crypto.subtle.digest("SHA-512", f);
   const he = [...new Uint8Array(ha)]
-    .map((x) => x.toString(16).padStart(2, '0'))
-    .join('');
+    .map((x) => x.toString(16).padStart(2, "0"))
+    .join("");
 
   return he;
 };
@@ -41,13 +33,13 @@ const generateModrinthPack = async (
 ) => {
   const mrIndex = {
     formatVersion: 1,
-    game: 'minecraft',
-    versionId: extraData.version ?? '0.0.1',
+    game: "minecraft",
+    versionId: extraData.version ?? "0.0.1",
     name: extraData.name ?? list.title,
-    summary: 'Generated from Moddermore (https://moddermore.net/)',
+    summary: "Generated from Moddermore (https://moddermore.net/)",
     files: (
       urls.filter(
-        (dl) => !('error' in dl) && dl.provider === 'modrinth',
+        (dl) => !("error" in dl) && dl.provider === "modrinth",
       ) as ModrinthDownload[]
     ).map((dl) => {
       return {
@@ -59,21 +51,21 @@ const generateModrinthPack = async (
     }),
     dependencies: {
       minecraft: list.gameVersion,
-      ...(list.modloader === 'forge'
+      ...(list.modloader === "forge"
         ? { forge: await getLatestForge(list.gameVersion) }
-        : list.modloader === 'fabric'
-        ? { 'fabric-loader': await getLatestFabric() }
-        : list.modloader === 'quilt'
-        ? { 'quilt-loader': await getLatestQuilt() }
+        : list.modloader === "fabric"
+        ? { "fabric-loader": await getLatestFabric() }
+        : list.modloader === "quilt"
+        ? { "quilt-loader": await getLatestQuilt() }
         : {}),
     },
   };
 
   const mrpack = new JSZip();
 
-  if (extraData.cfStrategy === 'embed') {
+  if (extraData.cfStrategy === "embed") {
     const cfDownloads = urls.filter(
-      (dl) => !('error' in dl) && dl.provider === 'curseforge',
+      (dl) => !("error" in dl) && dl.provider === "curseforge",
     ) as CurseForgeDownload[];
 
     for (const url of cfDownloads) {
@@ -91,9 +83,9 @@ const generateModrinthPack = async (
 
       mrpack.file(`overrides/mods/${url.name}`, fileContents);
     }
-  } else if (extraData.cfStrategy === 'links') {
+  } else if (extraData.cfStrategy === "links") {
     const cfDownloads = urls.filter(
-      (dl) => !('error' in dl) && dl.provider === 'curseforge',
+      (dl) => !("error" in dl) && dl.provider === "curseforge",
     ) as CurseForgeDownload[];
 
     for (const url of cfDownloads) {
@@ -122,9 +114,9 @@ const generateModrinthPack = async (
   }
 
   const indexJSON = JSON.stringify(mrIndex);
-  mrpack.file('modrinth.index.json', indexJSON);
+  mrpack.file("modrinth.index.json", indexJSON);
 
-  return mrpack.generateAsync({ type: 'blob' });
+  return mrpack.generateAsync({ type: "blob" });
 };
 
 export const modrinthExport = async ({

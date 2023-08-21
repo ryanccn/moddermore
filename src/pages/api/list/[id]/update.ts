@@ -1,15 +1,15 @@
-import type { NextApiHandler } from 'next';
+import type { NextApiHandler } from "next";
 
-import { safeParse } from 'valibot';
+import { safeParse } from "valibot";
 
-import { getServerSession } from 'next-auth';
-import { authOptions } from '~/lib/authOptions';
-import { updateList } from '~/lib/db';
+import { getServerSession } from "next-auth";
+import { authOptions } from "~/lib/authOptions";
+import { updateList } from "~/lib/db";
 
-import { ModListUpdate } from '~/types/moddermore';
+import { ModListUpdate } from "~/types/moddermore";
 
 const h: NextApiHandler = async (req, res) => {
-  if (req.method !== 'POST') {
+  if (req.method !== "POST") {
     res.status(405).end();
     return;
   }
@@ -18,13 +18,13 @@ const h: NextApiHandler = async (req, res) => {
 
   const id = req.query.id;
 
-  if (typeof id !== 'string') {
-    res.status(400).json({ error: 'Invalid ID' });
+  if (typeof id !== "string") {
+    res.status(400).json({ error: "Invalid ID" });
     return;
   }
 
   if (!sess?.user.id) {
-    res.status(401).json({ error: 'Unauthorized' });
+    res.status(401).json({ error: "Unauthorized" });
     return;
   }
 
@@ -32,7 +32,7 @@ const h: NextApiHandler = async (req, res) => {
 
   if (!parsedData.success) {
     console.error(parsedData.error);
-    res.status(400).json({ error: 'Bad request' });
+    res.status(400).json({ error: "Bad request" });
     return;
   }
 

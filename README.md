@@ -1,4 +1,4 @@
-# Moddermore
+# [Moddermore](https://moddermore.net/)
 
 [![Powered by Vercel](/.github/vercel.svg)](https://vercel.com/?utm_source=moddermore&utm_campaign=oss)
 
@@ -8,14 +8,19 @@ Share the mods you use with anyone.
 
 - Sleek user interface
 - Unique link for each list
+- Search for public lists
+- Visibility controls
 - Import from
   - Folder of mods
   - [Ferium](https://github.com/gorilla-devs/ferium)
   - MultiMC and [Prism Launcher](https://prismlauncher.org) instances
+  - [Modrinth](https://modrinth.com/) pack `.mrpack`
   - Manual (built-in!) search
 - Export to
   - Folder of mods
-  - Modrinth modpack `.mrpack`
+  - Modrinth pack `.mrpack`
+  - MultiMC/Prism instance
+  - [Packwiz](https://packwiz.infra.link/)
 
 ## Stack
 
@@ -23,22 +28,21 @@ Share the mods you use with anyone.
 - [React](https://reactjs.org/)
 - [Radix UI](https://www.radix-ui.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [Heroicons](https://github.com/tailwindlabs/heroicons)
+- [Lucide Icons](https://lucide.dev/)
 - [MongoDB](https://www.mongodb.com/)
-- [CurseForge Core](https://docs.curseforge.com/)
-- [Modrinth API](https://docs.modrinth.com/)
+- [Modrinth](https://docs.modrinth.com/) & [CurseForge](https://docs.curseforge.com/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [Prettier](https://prettier.io/)
-- [ESLint](https://eslint.org/)
+- [dprint](https://dprint.dev/) & [Prettier](https://prettier.io/)
+- [ESLint](https://eslint.org/) & [TypeScript ESLint](https://typescript-eslint.io/)
 - [pnpm](https://pnpm.dev/)
 - [Plausible](https://plausible.io/)
 - and a ton of other open source libraries and services!
 
-Big thanks to all of the contributors to those projects who have made this project possible 🤓
+Big thanks to all of the contributors to those projects who have made this project possible.
 
 ## Development / Contributing
 
-We welcome all contributors to the project! Feel free to open PRs if you see something you can improve 😁
+We welcome all contributors to the project! Feel free to open PRs if you see something you can improve.
 
 Run `pnpm install` to install dependencies, and run `pnpm dev` to start the development server.
 

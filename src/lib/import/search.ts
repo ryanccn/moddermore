@@ -1,19 +1,15 @@
-import * as v from 'valibot';
+import * as v from "valibot";
 
-import minecraftVersions from '../minecraftVersions.json';
+import minecraftVersions from "../minecraftVersions.json";
 
-import type { RichMod } from '~/types/moddermore';
-import type { ModrinthSearchResult } from '~/types/modrinth';
-import type { CurseForgeSearchResult } from '~/types/curseforge';
+import type { CurseForgeSearchResult } from "~/types/curseforge";
+import type { RichMod } from "~/types/moddermore";
+import type { ModrinthSearchResult } from "~/types/modrinth";
 
 export const optionsZ = v.object({
-  platform: v.union([v.literal('modrinth'), v.literal('curseforge')]),
+  platform: v.union([v.literal("modrinth"), v.literal("curseforge")]),
   query: v.string(),
-  loader: v.union([
-    v.literal('quilt'),
-    v.literal('fabric'),
-    v.literal('forge'),
-  ]),
+  loader: v.union([v.literal("quilt"), v.literal("fabric"), v.literal("forge")]),
   gameVersion: v.string(),
 });
 
@@ -25,23 +21,27 @@ export const search = async ({
   loader,
   gameVersion,
 }: Options): Promise<RichMod[]> => {
-  if (platform === 'modrinth') {
+  if (platform === "modrinth") {
     const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersion.split('.').slice(0, 2).join('.')),
+      a.startsWith(gameVersion.split(".").slice(0, 2).join("."))
     );
 
     const data = await fetch(
-      `https://api.modrinth.com/v2/search?query=${encodeURIComponent(
-        query,
-      )}&facets=${encodeURIComponent(
-        JSON.stringify([
-          [`project_type:mod`],
-          compatGameVersions.map((a) => `versions:${a}`),
-          loader === 'quilt'
-            ? ['categories:fabric', 'categories:quilt']
-            : [`categories:${loader}`],
-        ]),
-      )}`,
+      `https://api.modrinth.com/v2/search?query=${
+        encodeURIComponent(
+          query,
+        )
+      }&facets=${
+        encodeURIComponent(
+          JSON.stringify([
+            [`project_type:mod`],
+            compatGameVersions.map((a) => `versions:${a}`),
+            loader === "quilt"
+              ? ["categories:fabric", "categories:quilt"]
+              : [`categories:${loader}`],
+          ]),
+        )
+      }`,
     ).then(async (r) => {
       if (!r.ok) throw new Error(await r.text());
       return r.json() as Promise<ModrinthSearchResult>;
@@ -51,31 +51,34 @@ export const search = async ({
       id: rawMod.project_id,
       href: `https://modrinth.com/mod/${rawMod.slug}`,
       name: rawMod.title,
-      provider: 'modrinth',
+      provider: "modrinth",
       description: rawMod.description,
       downloads: rawMod.downloads,
       iconUrl: rawMod.icon_url,
     }));
-  } else if (platform === 'curseforge') {
+  } else if (platform === "curseforge") {
     const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
-    if (!API_KEY) throw new Error('No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!');
+    if (!API_KEY) throw new Error("No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!");
 
-    const modLoaderType =
-      loader === 'forge'
-        ? 1
-        : loader === 'fabric'
-        ? 4
-        : loader === 'quilt'
-        ? 5
-        : -1;
+    const modLoaderType = loader === "forge"
+      ? 1
+      : loader === "fabric"
+      ? 4
+      : loader === "quilt"
+      ? 5
+      : -1;
 
     const data = await fetch(
-      `https://api.curseforge.com/v1/mods/search?gameId=432&classId=6&pageSize=10&sortField=2&sortOrder=desc&searchFilter=${encodeURIComponent(
-        query,
-      )}&modLoaderType=${modLoaderType}&gameVersion=${encodeURIComponent(
-        gameVersion,
-      )}`,
-      { headers: { 'x-api-key': API_KEY } },
+      `https://api.curseforge.com/v1/mods/search?gameId=432&classId=6&pageSize=10&sortField=2&sortOrder=desc&searchFilter=${
+        encodeURIComponent(
+          query,
+        )
+      }&modLoaderType=${modLoaderType}&gameVersion=${
+        encodeURIComponent(
+          gameVersion,
+        )
+      }`,
+      { headers: { "x-api-key": API_KEY } },
     ).then(async (r) => {
       if (!r.ok) throw new Error(await r.text());
       return r.json() as Promise<CurseForgeSearchResult>;
@@ -85,7 +88,7 @@ export const search = async ({
       id: `${rawMod.id}`,
       href: `https://curseforge.com/minecraft/mc-mods/${rawMod.slug}`,
       iconUrl: rawMod.logo.thumbnailUrl ?? undefined,
-      provider: 'curseforge',
+      provider: "curseforge",
       name: rawMod.name,
       description: rawMod.summary,
       downloads: rawMod.downloadCount,

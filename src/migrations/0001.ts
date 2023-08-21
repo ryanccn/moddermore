@@ -1,8 +1,8 @@
 /* eslint-disable unicorn/prefer-top-level-await */
 /* eslint-disable unicorn/no-process-exit */
 
-import { getProfilesCollection, getUsersCollection } from '~/lib/db/client';
-import { blue, red } from 'kleur/colors';
+import { blue, red } from "kleur/colors";
+import { getProfilesCollection, getUsersCollection } from "~/lib/db/client";
 
 (async () => {
   const profileCollection = await getProfilesCollection();
@@ -22,9 +22,9 @@ import { blue, red } from 'kleur/colors';
         profilePicture: null,
         likes: [],
       });
-      console.log('Built profile for', blue(user.email));
+      console.log("Built profile for", blue(user.email));
     } else {
-      console.log('Skipped', blue(user.email));
+      console.log("Skipped", blue(user.email));
     }
 
     user = await userCursor.next();

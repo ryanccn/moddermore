@@ -1,16 +1,10 @@
-import type { NextPage } from 'next';
-import Link from 'next/link';
+import type { NextPage } from "next";
+import Link from "next/link";
 
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
 
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import {
-  CircleIcon,
-  FolderIcon,
-  HexagonIcon,
-  SearchCheckIcon,
-  TerminalIcon,
-} from 'lucide-react';
+import { CircleIcon, FolderIcon, HexagonIcon, SearchCheckIcon, TerminalIcon } from "lucide-react";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
 
 const NewIndex: NextPage = () => {
   useSession({ required: true });

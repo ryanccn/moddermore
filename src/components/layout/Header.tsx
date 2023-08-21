@@ -1,21 +1,15 @@
-import ModdermoreIcon from '../../../public/icons/moddermore-negative.png';
+import ModdermoreIcon from "../../../public/icons/moddermore-negative.png";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button, buttonVariants } from '../ui/Button';
-import {
-  LaptopIcon,
-  MoonIcon,
-  PlusIcon,
-  SunIcon,
-  UserIcon,
-} from 'lucide-react';
+import { LaptopIcon, MoonIcon, PlusIcon, SunIcon, UserIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button, buttonVariants } from "../ui/Button";
 
-import { useCallback, useEffect, useState } from 'react';
-import { useSession, signIn as nextAuthSignIn } from 'next-auth/react';
-import { useTheme } from 'next-themes';
+import { signIn as nextAuthSignIn, useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
+import { useCallback, useEffect, useState } from "react";
 
-import { twMerge } from 'tailwind-merge';
+import { twMerge } from "tailwind-merge";
 
 const ThemeButton = () => {
   const { theme, setTheme } = useTheme();
@@ -27,7 +21,7 @@ const ThemeButton = () => {
 
   const nextTheme = useCallback(() => {
     setTheme(
-      theme === 'system' ? 'light' : theme === 'light' ? 'dark' : 'system',
+      theme === "system" ? "light" : theme === "light" ? "dark" : "system",
     );
   }, [theme, setTheme]);
 
@@ -35,13 +29,11 @@ const ThemeButton = () => {
 
   return (
     <button onClick={nextTheme} className="p-2">
-      {theme === 'system' ? (
-        <LaptopIcon className="block w-5 h-5" />
-      ) : theme === 'light' ? (
-        <SunIcon className="block w-5 h-5" />
-      ) : (
-        <MoonIcon className="block w-5 h-5" />
-      )}
+      {theme === "system"
+        ? <LaptopIcon className="block w-5 h-5" />
+        : theme === "light"
+        ? <SunIcon className="block w-5 h-5" />
+        : <MoonIcon className="block w-5 h-5" />}
     </button>
   );
 };
@@ -53,7 +45,7 @@ const Header = () => {
     <nav className="flex flex-col md:flex-row w-full md:items-center md:justify-between px-6 py-4 border-b border-b-neutral-200 dark:border-b-neutral-800 gap-8">
       <div className="flex flex-col md:flex-row md:items-center gap-8">
         <Link
-          href={data ? '/lists' : '/'}
+          href={data ? "/lists" : "/"}
           className="flex items-center gap-x-2 px-2 py-1"
         >
           <Image
@@ -80,35 +72,39 @@ const Header = () => {
         </div>
       </div>
 
-      {status !== 'loading' ? (
-        data ? (
-          <>
-            <Link href="/new" className={buttonVariants()}>
-              <PlusIcon className="block w-5 h-5" />
-              <span>Create</span>
-            </Link>
-          </>
-        ) : (
-          <Button
-            onClick={() => {
-              nextAuthSignIn();
-            }}
-          >
-            <UserIcon className="block w-5 h-5" />
-            <span>Sign in</span>
-          </Button>
+      {status !== "loading"
+        ? (
+          data
+            ? (
+              <>
+                <Link href="/new" className={buttonVariants()}>
+                  <PlusIcon className="block w-5 h-5" />
+                  <span>Create</span>
+                </Link>
+              </>
+            )
+            : (
+              <Button
+                onClick={() => {
+                  nextAuthSignIn();
+                }}
+              >
+                <UserIcon className="block w-5 h-5" />
+                <span>Sign in</span>
+              </Button>
+            )
         )
-      ) : (
-        <div
-          className={twMerge(
-            buttonVariants({
-              className: 'skeleton bg-neutral-300 px-16 dark:bg-neutral-700',
-            }),
-          )}
-        >
-          &nbsp;
-        </div>
-      )}
+        : (
+          <div
+            className={twMerge(
+              buttonVariants({
+                className: "skeleton bg-neutral-300 px-16 dark:bg-neutral-700",
+              }),
+            )}
+          >
+            &nbsp;
+          </div>
+        )}
     </nav>
   );
 };

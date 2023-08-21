@@ -1,15 +1,11 @@
-import { type PageStateHooks, exportZip, ExportStatus } from './shared';
-import { getDownloadURLs } from '../upstream/download';
-import {
-  getLatestFabric,
-  getLatestForge,
-  getLatestQuilt,
-} from '../upstream/loaderVersions';
+import { getDownloadURLs } from "../upstream/download";
+import { getLatestFabric, getLatestForge, getLatestQuilt } from "../upstream/loaderVersions";
+import { ExportStatus, exportZip, type PageStateHooks } from "./shared";
 
-import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
 
-import type { RichModList } from '~/types/moddermore';
+import type { RichModList } from "~/types/moddermore";
 
 export const prismAutoUpdateExport = async ({
   data,
@@ -27,7 +23,7 @@ export const prismAutoUpdateExport = async ({
   ).toString();
 
   zipfile.file(
-    'instance.cfg',
+    "instance.cfg",
     `
 InstanceType=OneSix
 OverrideCommands=true
@@ -35,79 +31,85 @@ PreLaunchCommand="$INST_JAVA" -jar packwiz-installer-bootstrap.jar ${packwizURL}
 name=${data.title}
 `.trim(),
   );
+
   const meta = await fetch(
     `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`,
   );
   if (!meta.ok) {
-    throw new Error('failed to fetch meta for minecraft');
+    throw new Error("failed to fetch meta for minecraft");
   }
+
   const parsed = await meta.json();
+
   const mmcPack = {
-    components: [
-      {
-        dependencyOnly: true,
-        uid: parsed.requires[0].uid,
-        version: parsed.requires[0].suggests,
-      },
-      {
-        uid: 'net.minecraft',
-        version: data.gameVersion,
-      },
-    ],
+    components: [{
+      dependencyOnly: true,
+      uid: parsed.requires[0].uid,
+      version: parsed.requires[0].suggests,
+    }, {
+      uid: "net.minecraft",
+      version: data.gameVersion,
+    }],
     formatVersion: 1,
   };
-  if (data.modloader == 'fabric' || data.modloader == 'quilt') {
+
+  if (data.modloader == "fabric" || data.modloader == "quilt") {
     mmcPack.components.push({
       dependencyOnly: true,
-      uid: 'net.fabricmc.intermediary',
+      uid: "net.fabricmc.intermediary",
       version: data.gameVersion,
     });
   }
+
   switch (data.modloader) {
-    case 'fabric': {
+    case "fabric": {
       mmcPack.components.push({
-        uid: 'net.fabricmc.fabric-loader',
+        uid: "net.fabricmc.fabric-loader",
         version: await getLatestFabric(),
       });
       break;
     }
-    case 'forge': {
+
+    case "forge": {
       mmcPack.components.push({
-        uid: 'net.minecraftforge',
+        uid: "net.minecraftforge",
         version: await getLatestForge(data.gameVersion),
       });
       break;
     }
-    case 'quilt': {
+
+    case "quilt": {
       mmcPack.components.push({
-        uid: 'org.quiltmc.quilt-loader',
+        uid: "org.quiltmc.quilt-loader",
         version: await getLatestQuilt(),
       });
       break;
     }
   }
-  zipfile.file('mmc-pack.json', JSON.stringify(mmcPack));
+
+  zipfile.file("mmc-pack.json", JSON.stringify(mmcPack));
   setProgress({ value: 1, max: 2 });
-  const dotMinecraftFolder = zipfile.folder('.minecraft');
+
+  const dotMinecraftFolder = zipfile.folder(".minecraft");
 
   if (!dotMinecraftFolder) {
-    throw new Error('failed to create .minecraft folder in zipfile?');
+    throw new Error("failed to create .minecraft folder in zipfile?");
   }
 
   const packwizInstallerBootstrapJar = await fetch(
-    '/packwiz-installer-bootstrap.jar',
+    "/packwiz-installer-bootstrap.jar",
   );
   if (!packwizInstallerBootstrapJar.ok) {
-    throw new Error('Failed to download packwiz-installer-bootstrap.jar');
+    throw new Error("Failed to download packwiz-installer-bootstrap.jar");
   }
 
   dotMinecraftFolder.file(
-    'packwiz-installer-bootstrap.jar',
+    "packwiz-installer-bootstrap.jar",
     packwizInstallerBootstrapJar.blob(),
   );
   setProgress({ value: 2, max: 2 });
 
-  const zipBlob = await zipfile.generateAsync({ type: 'blob' });
+  const zipBlob = await zipfile.generateAsync({ type: "blob" });
   saveAs(zipBlob, `${data.title}.zip`);
 
   setStatus(ExportStatus.Idle);
@@ -128,13 +130,13 @@ export const prismStaticExport = async ({
   setStatus(ExportStatus.Downloading);
 
   const zipfile = new JSZip();
-  const dotMinecraftFolder = zipfile.folder('.minecraft');
+  const dotMinecraftFolder = zipfile.folder(".minecraft");
 
   if (!dotMinecraftFolder) {
-    throw new Error('failed to create .minecraft folder in zipfile?');
+    throw new Error("failed to create .minecraft folder in zipfile?");
   }
 
-  zipfile.file('instance.cfg', `name=${data.title}`);
+  zipfile.file("instance.cfg", `name=${data.title}`);
 
   await Promise.all([
     exportZip({
@@ -150,58 +152,55 @@ export const prismStaticExport = async ({
         `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`,
       );
       if (!meta.ok) {
-        throw new Error('failed to fetch meta for minecraft');
+        throw new Error("failed to fetch meta for minecraft");
       }
       const parsed = await meta.json();
       const mmcPack = {
-        components: [
-          {
-            dependencyOnly: true,
-            uid: parsed.requires[0].uid,
-            version: parsed.requires[0].suggests,
-          },
-          {
-            uid: 'net.minecraft',
-            version: data.gameVersion,
-          },
-        ],
+        components: [{
+          dependencyOnly: true,
+          uid: parsed.requires[0].uid,
+          version: parsed.requires[0].suggests,
+        }, {
+          uid: "net.minecraft",
+          version: data.gameVersion,
+        }],
         formatVersion: 1,
       };
-      if (data.modloader == 'fabric' || data.modloader == 'quilt') {
+      if (data.modloader == "fabric" || data.modloader == "quilt") {
         mmcPack.components.push({
           dependencyOnly: true,
-          uid: 'net.fabricmc.intermediary',
+          uid: "net.fabricmc.intermediary",
           version: data.gameVersion,
         });
       }
       switch (data.modloader) {
-        case 'fabric': {
+        case "fabric": {
           mmcPack.components.push({
-            uid: 'net.fabricmc.fabric-loader',
+            uid: "net.fabricmc.fabric-loader",
             version: await getLatestFabric(),
           });
           break;
         }
-        case 'forge': {
+        case "forge": {
           mmcPack.components.push({
-            uid: 'net.minecraftforge',
+            uid: "net.minecraftforge",
             version: await getLatestForge(data.gameVersion),
           });
           break;
         }
-        case 'quilt': {
+        case "quilt": {
           mmcPack.components.push({
-            uid: 'org.quiltmc.quilt-loader',
+            uid: "org.quiltmc.quilt-loader",
             version: await getLatestQuilt(),
           });
           break;
         }
       }
-      zipfile.file('mmc-pack.json', JSON.stringify(mmcPack));
+      zipfile.file("mmc-pack.json", JSON.stringify(mmcPack));
     })(),
   ]);
 
-  const zipBlob = await zipfile.generateAsync({ type: 'blob' });
+  const zipBlob = await zipfile.generateAsync({ type: "blob" });
   saveAs(zipBlob, `${data.title}.zip`);
 
   setStatus(ExportStatus.Result);

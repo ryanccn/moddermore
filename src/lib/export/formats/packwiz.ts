@@ -1,45 +1,41 @@
-import { type AnyJson, stringify, JsonMap } from '@iarna/toml';
+import { type AnyJson, JsonMap, stringify } from "@iarna/toml";
 
-import { getSpecificList } from '~/lib/db';
-import { sha512 } from '~/lib/sha512';
-import {
-  getLatestFabric,
-  getLatestForge,
-  getLatestQuilt,
-} from '../upstream/loaderVersions';
+import { getSpecificList } from "~/lib/db";
+import { sha512 } from "~/lib/sha512";
+import { getLatestFabric, getLatestForge, getLatestQuilt } from "../upstream/loaderVersions";
 
-import { getModrinthDownload } from '../upstream/modrinth';
-import { getCFDownload } from '../upstream/curseforge';
-import pLimit from 'p-limit';
+import pLimit from "p-limit";
+import { getCFDownload } from "../upstream/curseforge";
+import { getModrinthDownload } from "../upstream/modrinth";
 
+import type { ModPwToml } from "~/types/packwiz";
 import type {
   CurseForgeDownload,
   ModrinthDownload,
   ProviderSpecificOptions,
-} from '../upstream/types';
-import type { ModPwToml } from '~/types/packwiz';
+} from "../upstream/types";
 
 export const getPackTOML = async (id: string) => {
   const list = await getSpecificList(id);
 
   if (!list) return null;
 
-  const indexHash = await sha512((await getIndexTOML(id)) || '');
+  const indexHash = await sha512((await getIndexTOML(id)) || "");
 
   return stringify({
     name: list.title,
-    'pack-format': 'packwiz:1.1.0',
+    "pack-format": "packwiz:1.1.0",
     versions: {
       minecraft: list.gameVersion,
-      ...(list.modloader === 'fabric'
+      ...(list.modloader === "fabric"
         ? { fabric: await getLatestFabric() }
         : {}),
-      ...(list.modloader === 'quilt' ? { quilt: await getLatestQuilt() } : {}),
-      ...(list.modloader === 'forge'
+      ...(list.modloader === "quilt" ? { quilt: await getLatestQuilt() } : {}),
+      ...(list.modloader === "forge"
         ? { forge: await getLatestForge(list.gameVersion) }
         : {}),
     },
-    index: { file: 'index.toml', 'hash-format': 'sha512', hash: indexHash },
+    index: { file: "index.toml", "hash-format": "sha512", hash: indexHash },
   });
 };
 
@@ -51,16 +47,16 @@ export const getIndexTOML = async (id: string) => {
   const lim = pLimit(10);
 
   return stringify({
-    'hash-format': 'sha512',
+    "hash-format": "sha512",
     files: await Promise.all(
       list.mods.map((mod) =>
         lim(async () => {
-          if (mod.provider === 'modrinth') {
+          if (mod.provider === "modrinth") {
             const txt = await getModrinthTOML({
               id: mod.id,
               gameVersions: [list.gameVersion],
               loader: list.modloader,
-              name: '',
+              name: "",
             });
 
             if (!txt) return null;
@@ -70,12 +66,12 @@ export const getIndexTOML = async (id: string) => {
               hash: await sha512(stringify(txt as unknown as JsonMap)),
               metafile: true,
             };
-          } else if (mod.provider === 'curseforge') {
+          } else if (mod.provider === "curseforge") {
             const txt = await getCurseForgeTOML({
               id: mod.id,
               gameVersions: [list.gameVersion],
               loader: list.modloader,
-              name: '',
+              name: "",
             });
 
             if (!txt) return null;
@@ -88,7 +84,7 @@ export const getIndexTOML = async (id: string) => {
           }
 
           return null;
-        }),
+        })
       ),
     ).then((res) => res.filter(Boolean) as AnyJson),
   });
@@ -100,7 +96,7 @@ export const getModrinthTOML = async (
   const res = await getModrinthDownload(data).then(
     (k) =>
       k.filter(
-        (dl) => !('error' in dl) && dl.provider === 'modrinth',
+        (dl) => !("error" in dl) && dl.provider === "modrinth",
       ) as ModrinthDownload[],
   );
   if (!res || res.length === 0) return null;
@@ -110,10 +106,10 @@ export const getModrinthTOML = async (
   return {
     name: f.displayName,
     filename: f.name,
-    download: { url: f.url, 'hash-format': 'sha512', hash: f.hashes.sha512 },
+    download: { url: f.url, "hash-format": "sha512", hash: f.hashes.sha512 },
     update: {
       modrinth: {
-        'mod-id': f.id,
+        "mod-id": f.id,
         version: f.version,
       },
     },
@@ -126,7 +122,7 @@ export const getCurseForgeTOML = async (
   const res = await getCFDownload(data).then(
     (k) =>
       k.filter(
-        (dl) => !('error' in dl) && dl.provider === 'curseforge',
+        (dl) => !("error" in dl) && dl.provider === "curseforge",
       ) as CurseForgeDownload[],
   );
   if (!res || res.length === 0) return null;
@@ -137,10 +133,10 @@ export const getCurseForgeTOML = async (
     name: f.displayName,
     filename: f.name,
     download: {
-      mode: 'metadata:curseforge',
-      'hash-format': 'sha1',
+      mode: "metadata:curseforge",
+      "hash-format": "sha1",
       hash: f.sha1,
     },
-    update: { curseforge: { 'file-id': f.fileId, 'project-id': f.projectId } },
+    update: { curseforge: { "file-id": f.fileId, "project-id": f.projectId } },
   };
 };

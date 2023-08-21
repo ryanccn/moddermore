@@ -1,11 +1,11 @@
-import * as v from 'valibot';
+import * as v from "valibot";
 
-export type ModProvider = 'modrinth' | 'curseforge';
-export type ModLoader = 'quilt' | 'fabric' | 'forge';
+export type ModProvider = "modrinth" | "curseforge";
+export type ModLoader = "quilt" | "fabric" | "forge";
 
 const Mod = v.object({
   id: v.string(),
-  provider: v.union([v.literal('modrinth'), v.literal('curseforge')]),
+  provider: v.union([v.literal("modrinth"), v.literal("curseforge")]),
 });
 
 export interface Mod {
@@ -30,11 +30,7 @@ export const ModListCreate = v.object({
   title: v.string([v.minLength(1)]),
   description: v.optional(v.string([v.minLength(1)])),
   gameVersion: v.string([v.minLength(1)]),
-  modloader: v.union([
-    v.literal('forge'),
-    v.literal('fabric'),
-    v.literal('quilt'),
-  ]),
+  modloader: v.union([v.literal("forge"), v.literal("fabric"), v.literal("quilt")]),
   mods: v.array(Mod, [v.minLength(1), v.maxLength(500)]),
 });
 
@@ -45,13 +41,9 @@ export const ModListUpdate = v.object({
   description: v.optional(v.nullable(v.string([v.minLength(1)]))),
   gameVersion: v.optional(v.string([v.minLength(1)])),
   modloader: v.optional(
-    v.union([v.literal('forge'), v.literal('fabric'), v.literal('quilt')]),
+    v.union([v.literal("forge"), v.literal("fabric"), v.literal("quilt")]),
   ),
-  visibility: v.union([
-    v.literal('private'),
-    v.literal('unlisted'),
-    v.literal('public'),
-  ]),
+  visibility: v.union([v.literal("private"), v.literal("unlisted"), v.literal("public")]),
   mods: v.optional(v.array(Mod, [v.minLength(1), v.maxLength(500)])),
 });
 
@@ -64,7 +56,7 @@ export interface ModList {
   gameVersion: string;
   description: string | null;
   owner: string | null;
-  visibility: 'private' | 'unlisted' | 'public';
+  visibility: "private" | "unlisted" | "public";
   modloader: ModLoader;
   mods: Mod[];
 }

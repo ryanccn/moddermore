@@ -1,28 +1,22 @@
-import type { GetStaticProps, NextPage } from 'next';
+import type { GetStaticProps, NextPage } from "next";
 
-import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-import { twMerge } from 'tailwind-merge';
+import { twMerge } from "tailwind-merge";
 
-import Link from 'next/link';
+import Link from "next/link";
 
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { RichModDisplay } from '~/components/partials/RichModDisplay';
-import { buttonVariants } from '~/components/ui/Button';
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { RichModDisplay } from "~/components/partials/RichModDisplay";
+import { buttonVariants } from "~/components/ui/Button";
 
-import { ModrinthIcon, TutanotaIcon, VercelIcon } from '~/components/icons';
-import {
-  ArrowDownIcon,
-  CloudIcon,
-  FolderArchiveIcon,
-  HexagonIcon,
-  PlusIcon,
-} from 'lucide-react';
+import { ArrowDownIcon, CloudIcon, FolderArchiveIcon, HexagonIcon, PlusIcon } from "lucide-react";
+import { ModrinthIcon, TutanotaIcon, VercelIcon } from "~/components/icons";
 
-import { getLists, getPageviews, getUsers } from '~/lib/stats';
-import { numberFormat } from '~/lib/strings';
+import { getLists, getPageviews, getUsers } from "~/lib/stats";
+import { numberFormat } from "~/lib/strings";
 
 interface PageProps {
   pageviews: number | null;
@@ -35,7 +29,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
   const { status } = useSession();
 
   useEffect(() => {
-    if (status === 'authenticated') router.push('/lists');
+    if (status === "authenticated") router.push("/lists");
   }, [status, router]);
 
   return (
@@ -48,7 +42,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
       <div className="mb-14 flex min-h-screen flex-col justify-center p-6 lg:px-20">
         <div className="mb-20 flex flex-col">
           <h2 className="mb-10 text-6xl font-extrabold tracking-tight">
-            Share the mods you use with{' '}
+            Share the mods you use with{" "}
             <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text font-extrabold text-transparent">
               anyone
             </span>
@@ -62,8 +56,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
           href="/new"
           className={twMerge(
             buttonVariants({
-              className:
-                'mb-16 self-start px-6 py-4 text-xl shadow-xl shadow-indigo-500/30',
+              className: "mb-16 self-start px-6 py-4 text-xl shadow-xl shadow-indigo-500/30",
             }),
           )}
         >
@@ -101,28 +94,27 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         <div className="flex flex-col gap-6 lg:flex-row">
           <RichModDisplay
             data={{
-              name: 'Sodium',
-              provider: 'modrinth',
-              href: 'https://modrinth.com/mod/sodium',
-              id: 'AANobbMI',
-              description:
-                'Modern rendering engine and client-side optimization mod for Minecraft',
+              name: "Sodium",
+              provider: "modrinth",
+              href: "https://modrinth.com/mod/sodium",
+              id: "AANobbMI",
+              description: "Modern rendering engine and client-side optimization mod for Minecraft",
               downloads: 795_496,
-              iconUrl: 'https://cdn.modrinth.com/data/AANobbMI/icon.png',
+              iconUrl: "https://cdn.modrinth.com/data/AANobbMI/icon.png",
             }}
             className="lg:w-1/2"
           />
           <RichModDisplay
             data={{
               name: "Xaero's Minimap",
-              provider: 'curseforge',
-              href: 'https://www.curseforge.com/minecraft/mc-mods/xaeros-minimap',
-              id: '263420',
+              provider: "curseforge",
+              href: "https://www.curseforge.com/minecraft/mc-mods/xaeros-minimap",
+              id: "263420",
               description:
                 "Displays the nearby world terrain, players, mobs, entities in the corner of your screen. Lets you create waypoints which help you find the locations you've marked.",
               downloads: 48_426_867,
               iconUrl:
-                'https://media.forgecdn.net/avatars/thumbnails/92/854/256/256/636258666554688823.png',
+                "https://media.forgecdn.net/avatars/thumbnails/92/854/256/256/636258666554688823.png",
             }}
             className="lg:w-1/2"
           />
@@ -139,29 +131,28 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
       <div className="mb-24 mt-24 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="text-4xl font-bold">Export to anywhere</h2>
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
-          Publishing to Modrinth? Importing to Prism Launcher? We{"'"}ve got you
-          covered.
+          Publishing to Modrinth? Importing to Prism Launcher? We{"'"}ve got you covered.
         </h3>
         <div className="flex flex-col gap-6 lg:flex-row">
-          <div className={buttonVariants({ size: 'showcase' })}>
+          <div className={buttonVariants({ size: "showcase" })}>
             <FolderArchiveIcon className="block w-5 h-5" />
             <span>ZIP archive</span>
           </div>
           <div
             className={buttonVariants({
-              size: 'showcase',
-              variant: 'modrinth',
+              size: "showcase",
+              variant: "modrinth",
             })}
           >
             <ModrinthIcon className="block w-5 h-5" />
             <span>Modrinth pack</span>
           </div>
-          <div className={buttonVariants({ size: 'showcase', variant: 'sky' })}>
+          <div className={buttonVariants({ size: "showcase", variant: "sky" })}>
             <CloudIcon className="block w-5 h-5" />
             <span>packwiz</span>
           </div>
           <div
-            className={buttonVariants({ size: 'showcase', variant: 'fuchsia' })}
+            className={buttonVariants({ size: "showcase", variant: "fuchsia" })}
           >
             <HexagonIcon className="block w-5 h-5" />
             <span>MultiMC / Prism</span>

@@ -1,4 +1,4 @@
-import { XMLParser } from 'fast-xml-parser';
+import { XMLParser } from "fast-xml-parser";
 
 type MavenMetadata = {
   metadata: {
@@ -30,7 +30,7 @@ const getFromMaven = async ({
 
   if (gameVersion) {
     const matchingVersion = mavenXML.metadata.versioning.versions.find((v) =>
-      v.version.startsWith(gameVersion),
+      v.version.startsWith(gameVersion)
     );
 
     if (matchingVersion) return matchingVersion.version;
@@ -41,16 +41,16 @@ const getFromMaven = async ({
 
 export const getLatestFabric = () =>
   getFromMaven({
-    url: 'https://maven.fabricmc.net/net/fabricmc/fabric-loader/maven-metadata.xml',
+    url: "https://maven.fabricmc.net/net/fabricmc/fabric-loader/maven-metadata.xml",
   });
 
 export const getLatestQuilt = () =>
   getFromMaven({
-    url: 'https://maven.quiltmc.org/repository/release/org/quiltmc/quilt-loader/maven-metadata.xml',
+    url: "https://maven.quiltmc.org/repository/release/org/quiltmc/quilt-loader/maven-metadata.xml",
   });
 
 export const getLatestForge = (gameVersion: string) =>
   getFromMaven({
-    url: 'https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml',
+    url: "https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml",
     gameVersion,
   });

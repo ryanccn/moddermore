@@ -1,8 +1,8 @@
-import type JSZip from 'jszip';
-import type { SetStateFn } from '~/types/react';
-import type { ExportReturnData } from '../upstream/types';
+import type JSZip from "jszip";
+import type { SetStateFn } from "~/types/react";
+import type { ExportReturnData } from "../upstream/types";
 
-import pLimit from 'p-limit';
+import pLimit from "p-limit";
 
 export const enum ExportStatus {
   Idle,
@@ -25,10 +25,10 @@ export const exportZip = async ({
   setResult,
   setProgress,
 }: { zipfile: JSZip; urls: ExportReturnData } & PageStateHooks) => {
-  const modFolder = zipfile.folder('mods');
+  const modFolder = zipfile.folder("mods");
 
   if (!modFolder) {
-    throw new Error('f');
+    throw new Error("f");
   }
 
   const lim = pLimit(8);
@@ -36,7 +36,7 @@ export const exportZip = async ({
   await Promise.all(
     urls.map((downloadData) =>
       lim(async () => {
-        if ('error' in downloadData) {
+        if ("error" in downloadData) {
           setResult((a) => ({
             ...a,
             failed: [...a.failed, `${downloadData.name} ${downloadData.error}`],
@@ -45,7 +45,7 @@ export const exportZip = async ({
         }
 
         const fileContents = await fetch(
-          downloadData.provider === 'curseforge'
+          downloadData.provider === "curseforge"
             ? `/api/cursed?url=${encodeURIComponent(downloadData.url)}`
             : downloadData.url,
         ).then((r) => {
@@ -59,17 +59,14 @@ export const exportZip = async ({
         if (!fileContents) {
           setResult((a) => ({
             ...a,
-            failed: [
-              ...a.failed,
-              `${downloadData.name} network request failed`,
-            ],
+            failed: [...a.failed, `${downloadData.name} network request failed`],
           }));
           return;
         }
 
         modFolder.file(downloadData.name, fileContents);
 
-        if (downloadData.type === 'direct') {
+        if (downloadData.type === "direct") {
           setProgress((old) => ({
             value: old.value + 1,
             max: old.max,
@@ -80,7 +77,7 @@ export const exportZip = async ({
           ...a,
           success: [...a.success, downloadData.name],
         }));
-      }),
+      })
     ),
   );
 };

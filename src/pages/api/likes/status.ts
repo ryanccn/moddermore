@@ -1,7 +1,8 @@
-import { type NextApiHandler } from 'next';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '~/lib/authOptions';
-import { getLikeStatus } from '~/lib/db/users';
+import { type NextApiHandler } from "next";
+
+import { getServerSession } from "next-auth";
+import { authOptions } from "~/lib/authOptions";
+import { getLikeStatus } from "~/lib/db/users";
 
 const h: NextApiHandler = async (req, res) => {
   const session = await getServerSession(req, res, authOptions);
@@ -11,7 +12,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  if (typeof req.query.id !== 'string') {
+  if (typeof req.query.id !== "string") {
     res.status(400).end();
     return;
   }

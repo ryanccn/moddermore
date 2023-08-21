@@ -1,10 +1,6 @@
-import {
-  MongoClient,
-  ServerApiVersion,
-  type MongoClientOptions,
-} from 'mongodb';
+import { MongoClient, type MongoClientOptions, ServerApiVersion } from "mongodb";
 
-import type { ModList, UserProfile } from '~/types/moddermore';
+import type { ModList, UserProfile } from "~/types/moddermore";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -20,10 +16,10 @@ let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
 if (!uri) {
-  throw new Error('Please add your MongoDB URI to the environment');
+  throw new Error("Please add your MongoDB URI to the environment");
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   // In development mode, use a global variable so that the value
   // is preserved across module reloads caused by HMR (Hot Module Replacement).
   if (!global._mongoClientPromise) {
@@ -39,24 +35,19 @@ if (process.env.NODE_ENV === 'development') {
 
 const getListsCollection = async () => {
   const client = await clientPromise;
-  return client.db().collection<ModList>('lists');
+  return client.db().collection<ModList>("lists");
 };
 
 const getUsersCollection = async () => {
   const client = await clientPromise;
   return client
     .db()
-    .collection<{ email: string; emailVerified: Date }>('users');
+    .collection<{ email: string; emailVerified: Date }>("users");
 };
 
 const getProfilesCollection = async () => {
   const client = await clientPromise;
-  return client.db().collection<UserProfile>('profiles');
+  return client.db().collection<UserProfile>("profiles");
 };
 
-export {
-  clientPromise,
-  getListsCollection,
-  getUsersCollection,
-  getProfilesCollection,
-};
+export { clientPromise, getListsCollection, getProfilesCollection, getUsersCollection };

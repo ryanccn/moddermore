@@ -1,7 +1,7 @@
-import { InboxIcon } from 'lucide-react';
-import { type NextPage } from 'next';
+import { InboxIcon } from "lucide-react";
+import { type NextPage } from "next";
 
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
 
 const SigninPage: NextPage = () => {
   return (

@@ -1,12 +1,12 @@
-import JSZip from 'jszip';
+import JSZip from "jszip";
 
-import type { ModrinthVersion } from '~/types/modrinth';
-import type { CurseForgeVersion } from '~/types/curseforge';
-import type { Mod } from '~/types/moddermore';
-import type { SetStateFn } from '~/types/react';
+import type { CurseForgeVersion } from "~/types/curseforge";
+import type { Mod } from "~/types/moddermore";
+import type { ModrinthVersion } from "~/types/modrinth";
+import type { SetStateFn } from "~/types/react";
 
-import { curseforgeHash, modrinthHash } from './hash';
-import pLimit from 'p-limit';
+import pLimit from "p-limit";
+import { curseforgeHash, modrinthHash } from "./hash";
 
 interface CurseForgeSpecialtyResponse {
   data: {
@@ -31,21 +31,21 @@ export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
   const mrHash = await modrinthHash(file);
   const mrRes = await fetch(
     `https://api.modrinth.com/v2/version_file/${mrHash}?algorithm=sha512`,
-    { headers: { 'User-Agent': 'Moddermore/noversion' } },
+    { headers: { "User-Agent": "Moddermore/noversion" } },
   );
 
   if (mrRes.ok) {
     const mrData = (await mrRes.json()) as ModrinthVersion;
-    return { id: mrData.project_id, provider: 'modrinth' };
+    return { id: mrData.project_id, provider: "modrinth" };
   }
 
   const cfHash = await curseforgeHash(file);
-  const cfRes = await fetch('https://api.curseforge.com/v1/fingerprints', {
-    method: 'POST',
+  const cfRes = await fetch("https://api.curseforge.com/v1/fingerprints", {
+    method: "POST",
     body: JSON.stringify({ fingerprints: [cfHash] }),
     headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY ?? '',
+      "Content-Type": "application/json",
+      "x-api-key": process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY ?? "",
     },
   });
 
@@ -55,7 +55,7 @@ export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
     if (cfData.data.exactMatches.length === 0) return null;
     return {
       id: `${cfData.data.exactMatches[0].file.modId}`,
-      provider: 'curseforge',
+      provider: "curseforge",
     };
   }
 
@@ -65,11 +65,11 @@ export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
 export const parseModFolder = async ({ f, setProgress }: InputData) => {
   const mods = Object.keys(f.files).filter(
     (name) =>
-      name.endsWith('.jar') &&
-      !name.includes('__MACOSX') && // some macOS zip stuff
-      !name.includes('.old') && // ferium
-      !name.endsWith('.disabled') && // disabled mods
-      !f.files[name].dir,
+      name.endsWith(".jar")
+      && !name.includes("__MACOSX") // some macOS zip stuff
+      && !name.includes(".old") // ferium
+      && !name.endsWith(".disabled") // disabled mods
+      && !f.files[name].dir,
   );
 
   const ret: (Mod | null)[] = [];
@@ -81,14 +81,14 @@ export const parseModFolder = async ({ f, setProgress }: InputData) => {
     mods.map((mod) =>
       resolveLimit(async () => {
         try {
-          const modFile = await f.files[mod].async('uint8array');
+          const modFile = await f.files[mod].async("uint8array");
           ret.push(await parseMod(modFile));
         } catch (error) {
           console.error(error);
         }
 
         setProgress((oldVal) => ({ value: oldVal.value + 1, max: oldVal.max }));
-      }),
+      })
     ),
   );
 

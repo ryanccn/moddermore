@@ -1,9 +1,9 @@
-import type { RichModList } from '~/types/moddermore';
+import type { RichModList } from "~/types/moddermore";
 
-import { ExportStatus, exportZip, type PageStateHooks } from './shared';
-import { saveAs } from 'file-saver';
-import { getDownloadURLs } from '../upstream/download';
-import JSZip from 'jszip';
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
+import { getDownloadURLs } from "../upstream/download";
+import { ExportStatus, exportZip, type PageStateHooks } from "./shared";
 
 export const zipExport = async ({
   data,
@@ -26,7 +26,7 @@ export const zipExport = async ({
 
   await exportZip({ zipfile, urls, setProgress, setResult, setStatus });
 
-  const zipBlob = await zipfile.generateAsync({ type: 'blob' });
+  const zipBlob = await zipfile.generateAsync({ type: "blob" });
   saveAs(zipBlob, `${data.title}.zip`);
 
   setStatus(ExportStatus.Result);

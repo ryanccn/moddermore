@@ -23,7 +23,7 @@ declare global {
       DISCORD_WEBHOOK?: string;
 
       /** Only available when deployed */
-      NEXT_PUBLIC_VERCEL_ENV?: 'production' | 'preview' | 'development';
+      NEXT_PUBLIC_VERCEL_ENV?: "production" | "preview" | "development";
       /** Only available when deployed */
       NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?: string;
     }

@@ -1,21 +1,21 @@
-import type { NextPage } from 'next';
+import type { NextPage } from "next";
 
-import { useCallback, useMemo, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
+import { useCallback, useMemo, useState } from "react";
 
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { ModListInList } from '~/components/partials/ModListInList';
-import { Button } from '~/components/ui/Button';
-import { Spinner } from '~/components/partials/Spinner';
-import { SearchIcon } from 'lucide-react';
+import { SearchIcon } from "lucide-react";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { ModListInList } from "~/components/partials/ModListInList";
+import { Spinner } from "~/components/partials/Spinner";
+import { Button } from "~/components/ui/Button";
 
-import { toast } from 'react-hot-toast';
-import type { ModListWithExtraData } from '~/types/moddermore';
+import { toast } from "react-hot-toast";
+import type { ModListWithExtraData } from "~/types/moddermore";
 
 const SearchPage: NextPage = () => {
   const session = useSession();
 
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
   const [lists, setLists] = useState<ModListWithExtraData[]>([]);
 
@@ -27,15 +27,15 @@ const SearchPage: NextPage = () => {
   const updateSearch = useCallback(() => {
     setSearching(true);
 
-    fetch('/api/search', {
-      method: 'POST',
+    fetch("/api/search", {
+      method: "POST",
       body: JSON.stringify({ query }),
-      headers: { 'content-type': 'application/json' },
+      headers: { "content-type": "application/json" },
     })
       .then((a) => a.json() as Promise<ModListWithExtraData[]>)
       .then(setLists)
       .catch(() => {
-        toast.error('Failed to fetch lists!');
+        toast.error("Failed to fetch lists!");
       })
       .finally(() => {
         setSearching(false);
@@ -49,9 +49,9 @@ const SearchPage: NextPage = () => {
           type="text"
           name="search-bar"
           className="mm-input flex-grow"
-          placeholder={isAdmin ? 'Search all lists' : 'Search for public lists'}
+          placeholder={isAdmin ? "Search all lists" : "Search for public lists"}
           role="search"
-          aria-label={isAdmin ? 'Search all lists' : 'Search for public lists'}
+          aria-label={isAdmin ? "Search all lists" : "Search for public lists"}
           minLength={1}
           value={query}
           disabled={searching}
@@ -59,7 +59,7 @@ const SearchPage: NextPage = () => {
             setQuery(e.target.value);
           }}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               e.preventDefault();
               updateSearch();
             }
@@ -67,22 +67,18 @@ const SearchPage: NextPage = () => {
         />
 
         <Button type="button" onClick={updateSearch} disabled={searching}>
-          {searching ? (
-            <Spinner className="w-5 h-5" />
-          ) : (
-            <SearchIcon className="block w-5 h-5" />
-          )}
+          {searching ? <Spinner className="w-5 h-5" /> : <SearchIcon className="block w-5 h-5" />}
           <span>Search</span>
         </Button>
       </div>
 
-      {lists.length > 0 ? (
-        <ul className="flex flex-col gap-y-8">
-          {lists.map((list) => (
-            <ModListInList listWithExtra={list} key={list.id} />
-          ))}
-        </ul>
-      ) : null}
+      {lists.length > 0
+        ? (
+          <ul className="flex flex-col gap-y-8">
+            {lists.map((list) => <ModListInList listWithExtra={list} key={list.id} />)}
+          </ul>
+        )
+        : null}
     </GlobalLayout>
   );
 };

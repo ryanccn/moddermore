@@ -1,17 +1,17 @@
-import '~/styles/tailwind.css';
-import '~/styles/radix.css';
-import type { AppProps } from 'next/app';
+import "~/styles/tailwind.css";
+import "~/styles/radix.css";
+import type { AppProps } from "next/app";
 
-import { ThemeProvider } from 'next-themes';
-import PlausibleProvider from 'next-plausible';
-import { Session } from 'next-auth';
-import { SessionProvider } from 'next-auth/react';
+import { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+import PlausibleProvider from "next-plausible";
+import { ThemeProvider } from "next-themes";
 
-import { Toaster } from 'react-hot-toast';
-import Script from 'next/script';
-import NextNProgress from 'nextjs-progressbar';
+import Script from "next/script";
+import NextNProgress from "nextjs-progressbar";
+import { Toaster } from "react-hot-toast";
 
-import { AlertCircleIcon, CheckCircleIcon } from 'lucide-react';
+import { AlertCircleIcon, CheckCircleIcon } from "lucide-react";
 
 function CustomApp({
   Component,
@@ -31,19 +31,17 @@ function CustomApp({
             position="bottom-right"
             toastOptions={{
               style: {
-                color: 'var(--react-hot-toast-fg)',
-                backgroundColor: 'var(--react-hot-toast-bg)',
+                color: "var(--react-hot-toast-fg)",
+                backgroundColor: "var(--react-hot-toast-bg)",
               },
-              className: 'react-hot-toast',
+              className: "react-hot-toast",
               success: {
                 icon: (
                   <CheckCircleIcon className="block w-4 h-4 text-green-500 dark:text-green-400" />
                 ),
               },
               error: {
-                icon: (
-                  <AlertCircleIcon className="block w-4 h-4 text-red-400" />
-                ),
+                icon: <AlertCircleIcon className="block w-4 h-4 text-red-400" />,
               },
             }}
           />

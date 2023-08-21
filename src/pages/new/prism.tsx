@@ -1,32 +1,32 @@
-import type { NextPage } from 'next';
-import { type FormEventHandler, useState, useCallback } from 'react';
+import type { NextPage } from "next";
+import { type FormEventHandler, useCallback, useState } from "react";
 
-import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-import { loadAsync } from 'jszip';
-import { parsePrismInstance } from '~/lib/import/prism';
-import minecraftVersions from '~/lib/minecraftVersions.json';
+import { loadAsync } from "jszip";
+import { parsePrismInstance } from "~/lib/import/prism";
+import minecraftVersions from "~/lib/minecraftVersions.json";
 
-import type { Mod, ModLoader } from '~/types/moddermore';
+import type { Mod, ModLoader } from "~/types/moddermore";
 
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { ProgressOverlay } from '~/components/ProgressOverlay';
-import { NewSubmitButton } from '~/components/partials/NewSubmitButton';
-import { buttonVariants } from '~/components/ui/Button';
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
+import { ProgressOverlay } from "~/components/ProgressOverlay";
+import { buttonVariants } from "~/components/ui/Button";
 
-import { PaperclipIcon } from 'lucide-react';
+import { PaperclipIcon } from "lucide-react";
 
-import toast from 'react-hot-toast';
-import { twMerge } from 'tailwind-merge';
+import toast from "react-hot-toast";
+import { twMerge } from "tailwind-merge";
 
 const PrismImportPage: NextPage = () => {
   const sess = useSession({ required: true });
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
   const [instanceFile, setInstanceFile] = useState<File | null>(null);
-  const [modLoader, setModLoader] = useState<ModLoader>('quilt');
+  const [modLoader, setModLoader] = useState<ModLoader>("quilt");
   const [useMetadata, setUseMetadata] = useState(true);
 
   const [progress, setProgress] = useState({ value: 0, max: 0 });
@@ -52,15 +52,15 @@ const PrismImportPage: NextPage = () => {
 
       if (!parseResponse) return;
 
-      const res = await fetch('/api/list/create', {
-        method: 'POST',
+      const res = await fetch("/api/list/create", {
+        method: "POST",
         body: JSON.stringify({
           title,
           gameVersion,
           modloader: modLoader,
           mods: parseResponse.filter(Boolean) as Mod[],
         }),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
 
       if (!res.ok) {
@@ -72,15 +72,7 @@ const PrismImportPage: NextPage = () => {
 
       router.push(`/list/${id}`);
     },
-    [
-      gameVersion,
-      instanceFile,
-      modLoader,
-      router,
-      sess.data,
-      title,
-      useMetadata,
-    ],
+    [gameVersion, instanceFile, modLoader, router, sess.data, title, useMetadata],
   );
 
   return (
@@ -145,7 +137,7 @@ const PrismImportPage: NextPage = () => {
               role="button"
               className={twMerge(
                 buttonVariants({
-                  className: 'flex cursor-auto hover:cursor-pointer',
+                  className: "flex cursor-auto hover:cursor-pointer",
                 }),
               )}
             >
@@ -165,9 +157,7 @@ const PrismImportPage: NextPage = () => {
             />
           </label>
 
-          {instanceFile && (
-            <span className="text-lg font-medium">{instanceFile.name}</span>
-          )}
+          {instanceFile && <span className="text-lg font-medium">{instanceFile.name}</span>}
         </div>
 
         <div className="flex items-center gap-x-2">
@@ -188,13 +178,11 @@ const PrismImportPage: NextPage = () => {
 
         <NewSubmitButton
           submitting={submitting}
-          disabled={sess.status === 'loading' || submitting}
+          disabled={sess.status === "loading" || submitting}
         />
       </form>
 
-      {submitting && (
-        <ProgressOverlay label="Searching for mods..." {...progress} />
-      )}
+      {submitting && <ProgressOverlay label="Searching for mods..." {...progress} />}
     </GlobalLayout>
   );
 };

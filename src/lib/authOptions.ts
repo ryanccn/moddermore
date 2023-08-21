@@ -1,14 +1,14 @@
-import { type NextAuthOptions } from 'next-auth';
-import EmailProvider from 'next-auth/providers/email';
+import { type NextAuthOptions } from "next-auth";
+import EmailProvider from "next-auth/providers/email";
 
-import GitHubProvider from 'next-auth/providers/github';
-import DiscordProvider from 'next-auth/providers/discord';
-import GoogleProvider from 'next-auth/providers/google';
+import DiscordProvider from "next-auth/providers/discord";
+import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 
-import { clientPromise } from '~/lib/db/client';
-import { getUserProfile } from '~/lib/db/users';
+import { clientPromise } from "~/lib/db/client";
+import { getUserProfile } from "~/lib/db/users";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -36,8 +36,8 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }) {
       if (
-        process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview' &&
-        (!('emailVerified' in user) || !user.emailVerified)
+        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"
+        && (!("emailVerified" in user) || !user.emailVerified)
       ) {
         return false;
       }
@@ -49,7 +49,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, user }) {
       const extraProfile = await getUserProfile(user.id);
-      if (!extraProfile) throw new Error('Profile not found');
+      if (!extraProfile) throw new Error("Profile not found");
 
       return {
         ...session,
@@ -59,8 +59,8 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: '/auth/signin',
-    error: '/auth/error',
-    verifyRequest: '/auth/verify',
+    signIn: "/auth/signin",
+    error: "/auth/error",
+    verifyRequest: "/auth/verify",
   },
 };

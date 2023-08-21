@@ -1,4 +1,4 @@
-type Side = 'required' | 'optional' | 'unsupported';
+type Side = "required" | "optional" | "unsupported";
 
 export interface ModrinthProject {
   slug: string;
@@ -7,7 +7,7 @@ export interface ModrinthProject {
   categories: string[];
   client_side: Side;
   server_side: Side;
-  project_type: 'mod' | 'modpack';
+  project_type: "mod" | "modpack";
   downloads: number;
   icon_url: string | null;
   id: string;
@@ -21,10 +21,10 @@ export interface ModrinthVersion {
   changelog: string | null;
   dependencies:
     | {
-        version_id: string;
-        project_id: string;
-        dependency_type: string;
-      }[]
+      version_id: string;
+      project_id: string;
+      dependency_type: string;
+    }[]
     | null;
 
   game_versions: string[];
@@ -56,7 +56,7 @@ export interface ModrinthSearchResult {
     title: string;
     description: string;
     categories: string[];
-    project_type: 'mod';
+    project_type: "mod";
     downloads: number;
     icon_url: string;
     project_id: string;

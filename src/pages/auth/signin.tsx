@@ -1,42 +1,41 @@
-import { type NextPage } from 'next';
+import { type NextPage } from "next";
 
-import { useRouter } from 'next/router';
-import { type FormEventHandler, useState, useEffect, useCallback } from 'react';
+import { useRouter } from "next/router";
+import { type FormEventHandler, useCallback, useEffect, useState } from "react";
 
-import toast from 'react-hot-toast';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
-import { DiscordIcon, GitHubIcon, GoogleIcon } from '~/components/icons';
-import { Button } from '~/components/ui/Button';
+import { DiscordIcon, GitHubIcon, GoogleIcon } from "~/components/icons";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { Button } from "~/components/ui/Button";
 
 const errors = {
-  Signin: 'Try signing in with a different account.',
-  OAuthSignin: 'Try signing in with a different account.',
-  OAuthCallback: 'Try signing in with a different account.',
-  OAuthCreateAccount: 'Try signing in with a different account.',
-  EmailCreateAccount: 'Try signing in with a different account.',
-  Callback: 'Try signing in with a different account.',
+  Signin: "Try signing in with a different account.",
+  OAuthSignin: "Try signing in with a different account.",
+  OAuthCallback: "Try signing in with a different account.",
+  OAuthCreateAccount: "Try signing in with a different account.",
+  EmailCreateAccount: "Try signing in with a different account.",
+  Callback: "Try signing in with a different account.",
   OAuthAccountNotLinked:
-    'To confirm your identity, sign in with the same account you used originally.',
-  EmailSignin: 'The e-mail could not be sent.',
-  CredentialsSignin:
-    'Sign in failed. Check the details you provided are correct.',
-  SessionRequired: 'Please sign in to access this page.',
-  default: 'Unable to sign in.',
+    "To confirm your identity, sign in with the same account you used originally.",
+  EmailSignin: "The e-mail could not be sent.",
+  CredentialsSignin: "Sign in failed. Check the details you provided are correct.",
+  SessionRequired: "Please sign in to access this page.",
+  default: "Unable to sign in.",
 };
 
 const SigninPage: NextPage = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [disableSubmit, setDS] = useState(false);
 
   const sess = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (sess.status === 'authenticated') {
-      router.push('/lists');
-      toast.success('Signed in!');
+    if (sess.status === "authenticated") {
+      router.push("/lists");
+      toast.success("Signed in!");
     }
   }, [sess, router]);
 
@@ -45,12 +44,11 @@ const SigninPage: NextPage = () => {
       e.preventDefault();
       setDS(true);
 
-      await signIn('email', {
+      await signIn("email", {
         email,
-        callbackUrl:
-          typeof router.query.callbackUrl === 'string'
-            ? router.query.callbackUrl
-            : undefined,
+        callbackUrl: typeof router.query.callbackUrl === "string"
+          ? router.query.callbackUrl
+          : undefined,
       });
     },
     [email, router.query.callbackUrl],
@@ -61,10 +59,10 @@ const SigninPage: NextPage = () => {
       <div className="flex w-full flex-col gap-y-4">
         {router.query.error && (
           <p className="rounded bg-red-500 px-4 py-3 font-semibold text-white">
-            {typeof router.query.error === 'string' &&
-            router.query.error in errors
-              ? // @ts-expect-error it's a key alright
-                errors[router.query.error]
+            {typeof router.query.error === "string"
+                && router.query.error in errors
+              // @ts-expect-error it's a key alright
+              ? errors[router.query.error]
               : router.query.error}
           </p>
         )}
@@ -73,11 +71,10 @@ const SigninPage: NextPage = () => {
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
-            await signIn('github', {
-              callbackUrl:
-                typeof router.query.callbackUrl === 'string'
-                  ? router.query.callbackUrl
-                  : undefined,
+            await signIn("github", {
+              callbackUrl: typeof router.query.callbackUrl === "string"
+                ? router.query.callbackUrl
+                : undefined,
             });
           }}
         >
@@ -89,11 +86,10 @@ const SigninPage: NextPage = () => {
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
-            await signIn('discord', {
-              callbackUrl:
-                typeof router.query.callbackUrl === 'string'
-                  ? router.query.callbackUrl
-                  : undefined,
+            await signIn("discord", {
+              callbackUrl: typeof router.query.callbackUrl === "string"
+                ? router.query.callbackUrl
+                : undefined,
             });
           }}
         >
@@ -105,11 +101,10 @@ const SigninPage: NextPage = () => {
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
-            await signIn('google', {
-              callbackUrl:
-                typeof router.query.callbackUrl === 'string'
-                  ? router.query.callbackUrl
-                  : undefined,
+            await signIn("google", {
+              callbackUrl: typeof router.query.callbackUrl === "string"
+                ? router.query.callbackUrl
+                : undefined,
             });
           }}
         >

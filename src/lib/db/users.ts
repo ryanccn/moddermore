@@ -1,6 +1,7 @@
-import { getProfilesCollection } from './client';
-import type { UserEditableProfileData } from '~/types/moddermore';
-import { getSpecificListByID } from '.';
+import type { UserEditableProfileData } from "~/types/moddermore";
+
+import { getSpecificListByID } from ".";
+import { getProfilesCollection } from "./client";
 
 export const getUserProfile = async (id: string) => {
   const col = await getProfilesCollection();
@@ -21,14 +22,14 @@ export const getUserProfile = async (id: string) => {
 
 export const updateUserProfile = async (
   id: string,
-  profile: UserEditableProfileData
+  profile: UserEditableProfileData,
 ) => {
   const col = await getProfilesCollection();
 
   const res = await col.updateOne({ userId: id }, { $set: profile });
 
   if (!res.matchedCount) {
-    console.warn('User profile update failed because none was found!');
+    console.warn("User profile update failed because none was found!");
   }
 };
 

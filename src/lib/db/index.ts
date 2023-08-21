@@ -1,30 +1,26 @@
-import { nanoid } from 'nanoid/async';
+import { nanoid } from "nanoid/async";
 
-import { getListsCollection, getProfilesCollection } from './client';
 import type {
   ModList,
   ModListCreate,
   ModListUpdate,
   ModListWithExtraData,
-} from '~/types/moddermore';
-import { getUserProfile } from './users';
+} from "~/types/moddermore";
+import { getListsCollection, getProfilesCollection } from "./client";
+import { getUserProfile } from "./users";
 
 export const getUserLists = async (userId: string): Promise<ModList[]> => {
   const collection = await getListsCollection();
   const lists = await collection.find({ owner: userId }).toArray();
 
-  return lists.sort((a, b) =>
-    new Date(a.created_at) > new Date(b.created_at) ? -1 : 1,
-  );
+  return lists.sort((a, b) => new Date(a.created_at) > new Date(b.created_at) ? -1 : 1);
 };
 
 export const getLegacyUserLists = async (email: string): Promise<ModList[]> => {
   const collection = await getListsCollection();
   const lists = await collection.find({ legacy: email }).toArray();
 
-  return lists.sort((a, b) =>
-    new Date(a.created_at) > new Date(b.created_at) ? -1 : 1,
-  );
+  return lists.sort((a, b) => new Date(a.created_at) > new Date(b.created_at) ? -1 : 1);
 };
 
 export const getSpecificListByID = async (trueId: string) => {
@@ -88,7 +84,7 @@ export const createList = async (
     description: list.description ?? null,
     owner: userId,
     created_at: new Date().toISOString(),
-    visibility: 'unlisted',
+    visibility: "unlisted",
   });
 
   return id;

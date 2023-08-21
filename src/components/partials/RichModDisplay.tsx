@@ -1,21 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 
-import type { ModList, RichMod } from '~/types/moddermore';
+import type { ModList, RichMod } from "~/types/moddermore";
 
-import { providerFormat, numberFormat } from '~/lib/strings';
-import { twMerge } from 'tailwind-merge';
-import { useMemo } from 'react';
-import { Button } from '../ui/Button';
-import {
-  ArrowUpRightIcon,
-  DownloadIcon,
-  PlusIcon,
-  TrashIcon,
-} from 'lucide-react';
+import { ArrowUpRightIcon, DownloadIcon, PlusIcon, TrashIcon } from "lucide-react";
+import { useMemo } from "react";
+import { twMerge } from "tailwind-merge";
+import { numberFormat, providerFormat } from "~/lib/strings";
+import { Button } from "../ui/Button";
 
 interface Props {
   data: RichMod;
-  buttonType?: 'add' | 'delete' | null;
+  buttonType?: "add" | "delete" | null;
   onClick?: () => void;
   className?: string;
   parent?: ModList;
@@ -30,17 +25,17 @@ export const RichModDisplay = ({
 }: Props) => {
   const incompatible = useMemo(
     () =>
-      parent &&
-      data.gameVersions &&
-      !data.gameVersions.includes(parent.gameVersion),
+      parent
+      && data.gameVersions
+      && !data.gameVersions.includes(parent.gameVersion),
     [parent, data.gameVersions],
   );
 
   return (
     <div
       className={twMerge(
-        'flex justify-between rounded-2xl border-none bg-neutral-100 p-5 dark:bg-neutral-800',
-        incompatible ? 'ring-2 ring-red-400/70 hover:ring-red-400/80' : null,
+        "flex justify-between rounded-2xl border-none bg-neutral-100 p-5 dark:bg-neutral-800",
+        incompatible ? "ring-2 ring-red-400/70 hover:ring-red-400/80" : null,
         className,
       )}
     >
@@ -92,14 +87,14 @@ export const RichModDisplay = ({
           <div className="flex flex-col sm:items-end">
             {onClick && (
               <>
-                {buttonType === 'delete' && (
+                {buttonType === "delete" && (
                   <Button type="button" variant="danger" onClick={onClick}>
                     <TrashIcon className="block w-5 h-5" />
                     <span>Delete</span>
                   </Button>
                 )}
 
-                {buttonType === 'add' && (
+                {buttonType === "add" && (
                   <Button type="button" variant="green" onClick={onClick}>
                     <PlusIcon className="block w-5 h-5" />
                     <span>Add</span>

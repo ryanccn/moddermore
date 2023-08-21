@@ -1,4 +1,4 @@
-import type { ModLoader, ModProvider } from '~/types/moddermore';
+import type { ModLoader, ModProvider } from "~/types/moddermore";
 
 export const numberFormat = (value: number): string => {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
@@ -9,28 +9,28 @@ export const numberFormat = (value: number): string => {
 
 export const providerFormat = (prov: ModProvider) => {
   switch (prov) {
-    case 'curseforge': {
-      return 'CurseForge';
+    case "curseforge": {
+      return "CurseForge";
     }
-    case 'modrinth': {
-      return 'Modrinth';
+    case "modrinth": {
+      return "Modrinth";
     }
   }
 };
 
 export const loaderFormat = (loader: ModLoader) => {
   switch (loader) {
-    case 'fabric': {
-      return 'Fabric';
+    case "fabric": {
+      return "Fabric";
     }
-    case 'forge': {
-      return 'Forge';
+    case "forge": {
+      return "Forge";
     }
-    case 'quilt': {
-      return 'Quilt';
+    case "quilt": {
+      return "Quilt";
     }
     default: {
-      return 'Unknown';
+      return "Unknown";
     }
   }
 };

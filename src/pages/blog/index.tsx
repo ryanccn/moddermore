@@ -1,9 +1,9 @@
-import { GetStaticProps, type NextPage } from 'next';
+import { GetStaticProps, type NextPage } from "next";
 
-import Link from 'next/link';
-import { GlobalLayout } from '~/components/layout/GlobalLayout';
+import Link from "next/link";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
 
-import { listBlogPosts } from '~/lib/blog';
+import { listBlogPosts } from "~/lib/blog";
 
 interface PageProps {
   data: {
@@ -31,7 +31,7 @@ const BlogIndexPage: NextPage<PageProps> = ({ data }) => {
               backgroundImage: post.cover
                 ? `url('${post.cover.src}')`
                 : undefined,
-              backgroundPosition: 'center',
+              backgroundPosition: "center",
             }}
             href={`/blog/${post.slug}`}
             key={post.slug}

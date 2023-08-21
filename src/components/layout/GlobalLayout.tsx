@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 
-import Head from 'next/head';
-import { Header } from './Header';
-import { Footer } from './Footer';
+import Head from "next/head";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
 
-import { useSession } from 'next-auth/react';
-import { useMemo, type ReactNode } from 'react';
+import { useSession } from "next-auth/react";
+import { type ReactNode, useMemo } from "react";
 
-import { twMerge } from 'tailwind-merge';
+import { twMerge } from "tailwind-merge";
 
 interface Props {
   title: string;
@@ -75,24 +75,28 @@ export const GlobalLayout = ({
       <main
         className={twMerge(
           wideLayout
-            ? 'flex flex-col'
+            ? "flex flex-col"
             : isAuthPage
-            ? 'layout mt-28 max-w-[45ch] items-center text-center'
-            : 'layout mt-28',
+            ? "layout mt-28 max-w-[45ch] items-center text-center"
+            : "layout mt-28",
           className,
         )}
       >
-        {displayTitle === true ? (
-          <>
-            {titleIcon}
-            <h1 className="title">{title}</h1>
-          </>
-        ) : typeof displayTitle === 'string' ? (
-          <>
-            {titleIcon}
-            <h1 className="title">{displayTitle}</h1>
-          </>
-        ) : null}
+        {displayTitle === true
+          ? (
+            <>
+              {titleIcon}
+              <h1 className="title">{title}</h1>
+            </>
+          )
+          : typeof displayTitle === "string"
+          ? (
+            <>
+              {titleIcon}
+              <h1 className="title">{displayTitle}</h1>
+            </>
+          )
+          : null}
 
         {children}
 

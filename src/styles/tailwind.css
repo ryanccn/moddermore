@@ -152,7 +152,7 @@
       rgba(0, 0, 0, 0)
     );
     animation: shimmer 1.5s infinite;
-    content: '';
+    content: "";
 
     @media (prefers-color-scheme: dark) {
       background-image: linear-gradient(

@@ -1,16 +1,16 @@
-import { type NextApiHandler } from 'next';
-import { getServerSession } from 'next-auth';
+import { type NextApiHandler } from "next";
+import { getServerSession } from "next-auth";
 
-import * as v from 'valibot';
-import { authOptions } from '~/lib/authOptions';
-import { getProfilesCollection } from '~/lib/db/client';
+import * as v from "valibot";
+import { authOptions } from "~/lib/authOptions";
+import { getProfilesCollection } from "~/lib/db/client";
 
 const validate = v.object({ id: v.string([v.minLength(1)]) });
 
 const handler: NextApiHandler = async (req, res) => {
   const parsedBody = v.safeParse(validate, req.body);
   if (!parsedBody.success) {
-    res.status(400).json({ error: 'bad request' });
+    res.status(400).json({ error: "bad request" });
     return;
   }
 
@@ -20,7 +20,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   const sess = await getServerSession(req, res, authOptions);
   if (!sess?.extraProfile.isAdmin) {
-    res.status(401).json({ error: 'unauthorized' });
+    res.status(401).json({ error: "unauthorized" });
     return;
   }
 
