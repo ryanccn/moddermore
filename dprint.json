@@ -7,10 +7,11 @@
     "quoteStyle": "preferDouble",
     "jsx.quoteStyle": "preferDouble"
   },
-  "json": {},
+  "json": {
+    "associations": [".prettierrc", ".eslintrc"]
+  },
   "markdown": {},
   "toml": {},
-  "includes": ["**/*.{ts,tsx,js,jsx,cjs,mjs,json,md,toml}", "**/*.{yml,yaml,css}"],
   "excludes": ["**/node_modules", "**/*-lock.json", "**/pnpm-lock.yaml", "**/.next", "**/.vercel"],
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.86.2.wasm",

@@ -41,7 +41,7 @@ const logToDiscord = async ({
         })\nCurseForge (${data.mods.filter((k) => k.provider === "curseforge").length})`,
       }],
       // eslint-disable-next-line unicorn/numeric-separators-style
-      color: 0x4ade80,
+      color: 0x4ADE80,
     }],
   } satisfies DiscordWebhookBody;
 
