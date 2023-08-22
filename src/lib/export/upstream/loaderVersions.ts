@@ -8,7 +8,7 @@ type MavenMetadata = {
       release: string;
       latest: string;
       lastUpdated: string;
-      versions: { version: string }[];
+      versions: { version: string[] };
     };
   };
 };
@@ -29,11 +29,11 @@ const getFromMaven = async ({
   const mavenXML = parser.parse(mavenTextResponse) as MavenMetadata;
 
   if (gameVersion) {
-    const matchingVersion = mavenXML.metadata.versioning.versions.find((v) =>
-      v.version.startsWith(gameVersion)
+    const matchingVersion = mavenXML.metadata.versioning.versions.version.find((v) =>
+      v.startsWith(gameVersion)
     );
 
-    if (matchingVersion) return matchingVersion.version;
+    if (matchingVersion) return matchingVersion;
   }
 
   return mavenXML.metadata.versioning.latest;
