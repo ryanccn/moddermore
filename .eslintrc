@@ -3,7 +3,6 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:unicorn/recommended",
-    "prettier",
     "next/core-web-vitals"
   ],
   "parser": "@typescript-eslint/parser",
