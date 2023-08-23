@@ -48,7 +48,7 @@
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
-    "@typescript-eslint/parser": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.1",
     "autoprefixer": "^10.4.15",
     "discord-api-types": "^0.37.54",
     "eslint": "^8.47.0",
