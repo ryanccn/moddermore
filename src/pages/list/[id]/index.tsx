@@ -38,6 +38,7 @@ import { ProgressOverlay } from "~/components/ProgressOverlay";
 import { Button, buttonVariants } from "~/components/ui/Button";
 
 import {
+  AreaChartIcon,
   ClipboardIcon,
   CloudIcon,
   CodeIcon,
@@ -655,6 +656,14 @@ ${
             >
               <SettingsIcon className="block w-5 h-5" />
               <span>Settings</span>
+            </Link>
+
+            <Link
+              className={buttonVariants({ variant: "primary" })}
+              href={`/list/${data.id}/analytics`}
+            >
+              <AreaChartIcon className="block w-5 h-5" />
+              <span>Analytics</span>
             </Link>
 
             <Button
