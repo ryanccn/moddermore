@@ -27,7 +27,7 @@ const numberFormatter = (number: number) => {
 };
 
 const percentageFormatter = (number: number) => {
-  return (number * 100).toFixed(2) + "%";
+  return number.toFixed(2) + "%";
 };
 
 const ListAnalytics: NextPage<PageProps> = ({ data }) => {

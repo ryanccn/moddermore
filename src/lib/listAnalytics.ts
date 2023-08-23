@@ -20,7 +20,7 @@ export const getListTimeseries = async (id: string) => {
         date: format(subDays(new Date(), i), "MMM dd"),
         visitors: 250 + Math.floor(Math.random() * 500),
         visits: 300 + Math.floor(Math.random() * 750),
-        bounce_rate: Math.random(),
+        bounce_rate: Math.random() * 100,
         pageviews: 500 + Math.floor(Math.random() * 1000),
       });
     }
