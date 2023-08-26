@@ -34,9 +34,7 @@ export const callCurseForgeAPI = async ({
       },
     );
 
-    if (res.status === 404) {
-      return null;
-    }
+    if (res.status === 404) return null;
 
     const data = (await res
       .json()
@@ -56,9 +54,7 @@ export const callCurseForgeAPI = async ({
     },
   );
 
-  if (res.status === 404) {
-    return null;
-  }
+  if (res.status === 404) return null;
 
   const data = (await res
     .json()

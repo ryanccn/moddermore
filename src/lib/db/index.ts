@@ -6,7 +6,9 @@ import type {
   ModListUpdate,
   ModListWithExtraData,
 } from "~/types/moddermore";
+
 import { getListsCollection, getProfilesCollection } from "./client";
+import { omitUndefined } from "./conversions";
 import { getUserProfile } from "./users";
 
 export const getUserLists = async (userId: string): Promise<ModList[]> => {
@@ -34,6 +36,7 @@ export const getSpecificList = async (
   const collection = await getListsCollection();
   const list = await collection.findOne({ id });
   if (!list) return null;
+
   const ownerProfile = list.owner ? await getUserProfile(list.owner) : null;
 
   const profilesCollection = await getProfilesCollection();
@@ -99,7 +102,7 @@ export const updateList = async (
   const collection = await getListsCollection();
   const res = await collection.updateOne(
     isAdmin ? { id } : { id, owner: userId },
-    { $set: list },
+    { $set: omitUndefined(list) },
   );
 
   return !!res.modifiedCount;

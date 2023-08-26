@@ -36,9 +36,7 @@ export const callModrinthAPI = async ({
       },
     );
 
-    if (!res.ok) {
-      return null;
-    }
+    if (!res.ok) return null;
 
     const data = (await res.json()) as ModrinthVersion;
 
@@ -64,9 +62,7 @@ export const callModrinthAPI = async ({
     },
   );
 
-  if (!res.ok) {
-    return null;
-  }
+  if (!res.ok) return null;
 
   const data = (await res.json()) as ModrinthVersion[];
 

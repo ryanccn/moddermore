@@ -11,9 +11,7 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
     headers: { "x-api-key": API_KEY },
   });
 
-  if (!res.ok) {
-    return null;
-  }
+  if (!res.ok) return null;
 
   const data = (await res
     .json()

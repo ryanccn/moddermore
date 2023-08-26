@@ -72,9 +72,7 @@ const generateModrinthPack = async (
       const fileContents = await fetch(
         `/api/cursed?url=${encodeURIComponent(url.url)}`,
       ).then((r) => {
-        if (!r.ok) {
-          return null;
-        }
+        if (!r.ok) return null;
 
         return r.blob();
       });
@@ -92,9 +90,7 @@ const generateModrinthPack = async (
       const fileContents = await fetch(
         `/api/cursed?url=${encodeURIComponent(url.url)}`,
       ).then((r) => {
-        if (!r.ok) {
-          return null;
-        }
+        if (!r.ok) return null;
 
         return r.blob();
       });

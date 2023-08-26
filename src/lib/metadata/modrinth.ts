@@ -11,9 +11,7 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
     headers: { "User-Agent": "Moddermore/noversion" },
   });
 
-  if (!res.ok) {
-    return null;
-  }
+  if (!res.ok) return null;
 
   const data = (await res.json()) as ModrinthProject;
 
@@ -43,9 +41,7 @@ export const getInfos = async (ids: string[]): Promise<RichMod[] | null> => {
     },
   );
 
-  if (!res.ok) {
-    return null;
-  }
+  if (!res.ok) return null;
 
   const data = (await res.json()) as ModrinthProject[];
 

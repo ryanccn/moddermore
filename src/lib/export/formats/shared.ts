@@ -49,9 +49,7 @@ export const exportZip = async ({
             ? `/api/cursed?url=${encodeURIComponent(downloadData.url)}`
             : downloadData.url,
         ).then((r) => {
-          if (!r.ok) {
-            return null;
-          }
+          if (!r.ok) return null;
 
           return r.blob();
         });
