@@ -40,7 +40,7 @@ export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
     return {
       id: mrData.project_id,
       provider: "modrinth",
-      // version: mrData.id,
+      version: mrData.id,
     };
   }
 
@@ -63,7 +63,7 @@ export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
     return {
       id: `${file.modId}`,
       provider: "curseforge",
-      // version: `${file.id}`,
+      version: `${file.id}`,
     };
   }
 

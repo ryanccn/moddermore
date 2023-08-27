@@ -72,7 +72,7 @@ export const importMrpack = async ({
       result.push({
         provider: "modrinth",
         id: mrCdnMatch[1],
-        // version: mrCdnMatch[2],
+        version: mrCdnMatch[2],
       });
     } else {
       try {
