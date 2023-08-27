@@ -3,16 +3,13 @@ import * as v from "valibot";
 export type ModProvider = "modrinth" | "curseforge";
 export type ModLoader = "quilt" | "fabric" | "forge";
 
-const Mod = v.object({
+export const Mod = v.object({
   id: v.string(),
   provider: v.union([v.literal("modrinth"), v.literal("curseforge")]),
+  version: v.optional(v.string()),
 });
 
-export interface Mod {
-  provider: ModProvider;
-  id: string;
-  version?: string;
-}
+export type Mod = v.Input<typeof Mod>;
 
 export interface RichMod {
   provider: ModProvider;

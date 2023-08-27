@@ -116,10 +116,14 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     (async () => {
       const [modrinthMods, curseForgeMods] = await Promise.all([
         getModrinthInfos(
-          data.mods.filter((k) => k.provider === "modrinth").map((k) => k.id),
+          data.mods
+            .filter((k) => k.provider === "modrinth")
+            .map((k) => ({ id: k.id, version: k.version })),
         ),
         getCurseForgeInfos(
-          data.mods.filter((k) => k.provider === "curseforge").map((k) => k.id),
+          data.mods
+            .filter((k) => k.provider === "curseforge")
+            .map((k) => ({ id: k.id, version: k.version })),
         ),
       ]);
 
@@ -129,7 +133,6 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
       const mods = [...modrinthMods, ...curseForgeMods]
         .filter((k) => k !== null)
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         .sort((a, b) => (a!.name > b!.name ? 1 : -1));
 
       setResolvedMods(mods as RichMod[]);
@@ -718,6 +721,20 @@ ${
                   onClick={() => {
                     setResolvedMods((prev) => prev ? prev.filter((a) => a.id !== mod.id) : []);
                   }}
+                  onVersion={(version) => {
+                    setResolvedMods((prev) => {
+                      if (!prev) return [];
+
+                      const workingCopy = [...prev];
+                      for (const prevMod of workingCopy) {
+                        if (prevMod.id === mod.id) {
+                          prevMod.version = version ?? undefined;
+                          break;
+                        }
+                      }
+                      return workingCopy;
+                    });
+                  }}
                   parent={data}
                 />
               </li>
@@ -795,7 +812,7 @@ ${
               </label>
               <label className="flex flex-col gap-y-1">
                 <span className="text-sm font-medium">
-                  CurseForge mod resolution strategy
+                  CurseForge mods
                 </span>
                 <select
                   id="curseforge-strategy"
@@ -811,6 +828,7 @@ ${
                   <option value="skip">Skip</option>
                 </select>
               </label>
+
               {mrpackCurseForgeStrategy !== "skip" && (
                 <div className="rounded bg-yellow-100 p-4 font-semibold text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100">
                   {mrpackCurseForgeStrategy === "embed"

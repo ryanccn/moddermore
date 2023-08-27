@@ -24,6 +24,7 @@ export const getDownloadURLs = async (
             gameVersions: [list.gameVersion],
             loader: list.modloader,
             name: mod.name,
+            version: mod.version,
           });
 
           ret = [...ret, ...dat];
@@ -33,6 +34,7 @@ export const getDownloadURLs = async (
             gameVersions: [list.gameVersion],
             loader: list.modloader,
             name: mod.name,
+            version: mod.version,
           });
 
           ret = [...ret, ...dat];

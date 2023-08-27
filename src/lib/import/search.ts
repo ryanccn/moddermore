@@ -6,6 +6,8 @@ import type { CurseForgeSearchResult } from "~/types/curseforge";
 import type { RichMod } from "~/types/moddermore";
 import type { ModrinthSearchResult } from "~/types/modrinth";
 
+import { fetchWithRetry } from "../fetchWithRetry";
+
 export const optionsZ = v.object({
   platform: v.union([v.literal("modrinth"), v.literal("curseforge")]),
   query: v.string(),
@@ -26,7 +28,7 @@ export const search = async ({
       a.startsWith(gameVersion.split(".").slice(0, 2).join("."))
     );
 
-    const data = await fetch(
+    const data = await fetchWithRetry(
       `https://api.modrinth.com/v2/search?query=${
         encodeURIComponent(
           query,
@@ -68,7 +70,7 @@ export const search = async ({
       ? 5
       : -1;
 
-    const data = await fetch(
+    const data = await fetchWithRetry(
       `https://api.curseforge.com/v1/mods/search?gameId=432&classId=6&pageSize=10&sortField=2&sortOrder=desc&searchFilter=${
         encodeURIComponent(
           query,

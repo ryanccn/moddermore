@@ -38,7 +38,7 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
   }, [searchProvider, searchQuery, modLoader, gameVersion]);
 
   return (
-    <div className="flex w-full flex-col gap-y-4">
+    <div className="flex w-full flex-col gap-y-4 mb-4">
       <div className="mt-10 flex w-full items-center justify-start gap-x-2">
         <select
           name="searchProvider"
@@ -99,6 +99,7 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
                   onClick={() => {
                     onAdd(res);
                   }}
+                  parent={{ gameVersion, modloader: modLoader }}
                 />
               )
           )}

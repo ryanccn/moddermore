@@ -48,7 +48,7 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   const {
-    data: { query },
+    output: { query },
   } = parsedBody;
 
   const sess = await getServerSession(req, res, authOptions);

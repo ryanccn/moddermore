@@ -15,7 +15,7 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   const {
-    data: { id: banId },
+    output: { id: banId },
   } = parsedBody;
 
   const sess = await getServerSession(req, res, authOptions);

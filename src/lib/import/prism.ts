@@ -26,13 +26,16 @@ const parsePackwizTOML = (toml: string): Mod | null => {
   }
 
   if (updateInfo.modrinth) {
-    return { id: updateInfo.modrinth["mod-id"], provider: "modrinth" };
+    return {
+      id: updateInfo.modrinth["mod-id"],
+      provider: "modrinth",
+      // version: updateInfo.modrinth.version,
+    };
   } else if (updateInfo.curseforge) {
     return {
-      id: typeof updateInfo.curseforge["project-id"] === "number"
-        ? `${updateInfo.curseforge["project-id"]}`
-        : updateInfo.curseforge["project-id"],
+      id: `${updateInfo.curseforge["project-id"]}`,
       provider: "curseforge",
+      // version: `${updateInfo.curseforge["file-id"]}`,
     };
   }
 
@@ -91,6 +94,5 @@ export const parsePrismInstance = async ({
   }
 
   console.warn("falling back to mod folder");
-
   return await parseModFolder({ f: modFolder, setProgress });
 };

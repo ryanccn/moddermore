@@ -21,7 +21,7 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  await updateUserProfile(session.user.id, parsedBody.data);
+  await updateUserProfile(session.user.id, parsedBody.output);
 
   res.status(200).end();
 };

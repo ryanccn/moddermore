@@ -31,7 +31,7 @@ const h: NextApiHandler = async (req, res) => {
   const parsedData = safeParse(ModListUpdate, req.body);
 
   if (!parsedData.success) {
-    console.error(parsedData.error);
+    console.error(parsedData.issues);
     res.status(400).json({ error: "Bad request" });
     return;
   }
@@ -39,7 +39,7 @@ const h: NextApiHandler = async (req, res) => {
   try {
     await updateList(
       id,
-      parsedData.data,
+      parsedData.output,
       sess.user.id,
       sess.extraProfile.isAdmin,
     );

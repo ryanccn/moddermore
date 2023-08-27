@@ -72,10 +72,10 @@ const h: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const listId = await createList(parsedData.data, sess.user.id);
+  const listId = await createList(parsedData.output, sess.user.id);
   res.status(200).json({ id: listId });
 
-  await logToDiscord({ data: parsedData.data, id: listId, user: sess.user });
+  await logToDiscord({ data: parsedData.output, id: listId, user: sess.user });
 };
 
 export default h;
