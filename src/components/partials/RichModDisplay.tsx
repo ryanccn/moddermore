@@ -85,6 +85,18 @@ export const RichModDisplay = ({
     if (data.version) fetchVersionsIntoState();
   }, [data.version, fetchVersionsIntoState]);
 
+  useEffect(() => {
+    const listener = () => {
+      if (!data.version) {
+        setSelectedVersion(null);
+        setVersions(null);
+      }
+    };
+
+    window.addEventListener("moddermoreUnpinAll", listener);
+    return () => window.removeEventListener("moddermoreUnpinAll", listener);
+  }, [data.version]);
+
   return (
     <div
       className={twMerge(
@@ -138,7 +150,7 @@ export const RichModDisplay = ({
             </div>
           )}
 
-          {!buttonType && versionDisplay
+          {!buttonType && (versionDisplay
             ? (
               <div className="flex items-center gap-x-1 sm:justify-end">
                 <PinIcon className="block w-4 h-4" />
@@ -154,7 +166,7 @@ export const RichModDisplay = ({
                   Latest
                 </p>
               </div>
-            )}
+            ))}
 
           <div className="flex flex-col mt-2 gap-y-2 sm:items-end">
             {!!buttonType && (

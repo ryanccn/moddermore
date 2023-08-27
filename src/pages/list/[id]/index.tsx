@@ -52,6 +52,7 @@ import {
   SaveIcon,
   SettingsIcon,
   TrashIcon,
+  UnplugIcon,
 } from "lucide-react";
 import { MarkdownIcon, ModrinthIcon } from "~/components/icons";
 
@@ -256,6 +257,15 @@ ${
     },
     [session, resolvedMods, oldMods, data],
   );
+
+  const unpinAll = useCallback(() => {
+    if (!resolvedMods) return;
+    for (const mod of resolvedMods) {
+      mod.version = undefined;
+    }
+    window.dispatchEvent(new Event("moddermoreUnpinAll"));
+    setResolvedMods([...resolvedMods]);
+  }, [resolvedMods]);
 
   const copyMarkdownList = useCallback(() => {
     if (!resolvedMods) return;
@@ -697,6 +707,12 @@ ${
               setResolvedMods((prev) => (prev ? [...prev, mod] : [mod]));
             }}
           />
+          <div className="flex flex-row flex-wrap gap-x-2 justify-end">
+            <Button variant="danger" onClick={unpinAll}>
+              <UnplugIcon className="block w-4 h-4" />
+              <span>Unpin all</span>
+            </Button>
+          </div>
         </>
       )}
 
