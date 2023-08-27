@@ -10,7 +10,7 @@ import { getInfos as getModrinthInfos } from "~/lib/metadata/modrinth";
 import { loaderFormat } from "~/lib/strings";
 
 import { useRouter } from "next/router";
-import { FormEventHandler, useCallback, useEffect, useMemo, useState } from "react";
+import { FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getServerSession } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
@@ -94,23 +94,20 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [hasLiked, setHasLiked] = useState(false);
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDeleteTimeoutID, setConfirmDeleteTimeoutID] = useState<
-    number | null
-  >(null);
+  const confirmDeleteTimeoutID = useRef<number | null>(null);
 
   const [confirmBan, setConfirmBan] = useState(false);
-  const [confirmBanTimeoutID, setConfirmBanTimeoutID] = useState<number | null>(
-    null,
-  );
+  const confirmBanTimeoutID = useRef<number | null>(null);
 
   const [mrpackName, setMrpackName] = useState(data.title);
   const [mrpackVersion, setMrpackVersion] = useState("0.0.1");
   const [mrpackCurseForgeStrategy, setMrpackCurseForgeStrategy] = useState("skip");
 
   const [progress, setProgress] = useState({ value: 0, max: 0 });
-  const [result, setResult] = useState<{ success: string[]; failed: string[] }>(
-    { success: [], failed: [] },
-  );
+  const [result, setResult] = useState<{ success: string[]; failed: string[] }>({
+    success: [],
+    failed: [],
+  });
 
   useEffect(() => {
     (async () => {
@@ -354,15 +351,14 @@ ${
 
     if (!confirmDelete) {
       setConfirmDelete(true);
-      setConfirmDeleteTimeoutID(
-        window.setTimeout(() => {
-          setConfirmDelete(false);
-        }, 3000),
-      );
+      confirmDeleteTimeoutID.current = window.setTimeout(() => {
+        setConfirmDelete(false);
+      }, 3000);
+
       return;
     }
 
-    if (confirmDeleteTimeoutID) window.clearTimeout(confirmDeleteTimeoutID);
+    if (confirmDeleteTimeoutID.current) window.clearTimeout(confirmDeleteTimeoutID.current);
 
     setIsDeleting(true);
 
@@ -382,7 +378,6 @@ ${
     confirmDelete,
     confirmDeleteTimeoutID,
     setConfirmDelete,
-    setConfirmDeleteTimeoutID,
   ]);
 
   const ban = useCallback(async () => {
@@ -390,15 +385,13 @@ ${
 
     if (!confirmBan) {
       setConfirmBan(true);
-      setConfirmBanTimeoutID(
-        window.setTimeout(() => {
-          setConfirmBan(false);
-        }, 3000),
-      );
+      confirmBanTimeoutID.current = window.setTimeout(() => {
+        setConfirmBan(false);
+      }, 3000);
       return;
     }
 
-    if (confirmBanTimeoutID) window.clearTimeout(confirmBanTimeoutID);
+    if (confirmBanTimeoutID.current) window.clearTimeout(confirmBanTimeoutID.current);
 
     setIsBanning(true);
 
@@ -421,7 +414,6 @@ ${
     confirmBan,
     confirmBanTimeoutID,
     setConfirmBan,
-    setConfirmBanTimeoutID,
   ]);
 
   return (
