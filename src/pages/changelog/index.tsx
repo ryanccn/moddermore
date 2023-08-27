@@ -3,7 +3,7 @@ import { GetStaticProps, type NextPage } from "next";
 import Link from "next/link";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
 
-import { listBlogPosts } from "~/lib/blog";
+import { listChangelogPosts } from "~/lib/changelog";
 
 interface PageProps {
   data: {
@@ -20,24 +20,24 @@ interface PageProps {
   }[];
 }
 
-const BlogIndexPage: NextPage<PageProps> = ({ data }) => {
+const ChangelogIndexPage: NextPage<PageProps> = ({ data }) => {
   return (
-    <GlobalLayout title="Blog">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        {data.map((post) => (
+    <GlobalLayout title="Changelog">
+      <div className="grid grid-cols-1 gap-6">
+        {data.map((log) => (
           <Link
-            className="flex flex-col gap-y-3 rounded-2xl bg-cover p-8 pt-40 text-white"
+            className="flex flex-col gap-y-2 rounded-lg bg-cover p-8 pt-36 text-white"
             style={{
-              backgroundImage: post.cover
-                ? `url('${post.cover.src}')`
+              backgroundImage: log.cover
+                ? `url('${log.cover.src}')`
                 : undefined,
               backgroundPosition: "center",
             }}
-            href={`/blog/${post.slug}`}
-            key={post.slug}
+            href={`/changelog/${log.slug}`}
+            key={log.slug}
           >
-            <h1 className="text-2xl font-bold">{post.data.title}</h1>
-            <p className="text-base font-medium">{post.data.date}</p>
+            <h1 className="text-2xl font-bold">{log.data.title}</h1>
+            <p className="text-base font-medium">{log.data.date}</p>
           </Link>
         ))}
       </div>
@@ -47,8 +47,8 @@ const BlogIndexPage: NextPage<PageProps> = ({ data }) => {
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
   return {
-    props: { data: await listBlogPosts() },
+    props: { data: await listChangelogPosts() },
   };
 };
 
-export default BlogIndexPage;
+export default ChangelogIndexPage;

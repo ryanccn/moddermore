@@ -7,13 +7,13 @@ import { readdir, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 import pLimit from "p-limit";
 
-const postDataFormat = (d: Date) => format(d, "yyyy-MM-dd");
+const logDataFormat = (d: Date) => format(d, "yyyy-MM-dd");
 
 const getPostCover = async (slug: string) => {
-  const path = (await exists(join("./public/blog/covers", `${slug}.jpg`)))
-    ? `blog/covers/${slug}.jpg`
-    : (await exists(join("./public/blog/covers", `${slug}.png`)))
-    ? `blog/covers/${slug}.png`
+  const path = (await exists(join("./public/changelog/covers", `${slug}.jpg`)))
+    ? `changelog/covers/${slug}.jpg`
+    : (await exists(join("./public/changelog/covers", `${slug}.png`)))
+    ? `changelog/covers/${slug}.png`
     : null;
 
   if (!path) return null;
@@ -32,22 +32,24 @@ const exists = async (f: string) => {
   return true;
 };
 
-export const listBlogPosts = async () => {
-  const fileList = await readdir("./blog").then((list) => list.filter((k) => k.endsWith(".mdx")));
+export const listChangelogPosts = async () => {
+  const fileList = await readdir("./changelog").then((list) =>
+    list.filter((k) => k.endsWith(".mdx"))
+  );
   const lim = pLimit(10);
 
   const unsorted = await Promise.all(
     fileList.map((fileName) =>
       lim(async () => {
         const { data } = dorian(
-          await readFile(join("./blog", fileName), { encoding: "utf8" }),
+          await readFile(join("./changelog", fileName), { encoding: "utf8" }),
         );
 
         return {
           slug: fileName.replace(".mdx", ""),
           data: {
             ...(data as { title: string }),
-            date: postDataFormat(data.date),
+            date: logDataFormat(data.date),
           },
           cover: await getPostCover(fileName.replace(".mdx", "")),
         };
@@ -58,8 +60,8 @@ export const listBlogPosts = async () => {
   return unsorted.sort((a, b) => new Date(a.data.date) > new Date(b.data.date) ? -1 : 1);
 };
 
-export const getBlogPost = async (slug: string) => {
-  const srcPath = join("./blog", `${slug}.mdx`);
+export const getChangelogPost = async (slug: string) => {
+  const srcPath = join("./changelog", `${slug}.mdx`);
   if (!(await exists(srcPath))) return null;
 
   const rawMarkdown = await readFile(srcPath, {
@@ -75,7 +77,7 @@ export const getBlogPost = async (slug: string) => {
     data: {
       ...(data as { title: string }),
       cover,
-      date: postDataFormat(data.date),
+      date: logDataFormat(data.date),
     },
     mdx,
   };

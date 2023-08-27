@@ -41,7 +41,7 @@
   }
 
   .title {
-    @apply mb-10 text-5xl font-extrabold tracking-tight;
+    @apply mb-16 text-5xl font-extrabold tracking-tight;
     text-wrap: pretty;
   }
 

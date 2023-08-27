@@ -5,7 +5,7 @@ import Head from "next/head";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { DonationMessage } from "~/components/partials/DonationMessage";
 
-import { getBlogPost, listBlogPosts } from "~/lib/blog";
+import { getChangelogPost, listChangelogPosts } from "~/lib/changelog";
 
 interface PageProps {
   data: {
@@ -20,13 +20,13 @@ interface PageProps {
   mdx: MDXRemoteSerializeResult;
 }
 
-const BlogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
+const ChangelogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
   const absoluteCoverURL = data.cover
     ? new URL(data.cover.src, "https://moddermore.net").toString()
     : null;
 
   return (
-    <GlobalLayout title={`${data.title} / Blog`} displayTitle={false}>
+    <GlobalLayout title={`${data.title} / Changelog`} displayTitle={false}>
       <Head>
         {absoluteCoverURL && (
           <>
@@ -58,7 +58,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
   const slug = params?.slug;
   if (typeof slug !== "string") throw new Error("oof");
 
-  const data = await getBlogPost(slug);
+  const data = await getChangelogPost(slug);
 
   if (!data) return { notFound: true };
 
@@ -68,12 +68,12 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await listBlogPosts();
+  const logs = await listChangelogPosts();
 
   return {
-    paths: posts.map((k) => ({ params: { slug: k.slug } })),
+    paths: logs.map((k) => ({ params: { slug: k.slug } })),
     fallback: false,
   };
 };
 
-export default BlogPostPage;
+export default ChangelogPostPage;

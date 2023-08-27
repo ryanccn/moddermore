@@ -9,7 +9,7 @@ import type { SetStateFn } from "~/types/react";
 const ModrinthSideType = v.union([
   v.literal("required"),
   v.literal("optional"),
-  v.literal("unsupposted"),
+  v.literal("unsuploged"),
 ]);
 
 const ModrinthPackIndex = v.object({

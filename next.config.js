@@ -61,11 +61,33 @@ const nextConfig = withPlausibleProxy()(
     },
 
     async redirects() {
-      return [{ source: "/dashboard", destination: "/lists", permanent: false }, {
-        source: "/new/polymc",
-        destination: "/new/prism",
-        permanent: true,
-      }];
+      return [
+        {
+          source: "/dashboard",
+          destination: "/lists",
+          permanent: false,
+        },
+        {
+          source: "/new/polymc",
+          destination: "/new/prism",
+          permanent: true,
+        },
+        {
+          source: "/blog/may-update",
+          destination: "/changelog/2023-05-12-may-update",
+          permanent: false,
+        },
+        {
+          source: "/blog/search",
+          destination: "/changelog/2023-08-18-search",
+          permanent: false,
+        },
+        {
+          source: "/blog/:match*",
+          destination: "/changelog/:match*",
+          permanent: false,
+        },
+      ];
     },
 
     async rewrites() {

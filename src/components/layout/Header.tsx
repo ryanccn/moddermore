@@ -64,8 +64,8 @@ const Header = () => {
           <Link className="px-2 py-1 font-medium" href="/search">
             Search
           </Link>
-          <Link className="px-2 py-1 font-medium" href="/blog">
-            Blog
+          <Link className="px-2 py-1 font-medium" href="/changelog">
+            Changelog
           </Link>
 
           <ThemeButton />
