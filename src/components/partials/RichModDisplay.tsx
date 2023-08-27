@@ -7,6 +7,7 @@ import {
   DownloadIcon,
   PinIcon,
   PlusIcon,
+  ShieldCheckIcon,
   TrashIcon,
   UnplugIcon,
 } from "lucide-react";
@@ -137,14 +138,23 @@ export const RichModDisplay = ({
             </div>
           )}
 
-          {!buttonType && versionDisplay && (
-            <div className="flex items-center gap-x-1 sm:justify-end">
-              <PinIcon className="block w-4 h-4" />
-              <p className="font-medium">
-                {versionDisplay}
-              </p>
-            </div>
-          )}
+          {!buttonType && versionDisplay
+            ? (
+              <div className="flex items-center gap-x-1 sm:justify-end">
+                <PinIcon className="block w-4 h-4" />
+                <p className="font-medium">
+                  {versionDisplay}
+                </p>
+              </div>
+            )
+            : (
+              <div className="flex items-center gap-x-1 sm:justify-end">
+                <ShieldCheckIcon className="block w-4 h-4" />
+                <p className="font-medium">
+                  Latest
+                </p>
+              </div>
+            )}
 
           <div className="flex flex-col mt-2 gap-y-2 sm:items-end">
             {!!buttonType && (
