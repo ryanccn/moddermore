@@ -1,6 +1,7 @@
 import type { ModrinthVersion } from "~/types/modrinth";
 import type { Download, ExportReturnData, ProviderSpecificOptions } from "./types";
 
+import { fetchWithRetry } from "~/lib/fetchWithRetry";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 
 const getObjFromVersion = (
@@ -29,7 +30,7 @@ export const callModrinthAPI = async ({
   version,
 }: ProviderSpecificOptions): Promise<ModrinthVersion | null> => {
   if (version) {
-    const res = await fetch(
+    const res = await fetchWithRetry(
       `https://api.modrinth.com/v2/version/${encodeURIComponent(version)}`,
       {
         headers: { "User-Agent": "Moddermore/noversion" },
@@ -43,7 +44,7 @@ export const callModrinthAPI = async ({
     return data;
   }
 
-  const res = await fetch(
+  const res = await fetchWithRetry(
     `https://api.modrinth.com/v2/project/${
       encodeURIComponent(
         id,
@@ -130,46 +131,5 @@ export const getModrinthDownload = async ({
     return [{ error: "notfound", name, id }];
   }
 
-  let ret: ExportReturnData = [];
-  ret.push(getObjFromVersion(latest, "direct"));
-
-  /*
-  if (latest.dependencies) {
-    for (const dep of latest.dependencies.filter(
-      (d) => d.dependency_type === 'required'
-    )) {
-      if (dep.version_id) {
-        const v = (await fetch(
-          `https://api.modrinth.com/v2/version/${dep.version_id}`
-        ).then((r) => r.json())) as ModrinthVersion;
-
-        ret.push(getObjFromVersion(v, 'dependency'));
-      } else {
-        ret.push(
-          ...(await getModrinthDownload({
-            id: dep.project_id,
-            gameVersions,
-            loader,
-            name,
-          }))
-        );
-      }
-    }
-  }
-  */
-
-  // Fabric API to QSL swap
-  if (loader === "quilt" && ret.some((t) => t.id === "P7dR8mSH")) {
-    ret = ret.filter((t) => t.id !== "P7dR8mSH");
-    ret.push(
-      ...(await getModrinthDownload({
-        id: "qvIfYCYJ",
-        gameVersions,
-        loader,
-        name,
-      })),
-    );
-  }
-
-  return ret;
+  return [getObjFromVersion(latest, "direct")];
 };

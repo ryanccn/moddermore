@@ -10,7 +10,7 @@ import { getInfos as getModrinthInfos } from "~/lib/metadata/modrinth";
 import { loaderFormat } from "~/lib/strings";
 
 import { useRouter } from "next/router";
-import { FormEventHandler, useCallback, useEffect, useMemo, useState } from "react";
+import { FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getServerSession } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
@@ -52,6 +52,7 @@ import {
   SaveIcon,
   SettingsIcon,
   TrashIcon,
+  UnplugIcon,
 } from "lucide-react";
 import { MarkdownIcon, ModrinthIcon } from "~/components/icons";
 
@@ -94,32 +95,33 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [hasLiked, setHasLiked] = useState(false);
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmDeleteTimeoutID, setConfirmDeleteTimeoutID] = useState<
-    number | null
-  >(null);
+  const confirmDeleteTimeoutID = useRef<number | null>(null);
 
   const [confirmBan, setConfirmBan] = useState(false);
-  const [confirmBanTimeoutID, setConfirmBanTimeoutID] = useState<number | null>(
-    null,
-  );
+  const confirmBanTimeoutID = useRef<number | null>(null);
 
   const [mrpackName, setMrpackName] = useState(data.title);
   const [mrpackVersion, setMrpackVersion] = useState("0.0.1");
   const [mrpackCurseForgeStrategy, setMrpackCurseForgeStrategy] = useState("skip");
 
   const [progress, setProgress] = useState({ value: 0, max: 0 });
-  const [result, setResult] = useState<{ success: string[]; failed: string[] }>(
-    { success: [], failed: [] },
-  );
+  const [result, setResult] = useState<{ success: string[]; failed: string[] }>({
+    success: [],
+    failed: [],
+  });
 
   useEffect(() => {
     (async () => {
       const [modrinthMods, curseForgeMods] = await Promise.all([
         getModrinthInfos(
-          data.mods.filter((k) => k.provider === "modrinth").map((k) => k.id),
+          data.mods
+            .filter((k) => k.provider === "modrinth")
+            .map((k) => ({ id: k.id, version: k.version })),
         ),
         getCurseForgeInfos(
-          data.mods.filter((k) => k.provider === "curseforge").map((k) => k.id),
+          data.mods
+            .filter((k) => k.provider === "curseforge")
+            .map((k) => ({ id: k.id, version: k.version })),
         ),
       ]);
 
@@ -129,7 +131,6 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
       const mods = [...modrinthMods, ...curseForgeMods]
         .filter((k) => k !== null)
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         .sort((a, b) => (a!.name > b!.name ? 1 : -1));
 
       setResolvedMods(mods as RichMod[]);
@@ -257,6 +258,15 @@ ${
     [session, resolvedMods, oldMods, data],
   );
 
+  const unpinAll = useCallback(() => {
+    if (!resolvedMods) return;
+    for (const mod of resolvedMods) {
+      mod.version = undefined;
+    }
+    window.dispatchEvent(new Event("moddermoreUnpinAll"));
+    setResolvedMods([...resolvedMods]);
+  }, [resolvedMods]);
+
   const copyMarkdownList = useCallback(() => {
     if (!resolvedMods) return;
 
@@ -351,15 +361,14 @@ ${
 
     if (!confirmDelete) {
       setConfirmDelete(true);
-      setConfirmDeleteTimeoutID(
-        window.setTimeout(() => {
-          setConfirmDelete(false);
-        }, 3000),
-      );
+      confirmDeleteTimeoutID.current = window.setTimeout(() => {
+        setConfirmDelete(false);
+      }, 3000);
+
       return;
     }
 
-    if (confirmDeleteTimeoutID) window.clearTimeout(confirmDeleteTimeoutID);
+    if (confirmDeleteTimeoutID.current) window.clearTimeout(confirmDeleteTimeoutID.current);
 
     setIsDeleting(true);
 
@@ -379,7 +388,6 @@ ${
     confirmDelete,
     confirmDeleteTimeoutID,
     setConfirmDelete,
-    setConfirmDeleteTimeoutID,
   ]);
 
   const ban = useCallback(async () => {
@@ -387,15 +395,13 @@ ${
 
     if (!confirmBan) {
       setConfirmBan(true);
-      setConfirmBanTimeoutID(
-        window.setTimeout(() => {
-          setConfirmBan(false);
-        }, 3000),
-      );
+      confirmBanTimeoutID.current = window.setTimeout(() => {
+        setConfirmBan(false);
+      }, 3000);
       return;
     }
 
-    if (confirmBanTimeoutID) window.clearTimeout(confirmBanTimeoutID);
+    if (confirmBanTimeoutID.current) window.clearTimeout(confirmBanTimeoutID.current);
 
     setIsBanning(true);
 
@@ -418,7 +424,6 @@ ${
     confirmBan,
     confirmBanTimeoutID,
     setConfirmBan,
-    setConfirmBanTimeoutID,
   ]);
 
   return (
@@ -702,6 +707,12 @@ ${
               setResolvedMods((prev) => (prev ? [...prev, mod] : [mod]));
             }}
           />
+          <div className="flex flex-row flex-wrap gap-x-2 justify-end">
+            <Button variant="danger" onClick={unpinAll}>
+              <UnplugIcon className="block w-4 h-4" />
+              <span>Unpin all</span>
+            </Button>
+          </div>
         </>
       )}
 
@@ -717,6 +728,20 @@ ${
                   buttonType={isEditing ? "delete" : null}
                   onClick={() => {
                     setResolvedMods((prev) => prev ? prev.filter((a) => a.id !== mod.id) : []);
+                  }}
+                  onVersion={(version) => {
+                    setResolvedMods((prev) => {
+                      if (!prev) return [];
+
+                      const workingCopy = [...prev];
+                      for (const prevMod of workingCopy) {
+                        if (prevMod.id === mod.id) {
+                          prevMod.version = version ?? undefined;
+                          break;
+                        }
+                      }
+                      return workingCopy;
+                    });
                   }}
                   parent={data}
                 />
@@ -795,7 +820,7 @@ ${
               </label>
               <label className="flex flex-col gap-y-1">
                 <span className="text-sm font-medium">
-                  CurseForge mod resolution strategy
+                  CurseForge mods
                 </span>
                 <select
                   id="curseforge-strategy"
@@ -811,6 +836,7 @@ ${
                   <option value="skip">Skip</option>
                 </select>
               </label>
+
               {mrpackCurseForgeStrategy !== "skip" && (
                 <div className="rounded bg-yellow-100 p-4 font-semibold text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100">
                   {mrpackCurseForgeStrategy === "embed"

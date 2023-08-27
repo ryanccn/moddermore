@@ -35,7 +35,7 @@ const ModrinthPackIndex = v.object({
 type ModrinthPackIndex = v.Input<typeof ModrinthPackIndex>;
 
 const modrinthCdnRegex = new RegExp(
-  "^https://cdn\\.modrinth\\.com/data/([\\w]+)/versions/[\\w]+/",
+  "^https://cdn\\.modrinth\\.com/data/([\\w]+)/versions/([\\w]+)/",
   "m",
 );
 
@@ -69,7 +69,11 @@ export const importMrpack = async ({
     const mrCdnMatch = modrinthCdnRegex.exec(fileUrl);
 
     if (mrCdnMatch) {
-      result.push({ provider: "modrinth", id: mrCdnMatch[1] });
+      result.push({
+        provider: "modrinth",
+        id: mrCdnMatch[1],
+        version: mrCdnMatch[2],
+      });
     } else {
       try {
         const fileRes = await fetch(fileUrl);

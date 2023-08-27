@@ -2,24 +2,41 @@
 
 import type { ModList, RichMod } from "~/types/moddermore";
 
-import { ArrowUpRightIcon, DownloadIcon, PlusIcon, TrashIcon } from "lucide-react";
-import { useMemo } from "react";
+import {
+  ArrowUpRightIcon,
+  DownloadIcon,
+  PinIcon,
+  PlusIcon,
+  ShieldCheckIcon,
+  TrashIcon,
+  UnplugIcon,
+} from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
+
+import { fetchVersions as fetchCurseforgeVersions } from "~/lib/metadata/curseforge";
+import { fetchVersions as fetchModrinthVersions } from "~/lib/metadata/modrinth";
+
 import { numberFormat, providerFormat } from "~/lib/strings";
+
 import { Button } from "../ui/Button";
+import { Spinner } from "./Spinner";
 
 interface Props {
   data: RichMod;
   buttonType?: "add" | "delete" | null;
-  onClick?: () => void;
+  onClick?: () => void | Promise<void>;
+  onVersion?: (version: string | null) => void | Promise<void>;
   className?: string;
-  parent?: ModList;
+  parent?: Pick<ModList, "modloader" | "gameVersion">;
 }
 
 export const RichModDisplay = ({
   data,
   buttonType,
   onClick,
+  onVersion,
   className,
   parent,
 }: Props) => {
@@ -30,6 +47,55 @@ export const RichModDisplay = ({
       && !data.gameVersions.includes(parent.gameVersion),
     [parent, data.gameVersions],
   );
+
+  const [versions, setVersions] = useState<{ id: string; name: string }[] | null>(null);
+  const [selectedVersion, setSelectedVersion] = useState(data.version ?? null);
+  const [isFetchingVersions, setIsFetchingVersions] = useState(false);
+
+  const versionDisplay = useMemo(
+    () => versions !== null ? versions.find(v => v.id === selectedVersion)?.name ?? null : null,
+    [versions, selectedVersion],
+  );
+
+  const fetchVersionsIntoState = useCallback(async () => {
+    if (!parent) return;
+
+    setIsFetchingVersions(true);
+
+    const versions =
+      await (data.provider === "modrinth" ? fetchModrinthVersions : fetchCurseforgeVersions)({
+        projectId: data.id,
+        gameVersion: parent.gameVersion,
+        loader: parent.modloader,
+      });
+
+    if (!versions) {
+      toast.error("Encountered an error fetching versions");
+      setIsFetchingVersions(false);
+      return;
+    }
+
+    setVersions(versions);
+    if (!selectedVersion) setSelectedVersion(versions[0].id);
+
+    setIsFetchingVersions(false);
+  }, [data.id, data.provider, parent, selectedVersion]);
+
+  useEffect(() => {
+    if (data.version) fetchVersionsIntoState();
+  }, [data.version, fetchVersionsIntoState]);
+
+  useEffect(() => {
+    const listener = () => {
+      if (!data.version) {
+        setSelectedVersion(null);
+        setVersions(null);
+      }
+    };
+
+    window.addEventListener("moddermoreUnpinAll", listener);
+    return () => window.removeEventListener("moddermoreUnpinAll", listener);
+  }, [data.version]);
 
   return (
     <div
@@ -51,7 +117,7 @@ export const RichModDisplay = ({
         )}
       </div>
 
-      <div className="flex grow flex-col gap-y-2 gap-x-2 sm:flex-row sm:justify-between">
+      <div className="flex grow flex-col gap-x-4 gap-y-2 sm:flex-row sm:justify-between">
         <div className="flex flex-col justify-between gap-y-2">
           <div className="flex flex-col gap-y-1">
             <h2 className="mr-2 text-xl font-bold">{data.name}</h2>
@@ -74,29 +140,89 @@ export const RichModDisplay = ({
           </a>
         </div>
 
-        <div className="min-w-fit">
+        <div className="flex flex-col gap-y-2 min-w-fit">
           {data.downloads && (
-            <div className="mb-2 flex items-center sm:justify-end">
-              <DownloadIcon className="mr-1 w-5 h-5" />
+            <div className="flex items-center gap-x-2 sm:justify-end">
+              <DownloadIcon className="block w-4 h-4" />
               <p className="font-medium">
                 <strong>{numberFormat(data.downloads)}</strong> downloads
               </p>
             </div>
           )}
 
-          <div className="flex flex-col sm:items-end">
+          {!buttonType && (versionDisplay
+            ? (
+              <div className="flex items-center gap-x-2 sm:justify-end">
+                <PinIcon className="block w-4 h-4" />
+                <p className="font-medium">
+                  {versionDisplay}
+                </p>
+              </div>
+            )
+            : (
+              <div className="flex items-center gap-x-2 sm:justify-end">
+                <ShieldCheckIcon className="block w-4 h-4" />
+                <p className="font-medium">
+                  Latest
+                </p>
+              </div>
+            ))}
+
+          <div className="flex flex-col mt-2 gap-y-2 sm:items-end">
+            {!!buttonType && (
+              (!selectedVersion || versions === null)
+                ? (
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={fetchVersionsIntoState}
+                    disabled={isFetchingVersions}
+                  >
+                    {isFetchingVersions
+                      ? <Spinner className="block w-4 h-4" />
+                      : <PinIcon className="block w-4 h-4" />}
+                    <span>Select a version</span>
+                  </Button>
+                )
+                : (
+                  <div className="flex flex-row gap-x-3 items-center">
+                    <select
+                      name={`${data.id}-version`}
+                      value={selectedVersion ?? undefined}
+                      className="mm-input !text-sm font-mono !shadow-none !bg-neutral-200 dark:!bg-neutral-700"
+                      onChange={(e) => {
+                        setSelectedVersion(e.target.value);
+                        if (onVersion) onVersion(e.target.value);
+                      }}
+                    >
+                      {versions.map(version => (
+                        <option key={version.id} value={version.id}>{version.name}</option>
+                      ))}
+                    </select>
+                    <button
+                      onClick={() => {
+                        setSelectedVersion(null);
+                        if (onVersion) onVersion(null);
+                      }}
+                    >
+                      <UnplugIcon className="block w-4 h-4 text-red-500 dark:text-red-400" />
+                    </button>
+                  </div>
+                )
+            )}
+
             {onClick && (
               <>
                 {buttonType === "delete" && (
                   <Button type="button" variant="danger" onClick={onClick}>
-                    <TrashIcon className="block w-5 h-5" />
+                    <TrashIcon className="block w-4 h-4" />
                     <span>Delete</span>
                   </Button>
                 )}
 
                 {buttonType === "add" && (
                   <Button type="button" variant="green" onClick={onClick}>
-                    <PlusIcon className="block w-5 h-5" />
+                    <PlusIcon className="block w-5 h-4" />
                     <span>Add</span>
                   </Button>
                 )}

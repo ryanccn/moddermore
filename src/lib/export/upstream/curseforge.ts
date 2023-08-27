@@ -1,6 +1,8 @@
 import type { CurseForgeVersion } from "~/types/curseforge";
 import type { ExportReturnData, ProviderSpecificOptions } from "./types";
 
+import { fetchWithRetry } from "~/lib/fetchWithRetry";
+
 export const callCurseForgeAPI = async ({
   id,
   gameVersions,
@@ -19,7 +21,7 @@ export const callCurseForgeAPI = async ({
     : -1;
 
   if (version) {
-    const res = await fetch(
+    const res = await fetchWithRetry(
       `https://api.curseforge.com/v1/mods/${
         encodeURIComponent(
           id,
@@ -43,7 +45,7 @@ export const callCurseForgeAPI = async ({
     return [data];
   }
 
-  const res = await fetch(
+  const res = await fetchWithRetry(
     `https://api.curseforge.com/v1/mods/${id}/files?gameVersion=${
       encodeURIComponent(
         gameVersions[0],

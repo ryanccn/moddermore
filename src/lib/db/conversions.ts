@@ -1,7 +1,7 @@
 import type { Mod, RichMod } from "~/types/moddermore";
 
 export const richModToMod = (orig: RichMod): Mod => {
-  return { id: orig.id, provider: orig.provider };
+  return { id: orig.id, provider: orig.provider, version: orig.version };
 };
 
 export const omitUndefined = <T extends object>(data: T): Partial<T> => {

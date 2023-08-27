@@ -6,6 +6,7 @@ import type { ModrinthVersion } from "~/types/modrinth";
 import type { SetStateFn } from "~/types/react";
 
 import pLimit from "p-limit";
+import { fetchWithRetry } from "../fetchWithRetry";
 import { curseforgeHash, modrinthHash } from "./hash";
 
 interface CurseForgeSpecialtyResponse {
@@ -29,18 +30,22 @@ interface InputData {
 
 export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
   const mrHash = await modrinthHash(file);
-  const mrRes = await fetch(
+  const mrRes = await fetchWithRetry(
     `https://api.modrinth.com/v2/version_file/${mrHash}?algorithm=sha512`,
     { headers: { "User-Agent": "Moddermore/noversion" } },
   );
 
   if (mrRes.ok) {
     const mrData = (await mrRes.json()) as ModrinthVersion;
-    return { id: mrData.project_id, provider: "modrinth" };
+    return {
+      id: mrData.project_id,
+      provider: "modrinth",
+      version: mrData.id,
+    };
   }
 
   const cfHash = await curseforgeHash(file);
-  const cfRes = await fetch("https://api.curseforge.com/v1/fingerprints", {
+  const cfRes = await fetchWithRetry("https://api.curseforge.com/v1/fingerprints", {
     method: "POST",
     body: JSON.stringify({ fingerprints: [cfHash] }),
     headers: {
@@ -53,10 +58,12 @@ export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
     const cfData = (await cfRes.json()) as CurseForgeSpecialtyResponse;
 
     if (cfData.data.exactMatches.length === 0) return null;
+    const file = cfData.data.exactMatches[0].file;
 
     return {
-      id: `${cfData.data.exactMatches[0].file.modId}`,
+      id: `${file.modId}`,
       provider: "curseforge",
+      version: `${file.id}`,
     };
   }
 
