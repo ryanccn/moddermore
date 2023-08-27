@@ -142,7 +142,7 @@ export const RichModDisplay = ({
 
         <div className="flex flex-col gap-y-2 min-w-fit">
           {data.downloads && (
-            <div className="flex items-center gap-x-1 sm:justify-end">
+            <div className="flex items-center gap-x-2 sm:justify-end">
               <DownloadIcon className="block w-4 h-4" />
               <p className="font-medium">
                 <strong>{numberFormat(data.downloads)}</strong> downloads
@@ -152,7 +152,7 @@ export const RichModDisplay = ({
 
           {!buttonType && (versionDisplay
             ? (
-              <div className="flex items-center gap-x-1 sm:justify-end">
+              <div className="flex items-center gap-x-2 sm:justify-end">
                 <PinIcon className="block w-4 h-4" />
                 <p className="font-medium">
                   {versionDisplay}
@@ -160,7 +160,7 @@ export const RichModDisplay = ({
               </div>
             )
             : (
-              <div className="flex items-center gap-x-1 sm:justify-end">
+              <div className="flex items-center gap-x-2 sm:justify-end">
                 <ShieldCheckIcon className="block w-4 h-4" />
                 <p className="font-medium">
                   Latest
