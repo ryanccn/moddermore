@@ -7,7 +7,6 @@ import { SessionProvider } from "next-auth/react";
 import PlausibleProvider from "next-plausible";
 import { ThemeProvider } from "next-themes";
 
-import Script from "next/script";
 import NextNProgress from "nextjs-progressbar";
 import { Toaster } from "react-hot-toast";
 
