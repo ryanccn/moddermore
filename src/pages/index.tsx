@@ -67,7 +67,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         <ArrowDownIcon className="block w-5 h-5 stroke-2 text-neutral-600 dark:text-neutral-400" />
       </div>
 
-      <div className="mb-12 flex flex-col items-center gap-x-24 gap-y-16 self-start p-6 lg:flex-row lg:px-20">
+      <div className="mb-12 flex flex-col lg:items-center gap-x-24 gap-y-16 self-start p-8 lg:flex-row lg:px-20">
         {pageviews && (
           <div className="flex flex-col items-start gap-y-2">
             <span className="text-xl font-bold">Monthly pageviews</span>
