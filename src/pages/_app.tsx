@@ -22,12 +22,6 @@ function CustomApp({
       <SessionProvider session={session}>
         <ThemeProvider attribute="class">
           <NextNProgress color="#6366F1" />
-          {process.env.NODE_ENV === "production" && (
-            <Script
-              src="https://umami.ryanccn.dev/script.js"
-              data-website-id="e38dabf4-89a9-43cf-88ff-eafd855851c6"
-            />
-          )}
           <Component {...pageProps} />
           <Toaster
             position="bottom-right"
