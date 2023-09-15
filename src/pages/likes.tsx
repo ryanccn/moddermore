@@ -27,21 +27,21 @@ const LikesPage: NextPage = () => {
 
   return (
     <DashboardLayout title="Lists">
-      {lists
-        ? (
-          lists.length > 0
-            ? (
-              <ul className="flex w-full flex-col gap-4 px-6">
-                {lists.map((list) => <ModListInList list={list} key={list.id} />)}
-              </ul>
-            )
-            : (
-              <div className="rounded m-6 bg-transparent font-medium px-2 py-20 text-center text-lg shadow dark:bg-neutral-800">
-                No liked lists yet!
-              </div>
-            )
+      {lists ? (
+        lists.length > 0 ? (
+          <ul className="flex w-full flex-col gap-4 px-6">
+            {lists.map((list) => (
+              <ModListInList list={list} key={list.id} />
+            ))}
+          </ul>
+        ) : (
+          <div className="rounded m-6 bg-transparent font-medium px-2 py-20 text-center text-lg shadow dark:bg-neutral-800">
+            No liked lists yet!
+          </div>
         )
-        : <div className="w-full m-6" />}
+      ) : (
+        <div className="w-full m-6" />
+      )}
     </DashboardLayout>
   );
 };

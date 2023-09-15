@@ -37,9 +37,7 @@ export const ModListUpdate = v.object({
   title: v.optional(v.string([v.minLength(1)])),
   description: v.optional(v.nullable(v.string([v.minLength(1)]))),
   gameVersion: v.optional(v.string([v.minLength(1)])),
-  modloader: v.optional(
-    v.union([v.literal("forge"), v.literal("fabric"), v.literal("quilt")]),
-  ),
+  modloader: v.optional(v.union([v.literal("forge"), v.literal("fabric"), v.literal("quilt")])),
   visibility: v.union([v.literal("private"), v.literal("unlisted"), v.literal("public")]),
   mods: v.optional(v.array(Mod, [v.minLength(1), v.maxLength(500)])),
 });

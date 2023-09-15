@@ -9,11 +9,7 @@ import { getCFDownload } from "../upstream/curseforge";
 import { getModrinthDownload } from "../upstream/modrinth";
 
 import type { ModPwToml } from "~/types/packwiz";
-import type {
-  CurseForgeDownload,
-  ModrinthDownload,
-  ProviderSpecificOptions,
-} from "../upstream/types";
+import type { CurseForgeDownload, ModrinthDownload, ProviderSpecificOptions } from "../upstream/types";
 
 export const getPackTOML = async (id: string) => {
   const list = await getSpecificList(id);
@@ -27,13 +23,9 @@ export const getPackTOML = async (id: string) => {
     "pack-format": "packwiz:1.1.0",
     versions: {
       minecraft: list.gameVersion,
-      ...(list.modloader === "fabric"
-        ? { fabric: await getLatestFabric() }
-        : {}),
+      ...(list.modloader === "fabric" ? { fabric: await getLatestFabric() } : {}),
       ...(list.modloader === "quilt" ? { quilt: await getLatestQuilt() } : {}),
-      ...(list.modloader === "forge"
-        ? { forge: await getLatestForge(list.gameVersion) }
-        : {}),
+      ...(list.modloader === "forge" ? { forge: await getLatestForge(list.gameVersion) } : {}),
     },
     index: { file: "index.toml", "hash-format": "sha512", hash: indexHash },
   });
@@ -84,20 +76,15 @@ export const getIndexTOML = async (id: string) => {
           }
 
           return null;
-        })
+        }),
       ),
     ).then((res) => res.filter(Boolean) as AnyJson),
   });
 };
 
-export const getModrinthTOML = async (
-  data: ProviderSpecificOptions,
-): Promise<ModPwToml | null> => {
+export const getModrinthTOML = async (data: ProviderSpecificOptions): Promise<ModPwToml | null> => {
   const res = await getModrinthDownload(data).then(
-    (k) =>
-      k.filter(
-        (dl) => !("error" in dl) && dl.provider === "modrinth",
-      ) as ModrinthDownload[],
+    (k) => k.filter((dl) => !("error" in dl) && dl.provider === "modrinth") as ModrinthDownload[],
   );
   if (!res || res.length === 0) return null;
 
@@ -116,14 +103,9 @@ export const getModrinthTOML = async (
   };
 };
 
-export const getCurseForgeTOML = async (
-  data: ProviderSpecificOptions,
-): Promise<ModPwToml | null> => {
+export const getCurseForgeTOML = async (data: ProviderSpecificOptions): Promise<ModPwToml | null> => {
   const res = await getCFDownload(data).then(
-    (k) =>
-      k.filter(
-        (dl) => !("error" in dl) && dl.provider === "curseforge",
-      ) as CurseForgeDownload[],
+    (k) => k.filter((dl) => !("error" in dl) && dl.provider === "curseforge") as CurseForgeDownload[],
   );
   if (!res || res.length === 0) return null;
 

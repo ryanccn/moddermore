@@ -55,10 +55,7 @@ const FeriumImportPage: NextPage = () => {
 
   return (
     <GlobalLayout title="Ferium import" displayTitle={false}>
-      <form
-        className="flex flex-col items-start gap-y-6"
-        onSubmit={submitHandle}
-      >
+      <form className="flex flex-col items-start gap-y-6" onSubmit={submitHandle}>
         <input
           name="title"
           value={title}
@@ -117,10 +114,7 @@ const FeriumImportPage: NextPage = () => {
           }}
         />
 
-        <NewSubmitButton
-          submitting={submitting}
-          disabled={sess.status === "loading" || submitting}
-        />
+        <NewSubmitButton submitting={submitting} disabled={sess.status === "loading" || submitting} />
       </form>
     </GlobalLayout>
   );

@@ -30,27 +30,17 @@ export const GlobalLayout = ({
   className,
   children,
 }: Props) => {
-  const derivedTitle = useMemo(
-    () => (titleSuffix ? `${title} / Moddermore` : title),
-    [title, titleSuffix],
-  );
+  const derivedTitle = useMemo(() => (titleSuffix ? `${title} / Moddermore` : title), [title, titleSuffix]);
 
   const session = useSession();
 
-  const isAdmin = useMemo(
-    () => session.data?.extraProfile.isAdmin === true,
-    [session.data],
-  );
+  const isAdmin = useMemo(() => session.data?.extraProfile.isAdmin === true, [session.data]);
 
   return (
     <>
       <Head>
         <link rel="icon" href="/icons/moddermore-positive.png" />
-        <link
-          rel="icon"
-          media="(prefers-color-scheme: dark)"
-          href="/icons/moddermore-mono-white.svg"
-        />
+        <link rel="icon" media="(prefers-color-scheme: dark)" href="/icons/moddermore-mono-white.svg" />
         <link rel="apple-touch-icon" href="/icons/moddermore-negative.png" />
         <meta name="apple-mobile-web-app-title" content="Moddermore" />
 
@@ -60,10 +50,7 @@ export const GlobalLayout = ({
         <meta name="description" content="Share your mods with anyone." />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={derivedTitle} />
-        <meta
-          property="og:description"
-          content="Share your mods with anyone."
-        />
+        <meta property="og:description" content="Share your mods with anyone." />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:creator" content="@RyanCaoDev" />
         <meta property="og:image" content="https://moddermore.net/cover.png" />
@@ -82,21 +69,17 @@ export const GlobalLayout = ({
           className,
         )}
       >
-        {displayTitle === true
-          ? (
-            <>
-              {titleIcon}
-              <h1 className="title">{title}</h1>
-            </>
-          )
-          : typeof displayTitle === "string"
-          ? (
-            <>
-              {titleIcon}
-              <h1 className="title">{displayTitle}</h1>
-            </>
-          )
-          : null}
+        {displayTitle === true ? (
+          <>
+            {titleIcon}
+            <h1 className="title">{title}</h1>
+          </>
+        ) : typeof displayTitle === "string" ? (
+          <>
+            {titleIcon}
+            <h1 className="title">{displayTitle}</h1>
+          </>
+        ) : null}
 
         {children}
 

@@ -17,10 +17,7 @@ export const prismAutoUpdateExport = async ({
 
   const zipfile = new JSZip();
 
-  const packwizURL = new URL(
-    `/list/${data.id}/packwiz/pack.toml`,
-    location.href,
-  ).toString();
+  const packwizURL = new URL(`/list/${data.id}/packwiz/pack.toml`, location.href).toString();
 
   zipfile.file(
     "instance.cfg",
@@ -32,9 +29,7 @@ name=${data.title}
 `.trim(),
   );
 
-  const meta = await fetch(
-    `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`,
-  );
+  const meta = await fetch(`https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`);
   if (!meta.ok) {
     throw new Error("failed to fetch meta for minecraft");
   }
@@ -42,14 +37,17 @@ name=${data.title}
   const parsed = await meta.json();
 
   const mmcPack = {
-    components: [{
-      dependencyOnly: true,
-      uid: parsed.requires[0].uid,
-      version: parsed.requires[0].suggests,
-    }, {
-      uid: "net.minecraft",
-      version: data.gameVersion,
-    }],
+    components: [
+      {
+        dependencyOnly: true,
+        uid: parsed.requires[0].uid,
+        version: parsed.requires[0].suggests,
+      },
+      {
+        uid: "net.minecraft",
+        version: data.gameVersion,
+      },
+    ],
     formatVersion: 1,
   };
 
@@ -96,17 +94,12 @@ name=${data.title}
     throw new Error("failed to create .minecraft folder in zipfile?");
   }
 
-  const packwizInstallerBootstrapJar = await fetch(
-    "/packwiz-installer-bootstrap.jar",
-  );
+  const packwizInstallerBootstrapJar = await fetch("/packwiz-installer-bootstrap.jar");
   if (!packwizInstallerBootstrapJar.ok) {
     throw new Error("Failed to download packwiz-installer-bootstrap.jar");
   }
 
-  dotMinecraftFolder.file(
-    "packwiz-installer-bootstrap.jar",
-    packwizInstallerBootstrapJar.blob(),
-  );
+  dotMinecraftFolder.file("packwiz-installer-bootstrap.jar", packwizInstallerBootstrapJar.blob());
   setProgress({ value: 2, max: 2 });
 
   const zipBlob = await zipfile.generateAsync({ type: "blob" });
@@ -148,22 +141,23 @@ export const prismStaticExport = async ({
     }),
 
     (async () => {
-      const meta = await fetch(
-        `https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`,
-      );
+      const meta = await fetch(`https://meta.prismlauncher.org/v1/net.minecraft/${data.gameVersion}.json`);
       if (!meta.ok) {
         throw new Error("failed to fetch meta for minecraft");
       }
       const parsed = await meta.json();
       const mmcPack = {
-        components: [{
-          dependencyOnly: true,
-          uid: parsed.requires[0].uid,
-          version: parsed.requires[0].suggests,
-        }, {
-          uid: "net.minecraft",
-          version: data.gameVersion,
-        }],
+        components: [
+          {
+            dependencyOnly: true,
+            uid: parsed.requires[0].uid,
+            version: parsed.requires[0].suggests,
+          },
+          {
+            uid: "net.minecraft",
+            version: data.gameVersion,
+          },
+        ],
         formatVersion: 1,
       };
       if (data.modloader == "fabric" || data.modloader == "quilt") {

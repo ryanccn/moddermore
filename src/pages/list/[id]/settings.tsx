@@ -27,22 +27,15 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   const session = useSession({ required: true });
 
   const hasElevatedPermissions = useMemo(
-    () =>
-      session.data
-      && (session.data.user.id === data.owner
-        || session.data.extraProfile.isAdmin),
+    () => session.data && (session.data.user.id === data.owner || session.data.extraProfile.isAdmin),
     [session.data, data.owner],
   );
 
   const [title, setTitle] = useState(data.title);
   const [description, setDescription] = useState(data.description);
   const [gameVersion, setGameVersion] = useState(data.gameVersion);
-  const [modLoader, setModLoader] = useState<typeof data.modloader>(
-    data.modloader,
-  );
-  const [visibility, setVisibility] = useState<typeof data.visibility>(
-    data.visibility,
-  );
+  const [modLoader, setModLoader] = useState<typeof data.modloader>(data.modloader);
+  const [visibility, setVisibility] = useState<typeof data.visibility>(data.visibility);
 
   const [inProgress, setInProgress] = useState(false);
 
@@ -92,14 +85,9 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
 
   return (
     <GlobalLayout title={`Settings for ${data.title}`}>
-      <Link
-        href={`/list/${data.id}`}
-        className="mb-8 flex flex-row items-center gap-x-1"
-      >
+      <Link href={`/list/${data.id}`} className="mb-8 flex flex-row items-center gap-x-1">
         <ArrowLeftIcon className="block h-3 w-3" />
-        <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-          Back
-        </span>
+        <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Back</span>
       </Link>
       <form
         className="mb-16 flex flex-col gap-y-4"
@@ -196,9 +184,11 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  PageProps | { notFound: true }
-> = async ({ query, req, res }) => {
+export const getServerSideProps: GetServerSideProps<PageProps | { notFound: true }> = async ({
+  query,
+  req,
+  res,
+}) => {
   if (typeof query.id !== "string") throw new Error("?");
   const data = await getSpecificList(query.id);
 

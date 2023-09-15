@@ -13,13 +13,7 @@ type MavenMetadata = {
   };
 };
 
-const getFromMaven = async ({
-  url,
-  gameVersion,
-}: {
-  url: string;
-  gameVersion?: string;
-}): Promise<string> => {
+const getFromMaven = async ({ url, gameVersion }: { url: string; gameVersion?: string }): Promise<string> => {
   const parser = new XMLParser();
   const mavenTextResponse = await fetch(url).then((r) => {
     if (!r.ok) throw new Error(`${r.url} ${r.status} ${r.statusText}`);
@@ -30,7 +24,7 @@ const getFromMaven = async ({
 
   if (gameVersion) {
     const matchingVersion = mavenXML.metadata.versioning.versions.version.find((v) =>
-      v.startsWith(gameVersion)
+      v.startsWith(gameVersion),
     );
 
     if (matchingVersion) return matchingVersion;

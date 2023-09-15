@@ -29,17 +29,13 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
   };
 };
 
-export const getInfos = async (
-  projects: { id: string; version?: string }[],
-): Promise<RichMod[] | null> => {
+export const getInfos = async (projects: { id: string; version?: string }[]): Promise<RichMod[] | null> => {
   if (projects.length === 0) return [];
 
   const res = await fetchWithRetry(
-    `https://api.modrinth.com/v2/projects?ids=${
-      encodeURIComponent(
-        JSON.stringify(projects.map(p => p.id)),
-      )
-    }`,
+    `https://api.modrinth.com/v2/projects?ids=${encodeURIComponent(
+      JSON.stringify(projects.map((p) => p.id)),
+    )}`,
     {
       headers: { "User-Agent": "Moddermore/noversion" },
     },
@@ -50,7 +46,7 @@ export const getInfos = async (
   const data = (await res.json()) as ModrinthProject[];
 
   return data.map((mod) => {
-    const version = projects.find(p => p.id === mod.id)!.version;
+    const version = projects.find((p) => p.id === mod.id)!.version;
 
     return {
       id: mod.id,
@@ -66,20 +62,24 @@ export const getInfos = async (
   });
 };
 
-export const fetchVersions = async (
-  { projectId, loader, gameVersion }: {
-    projectId: string;
-    loader: string;
-    gameVersion: string;
-  },
-) => {
+export const fetchVersions = async ({
+  projectId,
+  loader,
+  gameVersion,
+}: {
+  projectId: string;
+  loader: string;
+  gameVersion: string;
+}) => {
   const patchedLoaders = [loader];
   if (loader === "quilt") patchedLoaders.push("fabric");
 
   const res = await fetchWithRetry(
-    `https://api.modrinth.com/v2/project/${encodeURIComponent(projectId)}/version?loaders=[${
-      encodeURIComponent(patchedLoaders.map(l => `"${l}"`).join(","))
-    }]&game_versions=["${encodeURIComponent(gameVersion)}"]`,
+    `https://api.modrinth.com/v2/project/${encodeURIComponent(
+      projectId,
+    )}/version?loaders=[${encodeURIComponent(
+      patchedLoaders.map((l) => `"${l}"`).join(","),
+    )}]&game_versions=["${encodeURIComponent(gameVersion)}"]`,
     {
       headers: { "User-Agent": "Moddermore/noversion" },
     },
@@ -87,6 +87,6 @@ export const fetchVersions = async (
 
   if (!res.ok) return null;
 
-  const data = await res.json() as ModrinthVersion[];
-  return data.map(v => ({ id: v.id, name: v.version_number }));
+  const data = (await res.json()) as ModrinthVersion[];
+  return data.map((v) => ({ id: v.id, name: v.version_number }));
 };

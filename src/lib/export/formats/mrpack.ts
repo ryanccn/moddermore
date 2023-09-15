@@ -10,18 +10,14 @@ import type { CurseForgeDownload, ExportReturnData, ModrinthDownload } from "../
 
 const sha1 = async (f: ArrayBuffer) => {
   const ha = await window.crypto.subtle.digest("SHA-1", f);
-  const he = [...new Uint8Array(ha)]
-    .map((x) => x.toString(16).padStart(2, "0"))
-    .join("");
+  const he = [...new Uint8Array(ha)].map((x) => x.toString(16).padStart(2, "0")).join("");
 
   return he;
 };
 
 const sha512 = async (f: ArrayBuffer) => {
   const ha = await window.crypto.subtle.digest("SHA-512", f);
-  const he = [...new Uint8Array(ha)]
-    .map((x) => x.toString(16).padStart(2, "0"))
-    .join("");
+  const he = [...new Uint8Array(ha)].map((x) => x.toString(16).padStart(2, "0")).join("");
 
   return he;
 };
@@ -37,18 +33,16 @@ const generateModrinthPack = async (
     versionId: extraData.version ?? "0.0.1",
     name: extraData.name ?? list.title,
     summary: "Generated from Moddermore (https://moddermore.net/)",
-    files: (
-      urls.filter(
-        (dl) => !("error" in dl) && dl.provider === "modrinth",
-      ) as ModrinthDownload[]
-    ).map((dl) => {
-      return {
-        path: `mods/${dl.name}`,
-        downloads: [dl.url],
-        hashes: dl.hashes,
-        fileSize: dl.fileSize,
-      };
-    }),
+    files: (urls.filter((dl) => !("error" in dl) && dl.provider === "modrinth") as ModrinthDownload[]).map(
+      (dl) => {
+        return {
+          path: `mods/${dl.name}`,
+          downloads: [dl.url],
+          hashes: dl.hashes,
+          fileSize: dl.fileSize,
+        };
+      },
+    ),
     dependencies: {
       minecraft: list.gameVersion,
       ...(list.modloader === "forge"
@@ -69,9 +63,7 @@ const generateModrinthPack = async (
     ) as CurseForgeDownload[];
 
     for (const url of cfDownloads) {
-      const fileContents = await fetch(
-        `/api/cursed?url=${encodeURIComponent(url.url)}`,
-      ).then((r) => {
+      const fileContents = await fetch(`/api/cursed?url=${encodeURIComponent(url.url)}`).then((r) => {
         if (!r.ok) return null;
 
         return r.blob();
@@ -87,9 +79,7 @@ const generateModrinthPack = async (
     ) as CurseForgeDownload[];
 
     for (const url of cfDownloads) {
-      const fileContents = await fetch(
-        `/api/cursed?url=${encodeURIComponent(url.url)}`,
-      ).then((r) => {
+      const fileContents = await fetch(`/api/cursed?url=${encodeURIComponent(url.url)}`).then((r) => {
         if (!r.ok) return null;
 
         return r.blob();

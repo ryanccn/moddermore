@@ -74,10 +74,7 @@ const PrismImportPage: NextPage = () => {
 
   return (
     <GlobalLayout title="Import from Modrinth pack" displayTitle={false}>
-      <form
-        className="flex flex-col items-start gap-y-6"
-        onSubmit={submitHandle}
-      >
+      <form className="flex flex-col items-start gap-y-6" onSubmit={submitHandle}>
         <input
           name="title"
           value={title}
@@ -157,10 +154,7 @@ const PrismImportPage: NextPage = () => {
           {mrpackFile && <span className="text-lg font-medium">{mrpackFile.name}</span>}
         </div>
 
-        <NewSubmitButton
-          submitting={submitting}
-          disabled={sess.status === "loading" || submitting}
-        />
+        <NewSubmitButton submitting={submitting} disabled={sess.status === "loading" || submitting} />
       </form>
 
       {submitting && <ProgressOverlay label="Searching for mods..." {...progress} />}

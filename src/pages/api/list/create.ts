@@ -11,38 +11,34 @@ import { ModListCreate } from "~/types/moddermore";
 import { RESTPostAPIWebhookWithTokenJSONBody as DiscordWebhookBody } from "discord-api-types/rest";
 import { loaderFormat } from "~/lib/strings";
 
-const logToDiscord = async ({
-  data,
-  id,
-  user,
-}: {
-  data: ModListCreate;
-  id: string;
-  user: User;
-}) => {
+const logToDiscord = async ({ data, id, user }: { data: ModListCreate; id: string; user: User }) => {
   if (!process.env.DISCORD_WEBHOOK) return;
 
   const body = {
-    embeds: [{
-      title: data.title,
-      author: {
-        name: user.name
-          ? `${user.name} (${user.email})`
-          : user.email ?? `id${user.id}`,
+    embeds: [
+      {
+        title: data.title,
+        author: {
+          name: user.name ? `${user.name} (${user.email})` : user.email ?? `id${user.id}`,
+        },
+        url: `https://moddermore.net/list/${id}`,
+        fields: [
+          { name: "Game version", value: data.gameVersion },
+          {
+            name: "Loader",
+            value: loaderFormat(data.modloader),
+          },
+          {
+            name: "Mods",
+            value: `**Total (${data.mods.length})**\nModrinth (${
+              data.mods.filter((k) => k.provider === "modrinth").length
+            })\nCurseForge (${data.mods.filter((k) => k.provider === "curseforge").length})`,
+          },
+        ],
+        // eslint-disable-next-line unicorn/numeric-separators-style
+        color: 0x4ade80,
       },
-      url: `https://moddermore.net/list/${id}`,
-      fields: [{ name: "Game version", value: data.gameVersion }, {
-        name: "Loader",
-        value: loaderFormat(data.modloader),
-      }, {
-        name: "Mods",
-        value: `**Total (${data.mods.length})**\nModrinth (${
-          data.mods.filter((k) => k.provider === "modrinth").length
-        })\nCurseForge (${data.mods.filter((k) => k.provider === "curseforge").length})`,
-      }],
-      // eslint-disable-next-line unicorn/numeric-separators-style
-      color: 0x4ADE80,
-    }],
+    ],
   } satisfies DiscordWebhookBody;
 
   await fetch(process.env.DISCORD_WEBHOOK, {

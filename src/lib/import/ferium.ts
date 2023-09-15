@@ -9,11 +9,8 @@ export const parseFerium = (str: string) => {
   for (const mod of matrix) {
     const rawProvider = mod.at(-2);
 
-    const provider: ModProvider | null = rawProvider === "Modrinth"
-      ? "modrinth"
-      : rawProvider === "CurseForge"
-      ? "curseforge"
-      : null;
+    const provider: ModProvider | null =
+      rawProvider === "Modrinth" ? "modrinth" : rawProvider === "CurseForge" ? "curseforge" : null;
 
     if (provider) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

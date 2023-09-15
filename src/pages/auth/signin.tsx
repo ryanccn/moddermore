@@ -17,8 +17,7 @@ const errors = {
   OAuthCreateAccount: "Try signing in with a different account.",
   EmailCreateAccount: "Try signing in with a different account.",
   Callback: "Try signing in with a different account.",
-  OAuthAccountNotLinked:
-    "To confirm your identity, sign in with the same account you used originally.",
+  OAuthAccountNotLinked: "To confirm your identity, sign in with the same account you used originally.",
   EmailSignin: "The e-mail could not be sent.",
   CredentialsSignin: "Sign in failed. Check the details you provided are correct.",
   SessionRequired: "Please sign in to access this page.",
@@ -46,9 +45,7 @@ const SigninPage: NextPage = () => {
 
       await signIn("email", {
         email,
-        callbackUrl: typeof router.query.callbackUrl === "string"
-          ? router.query.callbackUrl
-          : undefined,
+        callbackUrl: typeof router.query.callbackUrl === "string" ? router.query.callbackUrl : undefined,
       });
     },
     [email, router.query.callbackUrl],
@@ -59,10 +56,9 @@ const SigninPage: NextPage = () => {
       <div className="flex w-full flex-col gap-y-4">
         {router.query.error && (
           <p className="rounded bg-red-500 px-4 py-3 font-semibold text-white">
-            {typeof router.query.error === "string"
-                && router.query.error in errors
-              // @ts-expect-error it's a key alright
-              ? errors[router.query.error]
+            {typeof router.query.error === "string" && router.query.error in errors
+              ? // @ts-expect-error it's a key alright
+                errors[router.query.error]
               : router.query.error}
           </p>
         )}
@@ -72,9 +68,8 @@ const SigninPage: NextPage = () => {
           onClick={async () => {
             setDS(true);
             await signIn("github", {
-              callbackUrl: typeof router.query.callbackUrl === "string"
-                ? router.query.callbackUrl
-                : undefined,
+              callbackUrl:
+                typeof router.query.callbackUrl === "string" ? router.query.callbackUrl : undefined,
             });
           }}
         >
@@ -87,9 +82,8 @@ const SigninPage: NextPage = () => {
           onClick={async () => {
             setDS(true);
             await signIn("discord", {
-              callbackUrl: typeof router.query.callbackUrl === "string"
-                ? router.query.callbackUrl
-                : undefined,
+              callbackUrl:
+                typeof router.query.callbackUrl === "string" ? router.query.callbackUrl : undefined,
             });
           }}
         >
@@ -102,9 +96,8 @@ const SigninPage: NextPage = () => {
           onClick={async () => {
             setDS(true);
             await signIn("google", {
-              callbackUrl: typeof router.query.callbackUrl === "string"
-                ? router.query.callbackUrl
-                : undefined,
+              callbackUrl:
+                typeof router.query.callbackUrl === "string" ? router.query.callbackUrl : undefined,
             });
           }}
         >

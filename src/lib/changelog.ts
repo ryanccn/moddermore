@@ -33,17 +33,13 @@ const exists = async (f: string) => {
 };
 
 export const listChangelogPosts = async () => {
-  const fileList = await readdir("./changelog").then((list) =>
-    list.filter((k) => k.endsWith(".mdx"))
-  );
+  const fileList = await readdir("./changelog").then((list) => list.filter((k) => k.endsWith(".mdx")));
   const lim = pLimit(10);
 
   const unsorted = await Promise.all(
     fileList.map((fileName) =>
       lim(async () => {
-        const { data } = dorian(
-          await readFile(join("./changelog", fileName), { encoding: "utf8" }),
-        );
+        const { data } = dorian(await readFile(join("./changelog", fileName), { encoding: "utf8" }));
 
         return {
           slug: fileName.replace(".mdx", ""),
@@ -53,11 +49,11 @@ export const listChangelogPosts = async () => {
           },
           cover: await getPostCover(fileName.replace(".mdx", "")),
         };
-      })
+      }),
     ),
   );
 
-  return unsorted.sort((a, b) => new Date(a.data.date) > new Date(b.data.date) ? -1 : 1);
+  return unsorted.sort((a, b) => (new Date(a.data.date) > new Date(b.data.date) ? -1 : 1));
 };
 
 export const getChangelogPost = async (slug: string) => {

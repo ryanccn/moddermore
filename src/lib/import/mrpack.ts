@@ -6,11 +6,7 @@ import { parseMod } from "./parseModFolder";
 import type { Mod } from "~/types/moddermore";
 import type { SetStateFn } from "~/types/react";
 
-const ModrinthSideType = v.union([
-  v.literal("required"),
-  v.literal("optional"),
-  v.literal("unsuploged"),
-]);
+const ModrinthSideType = v.union([v.literal("required"), v.literal("optional"), v.literal("unsuploged")]);
 
 const ModrinthPackIndex = v.object({
   formatVersion: v.literal(1),
@@ -22,9 +18,7 @@ const ModrinthPackIndex = v.object({
     v.object({
       path: v.string(),
       hashes: v.object({ sha1: v.string(), sha512: v.string() }),
-      env: v.optional(
-        v.object({ client: ModrinthSideType, server: ModrinthSideType }),
-      ),
+      env: v.optional(v.object({ client: ModrinthSideType, server: ModrinthSideType })),
       downloads: v.array(v.string([v.url()]), [v.minLength(1)]),
       fileSize: v.number(),
     }),
@@ -34,10 +28,7 @@ const ModrinthPackIndex = v.object({
 
 type ModrinthPackIndex = v.Input<typeof ModrinthPackIndex>;
 
-const modrinthCdnRegex = new RegExp(
-  "^https://cdn\\.modrinth\\.com/data/([\\w]+)/versions/([\\w]+)/",
-  "m",
-);
+const modrinthCdnRegex = new RegExp("^https://cdn\\.modrinth\\.com/data/([\\w]+)/versions/([\\w]+)/", "m");
 
 export const importMrpack = async ({
   file,
@@ -95,11 +86,11 @@ export const importMrpack = async ({
   if (modFolder) {
     for (const [name, overrideMod] of Object.entries(modFolder.files)) {
       if (
-        !name.endsWith(".jar")
-        || name.includes("__MACOSX/")
-        || name.includes(".old/")
-        || name.endsWith(".disabled")
-        || overrideMod.dir
+        !name.endsWith(".jar") ||
+        name.includes("__MACOSX/") ||
+        name.includes(".old/") ||
+        name.endsWith(".disabled") ||
+        overrideMod.dir
       ) {
         continue;
       }

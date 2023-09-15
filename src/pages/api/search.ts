@@ -25,17 +25,17 @@ const search = async (query: string, isAdmin?: boolean) => {
     },
     ...(isAdmin
       ? []
-      : [{
-        $match: {
-          visibility: "public",
-        },
-      }]),
+      : [
+          {
+            $match: {
+              visibility: "public",
+            },
+          },
+        ]),
   ]);
 
   const arr = await resp.toArray();
-  return Promise.all(arr.map((k) => lim(() => getSpecificList(k.id)))).then(
-    (k) => k.filter(Boolean),
-  );
+  return Promise.all(arr.map((k) => lim(() => getSpecificList(k.id)))).then((k) => k.filter(Boolean));
 };
 
 const validate = v.object({ query: v.string([v.minLength(1)]) });

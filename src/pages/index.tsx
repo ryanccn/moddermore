@@ -33,12 +33,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
   }, [status, router]);
 
   return (
-    <GlobalLayout
-      title="Moddermore"
-      titleSuffix={false}
-      displayTitle={false}
-      wideLayout
-    >
+    <GlobalLayout title="Moddermore" titleSuffix={false} displayTitle={false} wideLayout>
       <div className="mb-14 flex min-h-screen flex-col justify-center p-6 lg:px-20">
         <div className="mb-20 flex flex-col">
           <h2 className="mb-10 text-6xl font-extrabold tracking-tight">
@@ -71,9 +66,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         {pageviews && (
           <div className="flex flex-col items-start gap-y-2">
             <span className="text-xl font-bold">Monthly pageviews</span>
-            <span className="text-6xl font-black">
-              {numberFormat(pageviews)}
-            </span>
+            <span className="text-6xl font-black">{numberFormat(pageviews)}</span>
           </div>
         )}
         <div className="flex flex-col items-start gap-y-2">
@@ -113,8 +106,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
               description:
                 "Displays the nearby world terrain, players, mobs, entities in the corner of your screen. Lets you create waypoints which help you find the locations you've marked.",
               downloads: 48_426_867,
-              iconUrl:
-                "https://media.forgecdn.net/avatars/thumbnails/92/854/256/256/636258666554688823.png",
+              iconUrl: "https://media.forgecdn.net/avatars/thumbnails/92/854/256/256/636258666554688823.png",
             }}
             className="lg:w-1/2"
           />
@@ -151,9 +143,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
             <CloudIcon className="block w-5 h-5" />
             <span>packwiz</span>
           </div>
-          <div
-            className={buttonVariants({ size: "showcase", variant: "fuchsia" })}
-          >
+          <div className={buttonVariants({ size: "showcase", variant: "fuchsia" })}>
             <HexagonIcon className="block w-5 h-5" />
             <span>MultiMC / Prism</span>
           </div>
@@ -165,17 +155,13 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
 
         <div className="flex flex-col gap-24 lg:flex-row">
           <div className="flex flex-col gap-y-6">
-            <h3 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
-              Email
-            </h3>
+            <h3 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">Email</h3>
             <a href="https://tutanota.com/">
               <TutanotaIcon className="block w-60 fill-black dark:fill-white" />
             </a>
           </div>
           <div className="flex flex-col gap-y-6">
-            <h3 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
-              Hosting
-            </h3>
+            <h3 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">Hosting</h3>
             <a href="https://vercel.com/?utm_source=moddermore&utm_campaign=oss">
               <VercelIcon className="block w-60 fill-black dark:fill-white" />
             </a>

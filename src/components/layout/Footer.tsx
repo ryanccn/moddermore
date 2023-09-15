@@ -61,11 +61,7 @@ export const Footer = () => {
       </div>
 
       <Link href="/legal/privacy">Privacy Policy</Link>
-      <a
-        href="https://github.com/ryanccn/moddermore"
-        className="mb-4"
-        rel="noreferrer"
-      >
+      <a href="https://github.com/ryanccn/moddermore" className="mb-4" rel="noreferrer">
         Code open source under AGPLv3
       </a>
 

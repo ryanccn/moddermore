@@ -27,11 +27,10 @@ export const DonationMessage = () => {
     <div className="not-prose flex flex-col rounded-lg bg-neutral-100 p-6 dark:bg-neutral-800">
       <h2 className="mb-6 text-xl font-semibold">We need your help!</h2>
       <p className="mb-10">
-        Moddermore currently runs completely without revenue, free for anyone to create an account
-        and use all the features without any hindrance. As a result, we rely completely on donations
-        to cover our hosting costs. In addition, we have poured countless hours into making
-        Moddermore one of the best services out there. So please, donate if you have some money
-        spare - every dollar counts!
+        Moddermore currently runs completely without revenue, free for anyone to create an account and use all
+        the features without any hindrance. As a result, we rely completely on donations to cover our hosting
+        costs. In addition, we have poured countless hours into making Moddermore one of the best services out
+        there. So please, donate if you have some money spare - every dollar counts!
       </p>
 
       <div className="flex flex-col gap-y-4 lg:flex-row lg:gap-x-6">
@@ -53,10 +52,7 @@ export const DonationMessage = () => {
         </div>
       </div>
 
-      <button
-        className="mt-4 self-start text-xs font-medium"
-        onClick={dontShowAgain}
-      >
+      <button className="mt-4 self-start text-xs font-medium" onClick={dontShowAgain}>
         Don&apos;t show again 😭
       </button>
     </div>

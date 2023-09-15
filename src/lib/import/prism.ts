@@ -44,11 +44,7 @@ const parsePackwizTOML = (toml: string): Mod | null => {
   return null;
 };
 
-export const parsePrismInstance = async ({
-  f,
-  useMetadata,
-  setProgress,
-}: InputData) => {
+export const parsePrismInstance = async ({ f, useMetadata, setProgress }: InputData) => {
   const mcFolder = f.folder(".minecraft");
 
   if (!mcFolder) {
@@ -86,7 +82,7 @@ export const parsePrismInstance = async ({
           }
 
           setProgress((prev) => ({ ...prev, value: prev.value + 1 }));
-        })
+        }),
       ),
     );
 

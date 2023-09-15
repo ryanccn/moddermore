@@ -10,9 +10,7 @@ const SigninPage: NextPage = () => {
       isAuthPage
       titleIcon={<InboxIcon className="mb-2 block h-12 w-12 animate-bounce" />}
     >
-      <p className="text-lg">
-        Check your email inbox for a magical login link! ✨
-      </p>
+      <p className="text-lg">Check your email inbox for a magical login link! ✨</p>
     </GlobalLayout>
   );
 };

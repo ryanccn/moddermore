@@ -38,13 +38,14 @@ const ListAnalytics: NextPage<PageProps> = ({ data }) => {
 
   const updateData = useCallback(() => {
     setLoading(true);
-    fetch(`/api/list/${data.id}/analytics`).then(res =>
-      res.json() as Promise<{ timeseries: ListTimeseriesData }>
-    ).then(({ timeseries }) => {
-      setTimeseriesData(timeseries);
-    }).finally(() => {
-      setLoading(false);
-    });
+    fetch(`/api/list/${data.id}/analytics`)
+      .then((res) => res.json() as Promise<{ timeseries: ListTimeseriesData }>)
+      .then(({ timeseries }) => {
+        setTimeseriesData(timeseries);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [data.id]);
 
   useEffect(() => {
@@ -53,14 +54,9 @@ const ListAnalytics: NextPage<PageProps> = ({ data }) => {
 
   return (
     <GlobalLayout title={`Analytics for ${data.title}`} className="px-8 md:px-16 py-20" wideLayout>
-      <Link
-        href={`/list/${data.id}`}
-        className="mb-8 flex flex-row items-center gap-x-1"
-      >
+      <Link href={`/list/${data.id}`} className="mb-8 flex flex-row items-center gap-x-1">
         <ArrowLeftIcon className="block h-3 w-3" />
-        <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-          Back
-        </span>
+        <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Back</span>
       </Link>
 
       <Button variant="primary" className="self-end mb-12" disabled={loading} onClick={updateData}>
@@ -108,9 +104,11 @@ const ListAnalytics: NextPage<PageProps> = ({ data }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  PageProps | { notFound: true }
-> = async ({ query, req, res }) => {
+export const getServerSideProps: GetServerSideProps<PageProps | { notFound: true }> = async ({
+  query,
+  req,
+  res,
+}) => {
   if (typeof query.id !== "string") throw new Error("?");
   const data = await getSpecificList(query.id);
 

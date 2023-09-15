@@ -6,13 +6,10 @@ import { getCurseForgeTOML, getModrinthTOML } from "~/lib/export/formats/packwiz
 
 const h: NextApiHandler = async (req, res) => {
   if (
-    typeof req.query.id !== "string"
-    || typeof req.query.modId !== "string"
-    || !(
-      req.query.modId.startsWith("modrinth-")
-      || req.query.modId.startsWith("curseforge-")
-    )
-    || !req.query.modId.endsWith(".pw.toml")
+    typeof req.query.id !== "string" ||
+    typeof req.query.modId !== "string" ||
+    !(req.query.modId.startsWith("modrinth-") || req.query.modId.startsWith("curseforge-")) ||
+    !req.query.modId.endsWith(".pw.toml")
   ) {
     res.status(400).end();
     return;

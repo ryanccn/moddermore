@@ -68,17 +68,11 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const session = useSession();
 
   const hasElevatedPermissions = useMemo(
-    () =>
-      session.data
-      && (session.data.user.id === data.owner
-        || session.data.extraProfile.isAdmin),
+    () => session.data && (session.data.user.id === data.owner || session.data.extraProfile.isAdmin),
     [session.data, data.owner],
   );
 
-  const isAdmin = useMemo(
-    () => session.data?.extraProfile.isAdmin === true,
-    [session.data],
-  );
+  const isAdmin = useMemo(() => session.data?.extraProfile.isAdmin === true, [session.data]);
 
   const [resolvedMods, setResolvedMods] = useState<RichMod[] | null>(null);
   const [oldMods, setOldMods] = useState<RichMod[] | null>(null);
@@ -114,14 +108,10 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     (async () => {
       const [modrinthMods, curseForgeMods] = await Promise.all([
         getModrinthInfos(
-          data.mods
-            .filter((k) => k.provider === "modrinth")
-            .map((k) => ({ id: k.id, version: k.version })),
+          data.mods.filter((k) => k.provider === "modrinth").map((k) => ({ id: k.id, version: k.version })),
         ),
         getCurseForgeInfos(
-          data.mods
-            .filter((k) => k.provider === "curseforge")
-            .map((k) => ({ id: k.id, version: k.version })),
+          data.mods.filter((k) => k.provider === "curseforge").map((k) => ({ id: k.id, version: k.version })),
         ),
       ]);
 
@@ -155,10 +145,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     });
   }, [data.id, session.status]);
 
-  const showResultModal = useMemo(
-    () => status === ExportStatus.Result,
-    [status],
-  );
+  const showResultModal = useMemo(() => status === ExportStatus.Result, [status]);
 
   const modrinthExportInit = () => {
     setStatus(ExportStatus.ModrinthForm);
@@ -182,17 +169,14 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
       setIsSaving(true);
 
-      const res = await fetch(
-        `/api/list/${encodeURIComponent(data.id)}/update`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            ...data,
-            mods: resolvedMods.map((elem) => richModToMod(elem)),
-          }),
-          headers: { "Content-Type": "application/json" },
-        },
-      );
+      const res = await fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
+        method: "POST",
+        body: JSON.stringify({
+          ...data,
+          mods: resolvedMods.map((elem) => richModToMod(elem)),
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
 
       if (!res.ok) {
         toast.error("Failed to update mods!");
@@ -202,38 +186,28 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
       }
 
       const removedMods = oldMods.filter(
-        (oldMod) =>
-          !resolvedMods.some(
-            (k) => k.id === oldMod.id && k.provider === oldMod.provider,
-          ),
+        (oldMod) => !resolvedMods.some((k) => k.id === oldMod.id && k.provider === oldMod.provider),
       );
       const addedMods = resolvedMods.filter(
-        (resolvedMod) =>
-          !oldMods.some(
-            (k) => k.id === resolvedMod.id && k.provider === resolvedMod.provider,
-          ),
+        (resolvedMod) => !oldMods.some((k) => k.id === resolvedMod.id && k.provider === resolvedMod.provider),
       );
 
       const changelog = `
 ## Added mods
 
 ${
-        addedMods.length > 0
-          ? addedMods
-            .map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
-            .join("\n")
-          : "*None*"
-      }
+  addedMods.length > 0
+    ? addedMods.map((k) => `- [${k.name}](${k.href}) - ${k.description}`).join("\n")
+    : "*None*"
+}
 
 ## Removed mods
 
 ${
-        removedMods.length > 0
-          ? removedMods
-            .map((k) => `- [${k.name}](${k.href}) - ${k.description}`)
-            .join("\n")
-          : "*None*"
-      }
+  removedMods.length > 0
+    ? removedMods.map((k) => `- [${k.name}](${k.href}) - ${k.description}`).join("\n")
+    : "*None*"
+}
       `.trim();
 
       toast.success(
@@ -270,9 +244,7 @@ ${
   const copyMarkdownList = useCallback(() => {
     if (!resolvedMods) return;
 
-    const text = resolvedMods
-      .map((k) => `- [**${k.name}**](${k.href}) - ${k.description}`)
-      .join("\n");
+    const text = resolvedMods.map((k) => `- [**${k.name}**](${k.href}) - ${k.description}`).join("\n");
 
     navigator.clipboard.writeText(text).then(() => {
       toast.success("Copied Markdown to clipboard!");
@@ -329,15 +301,13 @@ ${
 
     fetch("/api/list/create", {
       method: "POST",
-      body: JSON.stringify(
-        {
-          title: `${data.title} (copy)`,
-          description: data.description ?? undefined,
-          gameVersion: data.gameVersion,
-          modloader: data.modloader,
-          mods: data.mods,
-        } satisfies ModListCreate,
-      ),
+      body: JSON.stringify({
+        title: `${data.title} (copy)`,
+        description: data.description ?? undefined,
+        gameVersion: data.gameVersion,
+        modloader: data.modloader,
+        mods: data.mods,
+      } satisfies ModListCreate),
       headers: { "Content-Type": "application/json" },
     })
       .then(async (res) => {
@@ -381,14 +351,7 @@ ${
     }
 
     router.push("/lists");
-  }, [
-    router,
-    data,
-    session,
-    confirmDelete,
-    confirmDeleteTimeoutID,
-    setConfirmDelete,
-  ]);
+  }, [router, data, session, confirmDelete, confirmDeleteTimeoutID, setConfirmDelete]);
 
   const ban = useCallback(async () => {
     if (!data || !session.data) return;
@@ -417,23 +380,13 @@ ${
     } else {
       toast.error(`Failed to ban ${data.owner}!`);
     }
-  }, [
-    router,
-    data,
-    session,
-    confirmBan,
-    confirmBanTimeoutID,
-    setConfirmBan,
-  ]);
+  }, [router, data, session, confirmBan, confirmBanTimeoutID, setConfirmBan]);
 
   return (
     <GlobalLayout title={data.title}>
       {data.description && (
         <div className="-mt-6 text-lg font-medium mb-8">
-          <Markdown
-            skipHtml
-            disallowedElements={["h1", "h2", "h3", "h4", "h5", "h6"]}
-          >
+          <Markdown skipHtml disallowedElements={["h1", "h2", "h3", "h4", "h5", "h6"]}>
             {data.description}
           </Markdown>
         </div>
@@ -454,17 +407,17 @@ ${
 
       {data.ownerProfile && (
         <div className="mt-6 flex flex-row items-center gap-x-3 mb-8">
-          {data.ownerProfile.profilePicture
-            ? (
-              <img
-                src={data.ownerProfile.profilePicture}
-                width={32}
-                height={32}
-                className="rounded-full"
-                alt=""
-              />
-            )
-            : <div className="h-[32px] w-[32px] rounded-full bg-neutral-100 dark:bg-neutral-700" />}
+          {data.ownerProfile.profilePicture ? (
+            <img
+              src={data.ownerProfile.profilePicture}
+              width={32}
+              height={32}
+              className="rounded-full"
+              alt=""
+            />
+          ) : (
+            <div className="h-[32px] w-[32px] rounded-full bg-neutral-100 dark:bg-neutral-700" />
+          )}
 
           <strong className="font-semibold">{data.ownerProfile.name}</strong>
         </div>
@@ -480,10 +433,7 @@ ${
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Portal>
-            <DropdownMenu.Content
-              align="start"
-              className="radix-dropdown-menu-content"
-            >
+            <DropdownMenu.Content align="start" className="radix-dropdown-menu-content">
               <DropdownMenu.Item asChild>
                 <button
                   className="radix-dropdown-button"
@@ -503,10 +453,7 @@ ${
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={modrinthExportInit}
-                >
+                <button className="radix-dropdown-button" onClick={modrinthExportInit}>
                   <ModrinthIcon className="block w-5 h-5" />
                   <span>Modrinth pack</span>
                 </button>
@@ -603,90 +550,70 @@ ${
         </DropdownMenu.Root>
 
         <Button onClick={toggleLikeStatus}>
-          {!isLiking
-            ? (
-              <HeartIcon
-                className={twMerge(
-                  "block w-5 h-5",
-                  hasLiked
-                    ? "fill-current stroke-none"
-                    : "fill-none stroke-current",
-                )}
-              />
-            )
-            : <Spinner className="block w-5 h-5 fill-current" />}
+          {!isLiking ? (
+            <HeartIcon
+              className={twMerge(
+                "block w-5 h-5",
+                hasLiked ? "fill-current stroke-none" : "fill-none stroke-current",
+              )}
+            />
+          ) : (
+            <Spinner className="block w-5 h-5 fill-current" />
+          )}
           <span>{!hasLiked ? "Like" : "Unlike"}</span>
         </Button>
 
         <Button onClick={duplicateList}>
-          {isDuplicating
-            ? <Spinner className="block w-5 h-5 fill-current" />
-            : <CopyIcon className="block w-5 h-5" />}
+          {isDuplicating ? (
+            <Spinner className="block w-5 h-5 fill-current" />
+          ) : (
+            <CopyIcon className="block w-5 h-5" />
+          )}
           <span>Duplicate</span>
         </Button>
 
         {hasElevatedPermissions && (
           <>
-            {!isEditing
-              ? (
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    setIsEditing(true);
-                  }}
-                  disabled={isSaving}
-                >
-                  {isSaving
-                    ? <Spinner className="block w-5 h-5 fill-current" />
-                    : <EditIcon className="block w-5 h-5" />}
-                  <span>Edit</span>
-                </Button>
-              )
-              : (
-                <Button
-                  variant="green"
-                  onClick={submitHandle}
-                  disabled={isSaving}
-                >
-                  {isSaving
-                    ? <Spinner className="block w-5 h-5" />
-                    : <SaveIcon className="block w-5 h-5" />}
-                  <span>Save</span>
-                </Button>
-              )}
+            {!isEditing ? (
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <Spinner className="block w-5 h-5 fill-current" />
+                ) : (
+                  <EditIcon className="block w-5 h-5" />
+                )}
+                <span>Edit</span>
+              </Button>
+            ) : (
+              <Button variant="green" onClick={submitHandle} disabled={isSaving}>
+                {isSaving ? <Spinner className="block w-5 h-5" /> : <SaveIcon className="block w-5 h-5" />}
+                <span>Save</span>
+              </Button>
+            )}
 
-            <Link
-              className={buttonVariants({ variant: "secondary" })}
-              href={`/list/${data.id}/settings`}
-            >
+            <Link className={buttonVariants({ variant: "secondary" })} href={`/list/${data.id}/settings`}>
               <SettingsIcon className="block w-5 h-5" />
               <span>Settings</span>
             </Link>
 
-            <Link
-              className={buttonVariants({ variant: "primary" })}
-              href={`/list/${data.id}/analytics`}
-            >
+            <Link className={buttonVariants({ variant: "primary" })} href={`/list/${data.id}/analytics`}>
               <AreaChartIcon className="block w-5 h-5" />
               <span>Analytics</span>
             </Link>
 
-            <Button
-              variant="danger"
-              onClick={deleteCurrentList}
-              disabled={isDeleting}
-            >
-              {isDeleting
-                ? <Spinner className="block w-5 h-5" />
-                : <TrashIcon className="block w-5 h-5" />}
+            <Button variant="danger" onClick={deleteCurrentList} disabled={isDeleting}>
+              {isDeleting ? <Spinner className="block w-5 h-5" /> : <TrashIcon className="block w-5 h-5" />}
               {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
             </Button>
 
             {isAdmin && (
               <Button variant="danger" onClick={ban} disabled={isBanning}>
-                {isBanning
-                  ? <Spinner className="block w-5 h-5" />
-                  : <HammerIcon className="block w-5 h-5" />}
+                {isBanning ? <Spinner className="block w-5 h-5" /> : <HammerIcon className="block w-5 h-5" />}
                 {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
               </Button>
             )}
@@ -719,51 +646,49 @@ ${
       <DonationMessage />
 
       <ul className="mt-8 flex flex-col gap-y-4">
-        {resolvedMods
-          ? (
-            resolvedMods.map((mod) => (
-              <li className="w-full" key={mod.id}>
-                <RichModDisplay
-                  data={mod}
-                  buttonType={isEditing ? "delete" : null}
-                  onClick={() => {
-                    setResolvedMods((prev) => prev ? prev.filter((a) => a.id !== mod.id) : []);
-                  }}
-                  onVersion={(version) => {
-                    setResolvedMods((prev) => {
-                      if (!prev) return [];
+        {resolvedMods ? (
+          resolvedMods.map((mod) => (
+            <li className="w-full" key={mod.id}>
+              <RichModDisplay
+                data={mod}
+                buttonType={isEditing ? "delete" : null}
+                onClick={() => {
+                  setResolvedMods((prev) => (prev ? prev.filter((a) => a.id !== mod.id) : []));
+                }}
+                onVersion={(version) => {
+                  setResolvedMods((prev) => {
+                    if (!prev) return [];
 
-                      const workingCopy = [...prev];
-                      for (const prevMod of workingCopy) {
-                        if (prevMod.id === mod.id) {
-                          prevMod.version = version ?? undefined;
-                          break;
-                        }
+                    const workingCopy = [...prev];
+                    for (const prevMod of workingCopy) {
+                      if (prevMod.id === mod.id) {
+                        prevMod.version = version ?? undefined;
+                        break;
                       }
-                      return workingCopy;
-                    });
-                  }}
-                  parent={data}
-                />
-              </li>
-            ))
-          )
-          : (
-            <>
-              {data.mods.map(({ provider, id }) => (
-                <li className="skeleton h-36" key={`${provider}-${id}`} />
-              ))}
-            </>
-          )}
+                    }
+                    return workingCopy;
+                  });
+                }}
+                parent={data}
+              />
+            </li>
+          ))
+        ) : (
+          <>
+            {data.mods.map(({ provider, id }) => (
+              <li className="skeleton h-36" key={`${provider}-${id}`} />
+            ))}
+          </>
+        )}
       </ul>
 
-      {status === ExportStatus.Resolving
-        ? <ProgressOverlay label="Resolving mods..." {...progress} />
-        : status === ExportStatus.Downloading
-        ? <ProgressOverlay label="Downloading mods..." {...progress} />
-        : status === ExportStatus.GeneratingZip
-        ? <ProgressOverlay label="Getting the .zip file ready..." {...progress} />
-        : null}
+      {status === ExportStatus.Resolving ? (
+        <ProgressOverlay label="Resolving mods..." {...progress} />
+      ) : status === ExportStatus.Downloading ? (
+        <ProgressOverlay label="Downloading mods..." {...progress} />
+      ) : status === ExportStatus.GeneratingZip ? (
+        <ProgressOverlay label="Getting the .zip file ready..." {...progress} />
+      ) : null}
 
       <Dialog.Root
         open={status === ExportStatus.ModrinthForm}
@@ -819,9 +744,7 @@ ${
                 />
               </label>
               <label className="flex flex-col gap-y-1">
-                <span className="text-sm font-medium">
-                  CurseForge mods
-                </span>
+                <span className="text-sm font-medium">CurseForge mods</span>
                 <select
                   id="curseforge-strategy"
                   className="mm-input"
@@ -866,20 +789,20 @@ ${
             <div className="flex flex-col gap-y-4">
               <div className="results-list">
                 <details>
-                  <summary className="text-green-400">
-                    {result.success.length} successful downloads
-                  </summary>
+                  <summary className="text-green-400">{result.success.length} successful downloads</summary>
                   <ul>
-                    {result.success.map((a) => <li key={a}>{a}</li>)}
+                    {result.success.map((a) => (
+                      <li key={a}>{a}</li>
+                    ))}
                   </ul>
                 </details>
 
                 <details>
-                  <summary className="text-red-400">
-                    {result.failed.length} failed
-                  </summary>
+                  <summary className="text-red-400">{result.failed.length} failed</summary>
                   <ul>
-                    {result.failed.map((a) => <li key={a}>{a}</li>)}
+                    {result.failed.map((a) => (
+                      <li key={a}>{a}</li>
+                    ))}
                   </ul>
                 </details>
               </div>
@@ -900,9 +823,11 @@ ${
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  PageProps | { notFound: true }
-> = async ({ query, req, res }) => {
+export const getServerSideProps: GetServerSideProps<PageProps | { notFound: true }> = async ({
+  query,
+  req,
+  res,
+}) => {
   if (typeof query.id !== "string") throw new Error("?");
   const data = await getSpecificList(query.id);
 
@@ -913,11 +838,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   const sess = await getServerSession(req, res, authOptions);
-  if (
-    data.visibility === "private"
-    && sess?.user.id !== data.owner
-    && !sess?.extraProfile.isAdmin
-  ) {
+  if (data.visibility === "private" && sess?.user.id !== data.owner && !sess?.extraProfile.isAdmin) {
     return {
       notFound: true,
     };

@@ -1,14 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 
-const ProgressOverlay = ({
-  value,
-  max,
-  label,
-}: {
-  value: number;
-  max: number;
-  label: string;
-}) => {
+const ProgressOverlay = ({ value, max, label }: { value: number; max: number; label: string }) => {
   return (
     <Dialog.Root defaultOpen={true}>
       <Dialog.Portal>
@@ -26,10 +18,7 @@ const ProgressOverlay = ({
           }}
         >
           <div className="flex flex-col items-center gap-y-6">
-            <Dialog.Title
-              className="text-lg font-medium"
-              id="searching-for-mods-label"
-            >
+            <Dialog.Title className="text-lg font-medium" id="searching-for-mods-label">
               {label} ({value} / {max})
             </Dialog.Title>
 

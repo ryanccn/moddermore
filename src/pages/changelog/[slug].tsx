@@ -21,9 +21,7 @@ interface PageProps {
 }
 
 const ChangelogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
-  const absoluteCoverURL = data.cover
-    ? new URL(data.cover.src, "https://moddermore.net").toString()
-    : null;
+  const absoluteCoverURL = data.cover ? new URL(data.cover.src, "https://moddermore.net").toString() : null;
 
   return (
     <GlobalLayout title={`${data.title} / Changelog`} displayTitle={false}>
@@ -39,9 +37,7 @@ const ChangelogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
         <div
           className="not-prose mb-12 flex flex-col gap-y-3 rounded-2xl bg-cover p-8 pt-40 text-white"
           style={{
-            backgroundImage: data.cover
-              ? `url('${data.cover.src}')`
-              : undefined,
+            backgroundImage: data.cover ? `url('${data.cover.src}')` : undefined,
             backgroundPosition: "center",
           }}
         >

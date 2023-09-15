@@ -40,9 +40,7 @@ const getListsCollection = async () => {
 
 const getUsersCollection = async () => {
   const client = await clientPromise;
-  return client
-    .db()
-    .collection<{ email: string; emailVerified: Date }>("users");
+  return client.db().collection<{ email: string; emailVerified: Date }>("users");
 };
 
 const getProfilesCollection = async () => {

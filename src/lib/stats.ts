@@ -14,9 +14,7 @@ export const getPageviews = async (): Promise<number | null> => {
     headers: { Authorization: `Bearer ${process.env.PLAUSIBLE_TOKEN}` },
   }).then(async (r) => {
     if (!r.ok) {
-      throw new Error(
-        `Error fetching ${r.url}: ${r.status} ${r.statusText}\n${await r.text()}`,
-      );
+      throw new Error(`Error fetching ${r.url}: ${r.status} ${r.statusText}\n${await r.text()}`);
     }
 
     return r.json();

@@ -60,10 +60,7 @@ const ManualImportPage: NextPage = () => {
 
   return (
     <GlobalLayout title="Manual creation" displayTitle={false}>
-      <form
-        className="flex flex-col items-start gap-y-6"
-        onSubmit={submitHandle}
-      >
+      <form className="flex flex-col items-start gap-y-6" onSubmit={submitHandle}>
         <input
           name="title"
           value={title}
@@ -136,10 +133,7 @@ const ManualImportPage: NextPage = () => {
           ))}
         </ul>
 
-        <NewSubmitButton
-          submitting={submitting}
-          disabled={session.status === "loading" || submitting}
-        />
+        <NewSubmitButton submitting={submitting} disabled={session.status === "loading" || submitting} />
       </form>
     </GlobalLayout>
   );

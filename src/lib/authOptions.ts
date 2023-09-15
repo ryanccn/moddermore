@@ -36,8 +36,8 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }) {
       if (
-        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"
-        && (!("emailVerified" in user) || !user.emailVerified)
+        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" &&
+        (!("emailVerified" in user) || !user.emailVerified)
       ) {
         return false;
       }

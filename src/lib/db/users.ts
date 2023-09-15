@@ -20,10 +20,7 @@ export const getUserProfile = async (id: string) => {
   return res;
 };
 
-export const updateUserProfile = async (
-  id: string,
-  profile: UserEditableProfileData,
-) => {
+export const updateUserProfile = async (id: string, profile: UserEditableProfileData) => {
   const col = await getProfilesCollection();
 
   const res = await col.updateOne({ userId: id }, { $set: profile });

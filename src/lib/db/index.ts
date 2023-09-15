@@ -1,11 +1,6 @@
-import { nanoid } from "nanoid/async";
+import { nanoid } from "nanoid";
 
-import type {
-  ModList,
-  ModListCreate,
-  ModListUpdate,
-  ModListWithExtraData,
-} from "~/types/moddermore";
+import type { ModList, ModListCreate, ModListUpdate, ModListWithExtraData } from "~/types/moddermore";
 
 import { getListsCollection, getProfilesCollection } from "./client";
 import { omitUndefined } from "./conversions";
@@ -15,14 +10,14 @@ export const getUserLists = async (userId: string): Promise<ModList[]> => {
   const collection = await getListsCollection();
   const lists = await collection.find({ owner: userId }).toArray();
 
-  return lists.sort((a, b) => new Date(a.created_at) > new Date(b.created_at) ? -1 : 1);
+  return lists.sort((a, b) => (new Date(a.created_at) > new Date(b.created_at) ? -1 : 1));
 };
 
 export const getLegacyUserLists = async (email: string): Promise<ModList[]> => {
   const collection = await getListsCollection();
   const lists = await collection.find({ legacy: email }).toArray();
 
-  return lists.sort((a, b) => new Date(a.created_at) > new Date(b.created_at) ? -1 : 1);
+  return lists.sort((a, b) => (new Date(a.created_at) > new Date(b.created_at) ? -1 : 1));
 };
 
 export const getSpecificListByID = async (trueId: string) => {
@@ -30,9 +25,7 @@ export const getSpecificListByID = async (trueId: string) => {
   return await collection.findOne({ id: trueId });
 };
 
-export const getSpecificList = async (
-  id: string,
-): Promise<ModListWithExtraData | null> => {
+export const getSpecificList = async (id: string): Promise<ModListWithExtraData | null> => {
   const collection = await getListsCollection();
   const list = await collection.findOne({ id });
   if (!list) return null;
@@ -61,25 +54,16 @@ export const getSpecificList = async (
   };
 };
 
-export const deleteList = async (
-  id: string,
-  userId: string,
-  isAdmin?: boolean,
-): Promise<boolean> => {
+export const deleteList = async (id: string, userId: string, isAdmin?: boolean): Promise<boolean> => {
   const collection = await getListsCollection();
-  const res = await collection.deleteOne(
-    isAdmin ? { id } : { id, owner: userId },
-  );
+  const res = await collection.deleteOne(isAdmin ? { id } : { id, owner: userId });
 
   return !!res.deletedCount;
 };
 
-export const createList = async (
-  list: ModListCreate,
-  userId: string,
-): Promise<string> => {
+export const createList = async (list: ModListCreate, userId: string): Promise<string> => {
   const collection = await getListsCollection();
-  const id = await nanoid(12);
+  const id = nanoid(12);
 
   await collection.insertOne({
     ...list,
@@ -100,10 +84,9 @@ export const updateList = async (
   isAdmin?: boolean,
 ): Promise<boolean> => {
   const collection = await getListsCollection();
-  const res = await collection.updateOne(
-    isAdmin ? { id } : { id, owner: userId },
-    { $set: omitUndefined(list) },
-  );
+  const res = await collection.updateOne(isAdmin ? { id } : { id, owner: userId }, {
+    $set: omitUndefined(list),
+  });
 
   return !!res.modifiedCount;
 };

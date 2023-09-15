@@ -75,7 +75,7 @@ export const exportZip = async ({
           ...a,
           success: [...a.success, downloadData.name],
         }));
-      })
+      }),
     ),
   );
 };

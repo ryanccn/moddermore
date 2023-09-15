@@ -41,7 +41,7 @@ export const getDownloadURLs = async (
         }
 
         setProgress((old) => ({ value: old.value + 1, max: old.max }));
-      })
+      }),
     ),
   );
 

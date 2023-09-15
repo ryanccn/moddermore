@@ -76,9 +76,7 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
         />
 
         <Button type="button" onClick={updateSearch} disabled={isSearching}>
-          {isSearching
-            ? <Spinner className="block w-5 h-5" />
-            : <SearchIcon className="block w-5 h-5" />}
+          {isSearching ? <Spinner className="block w-5 h-5" /> : <SearchIcon className="block w-5 h-5" />}
           <span>Search</span>
         </Button>
       </div>
@@ -86,22 +84,17 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
       {searchResults.length > 0 && (
         <ul className="flex flex-col gap-y-2">
           {searchResults.map((res) =>
-            existing
-              && existing.some(
-                (m) => m.id === res.id && m.provider === res.provider,
-              )
-              ? null
-              : (
-                <RichModDisplay
-                  data={res}
-                  key={res.id}
-                  buttonType="add"
-                  onClick={() => {
-                    onAdd(res);
-                  }}
-                  parent={{ gameVersion, modloader: modLoader }}
-                />
-              )
+            existing && existing.some((m) => m.id === res.id && m.provider === res.provider) ? null : (
+              <RichModDisplay
+                data={res}
+                key={res.id}
+                buttonType="add"
+                onClick={() => {
+                  onAdd(res);
+                }}
+                parent={{ gameVersion, modloader: modLoader }}
+              />
+            ),
           )}
         </ul>
       )}

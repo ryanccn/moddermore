@@ -28,18 +28,17 @@ export const getListTimeseries = async (id: string) => {
     return ret;
   }
 
-  const data = await fetch(
-    `https://plausible.io/api/v1/stats/timeseries?site_id=moddermore.net&period=30d&metrics=pageviews,visitors,visits,bounce_rate&filters=${
-      encodeURIComponent(`event:page==/list/${id}`)
-    }`,
-    {
-      headers: { Authorization: `Bearer ${process.env.PLAUSIBLE_TOKEN}` },
-    },
-  ).then(async (r) => {
+  const url = new URL("https://plausible.io/api/v1/stats/timeseries");
+  url.searchParams.set("site_id", "moddermore.net");
+  url.searchParams.set("period", "30d");
+  url.searchParams.set("metrics", "pageviews,visitors,visits,bounce_rate");
+  url.searchParams.set("filters", `event:page==/list/${id}`);
+
+  const data = await fetch(url, {
+    headers: { Authorization: `Bearer ${process.env.PLAUSIBLE_TOKEN}` },
+  }).then(async (r) => {
     if (!r.ok) {
-      throw new Error(
-        `Error fetching ${r.url}: ${r.status} ${r.statusText}\n${await r.text()}`,
-      );
+      throw new Error(`Error fetching ${r.url}: ${r.status} ${r.statusText}\n${await r.text()}`);
     }
 
     return r.json() as Promise<{ results: ListTimeseriesData }>;

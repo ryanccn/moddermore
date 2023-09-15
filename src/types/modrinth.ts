@@ -21,10 +21,10 @@ export interface ModrinthVersion {
   changelog: string | null;
   dependencies:
     | {
-      version_id: string;
-      project_id: string;
-      dependency_type: string;
-    }[]
+        version_id: string;
+        project_id: string;
+        dependency_type: string;
+      }[]
     | null;
 
   game_versions: string[];

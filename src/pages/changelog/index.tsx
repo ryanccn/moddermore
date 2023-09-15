@@ -28,9 +28,7 @@ const ChangelogIndexPage: NextPage<PageProps> = ({ data }) => {
           <Link
             className="flex flex-col gap-y-2 rounded-lg bg-cover p-8 pt-36 text-white"
             style={{
-              backgroundImage: log.cover
-                ? `url('${log.cover.src}')`
-                : undefined,
+              backgroundImage: log.cover ? `url('${log.cover.src}')` : undefined,
               backgroundPosition: "center",
             }}
             href={`/changelog/${log.slug}`}

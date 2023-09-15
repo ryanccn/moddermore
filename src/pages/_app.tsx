@@ -12,10 +12,7 @@ import { Toaster } from "react-hot-toast";
 
 import { AlertCircleIcon, CheckCircleIcon } from "lucide-react";
 
-function CustomApp({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps<{ session: Session }>) {
+function CustomApp({ Component, pageProps: { session, ...pageProps } }: AppProps<{ session: Session }>) {
   return (
     <PlausibleProvider domain="moddermore.net">
       <SessionProvider session={session}>
@@ -31,9 +28,7 @@ function CustomApp({
               },
               className: "react-hot-toast",
               success: {
-                icon: (
-                  <CheckCircleIcon className="block w-4 h-4 text-green-500 dark:text-green-400" />
-                ),
+                icon: <CheckCircleIcon className="block w-4 h-4 text-green-500 dark:text-green-400" />,
               },
               error: {
                 icon: <AlertCircleIcon className="block w-4 h-4 text-red-400" />,

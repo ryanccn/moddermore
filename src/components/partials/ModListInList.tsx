@@ -37,21 +37,19 @@ export const ModListInList = (props: BasicProps | ExtraProps) => {
 
       {"listWithExtra" in props && props.listWithExtra.ownerProfile && (
         <div className="mt-4 flex flex-row items-center gap-x-3">
-          {props.listWithExtra.ownerProfile.profilePicture
-            ? (
-              <img
-                src={props.listWithExtra.ownerProfile.profilePicture}
-                width={24}
-                height={24}
-                className="rounded-full"
-                alt=""
-              />
-            )
-            : <div className="h-[24px] w-[24px] rounded-full bg-neutral-100 dark:bg-neutral-700" />}
+          {props.listWithExtra.ownerProfile.profilePicture ? (
+            <img
+              src={props.listWithExtra.ownerProfile.profilePicture}
+              width={24}
+              height={24}
+              className="rounded-full"
+              alt=""
+            />
+          ) : (
+            <div className="h-[24px] w-[24px] rounded-full bg-neutral-100 dark:bg-neutral-700" />
+          )}
 
-          <span className="text-sm font-semibold">
-            {props.listWithExtra.ownerProfile.name}
-          </span>
+          <span className="text-sm font-semibold">{props.listWithExtra.ownerProfile.name}</span>
         </div>
       )}
     </Link>

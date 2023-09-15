@@ -15,9 +15,7 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
 
   if (!res.ok) return null;
 
-  const data = (await res
-    .json()
-    .then((json) => json.data)) as CurseForgeProject;
+  const data = (await res.json().then((json) => json.data)) as CurseForgeProject;
 
   return {
     id,
@@ -30,9 +28,7 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
   };
 };
 
-export const getInfos = async (
-  projects: { id: string; version?: string }[],
-): Promise<RichMod[]> => {
+export const getInfos = async (projects: { id: string; version?: string }[]): Promise<RichMod[]> => {
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
   if (!API_KEY) throw new Error("No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!");
 
@@ -40,7 +36,7 @@ export const getInfos = async (
 
   const res = await fetchWithRetry(`https://api.curseforge.com/v1/mods`, {
     method: "POST",
-    body: JSON.stringify({ modIds: projects.map(p => p.id) }),
+    body: JSON.stringify({ modIds: projects.map((p) => p.id) }),
     headers: { "x-api-key": API_KEY, "Content-Type": "application/json" },
   });
 
@@ -48,12 +44,10 @@ export const getInfos = async (
     return [];
   }
 
-  const data = (await res
-    .json()
-    .then((json) => json.data)) as CurseForgeProject[];
+  const data = (await res.json().then((json) => json.data)) as CurseForgeProject[];
 
   return data.map((mod) => {
-    const version = projects.find(p => p.id === `${mod.id}`)!.version;
+    const version = projects.find((p) => p.id === `${mod.id}`)!.version;
 
     return {
       id: `${mod.id}`,
@@ -68,7 +62,11 @@ export const getInfos = async (
   });
 };
 
-export const fetchVersions = async ({ projectId, loader, gameVersion }: {
+export const fetchVersions = async ({
+  projectId,
+  loader,
+  gameVersion,
+}: {
   projectId: string;
   loader: string;
   gameVersion: string;
@@ -76,18 +74,12 @@ export const fetchVersions = async ({ projectId, loader, gameVersion }: {
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
   if (!API_KEY) throw new Error("No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!");
 
-  const modLoaderType = loader === "forge"
-    ? 1
-    : loader === "fabric"
-    ? 4
-    : loader === "quilt"
-    ? 5
-    : -1;
+  const modLoaderType = loader === "forge" ? 1 : loader === "fabric" ? 4 : loader === "quilt" ? 5 : -1;
 
   const res = await fetchWithRetry(
-    `https://api.curseforge.com/v1/mods/${projectId}/files?gameVersion=${
-      encodeURIComponent(gameVersion)
-    }&modLoaderType=${modLoaderType}`,
+    `https://api.curseforge.com/v1/mods/${projectId}/files?gameVersion=${encodeURIComponent(
+      gameVersion,
+    )}&modLoaderType=${modLoaderType}`,
     {
       headers: { "x-api-key": API_KEY },
     },
@@ -95,9 +87,7 @@ export const fetchVersions = async ({ projectId, loader, gameVersion }: {
 
   if (res.status === 404) return null;
 
-  const data = (await res
-    .json()
-    .then((json) => json.data)) as CurseForgeVersion[];
+  const data = (await res.json().then((json) => json.data)) as CurseForgeVersion[];
 
-  return data.map(v => ({ id: `${v.id}`, name: v.displayName }));
+  return data.map((v) => ({ id: `${v.id}`, name: v.displayName }));
 };

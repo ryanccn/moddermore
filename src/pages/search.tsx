@@ -19,10 +19,7 @@ const SearchPage: NextPage = () => {
   const [searching, setSearching] = useState(false);
   const [lists, setLists] = useState<ModListWithExtraData[]>([]);
 
-  const isAdmin = useMemo(
-    () => session.data?.extraProfile.isAdmin === true,
-    [session.data],
-  );
+  const isAdmin = useMemo(() => session.data?.extraProfile.isAdmin === true, [session.data]);
 
   const updateSearch = useCallback(() => {
     setSearching(true);
@@ -72,13 +69,13 @@ const SearchPage: NextPage = () => {
         </Button>
       </div>
 
-      {lists.length > 0
-        ? (
-          <ul className="flex flex-col gap-y-8">
-            {lists.map((list) => <ModListInList listWithExtra={list} key={list.id} />)}
-          </ul>
-        )
-        : null}
+      {lists.length > 0 ? (
+        <ul className="flex flex-col gap-y-8">
+          {lists.map((list) => (
+            <ModListInList listWithExtra={list} key={list.id} />
+          ))}
+        </ul>
+      ) : null}
     </GlobalLayout>
   );
 };

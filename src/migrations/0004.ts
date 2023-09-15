@@ -6,10 +6,7 @@ import type { Mod } from "~/types/moddermore";
 
 (async () => {
   const lists = await getListsCollection();
-  const result = await lists.updateMany(
-    { mods: null as unknown as Mod[] },
-    { $set: { mods: [] } },
-  );
+  const result = await lists.updateMany({ mods: null as unknown as Mod[] }, { $set: { mods: [] } });
   console.log(result.modifiedCount);
 })()
   .then(() => {

@@ -11,9 +11,9 @@ const shouldntDeploy = () => {
 };
 
 if (
-  process.env.VERCEL_GIT_COMMIT_MESSAGE
-  && (process.env.VERCEL_GIT_COMMIT_MESSAGE.includes("[skip deploy]")
-    || process.env.VERCEL_GIT_COMMIT_MESSAGE.includes("[skip ci]"))
+  process.env.VERCEL_GIT_COMMIT_MESSAGE &&
+  (process.env.VERCEL_GIT_COMMIT_MESSAGE.includes("[skip deploy]") ||
+    process.env.VERCEL_GIT_COMMIT_MESSAGE.includes("[skip ci]"))
 ) {
   shouldntDeploy();
 }

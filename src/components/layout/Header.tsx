@@ -20,20 +20,20 @@ const ThemeButton = () => {
   }, []);
 
   const nextTheme = useCallback(() => {
-    setTheme(
-      theme === "system" ? "light" : theme === "light" ? "dark" : "system",
-    );
+    setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system");
   }, [theme, setTheme]);
 
   if (!renderSelf) return null;
 
   return (
     <button onClick={nextTheme} className="p-2">
-      {theme === "system"
-        ? <LaptopIcon className="block w-5 h-5" />
-        : theme === "light"
-        ? <SunIcon className="block w-5 h-5" />
-        : <MoonIcon className="block w-5 h-5" />}
+      {theme === "system" ? (
+        <LaptopIcon className="block w-5 h-5" />
+      ) : theme === "light" ? (
+        <SunIcon className="block w-5 h-5" />
+      ) : (
+        <MoonIcon className="block w-5 h-5" />
+      )}
     </button>
   );
 };
@@ -44,17 +44,8 @@ const Header = () => {
   return (
     <nav className="flex flex-col md:flex-row w-full md:items-center md:justify-between px-6 py-4 border-b border-b-neutral-200 dark:border-b-neutral-800 gap-8">
       <div className="flex flex-col md:flex-row md:items-center gap-8">
-        <Link
-          href={data ? "/lists" : "/"}
-          className="flex items-center gap-x-2 px-2 py-1"
-        >
-          <Image
-            src={ModdermoreIcon}
-            width="32"
-            height="32"
-            className="rounded-full"
-            alt=""
-          />
+        <Link href={data ? "/lists" : "/"} className="flex items-center gap-x-2 px-2 py-1">
+          <Image src={ModdermoreIcon} width="32" height="32" className="rounded-full" alt="" />
           <span className="text-2xl font-extrabold tracking-tight text-neutral-800 dark:text-neutral-200">
             Moddermore
           </span>
@@ -72,39 +63,35 @@ const Header = () => {
         </div>
       </div>
 
-      {status !== "loading"
-        ? (
-          data
-            ? (
-              <>
-                <Link href="/new" className={buttonVariants()}>
-                  <PlusIcon className="block w-5 h-5" />
-                  <span>Create</span>
-                </Link>
-              </>
-            )
-            : (
-              <Button
-                onClick={() => {
-                  nextAuthSignIn();
-                }}
-              >
-                <UserIcon className="block w-5 h-5" />
-                <span>Sign in</span>
-              </Button>
-            )
-        )
-        : (
-          <div
-            className={twMerge(
-              buttonVariants({
-                className: "skeleton bg-neutral-300 px-16 dark:bg-neutral-700",
-              }),
-            )}
+      {status !== "loading" ? (
+        data ? (
+          <>
+            <Link href="/new" className={buttonVariants()}>
+              <PlusIcon className="block w-5 h-5" />
+              <span>Create</span>
+            </Link>
+          </>
+        ) : (
+          <Button
+            onClick={() => {
+              nextAuthSignIn();
+            }}
           >
-            &nbsp;
-          </div>
-        )}
+            <UserIcon className="block w-5 h-5" />
+            <span>Sign in</span>
+          </Button>
+        )
+      ) : (
+        <div
+          className={twMerge(
+            buttonVariants({
+              className: "skeleton bg-neutral-300 px-16 dark:bg-neutral-700",
+            }),
+          )}
+        >
+          &nbsp;
+        </div>
+      )}
     </nav>
   );
 };
