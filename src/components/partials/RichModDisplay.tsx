@@ -65,10 +65,13 @@ export const RichModDisplay = ({ data, buttonType, onClick, onVersion, className
     }
 
     setVersions(versions);
-    if (!selectedVersion) setSelectedVersion(versions[0].id);
+    if (!selectedVersion) {
+      setSelectedVersion(versions[0].id);
+      if (onVersion) onVersion(versions[0].id);
+    }
 
     setIsFetchingVersions(false);
-  }, [data.id, data.provider, parent, selectedVersion]);
+  }, [data.id, data.provider, parent, selectedVersion, onVersion]);
 
   useEffect(() => {
     if (data.version) fetchVersionsIntoState();
