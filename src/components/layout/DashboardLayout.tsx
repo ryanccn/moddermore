@@ -1,9 +1,9 @@
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode, useState, useCallback } from "react";
 
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { HeartIcon, ListIcon, UserIcon } from "lucide-react";
+import { HeartIcon, ListIcon, UserIcon, XIcon } from "lucide-react";
 import { buttonVariants } from "../ui/Button";
 import { GlobalLayout } from "./GlobalLayout";
 
@@ -28,6 +28,34 @@ const DashboardLink = ({ title, href, icon }: { title: string; href: string; ico
   );
 };
 
+const FEEDBACK_LINK = "https://tally.so/r/mRM6AJ";
+
+const FeedbackPopup = () => {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const hideSetting = localStorage.getItem("hide-feedback-popup-v1");
+    if (hideSetting !== "true") setShow(true);
+  }, []);
+
+  const setToHide = useCallback(() => {
+    localStorage.setItem("hide-feedback-popup-v1", "true");
+    setShow(false);
+  }, []);
+
+  if (!show) return null;
+
+  return (
+    <div className="fixed bottom-0 right-0 m-2 flex flex-row gap-x-2 items-center px-2 py-1 bg-pink-500 text-white rounded-sm">
+      <a href={FEEDBACK_LINK} className="absolute inset-0 z-10" />
+      <span className="font-medium text-sm">We&apos;re collecting feedback!</span>
+      <button onClick={setToHide} className="p-0.5 z-20">
+        <XIcon className="block w-3 h-3" />
+      </button>
+    </div>
+  );
+};
+
 export const DashboardLayout = ({ title, children }: Props) => {
   return (
     <GlobalLayout title={title} displayTitle={false} wideLayout>
@@ -39,6 +67,7 @@ export const DashboardLayout = ({ title, children }: Props) => {
         </div>
         <div className="py-8 w-full">{children}</div>
       </div>
+      <FeedbackPopup />
     </GlobalLayout>
   );
 };

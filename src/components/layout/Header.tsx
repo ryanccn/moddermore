@@ -7,7 +7,7 @@ import { Button, buttonVariants } from "../ui/Button";
 
 import { signIn as nextAuthSignIn, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { twMerge } from "tailwind-merge";
 
@@ -40,6 +40,7 @@ const ThemeButton = () => {
 
 const Header = () => {
   const { data, status } = useSession();
+  const isAdmin = useMemo(() => data?.extraProfile.isAdmin === true, [data]);
 
   return (
     <nav className="flex flex-col md:flex-row w-full md:items-center md:justify-between px-6 py-4 border-b border-b-neutral-200 dark:border-b-neutral-800 gap-8">
@@ -49,6 +50,11 @@ const Header = () => {
           <span className="text-2xl font-extrabold tracking-tight text-neutral-800 dark:text-neutral-200">
             Moddermore
           </span>
+          {isAdmin && (
+            <div className="ml-1 text-xs font-semibold bg-sky-400 text-white rounded-sm px-1.5 py-0.5">
+              Admin
+            </div>
+          )}
         </Link>
 
         <div className="flex flex-row flex-wrap items-center gap-x-2">
