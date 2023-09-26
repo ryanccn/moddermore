@@ -84,6 +84,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           All of your mods, but in the same place.
         </h3>
+
         <div className="flex flex-col gap-6 lg:flex-row">
           <RichModDisplay
             data={{
@@ -92,7 +93,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
               href: "https://modrinth.com/mod/sodium",
               id: "AANobbMI",
               description: "Modern rendering engine and client-side optimization mod for Minecraft",
-              downloads: 795_496,
+              downloads: 4_327_347,
               iconUrl: "https://cdn.modrinth.com/data/AANobbMI/icon.png",
             }}
             className="lg:w-1/2"
@@ -105,7 +106,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
               id: "263420",
               description:
                 "Displays the nearby world terrain, players, mobs, entities in the corner of your screen. Lets you create waypoints which help you find the locations you've marked.",
-              downloads: 48_426_867,
+              downloads: 67_922_854,
               iconUrl: "https://media.forgecdn.net/avatars/thumbnails/92/854/256/256/636258666554688823.png",
             }}
             className="lg:w-1/2"
@@ -173,12 +174,10 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
 };
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
+  const [pageviews, users, lists] = await Promise.all([getPageviews(), getUsers(), getLists()]);
+
   return {
-    props: {
-      pageviews: await getPageviews(),
-      users: await getUsers(),
-      lists: await getLists(),
-    },
+    props: { pageviews, users, lists },
     revalidate: 5 * 60,
   };
 };
