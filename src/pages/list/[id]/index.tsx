@@ -108,10 +108,14 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     (async () => {
       const [modrinthMods, curseForgeMods] = await Promise.all([
         getModrinthInfos(
-          data.mods.filter((k) => k.provider === "modrinth").map((k) => ({ id: k.id, version: k.version })),
+          data.mods
+            .filter((k) => k.provider === "modrinth")
+            .map((k) => ({ id: k.id, version: k.version ?? undefined })),
         ),
         getCurseForgeInfos(
-          data.mods.filter((k) => k.provider === "curseforge").map((k) => ({ id: k.id, version: k.version })),
+          data.mods
+            .filter((k) => k.provider === "curseforge")
+            .map((k) => ({ id: k.id, version: k.version ?? undefined })),
         ),
       ]);
 

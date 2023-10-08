@@ -12,7 +12,7 @@ export type ListVisibility = v.Input<typeof ListVisibility>;
 export const Mod = v.object({
   id: v.string(),
   provider: ModProvider,
-  version: v.optional(v.string()),
+  version: v.optional(v.nullable(v.string())),
 });
 
 export type Mod = v.Input<typeof Mod>;
