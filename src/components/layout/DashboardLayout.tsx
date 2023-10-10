@@ -46,11 +46,11 @@ const FeedbackPopup = () => {
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-0 right-0 m-2 flex flex-row gap-x-2 items-center px-2 py-1 bg-pink-500 text-white rounded-sm">
+    <div className="fixed bottom-0 right-0 m-2 flex flex-row items-center gap-x-2 rounded-sm bg-pink-500 px-2 py-1 text-white">
       <a href={FEEDBACK_LINK} className="absolute inset-0 z-10" />
-      <span className="font-medium text-sm">We&apos;re collecting feedback!</span>
-      <button onClick={setToHide} className="p-0.5 z-20">
-        <XIcon className="block w-3 h-3" />
+      <span className="text-sm font-medium">We&apos;re collecting feedback!</span>
+      <button onClick={setToHide} className="z-20 p-0.5">
+        <XIcon className="block h-3 w-3" />
       </button>
     </div>
   );
@@ -60,12 +60,12 @@ export const DashboardLayout = ({ title, children }: Props) => {
   return (
     <GlobalLayout title={title} displayTitle={false} wideLayout>
       <div className="flex w-full flex-col gap-4 md:flex-row">
-        <div className="flex flex-col gap-y-2 md:border-r-2 border-neutral-100 p-4 dark:border-neutral-800 md:min-h-screen md:w-72 md:grow-0 md:shrink-0">
-          <DashboardLink title="Lists" href="/lists" icon={<ListIcon className="block w-5 h-5" />} />
-          <DashboardLink title="Likes" href="/likes" icon={<HeartIcon className="block w-5 h-5" />} />
-          <DashboardLink title="Account" href="/account" icon={<UserIcon className="block w-5 h-5" />} />
+        <div className="flex flex-col gap-y-2 border-neutral-100 p-4 dark:border-neutral-800 md:min-h-screen md:w-72 md:shrink-0 md:grow-0 md:border-r-2">
+          <DashboardLink title="Lists" href="/lists" icon={<ListIcon className="block h-5 w-5" />} />
+          <DashboardLink title="Likes" href="/likes" icon={<HeartIcon className="block h-5 w-5" />} />
+          <DashboardLink title="Account" href="/account" icon={<UserIcon className="block h-5 w-5" />} />
         </div>
-        <div className="py-8 w-full">{children}</div>
+        <div className="w-full py-8">{children}</div>
       </div>
       <FeedbackPopup />
     </GlobalLayout>

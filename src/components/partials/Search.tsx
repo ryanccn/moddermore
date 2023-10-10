@@ -38,7 +38,7 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
   }, [searchProvider, searchQuery, modLoader, gameVersion]);
 
   return (
-    <div className="flex w-full flex-col gap-y-4 mb-4">
+    <div className="mb-4 flex w-full flex-col gap-y-4">
       <div className="mt-10 flex w-full items-center justify-start gap-x-2">
         <select
           name="searchProvider"
@@ -76,14 +76,14 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
         />
 
         <Button type="button" onClick={updateSearch} disabled={isSearching}>
-          {isSearching ? <Spinner className="block w-5 h-5" /> : <SearchIcon className="block w-5 h-5" />}
+          {isSearching ? <Spinner className="block h-5 w-5" /> : <SearchIcon className="block h-5 w-5" />}
           <span>Search</span>
         </Button>
       </div>
 
       {searchResults.length > 0 && (
         <ul className="flex flex-col gap-y-2">
-          {searchResults.map((res) =>
+          {searchResults.map((res, idx) =>
             existing && existing.some((m) => m.id === res.id && m.provider === res.provider) ? null : (
               <RichModDisplay
                 data={res}
@@ -92,7 +92,17 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
                 onClick={() => {
                   onAdd(res);
                 }}
-                parent={{ gameVersion, modloader: modLoader }}
+                onVersion={(version) => {
+                  if (version) {
+                    const workingCopy = [...searchResults];
+                    workingCopy[idx].version = version;
+                    setSearchResults(workingCopy);
+                  }
+                }}
+                parent={{
+                  gameVersion,
+                  modloader: modLoader,
+                }}
               />
             ),
           )}

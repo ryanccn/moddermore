@@ -389,7 +389,7 @@ ${
   return (
     <GlobalLayout title={data.title}>
       {data.description && (
-        <div className="-mt-6 text-lg font-medium mb-8">
+        <div className="-mt-6 mb-8 text-lg font-medium">
           <Markdown skipHtml disallowedElements={["h1", "h2", "h3", "h4", "h5", "h6"]}>
             {data.description}
           </Markdown>
@@ -410,7 +410,7 @@ ${
       </div>
 
       {data.ownerProfile && (
-        <div className="mt-6 flex flex-row items-center gap-x-3 mb-8">
+        <div className="mb-8 mt-6 flex flex-row items-center gap-x-3">
           {data.ownerProfile.profilePicture ? (
             <img
               src={data.ownerProfile.profilePicture}
@@ -431,7 +431,7 @@ ${
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild disabled={!resolvedMods}>
             <Button>
-              <DownloadIcon className="block w-5 h-5" />
+              <DownloadIcon className="block h-5 w-5" />
               <span>Export as...</span>
             </Button>
           </DropdownMenu.Trigger>
@@ -452,13 +452,13 @@ ${
                     }
                   }}
                 >
-                  <FolderArchiveIcon className="block w-5 h-5" />
+                  <FolderArchiveIcon className="block h-5 w-5" />
                   <span>Zip archive</span>
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
                 <button className="radix-dropdown-button" onClick={modrinthExportInit}>
-                  <ModrinthIcon className="block w-5 h-5" />
+                  <ModrinthIcon className="block h-5 w-5" />
                   <span>Modrinth pack</span>
                 </button>
               </DropdownMenu.Item>
@@ -468,7 +468,7 @@ ${
                   onClick={packwizExport}
                   disabled={data.visibility === "private"}
                 >
-                  <CloudIcon className="block w-5 h-5" />
+                  <CloudIcon className="block h-5 w-5" />
                   <span>Copy packwiz link</span>
                 </button>
               </DropdownMenu.Item>
@@ -486,7 +486,7 @@ ${
                     }
                   }}
                 >
-                  <HexagonIcon className="block w-5 h-5" />
+                  <HexagonIcon className="block h-5 w-5" />
                   <span>MultiMC</span>
                 </button>
               </DropdownMenu.Item>
@@ -506,8 +506,8 @@ ${
                   disabled={data.visibility === "private"}
                 >
                   <div className="relative">
-                    <HexagonIcon className="block w-5 h-5" />
-                    <CloudIcon className="block h-3 w-3 fill-current absolute right-0 bottom-0" />
+                    <HexagonIcon className="block h-5 w-5" />
+                    <CloudIcon className="absolute bottom-0 right-0 block h-3 w-3 fill-current" />
                   </div>
                   <span>MultiMC (auto-updating)</span>
                 </button>
@@ -519,7 +519,7 @@ ${
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <Button disabled={!resolvedMods}>
-              <ClipboardIcon className="block w-5 h-5" />
+              <ClipboardIcon className="block h-5 w-5" />
               <span>Copy as...</span>
             </Button>
           </DropdownMenu.Trigger>
@@ -535,7 +535,7 @@ ${
                   onClick={copyMarkdownList}
                   disabled={data.mods.length === 0}
                 >
-                  <MarkdownIcon className="block w-5 h-5" />
+                  <MarkdownIcon className="block h-5 w-5" />
                   <span>Markdown list</span>
                 </button>
               </DropdownMenu.Item>
@@ -545,7 +545,7 @@ ${
                   onClick={copyJSON}
                   disabled={data.mods.length === 0}
                 >
-                  <CodeIcon className="block w-5 h-5" />
+                  <CodeIcon className="block h-5 w-5" />
                   <span>JSON</span>
                 </button>
               </DropdownMenu.Item>
@@ -557,21 +557,21 @@ ${
           {!isLiking ? (
             <HeartIcon
               className={twMerge(
-                "block w-5 h-5",
+                "block h-5 w-5",
                 hasLiked ? "fill-current stroke-none" : "fill-none stroke-current",
               )}
             />
           ) : (
-            <Spinner className="block w-5 h-5 fill-current" />
+            <Spinner className="block h-5 w-5 fill-current" />
           )}
           <span>{!hasLiked ? "Like" : "Unlike"}</span>
         </Button>
 
         <Button onClick={duplicateList}>
           {isDuplicating ? (
-            <Spinner className="block w-5 h-5 fill-current" />
+            <Spinner className="block h-5 w-5 fill-current" />
           ) : (
-            <CopyIcon className="block w-5 h-5" />
+            <CopyIcon className="block h-5 w-5" />
           )}
           <span>Duplicate</span>
         </Button>
@@ -587,37 +587,37 @@ ${
                 disabled={isSaving}
               >
                 {isSaving ? (
-                  <Spinner className="block w-5 h-5 fill-current" />
+                  <Spinner className="block h-5 w-5 fill-current" />
                 ) : (
-                  <EditIcon className="block w-5 h-5" />
+                  <EditIcon className="block h-5 w-5" />
                 )}
                 <span>Edit</span>
               </Button>
             ) : (
               <Button variant="green" onClick={submitHandle} disabled={isSaving}>
-                {isSaving ? <Spinner className="block w-5 h-5" /> : <SaveIcon className="block w-5 h-5" />}
+                {isSaving ? <Spinner className="block h-5 w-5" /> : <SaveIcon className="block h-5 w-5" />}
                 <span>Save</span>
               </Button>
             )}
 
             <Link className={buttonVariants({ variant: "secondary" })} href={`/list/${data.id}/settings`}>
-              <SettingsIcon className="block w-5 h-5" />
+              <SettingsIcon className="block h-5 w-5" />
               <span>Settings</span>
             </Link>
 
             <Link className={buttonVariants({ variant: "primary" })} href={`/list/${data.id}/analytics`}>
-              <AreaChartIcon className="block w-5 h-5" />
+              <AreaChartIcon className="block h-5 w-5" />
               <span>Analytics</span>
             </Link>
 
             <Button variant="danger" onClick={deleteCurrentList} disabled={isDeleting}>
-              {isDeleting ? <Spinner className="block w-5 h-5" /> : <TrashIcon className="block w-5 h-5" />}
+              {isDeleting ? <Spinner className="block h-5 w-5" /> : <TrashIcon className="block h-5 w-5" />}
               {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
             </Button>
 
             {isAdmin && (
               <Button variant="danger" onClick={ban} disabled={isBanning}>
-                {isBanning ? <Spinner className="block w-5 h-5" /> : <HammerIcon className="block w-5 h-5" />}
+                {isBanning ? <Spinner className="block h-5 w-5" /> : <HammerIcon className="block h-5 w-5" />}
                 {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
               </Button>
             )}
@@ -638,9 +638,9 @@ ${
               setResolvedMods((prev) => (prev ? [...prev, mod] : [mod]));
             }}
           />
-          <div className="flex flex-row flex-wrap gap-x-2 justify-end">
+          <div className="flex flex-row flex-wrap justify-end gap-x-2">
             <Button variant="danger" onClick={unpinAll}>
-              <UnplugIcon className="block w-4 h-4" />
+              <UnplugIcon className="block h-4 w-4" />
               <span>Unpin all</span>
             </Button>
           </div>
@@ -773,7 +773,7 @@ ${
               )}
 
               <Button variant="modrinth" type="submit" className="self-start">
-                <ModrinthIcon className="block w-5 h-5" />
+                <ModrinthIcon className="block h-5 w-5" />
                 <span>Start export</span>
               </Button>
             </form>

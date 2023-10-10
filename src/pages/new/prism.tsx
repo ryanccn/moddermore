@@ -124,7 +124,7 @@ const PrismImportPage: NextPage = () => {
           </select>
         </div>
 
-        <h2 className="mt-12 text-sm font-bold text-neutral-700 dark:text-neutral-300 tracking-tight">
+        <h2 className="mt-12 text-sm font-bold tracking-tight text-neutral-700 dark:text-neutral-300">
           Exported instance from MultiMC / Prism Launcher
         </h2>
 
@@ -138,7 +138,7 @@ const PrismImportPage: NextPage = () => {
                 }),
               )}
             >
-              <PaperclipIcon className="block w-5 h-5" />
+              <PaperclipIcon className="block h-5 w-5" />
               <span>Choose file</span>
             </div>
 

@@ -63,7 +63,7 @@ const SigninPage: NextPage = () => {
           </p>
         )}
         <Button
-          className="bg-black hover:bg-black text-white"
+          className="bg-black text-white hover:bg-black"
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
@@ -73,11 +73,11 @@ const SigninPage: NextPage = () => {
             });
           }}
         >
-          <GitHubIcon className="block w-5 h-5 fill-current stroke-transparent" />
+          <GitHubIcon className="block h-5 w-5 fill-current stroke-transparent" />
           <span>Sign in with GitHub</span>
         </Button>
         <Button
-          className="bg-[#5865F2] hover:bg-[#5865F2] text-white"
+          className="bg-[#5865F2] text-white hover:bg-[#5865F2]"
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
@@ -87,11 +87,11 @@ const SigninPage: NextPage = () => {
             });
           }}
         >
-          <DiscordIcon className="block w-5 h-5 fill-current stroke-transparent" />
+          <DiscordIcon className="block h-5 w-5 fill-current stroke-transparent" />
           <span>Sign in with Discord</span>
         </Button>
         <Button
-          className="mb-4 bg-[#4285F4] hover:bg-[#4285F4] text-white"
+          className="mb-4 bg-[#4285F4] text-white hover:bg-[#4285F4]"
           disabled={disableSubmit}
           onClick={async () => {
             setDS(true);
@@ -101,7 +101,7 @@ const SigninPage: NextPage = () => {
             });
           }}
         >
-          <GoogleIcon className="block w-5 h-5 fill-current stroke-transparent" />
+          <GoogleIcon className="block h-5 w-5 fill-current stroke-transparent" />
           <span>Sign in with Google</span>
         </Button>
 

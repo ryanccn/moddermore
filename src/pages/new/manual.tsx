@@ -124,6 +124,7 @@ const ManualImportPage: NextPage = () => {
             <li key={mod.id}>
               <RichModDisplay
                 data={mod}
+                showVersionSelect={false}
                 buttonType="delete"
                 onClick={() => {
                   setInputMods(inputMods.filter((a) => a.id !== mod.id));

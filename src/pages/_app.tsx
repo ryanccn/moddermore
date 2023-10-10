@@ -28,10 +28,10 @@ function CustomApp({ Component, pageProps: { session, ...pageProps } }: AppProps
               },
               className: "react-hot-toast",
               success: {
-                icon: <CheckCircleIcon className="block w-4 h-4 text-green-500 dark:text-green-400" />,
+                icon: <CheckCircleIcon className="block h-4 w-4 text-green-500 dark:text-green-400" />,
               },
               error: {
-                icon: <AlertCircleIcon className="block w-4 h-4 text-red-400" />,
+                icon: <AlertCircleIcon className="block h-4 w-4 text-red-400" />,
               },
             }}
           />

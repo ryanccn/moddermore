@@ -89,7 +89,7 @@ const AccountPage: NextPage = () => {
           </label>
 
           <Button type="submit" className="mt-2 self-start" disabled={inProgress}>
-            {inProgress ? <Spinner className="block w-5 h-5" /> : <SaveIcon className="block w-5 h-5" />}
+            {inProgress ? <Spinner className="block h-5 w-5" /> : <SaveIcon className="block h-5 w-5" />}
             <span>Save</span>
           </Button>
         </form>
@@ -101,7 +101,7 @@ const AccountPage: NextPage = () => {
             signOut({ callbackUrl: "/" });
           }}
         >
-          <LogOutIcon className="block w-5 h-5" />
+          <LogOutIcon className="block h-5 w-5" />
           <span>Sign out</span>
         </Button>
       </div>

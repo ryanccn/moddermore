@@ -64,7 +64,7 @@ const SearchPage: NextPage = () => {
         />
 
         <Button type="button" onClick={updateSearch} disabled={searching}>
-          {searching ? <Spinner className="w-5 h-5" /> : <SearchIcon className="block w-5 h-5" />}
+          {searching ? <Spinner className="h-5 w-5" /> : <SearchIcon className="block h-5 w-5" />}
           <span>Search</span>
         </Button>
       </div>

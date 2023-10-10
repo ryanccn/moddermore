@@ -53,19 +53,19 @@ const ListAnalytics: NextPage<PageProps> = ({ data }) => {
   }, [updateData]);
 
   return (
-    <GlobalLayout title={`Analytics for ${data.title}`} className="px-8 md:px-16 py-20" wideLayout>
+    <GlobalLayout title={`Analytics for ${data.title}`} className="px-8 py-20 md:px-16" wideLayout>
       <Link href={`/list/${data.id}`} className="mb-8 flex flex-row items-center gap-x-1">
         <ArrowLeftIcon className="block h-3 w-3" />
         <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Back</span>
       </Link>
 
-      <Button variant="primary" className="self-end mb-12" disabled={loading} onClick={updateData}>
-        {loading ? <Spinner className="block w-4 h-4" /> : <RefreshCw className="block w-4 h-4" />}
+      <Button variant="primary" className="mb-12 self-end" disabled={loading} onClick={updateData}>
+        {loading ? <Spinner className="block h-4 w-4" /> : <RefreshCw className="block h-4 w-4" />}
         <span>Refresh data</span>
       </Button>
 
       {timeseriesData && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <AreaChart
             className="h-96"
             data={timeseriesData}

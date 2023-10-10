@@ -28,11 +28,11 @@ const ThemeButton = () => {
   return (
     <button onClick={nextTheme} className="p-2">
       {theme === "system" ? (
-        <LaptopIcon className="block w-5 h-5" />
+        <LaptopIcon className="block h-5 w-5" />
       ) : theme === "light" ? (
-        <SunIcon className="block w-5 h-5" />
+        <SunIcon className="block h-5 w-5" />
       ) : (
-        <MoonIcon className="block w-5 h-5" />
+        <MoonIcon className="block h-5 w-5" />
       )}
     </button>
   );
@@ -43,15 +43,15 @@ const Header = () => {
   const isAdmin = useMemo(() => data?.extraProfile.isAdmin === true, [data]);
 
   return (
-    <nav className="flex flex-col md:flex-row w-full md:items-center md:justify-between px-6 py-4 border-b border-b-neutral-200 dark:border-b-neutral-800 gap-8">
-      <div className="flex flex-col md:flex-row md:items-center gap-8">
+    <nav className="flex w-full flex-col gap-8 border-b border-b-neutral-200 px-6 py-4 dark:border-b-neutral-800 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-8 md:flex-row md:items-center">
         <Link href={data ? "/lists" : "/"} className="flex items-center gap-x-2 px-2 py-1">
           <Image src={ModdermoreIcon} width="32" height="32" className="rounded-full" alt="" />
           <span className="text-2xl font-extrabold tracking-tight text-neutral-800 dark:text-neutral-200">
             Moddermore
           </span>
           {isAdmin && (
-            <div className="ml-1 text-xs font-semibold bg-sky-400 text-white rounded-sm px-1.5 py-0.5">
+            <div className="ml-1 rounded-sm bg-sky-400 px-1.5 py-0.5 text-xs font-semibold text-white">
               Admin
             </div>
           )}
@@ -73,7 +73,7 @@ const Header = () => {
         data ? (
           <>
             <Link href="/new" className={buttonVariants()}>
-              <PlusIcon className="block w-5 h-5" />
+              <PlusIcon className="block h-5 w-5" />
               <span>Create</span>
             </Link>
           </>
@@ -83,7 +83,7 @@ const Header = () => {
               nextAuthSignIn();
             }}
           >
-            <UserIcon className="block w-5 h-5" />
+            <UserIcon className="block h-5 w-5" />
             <span>Sign in</span>
           </Button>
         )

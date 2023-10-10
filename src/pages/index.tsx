@@ -59,10 +59,10 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
           <span>Create a new list</span>
         </Link>
 
-        <ArrowDownIcon className="block w-5 h-5 stroke-2 text-neutral-600 dark:text-neutral-400" />
+        <ArrowDownIcon className="block h-5 w-5 stroke-2 text-neutral-600 dark:text-neutral-400" />
       </div>
 
-      <div className="mb-12 flex flex-col lg:items-center gap-x-24 gap-y-16 self-start p-8 lg:flex-row lg:px-20">
+      <div className="mb-12 flex flex-col gap-x-24 gap-y-16 self-start p-8 lg:flex-row lg:items-center lg:px-20">
         {pageviews && (
           <div className="flex flex-col items-start gap-y-2">
             <span className="text-xl font-bold">Monthly pageviews</span>
@@ -128,7 +128,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
         </h3>
         <div className="flex flex-col gap-6 lg:flex-row">
           <div className={buttonVariants({ size: "showcase" })}>
-            <FolderArchiveIcon className="block w-5 h-5" />
+            <FolderArchiveIcon className="block h-5 w-5" />
             <span>ZIP archive</span>
           </div>
           <div
@@ -137,15 +137,15 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
               variant: "modrinth",
             })}
           >
-            <ModrinthIcon className="block w-5 h-5" />
+            <ModrinthIcon className="block h-5 w-5" />
             <span>Modrinth pack</span>
           </div>
           <div className={buttonVariants({ size: "showcase", variant: "sky" })}>
-            <CloudIcon className="block w-5 h-5" />
+            <CloudIcon className="block h-5 w-5" />
             <span>packwiz</span>
           </div>
           <div className={buttonVariants({ size: "showcase", variant: "fuchsia" })}>
-            <HexagonIcon className="block w-5 h-5" />
+            <HexagonIcon className="block h-5 w-5" />
             <span>MultiMC / Prism</span>
           </div>
         </div>

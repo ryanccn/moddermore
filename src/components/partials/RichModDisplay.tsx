@@ -27,12 +27,21 @@ interface Props {
   data: RichMod;
   buttonType?: "add" | "delete" | null;
   onClick?: () => void | Promise<void>;
+  showVersionSelect?: boolean;
   onVersion?: (version: string | null) => void | Promise<void>;
   className?: string;
   parent?: Pick<ModList, "modloader" | "gameVersion">;
 }
 
-export const RichModDisplay = ({ data, buttonType, onClick, onVersion, className, parent }: Props) => {
+export const RichModDisplay = ({
+  data,
+  buttonType,
+  showVersionSelect,
+  onClick,
+  onVersion,
+  className,
+  parent,
+}: Props) => {
   const incompatible = useMemo(
     () => parent && data.gameVersions && !data.gameVersions.includes(parent.gameVersion),
     [parent, data.gameVersions],
@@ -126,35 +135,36 @@ export const RichModDisplay = ({ data, buttonType, onClick, onVersion, className
             rel="noreferrer noopener"
           >
             {providerFormat(data.provider)}
-            <ArrowUpRightIcon className="block w-5 h-5" />
+            <ArrowUpRightIcon className="block h-5 w-5" />
           </a>
         </div>
 
-        <div className="flex flex-col gap-y-2 min-w-fit">
+        <div className="flex min-w-fit flex-col gap-y-2">
           {data.downloads && (
             <div className="flex items-center gap-x-2 sm:justify-end">
-              <DownloadIcon className="block w-4 h-4" />
+              <DownloadIcon className="block h-4 w-4" />
               <p className="font-medium">
                 <strong>{numberFormat(data.downloads)}</strong> downloads
               </p>
             </div>
           )}
 
-          {!buttonType &&
+          {(!buttonType || showVersionSelect === false) &&
             (versionDisplay ? (
               <div className="flex items-center gap-x-2 sm:justify-end">
-                <PinIcon className="block w-4 h-4" />
+                <PinIcon className="block h-4 w-4" />
                 <p className="font-medium">{versionDisplay}</p>
               </div>
             ) : (
               <div className="flex items-center gap-x-2 sm:justify-end">
-                <ShieldCheckIcon className="block w-4 h-4" />
+                <ShieldCheckIcon className="block h-4 w-4" />
                 <p className="font-medium">Latest</p>
               </div>
             ))}
 
-          <div className="flex flex-col mt-2 gap-y-2 sm:items-end">
+          <div className="mt-2 flex flex-col gap-y-2 sm:items-end">
             {!!buttonType &&
+              showVersionSelect !== false &&
               (!selectedVersion || versions === null ? (
                 <Button
                   type="button"
@@ -163,18 +173,18 @@ export const RichModDisplay = ({ data, buttonType, onClick, onVersion, className
                   disabled={isFetchingVersions}
                 >
                   {isFetchingVersions ? (
-                    <Spinner className="block w-4 h-4" />
+                    <Spinner className="block h-4 w-4" />
                   ) : (
-                    <PinIcon className="block w-4 h-4" />
+                    <PinIcon className="block h-4 w-4" />
                   )}
                   <span>Select a version</span>
                 </Button>
               ) : (
-                <div className="flex flex-row gap-x-3 items-center">
+                <div className="flex flex-row items-center gap-x-3">
                   <select
                     name={`${data.id}-version`}
                     value={selectedVersion ?? undefined}
-                    className="mm-input !text-sm font-mono !shadow-none !bg-neutral-200 dark:!bg-neutral-700"
+                    className="mm-input !bg-neutral-200 font-mono !text-sm !shadow-none dark:!bg-neutral-700"
                     onChange={(e) => {
                       setSelectedVersion(e.target.value);
                       if (onVersion) onVersion(e.target.value);
@@ -192,7 +202,7 @@ export const RichModDisplay = ({ data, buttonType, onClick, onVersion, className
                       if (onVersion) onVersion(null);
                     }}
                   >
-                    <UnplugIcon className="block w-4 h-4 text-red-500 dark:text-red-400" />
+                    <UnplugIcon className="block h-4 w-4 text-red-500 dark:text-red-400" />
                   </button>
                 </div>
               ))}
@@ -201,14 +211,14 @@ export const RichModDisplay = ({ data, buttonType, onClick, onVersion, className
               <>
                 {buttonType === "delete" && (
                   <Button type="button" variant="danger" onClick={onClick}>
-                    <TrashIcon className="block w-4 h-4" />
+                    <TrashIcon className="block h-4 w-4" />
                     <span>Delete</span>
                   </Button>
                 )}
 
                 {buttonType === "add" && (
                   <Button type="button" variant="green" onClick={onClick}>
-                    <PlusIcon className="block w-5 h-4" />
+                    <PlusIcon className="block h-4 w-5" />
                     <span>Add</span>
                   </Button>
                 )}
