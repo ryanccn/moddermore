@@ -58,7 +58,13 @@ const securityHeaders = [
 const nextConfig = withPlausibleProxy()(
   withBundleAnalyzer({
     reactStrictMode: true,
-    images: { domains: ["cdn.modrinth.com", "media.forgecdn.net"] },
+    images: {
+      domains: ["cdn.modrinth.com", "media.forgecdn.net"],
+    },
+
+    experimental: {
+      optimizePackageImports: ["lucide-react", "@tremor/react", "date-fns"],
+    },
 
     async headers() {
       if (process.env.NODE_ENV === "development") return [];
