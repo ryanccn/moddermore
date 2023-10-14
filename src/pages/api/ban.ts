@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 
 import * as v from "valibot";
 import { authOptions } from "~/lib/authOptions";
-import { getProfilesCollection } from "~/lib/db/client";
+import { getListsCollection, getProfilesCollection } from "~/lib/db/client";
 
 const validate = v.object({ id: v.string([v.minLength(1)]) });
 
@@ -26,6 +26,9 @@ const handler: NextApiHandler = async (req, res) => {
 
   const profiles = await getProfilesCollection();
   await profiles.updateOne({ userId: banId }, { $set: { banned: true } });
+
+  const lists = await getListsCollection();
+  await lists.deleteMany({ owner: banId });
 
   res.json({ ok: true });
 };
