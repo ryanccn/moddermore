@@ -49,6 +49,8 @@
     "@types/react-dom": "18.2.13",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
+    "@upstash/ratelimit": "^0.4.4",
+    "@vercel/kv": "^0.2.3",
     "autoprefixer": "^10.4.16",
     "discord-api-types": "^0.37.60",
     "eslint": "^8.51.0",

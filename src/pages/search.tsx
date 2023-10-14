@@ -21,22 +21,25 @@ const SearchPage: NextPage = () => {
 
   const isAdmin = useMemo(() => session.data?.extraProfile.isAdmin === true, [session.data]);
 
-  const updateSearch = useCallback(() => {
+  const updateSearch = useCallback(async () => {
     setSearching(true);
 
-    fetch("/api/search", {
+    const resp = await fetch("/api/search", {
       method: "POST",
       body: JSON.stringify({ query }),
       headers: { "content-type": "application/json" },
-    })
-      .then((a) => a.json() as Promise<ModListWithExtraData[]>)
-      .then(setLists)
-      .catch(() => {
-        toast.error("Failed to fetch lists!");
-      })
-      .finally(() => {
-        setSearching(false);
-      });
+    });
+
+    if (resp.status === 429) {
+      toast.error("You are being rate limited!");
+    } else if (!resp.ok) {
+      toast.error("Failed to search for lists!");
+    } else {
+      const data = (await resp.json()) as ModListWithExtraData[];
+      setLists(data);
+    }
+
+    setSearching(false);
   }, [query]);
 
   return (
