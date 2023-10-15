@@ -134,7 +134,7 @@
   }
 
   .animate-spin-fast {
-    animation: spin-fast 0.25s linear infinite;
+    animation: spin-fast 0.5s linear infinite;
   }
 
   .skeleton {
