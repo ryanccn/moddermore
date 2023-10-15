@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 
 import Link from "next/link";
+import { Metadata } from "./Metadata";
 
-import { loaderFormat } from "~/lib/strings";
 import type { ModList, ModListWithExtraData } from "~/types/moddermore";
 
 interface BasicProps {
@@ -25,15 +25,8 @@ export const ModListInList = (props: BasicProps | ExtraProps) => {
       <h2 className="flex justify-between text-lg font-semibold">
         <span>{baseData.title}</span>
       </h2>
-      <div className="data-list text-sm">
-        <p>
-          For Minecraft <strong>{baseData.gameVersion}</strong> with{" "}
-          <strong>{loaderFormat(baseData.modloader)}</strong>
-        </p>
-        <p>
-          Created <strong>{new Date(baseData.created_at).toDateString()}</strong>
-        </p>
-      </div>
+
+      <Metadata data={baseData} />
 
       {"listWithExtra" in props && props.listWithExtra.ownerProfile && (
         <div className="mt-4 flex flex-row items-center gap-x-3">

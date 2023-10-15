@@ -76,11 +76,15 @@
     @apply mm-input;
   }
 
-  .data-list {
-    @apply flex flex-col gap-y-1 text-sm text-neutral-700 dark:text-neutral-300;
+  .metadata {
+    @apply flex flex-col gap-y-2 text-sm text-neutral-700 dark:text-neutral-300;
   }
 
-  .data-list strong {
+  .metadata > div {
+    @apply flex flex-row items-center gap-x-2;
+  }
+
+  .metadata > div strong {
     @apply font-medium text-black dark:text-white;
   }
 

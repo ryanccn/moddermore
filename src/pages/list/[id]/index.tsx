@@ -7,7 +7,6 @@ import type { ModListCreate, ModListWithExtraData, RichMod } from "~/types/modde
 import { richModToMod } from "~/lib/db/conversions";
 import { getInfos as getCurseForgeInfos } from "~/lib/metadata/curseforge";
 import { getInfos as getModrinthInfos } from "~/lib/metadata/modrinth";
-import { loaderFormat } from "~/lib/strings";
 
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -58,6 +57,7 @@ import { MarkdownIcon, ModrinthIcon } from "~/components/icons";
 
 import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
+import { Metadata } from "~/components/partials/Metadata";
 
 interface PageProps {
   data: ModListWithExtraData;
@@ -396,18 +396,7 @@ ${
         </div>
       )}
 
-      <div className="data-list">
-        <p>
-          For Minecraft <strong>{data.gameVersion}</strong> with{" "}
-          <strong>{loaderFormat(data.modloader)}</strong>
-        </p>
-        <p>
-          Created <strong>{new Date(data.created_at).toDateString()}</strong>
-        </p>
-        <p>
-          <strong>{data.likes}</strong> {data.likes === 1 ? "like" : "likes"}
-        </p>
-      </div>
+      <Metadata data={data} />
 
       {data.ownerProfile && (
         <div className="mb-8 mt-6 flex flex-row items-center gap-x-3">
