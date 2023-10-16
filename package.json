@@ -23,7 +23,7 @@
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
     "lucide-react": "^0.287.0",
-    "nanoid": "^5.0.1",
+    "nanoid": "^5.0.2",
     "next": "^13.5.4",
     "next-auth": "^4.23.2",
     "next-mdx-remote": "^4.4.1",
