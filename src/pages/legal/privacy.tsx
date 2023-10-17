@@ -1,8 +1,12 @@
 import type { GetStaticProps, NextPage } from "next";
 import { readFile } from "node:fs/promises";
 
-import { remark } from "remark";
-import remarkHtml from "remark-html";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeSanitize from "rehype-sanitize";
+import rehypeStringify from "rehype-stringify";
+
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
 
 interface PageProps {
@@ -19,8 +23,12 @@ const PrivacyPolicy: NextPage<PageProps> = ({ content }) => {
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
   const markdown = await readFile("./legal/privacy.md", { encoding: "utf8" });
-  const html = await remark()
-    .use(remarkHtml)
+
+  const html = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeSanitize)
+    .use(rehypeStringify)
     .process(markdown)
     .then((vfile) => vfile.toString());
 
