@@ -16,7 +16,7 @@
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-slot": "^1.0.2",
-    "@tremor/react": "^3.9.2",
+    "@tremor/react": "^3.10.0",
     "class-variance-authority": "^0.7.0",
     "date-fns": "^2.30.0",
     "fast-xml-parser": "^4.3.2",
