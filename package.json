@@ -61,7 +61,7 @@
     "kleur": "^4.1.5",
     "mongodb": "^6.1.0",
     "node-fetch": "^3.3.2",
-    "nodemailer": "^6.9.6",
+    "nodemailer": "^6.9.7",
     "p-limit": "^4.0.0",
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
