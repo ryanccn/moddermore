@@ -1,9 +1,9 @@
-import { useEffect, type ReactNode, useState, useCallback } from "react";
+import { type ReactNode } from "react";
 
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { HeartIcon, ListIcon, UserIcon, XIcon } from "lucide-react";
+import { HeartIcon, ListIcon, UserIcon } from "lucide-react";
 import { buttonVariants } from "../ui/Button";
 import { GlobalLayout } from "./GlobalLayout";
 
@@ -28,33 +28,33 @@ const DashboardLink = ({ title, href, icon }: { title: string; href: string; ico
   );
 };
 
-const FEEDBACK_LINK = "https://tally.so/r/mRM6AJ";
+// const FEEDBACK_LINK = "https://tally.so/r/mRM6AJ";
 
-const FeedbackPopup = () => {
-  const [show, setShow] = useState(false);
+// const FeedbackPopup = () => {
+//   const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    const hideSetting = localStorage.getItem("hide-feedback-popup-v1");
-    if (hideSetting !== "true") setShow(true);
-  }, []);
+//   useEffect(() => {
+//     const hideSetting = localStorage.getItem("hide-feedback-popup-v1");
+//     if (hideSetting !== "true") setShow(true);
+//   }, []);
 
-  const setToHide = useCallback(() => {
-    localStorage.setItem("hide-feedback-popup-v1", "true");
-    setShow(false);
-  }, []);
+//   const setToHide = useCallback(() => {
+//     localStorage.setItem("hide-feedback-popup-v1", "true");
+//     setShow(false);
+//   }, []);
 
-  if (!show) return null;
+//   if (!show) return null;
 
-  return (
-    <div className="fixed bottom-0 right-0 m-2 flex flex-row items-center gap-x-2 rounded-sm bg-pink-500 px-2 py-1 text-white">
-      <a href={FEEDBACK_LINK} className="absolute inset-0 z-10" />
-      <span className="text-sm font-medium">We&apos;re collecting feedback!</span>
-      <button onClick={setToHide} className="z-20 p-0.5">
-        <XIcon className="block h-3 w-3" />
-      </button>
-    </div>
-  );
-};
+//   return (
+//     <div className="fixed bottom-0 right-0 m-2 flex flex-row items-center gap-x-2 rounded-sm bg-pink-500 px-2 py-1 text-white">
+//       <a href={FEEDBACK_LINK} className="absolute inset-0 z-10" />
+//       <span className="text-sm font-medium">We&apos;re collecting feedback!</span>
+//       <button onClick={setToHide} className="z-20 p-0.5">
+//         <XIcon className="block h-3 w-3" />
+//       </button>
+//     </div>
+//   );
+// };
 
 export const DashboardLayout = ({ title, children }: Props) => {
   return (
@@ -67,7 +67,7 @@ export const DashboardLayout = ({ title, children }: Props) => {
         </div>
         <div className="w-full py-8">{children}</div>
       </div>
-      <FeedbackPopup />
+      {/* <FeedbackPopup /> */}
     </GlobalLayout>
   );
 };
