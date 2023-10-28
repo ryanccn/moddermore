@@ -59,7 +59,7 @@ const nextConfig = withPlausibleProxy()(
   withBundleAnalyzer({
     reactStrictMode: true,
     images: {
-      domains: ["cdn.modrinth.com", "media.forgecdn.net"],
+      remotePatterns: [{ hostname: "cdn.modrinth.com" }, { hostname: "media.forgecdn.net" }],
     },
 
     experimental: {
