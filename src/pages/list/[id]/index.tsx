@@ -495,8 +495,7 @@ ${
                   disabled={data.visibility === "private"}
                 >
                   <div className="relative">
-                    <HexagonIcon className="block h-5 w-5" />
-                    <CloudIcon className="absolute bottom-0 right-0 block h-3 w-3 fill-current" />
+                    <HexagonIcon className="block h-5 w-5 fill-current" />
                   </div>
                   <span>MultiMC (auto-updating)</span>
                 </button>
