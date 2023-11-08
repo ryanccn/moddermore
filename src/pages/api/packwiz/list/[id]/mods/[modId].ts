@@ -36,6 +36,7 @@ const h: NextApiHandler = async (req, res) => {
       gameVersions: [list.gameVersion],
       loader: list.modloader,
       name: "",
+      version: list.mods.find((m) => m.id === id)!.version ?? undefined,
     });
   } else if (provider === "curseforge") {
     data = await getCurseForgeTOML({
@@ -43,6 +44,7 @@ const h: NextApiHandler = async (req, res) => {
       gameVersions: [list.gameVersion],
       loader: list.modloader,
       name: "",
+      version: list.mods.find((m) => m.id === id)!.version ?? undefined,
     });
   }
 
