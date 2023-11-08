@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 import ModdermoreIcon from "../../../public/icons/moddermore-negative.png";
 
 import { LaptopIcon, MoonIcon, PlusIcon, SunIcon, UserIcon } from "lucide-react";
@@ -57,7 +59,7 @@ const Header = () => {
           )}
         </Link>
 
-        <div className="font-display flex flex-row flex-wrap items-center gap-x-2 font-semibold">
+        <div className="flex flex-row flex-wrap items-center gap-x-2 font-display font-semibold">
           <Link className="px-2 py-1" href="/search">
             Search
           </Link>
@@ -71,12 +73,21 @@ const Header = () => {
 
       {status !== "loading" ? (
         data ? (
-          <>
+          <div className="flex flex-row items-center gap-x-4">
             <Link href="/new" className={buttonVariants()}>
               <PlusIcon className="block h-5 w-5" />
               <span>Create</span>
             </Link>
-          </>
+            <Link href="/account" className="p-1">
+              <img
+                src={data.extraProfile.profilePicture ?? undefined}
+                width={32}
+                height={32}
+                alt="Manage account"
+                className="rounded-full bg-neutral-100 dark:bg-neutral-800"
+              />
+            </Link>
+          </div>
         ) : (
           <Button
             onClick={() => {
