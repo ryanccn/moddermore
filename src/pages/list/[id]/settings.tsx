@@ -180,7 +180,8 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
                 <span className="font-display text-lg font-medium">Unlisted</span>
               </div>
               <span className="text-xs opacity-60">
-                Anyone with the link will be able to see the list, and it might be indexed by search engines.
+                Anyone with the link will be able to see the list, and it should not be indexed by search
+                engines.
               </span>
             </MMRadio>
             <MMRadio name="visibility" value={"public"} currentValue={visibility} onCheck={setVisibility}>
@@ -189,7 +190,8 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
                 <span className="font-display text-lg font-medium">Public</span>
               </div>
               <span className="text-xs opacity-60">
-                Anyone with the link will be able to see the list, and it will be available in Search.
+                Anyone with the link will be able to see the list, and it will be available both in Search and
+                to search engines.
               </span>
             </MMRadio>
           </div>
@@ -249,6 +251,8 @@ export const getServerSideProps: GetServerSideProps<PageProps | { notFound: true
 }) => {
   if (typeof query.id !== "string") throw new Error("?");
   const data = await getSpecificList(query.id);
+
+  res.setHeader("x-robots-tag", "noindex");
 
   if (!data || data.ownerProfile.banned) {
     return {

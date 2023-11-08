@@ -112,6 +112,8 @@ export const getServerSideProps: GetServerSideProps<PageProps | { notFound: true
   if (typeof query.id !== "string") throw new Error("?");
   const data = await getSpecificList(query.id);
 
+  res.setHeader("x-robots-tag", "noindex");
+
   if (!data || data.ownerProfile.banned) {
     return {
       notFound: true,

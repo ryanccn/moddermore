@@ -836,6 +836,8 @@ export const getServerSideProps: GetServerSideProps<PageProps | { notFound: true
     };
   }
 
+  if (data.visibility !== "public") res.setHeader("x-robots-tag", "noindex");
+
   return {
     props: {
       data: { ...data },
