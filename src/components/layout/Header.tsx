@@ -47,7 +47,7 @@ const Header = () => {
       <div className="flex flex-col gap-8 md:flex-row md:items-center">
         <Link href={data ? "/lists" : "/"} className="flex items-center gap-x-2 px-2 py-1">
           <Image src={ModdermoreIcon} width="32" height="32" className="rounded-full" alt="" />
-          <span className="text-2xl font-extrabold tracking-tight text-neutral-800 dark:text-neutral-200">
+          <span className="font-display text-2xl font-extrabold tracking-tight text-neutral-800 dark:text-neutral-200">
             Moddermore
           </span>
           {isAdmin && (
@@ -57,11 +57,11 @@ const Header = () => {
           )}
         </Link>
 
-        <div className="flex flex-row flex-wrap items-center gap-x-2">
-          <Link className="px-2 py-1 font-medium" href="/search">
+        <div className="font-display flex flex-row flex-wrap items-center gap-x-2 font-semibold">
+          <Link className="px-2 py-1" href="/search">
             Search
           </Link>
-          <Link className="px-2 py-1 font-medium" href="/changelog">
+          <Link className="px-2 py-1" href="/changelog">
             Changelog
           </Link>
 

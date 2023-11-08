@@ -60,10 +60,21 @@ export const Footer = () => {
         </a>
       </div>
 
-      <Link href="/legal/privacy">Privacy Policy</Link>
-      <a href="https://github.com/ryanccn/moddermore" className="mb-4" rel="noreferrer">
-        Code open source under AGPLv3
-      </a>
+      <div className="mb-4 flex flex-col gap-y-2">
+        <Link
+          className="text-sm font-normal text-neutral-500 transition-colors hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+          href="/legal/privacy"
+        >
+          Privacy Policy
+        </Link>
+        <a
+          href="https://github.com/ryanccn/moddermore"
+          className="text-sm font-normal text-neutral-500 transition-colors hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+          rel="noreferrer"
+        >
+          Code open source under AGPLv3
+        </a>
+      </div>
 
       <PoweredByVercel />
     </footer>

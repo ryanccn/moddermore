@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 const buttonVariants = cva(
   [
     "flex items-center gap-x-3 rounded-md transition-colors",
-    "font-medium tracking-tight",
+    "font-medium font-display",
     "disabled:opacity-90",
   ],
   {

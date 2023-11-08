@@ -9,21 +9,21 @@ export const Metadata = ({ data }: { data: ModList | ModListWithExtraData }) => 
       <div>
         <BoxIcon className="block h-4 w-4" />
         <span>
-          For Minecraft <strong>{data.gameVersion}</strong> with{" "}
-          <strong>{loaderFormat(data.modloader)}</strong>
+          For Minecraft <strong className="font-display">{data.gameVersion}</strong> with{" "}
+          <strong className="font-display">{loaderFormat(data.modloader)}</strong>
         </span>
       </div>
       <div>
         <Clock10Icon className="block h-4 w-4" />
         <span>
-          Created <strong>{new Date(data.created_at).toDateString()}</strong>
+          Created <strong className="font-display">{new Date(data.created_at).toDateString()}</strong>
         </span>
       </div>
 
       {"likes" in data && (
         <div>
           <HeartIcon className="block h-4 w-4" />
-          <span>
+          <span className="font-display">
             <strong>{data.likes}</strong> {data.likes === 1 ? "like" : "likes"}
           </span>
         </div>
@@ -37,7 +37,9 @@ export const Metadata = ({ data }: { data: ModList | ModListWithExtraData }) => 
         ) : (
           <LockIcon className="block h-4 w-4" />
         )}
-        <strong>{data.visibility[0].toUpperCase() + data.visibility.slice(1)}</strong>
+        <strong className="font-display font-bold">
+          {data.visibility[0].toUpperCase() + data.visibility.slice(1)}
+        </strong>
       </div>
     </div>
   );

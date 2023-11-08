@@ -111,7 +111,7 @@ export const RichModDisplay = ({
           <img
             src={data.iconUrl}
             alt={`Icon of ${data.name}`}
-            className="mr-4 h-16 w-16 rounded-2xl object-contain"
+            className="mr-6 h-16 w-16 rounded-2xl object-contain"
             width={64}
             height={64}
           />
@@ -121,7 +121,7 @@ export const RichModDisplay = ({
       <div className="flex grow flex-col gap-x-4 gap-y-2 sm:flex-row sm:justify-between">
         <div className="flex flex-col justify-between gap-y-2">
           <div className="flex flex-col gap-y-1">
-            <h2 className="mr-2 text-xl font-bold">{data.name}</h2>
+            <h2 className="font-display mr-2 text-xl font-bold">{data.name}</h2>
             <p className="my-0.5">{data.description}</p>
           </div>
 

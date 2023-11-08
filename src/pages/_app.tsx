@@ -1,4 +1,5 @@
 import "~/styles/tailwind.css";
+import "~/styles/satoshi.css";
 import "~/styles/radix.css";
 import type { AppProps } from "next/app";
 

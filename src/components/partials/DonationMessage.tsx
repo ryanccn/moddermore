@@ -7,7 +7,7 @@ const KOFI_URL = "https://ko-fi.com/RyanCaoDev";
 const LOCALSTORAGE_ID = "1251279C-5C7B-4EE8-AE2A-3254EE386C77";
 
 const donateButtonClassName =
-  "self-start rounded-lg bg-yellow-500 px-6 py-3 text-lg font-medium text-white transition-shadow focus:ring-yellow-500/30";
+  "self-start rounded-lg bg-yellow-500 px-6 py-3 text-lg font-medium text-white transition-shadow focus:ring-yellow-500/30 font-display";
 
 export const DonationMessage = () => {
   const [show, setShow] = useState(false);
@@ -24,9 +24,9 @@ export const DonationMessage = () => {
   if (!show) return null;
 
   return (
-    <div className="not-prose flex flex-col rounded-lg bg-neutral-100 p-6 dark:bg-neutral-800">
-      <h2 className="mb-6 text-xl font-semibold">We need your help!</h2>
-      <p className="mb-10">
+    <div className="not-prose flex flex-col rounded-lg bg-neutral-100 p-8 dark:bg-neutral-800">
+      <h2 className="font-display mb-5 text-2xl font-extrabold">We need your help!</h2>
+      <p className="mb-10 text-sm">
         Moddermore currently runs completely without revenue, free for anyone to create an account and use all
         the features without any hindrance. As a result, we rely completely on donations to cover our hosting
         costs. In addition, we have poured countless hours into making Moddermore one of the best services out
@@ -52,7 +52,10 @@ export const DonationMessage = () => {
         </div>
       </div>
 
-      <button className="mt-4 self-start text-xs font-medium" onClick={dontShowAgain}>
+      <button
+        className="mt-8 self-start text-xs font-medium opacity-25 transition-opacity hover:opacity-50"
+        onClick={dontShowAgain}
+      >
         Don&apos;t show again 😭
       </button>
     </div>

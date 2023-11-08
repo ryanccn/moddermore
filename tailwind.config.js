@@ -10,6 +10,9 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      fontFamily: {
+        display: ["Satoshi Variable", "Satoshi", defaultTheme.fontFamily.sans],
+      },
       colors: {
         tremor: {
           brand: {

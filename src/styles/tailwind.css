@@ -41,7 +41,7 @@
   }
 
   .title {
-    @apply mb-16 text-5xl font-extrabold tracking-tight;
+    @apply font-display mb-16 text-5xl font-extrabold tracking-tight;
     text-wrap: pretty;
   }
 
@@ -69,7 +69,7 @@
   }
 
   .moddermore-form-label span {
-    @apply text-sm font-semibold;
+    @apply font-display text-sm font-bold;
   }
 
   .moddermore-form-label :is(input, select) {
@@ -123,12 +123,6 @@
 
   .moddermore-footer {
     @apply flex w-full flex-col items-start gap-y-4 bg-neutral-100 px-6 py-16 dark:bg-neutral-800 lg:px-20;
-  }
-
-  .moddermore-footer > p,
-  .moddermore-footer > a {
-    @apply text-sm font-normal text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200;
-    @apply transition-colors;
   }
 
   @keyframes spin-fast {

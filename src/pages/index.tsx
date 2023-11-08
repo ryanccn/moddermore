@@ -36,7 +36,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
     <GlobalLayout title="Moddermore" titleSuffix={false} displayTitle={false} wideLayout>
       <div className="mb-14 flex min-h-screen flex-col justify-center p-6 lg:px-20">
         <div className="mb-20 flex flex-col">
-          <h2 className="mb-10 text-6xl font-extrabold tracking-tight">
+          <h2 className="font-display mb-10 text-6xl font-extrabold tracking-tight">
             Share the mods you use with{" "}
             <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text font-extrabold text-transparent">
               anyone
@@ -65,23 +65,23 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
       <div className="mb-12 flex flex-col gap-x-24 gap-y-16 self-start p-8 lg:flex-row lg:items-center lg:px-20">
         {pageviews && (
           <div className="flex flex-col items-start gap-y-2">
-            <span className="text-xl font-bold">Monthly pageviews</span>
+            <span className="font-display text-xl font-bold">Monthly pageviews</span>
             <span className="text-6xl font-black">{numberFormat(pageviews)}</span>
           </div>
         )}
         <div className="flex flex-col items-start gap-y-2">
-          <span className="text-xl font-bold">Active users</span>
+          <span className="font-display text-xl font-bold">Active users</span>
           <span className="text-6xl font-black">{numberFormat(users)}</span>
         </div>
         <div className="flex flex-col items-start gap-y-2">
-          <span className="text-xl font-bold">Lists created</span>
+          <span className="font-display text-xl font-bold">Lists created</span>
           <span className="text-6xl font-black">{numberFormat(lists)}</span>
         </div>
       </div>
 
-      <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:px-20">
-        <h2 className="text-4xl font-bold">Import from many platforms</h2>
-        <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+      <div className="mb-24 flex flex-col items-start gap-y-4 p-6 lg:px-20">
+        <h2 className="font-display text-4xl font-bold">Import from many platforms</h2>
+        <h3 className="font-display mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           All of your mods, but in the same place.
         </h3>
 
@@ -115,15 +115,15 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
       </div>
 
       <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:px-20">
-        <h2 className="text-4xl font-bold">Share with your friends</h2>
-        <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+        <h2 className="font-display text-4xl font-bold">Share with your friends</h2>
+        <h3 className="font-display mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Or just publish the link publicly anywhere you want!
         </h3>
       </div>
 
-      <div className="mb-24 mt-24 flex flex-col items-start gap-y-4 p-6 lg:px-20">
-        <h2 className="text-4xl font-bold">Export to anywhere</h2>
-        <h3 className="mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+      <div className="mb-24 mt-16 flex flex-col items-start gap-y-4 p-6 lg:px-20">
+        <h2 className="font-display text-4xl font-bold">Export to anywhere</h2>
+        <h3 className="font-display mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Publishing to Modrinth? Importing to Prism Launcher? We{"'"}ve got you covered.
         </h3>
         <div className="flex flex-col gap-6 lg:flex-row">
@@ -152,17 +152,21 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
       </div>
 
       <div className="mb-24 flex flex-col gap-y-16 p-6 lg:px-20">
-        <h2 className="text-4xl font-bold">Our sponsors</h2>
+        <h2 className="font-display text-4xl font-bold">Our sponsors</h2>
 
         <div className="flex flex-col gap-24 lg:flex-row">
           <div className="flex flex-col gap-y-6">
-            <h3 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">Email</h3>
+            <h3 className="font-display text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
+              Email
+            </h3>
             <a href="https://tutanota.com/">
               <TutanotaIcon className="block w-60 fill-black dark:fill-white" />
             </a>
           </div>
           <div className="flex flex-col gap-y-6">
-            <h3 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">Hosting</h3>
+            <h3 className="font-display text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
+              Hosting
+            </h3>
             <a href="https://vercel.com/?utm_source=moddermore&utm_campaign=oss">
               <VercelIcon className="block w-60 fill-black dark:fill-white" />
             </a>
