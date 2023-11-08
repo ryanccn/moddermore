@@ -41,7 +41,7 @@
   }
 
   .title {
-    @apply font-display mb-16 text-5xl font-extrabold tracking-tight;
+    @apply mb-16 font-display text-5xl font-extrabold tracking-tight;
     text-wrap: pretty;
   }
 
@@ -50,7 +50,7 @@
   }
 
   :not(select).mm-input {
-    @apply w-full rounded bg-neutral-100 px-3 py-2 shadow-sm dark:bg-neutral-800;
+    @apply w-full rounded bg-neutral-50 px-3 py-2 shadow-sm dark:bg-neutral-800;
     @apply border-2 border-transparent;
   }
 
@@ -69,7 +69,7 @@
   }
 
   .moddermore-form-label span {
-    @apply font-display text-sm font-bold;
+    @apply font-display text-sm font-semibold;
   }
 
   .moddermore-form-label :is(input, select) {
