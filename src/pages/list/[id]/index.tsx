@@ -551,7 +551,7 @@ ${
               )}
             />
           ) : (
-            <Spinner className="block h-5 w-5 fill-current" />
+            <Spinner className="block h-5 w-5" />
           )}
           <span>{!hasLiked ? "Like" : "Unlike"}</span>
         </Button>
