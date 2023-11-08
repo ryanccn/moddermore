@@ -712,7 +712,7 @@ ${
               }}
             >
               <label className="flex flex-col gap-y-1">
-                <span className="text-sm font-medium">Name</span>
+                <span className="font-display text-sm font-medium">Name</span>
                 <input
                   className="mm-input"
                   required
@@ -724,7 +724,7 @@ ${
                 />
               </label>
               <label className="flex flex-col gap-y-1">
-                <span className="text-sm font-medium">Version</span>
+                <span className="font-display text-sm font-medium">Version</span>
 
                 <input
                   className="mm-input"
@@ -737,7 +737,7 @@ ${
                 />
               </label>
               <label className="flex flex-col gap-y-1">
-                <span className="text-sm font-medium">CurseForge mods</span>
+                <span className="font-display text-sm font-medium">CurseForge mods</span>
                 <select
                   id="curseforge-strategy"
                   className="mm-input"

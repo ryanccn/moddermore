@@ -18,7 +18,7 @@ const ProgressOverlay = ({ value, max, label }: { value: number; max: number; la
           }}
         >
           <div className="flex flex-col items-center gap-y-6">
-            <Dialog.Title className="text-lg font-medium" id="searching-for-mods-label">
+            <Dialog.Title className="font-display text-lg font-medium" id="searching-for-mods-label">
               {label} ({value} / {max})
             </Dialog.Title>
 
