@@ -2,7 +2,7 @@ import type { NextApiHandler } from "next";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/lib/authOptions";
-import { getLegacyUserLists, getUserLists } from "~/lib/db";
+import { getUserLists } from "~/lib/db";
 
 const h: NextApiHandler = async (req, res) => {
   if (req.method !== "GET") {
@@ -18,9 +18,7 @@ const h: NextApiHandler = async (req, res) => {
   }
 
   const lists = await getUserLists(sess.user.id);
-  const legacyLists = await getLegacyUserLists(sess.user.email);
-
-  res.status(200).json([...lists, ...legacyLists]);
+  res.status(200).json(lists);
 };
 
 export default h;
