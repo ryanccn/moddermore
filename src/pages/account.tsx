@@ -64,7 +64,7 @@ const AccountPage: NextPage = () => {
           }}
         >
           <label className="flex flex-col gap-y-2">
-            <span className="text-sm font-semibold">Name</span>
+            <span className="font-display text-sm font-semibold">Name</span>
             <input
               className="mm-input max-w-prose"
               type="text"
@@ -76,7 +76,7 @@ const AccountPage: NextPage = () => {
             />
           </label>
           <label className="flex flex-col gap-y-2">
-            <span className="text-sm font-semibold">Profile picture</span>
+            <span className="font-display text-sm font-semibold">Profile picture</span>
             <input
               className="mm-input max-w-prose"
               type="url"
