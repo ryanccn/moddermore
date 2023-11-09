@@ -43,6 +43,12 @@ export const getLatestQuilt = () =>
     url: "https://maven.quiltmc.org/repository/release/org/quiltmc/quilt-loader/maven-metadata.xml",
   });
 
+export const getLatestNeoforge = (gameVersion: string) =>
+  getFromMaven({
+    url: "https://maven.neoforged.net/net/neoforged/forge/maven-metadata.xml",
+    gameVersion,
+  });
+
 export const getLatestForge = (gameVersion: string) =>
   getFromMaven({
     url: "https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml",

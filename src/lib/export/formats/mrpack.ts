@@ -1,5 +1,10 @@
 import JSZip from "jszip";
-import { getLatestFabric, getLatestForge, getLatestQuilt } from "../upstream/loaderVersions";
+import {
+  getLatestFabric,
+  getLatestForge,
+  getLatestNeoforge,
+  getLatestQuilt,
+} from "../upstream/loaderVersions";
 
 import { saveAs } from "file-saver";
 import { getDownloadURLs } from "../upstream/download";
@@ -51,6 +56,8 @@ const generateModrinthPack = async (
         ? { "fabric-loader": await getLatestFabric() }
         : list.modloader === "quilt"
         ? { "quilt-loader": await getLatestQuilt() }
+        : list.modloader === "neoforge"
+        ? { neoforge: await getLatestNeoforge(list.gameVersion) }
         : {}),
     },
   };

@@ -17,7 +17,7 @@ const FeriumImportPage: NextPage = () => {
 
   const [title, setTitle] = useState("");
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
-  const [modLoader, setModLoader] = useState<ModLoader>("quilt");
+  const [modLoader, setModLoader] = useState<ModLoader>("fabric");
   const [feriumCopyPaste, setFeriumCopyPaste] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -99,6 +99,7 @@ const FeriumImportPage: NextPage = () => {
             <option value="quilt">Quilt</option>
             <option value="fabric">Fabric</option>
             <option value="forge">Forge</option>
+            <option value="neoforge">NeoForge</option>
           </select>
         </div>
 

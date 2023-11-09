@@ -2,7 +2,12 @@ import { type AnyJson, JsonMap, stringify } from "@iarna/toml";
 
 import { getSpecificList } from "~/lib/db";
 import { sha512 } from "~/lib/sha512";
-import { getLatestFabric, getLatestForge, getLatestQuilt } from "../upstream/loaderVersions";
+import {
+  getLatestFabric,
+  getLatestForge,
+  getLatestNeoforge,
+  getLatestQuilt,
+} from "../upstream/loaderVersions";
 
 import pLimit from "p-limit";
 import { getCFDownload } from "../upstream/curseforge";
@@ -26,6 +31,7 @@ export const getPackTOML = async (id: string) => {
       ...(list.modloader === "fabric" ? { fabric: await getLatestFabric() } : {}),
       ...(list.modloader === "quilt" ? { quilt: await getLatestQuilt() } : {}),
       ...(list.modloader === "forge" ? { forge: await getLatestForge(list.gameVersion) } : {}),
+      ...(list.modloader === "neoforge" ? { forge: await getLatestNeoforge(list.gameVersion) } : {}),
     },
     index: { file: "index.toml", "hash-format": "sha512", hash: indexHash },
   });

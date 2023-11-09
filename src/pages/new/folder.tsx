@@ -25,7 +25,7 @@ const FolderImportPage: NextPage = () => {
   const [title, setTitle] = useState("");
   const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
   const [modZipFile, setModZipFile] = useState<File | null>(null);
-  const [modLoader, setModLoader] = useState<ModLoader>("quilt");
+  const [modLoader, setModLoader] = useState<ModLoader>("fabric");
 
   const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [submitting, setSubmitting] = useState(false);
@@ -116,6 +116,7 @@ const FolderImportPage: NextPage = () => {
             <option value="quilt">Quilt</option>
             <option value="fabric">Fabric</option>
             <option value="forge">Forge</option>
+            <option value="neoforge">NeoForge</option>
           </select>
         </div>
 

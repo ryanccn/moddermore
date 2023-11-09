@@ -29,6 +29,9 @@ export const loaderFormat = (loader: ModLoader) => {
     case "quilt": {
       return "Quilt";
     }
+    case "neoforge": {
+      return "NeoForge";
+    }
     default: {
       return "Unknown";
     }

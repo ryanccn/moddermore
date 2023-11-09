@@ -231,6 +231,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
               <option value="quilt">Quilt</option>
               <option value="fabric">Fabric</option>
               <option value="forge">Forge</option>
+              <option value="neoforge">NeoForge</option>
             </select>
           </label>
         </div>

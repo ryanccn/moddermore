@@ -1,3 +1,5 @@
+import minecraftVersions from "~/lib/minecraftVersions.json";
+
 import type { RichMod } from "~/types/moddermore";
 import type { ModrinthProject, ModrinthVersion } from "~/types/modrinth";
 
@@ -73,13 +75,18 @@ export const fetchVersions = async ({
 }) => {
   const patchedLoaders = [loader];
   if (loader === "quilt") patchedLoaders.push("fabric");
+  if (loader === "neoforge") patchedLoaders.push("forge");
+
+  const compatGameVersions = minecraftVersions.filter((a) =>
+    a.startsWith(gameVersion.split(".").slice(0, 2).join(".")),
+  );
 
   const res = await fetchWithRetry(
     `https://api.modrinth.com/v2/project/${encodeURIComponent(
       projectId,
-    )}/version?loaders=[${encodeURIComponent(
-      patchedLoaders.map((l) => `"${l}"`).join(","),
-    )}]&game_versions=["${encodeURIComponent(gameVersion)}"]`,
+    )}/version?loaders=${encodeURIComponent(
+      JSON.stringify(patchedLoaders),
+    )}&game_versions=${encodeURIComponent(JSON.stringify(compatGameVersions))}`,
     {
       headers: { "User-Agent": "Moddermore/noversion" },
     },

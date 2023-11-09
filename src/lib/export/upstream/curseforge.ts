@@ -7,7 +7,8 @@ export const callCurseForgeAPI = async ({ id, gameVersions, loader, version }: P
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
   if (!API_KEY) throw new Error("No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!");
 
-  const modLoaderType = loader === "forge" ? 1 : loader === "fabric" ? 4 : loader === "quilt" ? 5 : -1;
+  const modLoaderType =
+    loader === "forge" || loader === "neoforge" ? 1 : loader === "fabric" ? 4 : loader === "quilt" ? 5 : -1;
 
   if (version) {
     const res = await fetchWithRetry(

@@ -3,7 +3,7 @@ import * as v from "valibot";
 import minecraftVersions from "../minecraftVersions.json";
 
 import type { CurseForgeSearchResult } from "~/types/curseforge";
-import type { RichMod } from "~/types/moddermore";
+import { ModLoader, type RichMod } from "~/types/moddermore";
 import type { ModrinthSearchResult } from "~/types/modrinth";
 
 import { fetchWithRetry } from "../fetchWithRetry";
@@ -11,7 +11,7 @@ import { fetchWithRetry } from "../fetchWithRetry";
 export const optionsZ = v.object({
   platform: v.union([v.literal("modrinth"), v.literal("curseforge")]),
   query: v.string(),
-  loader: v.union([v.literal("quilt"), v.literal("fabric"), v.literal("forge")]),
+  loader: ModLoader,
   gameVersion: v.string(),
 });
 
@@ -28,7 +28,11 @@ export const search = async ({ platform, query, loader, gameVersion }: Options):
         JSON.stringify([
           [`project_type:mod`],
           compatGameVersions.map((a) => `versions:${a}`),
-          loader === "quilt" ? ["categories:fabric", "categories:quilt"] : [`categories:${loader}`],
+          loader === "quilt"
+            ? ["categories:fabric", "categories:quilt"]
+            : loader === "neoforge"
+            ? ["categories:neoforge", "categories:forge"]
+            : [`categories:${loader}`],
         ]),
       )}`,
     ).then(async (r) => {
@@ -49,7 +53,8 @@ export const search = async ({ platform, query, loader, gameVersion }: Options):
     const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
     if (!API_KEY) throw new Error("No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!");
 
-    const modLoaderType = loader === "forge" ? 1 : loader === "fabric" ? 4 : loader === "quilt" ? 5 : -1;
+    const modLoaderType =
+      loader === "forge" || loader === "neoforge" ? 1 : loader === "fabric" ? 4 : loader === "quilt" ? 5 : -1;
 
     const data = await fetchWithRetry(
       `https://api.curseforge.com/v1/mods/search?gameId=432&classId=6&pageSize=10&sortField=2&sortOrder=desc&searchFilter=${encodeURIComponent(

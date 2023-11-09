@@ -1,5 +1,10 @@
 import { getDownloadURLs } from "../upstream/download";
-import { getLatestFabric, getLatestForge, getLatestQuilt } from "../upstream/loaderVersions";
+import {
+  getLatestFabric,
+  getLatestForge,
+  getLatestNeoforge,
+  getLatestQuilt,
+} from "../upstream/loaderVersions";
 import { ExportStatus, exportZip, type PageStateHooks } from "./shared";
 
 import { saveAs } from "file-saver";
@@ -72,6 +77,14 @@ name=${data.title}
       mmcPack.components.push({
         uid: "net.minecraftforge",
         version: await getLatestForge(data.gameVersion),
+      });
+      break;
+    }
+
+    case "neoforge": {
+      mmcPack.components.push({
+        uid: "net.neoforged",
+        version: await getLatestNeoforge(data.gameVersion),
       });
       break;
     }

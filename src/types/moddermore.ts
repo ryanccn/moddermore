@@ -3,7 +3,12 @@ import * as v from "valibot";
 export const ModProvider = v.union([v.literal("modrinth"), v.literal("curseforge")]);
 export type ModProvider = v.Input<typeof ModProvider>;
 
-export const ModLoader = v.union([v.literal("quilt"), v.literal("fabric"), v.literal("forge")]);
+export const ModLoader = v.union([
+  v.literal("quilt"),
+  v.literal("fabric"),
+  v.literal("neoforge"),
+  v.literal("forge"),
+]);
 export type ModLoader = v.Input<typeof ModLoader>;
 
 export const ListVisibility = v.union([v.literal("private"), v.literal("unlisted"), v.literal("public")]);
