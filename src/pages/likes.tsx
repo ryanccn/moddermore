@@ -29,18 +29,25 @@ const LikesPage: NextPage = () => {
     <DashboardLayout title="Lists">
       {lists ? (
         lists.length > 0 ? (
-          <ul className="flex w-full flex-col gap-4 px-6">
+          <ul className="grid h-fit w-full grid-cols-1 gap-4 lg:grid-cols-3">
             {lists.map((list) => (
               <ModListInList list={list} key={list.id} />
             ))}
           </ul>
         ) : (
-          <div className="m-6 rounded bg-transparent px-2 py-20 text-center text-lg font-medium shadow dark:bg-neutral-800">
+          <div className="rounded bg-neutral-50 px-2 py-24 text-center font-display text-lg font-medium text-black/50 shadow dark:bg-neutral-800 dark:text-white/50">
             No liked lists yet!
           </div>
         )
       ) : (
-        <div className="m-6 w-full" />
+        <ul className="grid h-fit grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="skeleton" style={{ height: "10rem" }} />
+          <div className="skeleton" style={{ height: "10rem" }} />
+          <div className="skeleton" style={{ height: "10rem" }} />
+          <div className="skeleton" style={{ height: "10rem" }} />
+          <div className="skeleton" style={{ height: "10rem" }} />
+          <div className="skeleton" style={{ height: "10rem" }} />
+        </ul>
       )}
     </DashboardLayout>
   );

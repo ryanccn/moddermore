@@ -59,13 +59,13 @@ const DashboardLink = ({ title, href, icon }: { title: string; href: string; ico
 export const DashboardLayout = ({ title, children }: Props) => {
   return (
     <GlobalLayout title={title} displayTitle={false} wideLayout>
-      <div className="flex w-full flex-col gap-4 md:flex-row">
-        <div className="flex flex-col gap-y-2 border-neutral-100 p-4 dark:border-neutral-800 md:min-h-screen md:w-72 md:shrink-0 md:grow-0 md:border-r-2">
+      <div className="flex w-full flex-col md:flex-row">
+        <div className="flex flex-col gap-y-2 border-neutral-100 p-4 dark:border-neutral-800 md:min-h-screen md:w-72 md:shrink-0 md:grow-0 md:border-r">
           <DashboardLink title="Lists" href="/lists" icon={<ListIcon className="block h-5 w-5" />} />
           <DashboardLink title="Likes" href="/likes" icon={<HeartIcon className="block h-5 w-5" />} />
           <DashboardLink title="Account" href="/account" icon={<UserIcon className="block h-5 w-5" />} />
         </div>
-        <div className="w-full py-8">{children}</div>
+        <div className="w-full p-6">{children}</div>
       </div>
       {/* <FeedbackPopup /> */}
     </GlobalLayout>
