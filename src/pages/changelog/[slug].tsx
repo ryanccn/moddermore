@@ -41,7 +41,7 @@ const ChangelogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
             backgroundPosition: "center",
           }}
         >
-          <h1 className="font-display text-4xl font-bold">{data.title}</h1>
+          <h1 className="font-display text-4xl font-bold [text-wrap:_balance;]">{data.title}</h1>
           <p className="text-lg font-medium">{data.date}</p>
         </div>
         <MDXRemote {...mdx} components={{ DonationMessage }} />
