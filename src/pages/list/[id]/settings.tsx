@@ -252,20 +252,16 @@ export const getServerSideProps: GetServerSideProps<PageProps | { notFound: true
 }) => {
   if (typeof query.id !== "string") throw new Error("?");
   const data = await getSpecificList(query.id);
+  const sess = await getServerSession(req, res, authOptions);
 
   res.setHeader("x-robots-tag", "noindex");
 
-  if (!data || data.ownerProfile.banned) {
-    return {
-      notFound: true,
-    };
+  if (!data || (data.ownerProfile.banned && !sess?.extraProfile.isAdmin)) {
+    return { notFound: true };
   }
 
-  const sess = await getServerSession(req, res, authOptions);
-  if (sess?.user.id !== data.owner && !sess?.extraProfile.isAdmin) {
-    return {
-      notFound: true,
-    };
+  if (data.visibility === "private" && sess?.user.id !== data.owner && !sess?.extraProfile.isAdmin) {
+    return { notFound: true };
   }
 
   return {
