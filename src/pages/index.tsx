@@ -1,9 +1,5 @@
 import type { GetStaticProps, NextPage } from "next";
 
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { twMerge } from "tailwind-merge";
 
 import Link from "next/link";
@@ -25,18 +21,11 @@ interface PageProps {
 }
 
 const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
-  const router = useRouter();
-  const { status } = useSession();
-
-  useEffect(() => {
-    if (status === "authenticated") router.push("/lists");
-  }, [status, router]);
-
   return (
     <GlobalLayout title="Moddermore" titleSuffix={false} displayTitle={false} wideLayout>
       <div className="mb-14 flex min-h-screen flex-col justify-center p-6 lg:px-20">
         <div className="mb-20 flex flex-col">
-          <h2 className="font-display mb-10 text-6xl font-extrabold tracking-tight">
+          <h2 className="mb-10 font-display text-6xl font-extrabold tracking-tight">
             Share the mods you use with{" "}
             <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text font-extrabold text-transparent">
               anyone
@@ -81,7 +70,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
 
       <div className="mb-24 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="font-display text-4xl font-bold">Import from many platforms</h2>
-        <h3 className="font-display mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+        <h3 className="mb-6 font-display text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           All of your mods, but in the same place.
         </h3>
 
@@ -116,14 +105,14 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
 
       <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="font-display text-4xl font-bold">Share with your friends</h2>
-        <h3 className="font-display mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+        <h3 className="mb-6 font-display text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Or just publish the link publicly anywhere you want!
         </h3>
       </div>
 
       <div className="mb-24 mt-16 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="font-display text-4xl font-bold">Export to anywhere</h2>
-        <h3 className="font-display mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+        <h3 className="mb-6 font-display text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Publishing to Modrinth? Importing to Prism Launcher? We{"'"}ve got you covered.
         </h3>
         <div className="flex flex-col gap-6 lg:flex-row">

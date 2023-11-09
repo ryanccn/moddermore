@@ -78,12 +78,12 @@ const Header = () => {
               <PlusIcon className="block h-5 w-5" />
               <span>Create</span>
             </Link>
-            <Link href="/account" className="p-1">
+            <Link href="/lists" className="p-1">
               <img
                 src={data.extraProfile.profilePicture ?? undefined}
                 width={32}
                 height={32}
-                alt="Manage account"
+                alt="Lists"
                 className="rounded-full bg-neutral-100 dark:bg-neutral-800"
               />
             </Link>
