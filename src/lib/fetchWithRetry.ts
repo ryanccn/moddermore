@@ -4,7 +4,9 @@ export const fetchWithRetry = async (url: string | URL, init?: RequestInit): Pro
 
   if (resp.status === 429) {
     await new Promise<void>((resolve) => {
-      setTimeout(resolve, 5000);
+      window.setTimeout(() => {
+        resolve();
+      }, 10_000);
     });
 
     return fetchWithRetry(url, init);
