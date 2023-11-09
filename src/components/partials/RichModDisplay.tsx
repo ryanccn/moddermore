@@ -67,7 +67,7 @@ export const RichModDisplay = ({
       loader: parent.modloader,
     });
 
-    if (!versions) {
+    if (!versions || versions.length === 0) {
       toast.error("Encountered an error fetching versions");
       setIsFetchingVersions(false);
       return;
@@ -121,7 +121,7 @@ export const RichModDisplay = ({
       <div className="flex grow flex-col gap-x-4 gap-y-2 sm:flex-row sm:justify-between">
         <div className="flex flex-col justify-between gap-y-2">
           <div className="flex flex-col gap-y-1">
-            <h2 className="font-display mr-2 text-xl font-bold">{data.name}</h2>
+            <h2 className="mr-2 font-display text-xl font-bold">{data.name}</h2>
             <p className="my-0.5">{data.description}</p>
           </div>
 
