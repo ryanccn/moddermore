@@ -16,7 +16,10 @@ interface PageProps {
 const PrivacyPolicy: NextPage<PageProps> = ({ content }) => {
   return (
     <GlobalLayout title="Privacy Policy" displayTitle={false}>
-      <article className="prose max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: content }} />
+      <article
+        className="prose max-w-none dark:prose-invert prose-headings:font-display"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </GlobalLayout>
   );
 };

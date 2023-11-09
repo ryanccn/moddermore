@@ -34,7 +34,7 @@ const ChangelogIndexPage: NextPage<PageProps> = ({ data }) => {
             href={`/changelog/${log.slug}`}
             key={log.slug}
           >
-            <h1 className="text-2xl font-bold">{log.data.title}</h1>
+            <h1 className="font-display text-2xl font-bold">{log.data.title}</h1>
             <p className="text-base font-medium">{log.data.date}</p>
           </Link>
         ))}
