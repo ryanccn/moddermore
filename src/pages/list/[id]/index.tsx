@@ -416,7 +416,7 @@ ${
         </div>
       )}
 
-      <div className="mb-16 flex flex-wrap gap-2">
+      <div className="mb-2 flex flex-wrap items-center gap-2">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild disabled={!resolvedMods}>
             <Button>
@@ -563,55 +563,55 @@ ${
           )}
           <span>Duplicate</span>
         </Button>
-
-        {hasElevatedPermissions && (
-          <>
-            {!isEditing ? (
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setIsEditing(true);
-                }}
-                disabled={isSaving}
-              >
-                {isSaving ? (
-                  <Spinner className="block h-5 w-5 fill-current" />
-                ) : (
-                  <EditIcon className="block h-5 w-5" />
-                )}
-                <span>Edit</span>
-              </Button>
-            ) : (
-              <Button variant="green" onClick={submitHandle} disabled={isSaving}>
-                {isSaving ? <Spinner className="block h-5 w-5" /> : <SaveIcon className="block h-5 w-5" />}
-                <span>Save</span>
-              </Button>
-            )}
-
-            <Link className={buttonVariants({ variant: "secondary" })} href={`/list/${data.id}/settings`}>
-              <SettingsIcon className="block h-5 w-5" />
-              <span>Settings</span>
-            </Link>
-
-            <Link className={buttonVariants({ variant: "primary" })} href={`/list/${data.id}/analytics`}>
-              <AreaChartIcon className="block h-5 w-5" />
-              <span>Analytics</span>
-            </Link>
-
-            <Button variant="danger" onClick={deleteCurrentList} disabled={isDeleting}>
-              {isDeleting ? <Spinner className="block h-5 w-5" /> : <TrashIcon className="block h-5 w-5" />}
-              {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
-            </Button>
-
-            {isAdmin && (
-              <Button variant="danger" onClick={ban} disabled={isBanning}>
-                {isBanning ? <Spinner className="block h-5 w-5" /> : <HammerIcon className="block h-5 w-5" />}
-                {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
-              </Button>
-            )}
-          </>
-        )}
       </div>
+
+      {hasElevatedPermissions && (
+        <div className="mb-16 flex flex-wrap items-center gap-2">
+          {!isEditing ? (
+            <Button
+              variant="privileged"
+              onClick={() => {
+                setIsEditing(true);
+              }}
+              disabled={isSaving}
+            >
+              {isSaving ? (
+                <Spinner className="block h-5 w-5 fill-current" />
+              ) : (
+                <EditIcon className="block h-5 w-5" />
+              )}
+              <span>Edit</span>
+            </Button>
+          ) : (
+            <Button variant="green" onClick={submitHandle} disabled={isSaving}>
+              {isSaving ? <Spinner className="block h-5 w-5" /> : <SaveIcon className="block h-5 w-5" />}
+              <span>Save</span>
+            </Button>
+          )}
+
+          <Link className={buttonVariants({ variant: "privileged" })} href={`/list/${data.id}/settings`}>
+            <SettingsIcon className="block h-5 w-5" />
+            <span>Settings</span>
+          </Link>
+
+          <Link className={buttonVariants({ variant: "privileged" })} href={`/list/${data.id}/analytics`}>
+            <AreaChartIcon className="block h-5 w-5" />
+            <span>Analytics</span>
+          </Link>
+
+          <Button variant="danger" onClick={deleteCurrentList} disabled={isDeleting}>
+            {isDeleting ? <Spinner className="block h-5 w-5" /> : <TrashIcon className="block h-5 w-5" />}
+            {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
+          </Button>
+
+          {isAdmin && (
+            <Button variant="danger" onClick={ban} disabled={isBanning}>
+              {isBanning ? <Spinner className="block h-5 w-5" /> : <HammerIcon className="block h-5 w-5" />}
+              {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
+            </Button>
+          )}
+        </div>
+      )}
 
       {isEditing && resolvedMods && (
         <>
