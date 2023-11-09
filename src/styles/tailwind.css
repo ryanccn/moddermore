@@ -121,10 +121,6 @@
     @apply focus:outline-none;
   }
 
-  .moddermore-footer {
-    @apply flex w-full flex-col items-start gap-y-4 bg-neutral-100 px-6 py-16 dark:bg-neutral-800 lg:px-20;
-  }
-
   @keyframes spin-fast {
     to {
       transform: rotate(360deg);
