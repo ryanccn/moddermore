@@ -6,7 +6,7 @@ import type { CurseForgeSearchResult } from "~/types/curseforge";
 import { ModLoader, type RichMod } from "~/types/moddermore";
 import type { ModrinthSearchResult } from "~/types/modrinth";
 
-import { fetchWithRetry } from "../fetchWithRetry";
+import { remoteFetch } from "../remoteFetch";
 
 export const optionsZ = v.object({
   platform: v.union([v.literal("modrinth"), v.literal("curseforge")]),
@@ -23,7 +23,7 @@ export const search = async ({ platform, query, loader, gameVersion }: Options):
       a.startsWith(gameVersion.split(".").slice(0, 2).join(".")),
     );
 
-    const data = await fetchWithRetry(
+    const data = await remoteFetch(
       `https://api.modrinth.com/v2/search?query=${encodeURIComponent(query)}&facets=${encodeURIComponent(
         JSON.stringify([
           [`project_type:mod`],
@@ -56,7 +56,7 @@ export const search = async ({ platform, query, loader, gameVersion }: Options):
     const modLoaderType =
       loader === "forge" || loader === "neoforge" ? 1 : loader === "fabric" ? 4 : loader === "quilt" ? 5 : -1;
 
-    const data = await fetchWithRetry(
+    const data = await remoteFetch(
       `https://api.curseforge.com/v1/mods/search?gameId=432&classId=6&pageSize=10&sortField=2&sortOrder=desc&searchFilter=${encodeURIComponent(
         query,
       )}&modLoaderType=${modLoaderType}&gameVersion=${encodeURIComponent(gameVersion)}`,

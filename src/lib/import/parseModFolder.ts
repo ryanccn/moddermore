@@ -6,7 +6,7 @@ import type { ModrinthVersion } from "~/types/modrinth";
 import type { SetStateFn } from "~/types/react";
 
 import pLimit from "p-limit";
-import { fetchWithRetry } from "../fetchWithRetry";
+import { remoteFetch } from "../remoteFetch";
 import { curseforgeHash, modrinthHash } from "./hash";
 
 interface CurseForgeSpecialtyResponse {
@@ -30,9 +30,7 @@ interface InputData {
 
 export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
   const mrHash = await modrinthHash(file);
-  const mrRes = await fetchWithRetry(`https://api.modrinth.com/v2/version_file/${mrHash}?algorithm=sha512`, {
-    headers: { "User-Agent": "Moddermore/noversion" },
-  });
+  const mrRes = await remoteFetch(`https://api.modrinth.com/v2/version_file/${mrHash}?algorithm=sha512`);
 
   if (mrRes.ok) {
     const mrData = (await mrRes.json()) as ModrinthVersion;
@@ -44,7 +42,7 @@ export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
   }
 
   const cfHash = await curseforgeHash(file);
-  const cfRes = await fetchWithRetry("https://api.curseforge.com/v1/fingerprints", {
+  const cfRes = await remoteFetch("https://api.curseforge.com/v1/fingerprints", {
     method: "POST",
     body: JSON.stringify({ fingerprints: [cfHash] }),
     headers: {

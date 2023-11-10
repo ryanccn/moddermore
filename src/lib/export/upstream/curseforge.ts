@@ -1,7 +1,7 @@
 import type { CurseForgeVersion } from "~/types/curseforge";
 import type { ExportReturnData, ProviderSpecificOptions } from "./types";
 
-import { fetchWithRetry } from "~/lib/fetchWithRetry";
+import { remoteFetch } from "~/lib/remoteFetch";
 
 export const callCurseForgeAPI = async ({ id, gameVersions, loader, version }: ProviderSpecificOptions) => {
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
@@ -11,7 +11,7 @@ export const callCurseForgeAPI = async ({ id, gameVersions, loader, version }: P
     loader === "forge" || loader === "neoforge" ? 1 : loader === "fabric" ? 4 : loader === "quilt" ? 5 : -1;
 
   if (version) {
-    const res = await fetchWithRetry(
+    const res = await remoteFetch(
       `https://api.curseforge.com/v1/mods/${encodeURIComponent(id)}/files/${encodeURIComponent(
         version,
       )}?gameVersion=${encodeURIComponent(gameVersions[0])}&modLoaderType=${modLoaderType}`,
@@ -27,7 +27,7 @@ export const callCurseForgeAPI = async ({ id, gameVersions, loader, version }: P
     return [data];
   }
 
-  const res = await fetchWithRetry(
+  const res = await remoteFetch(
     `https://api.curseforge.com/v1/mods/${id}/files?gameVersion=${encodeURIComponent(
       gameVersions[0],
     )}&modLoaderType=${modLoaderType}`,

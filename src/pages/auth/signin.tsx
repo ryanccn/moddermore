@@ -57,8 +57,7 @@ const SigninPage: NextPage = () => {
         {router.query.error && (
           <p className="rounded bg-red-500 px-4 py-3 font-semibold text-white">
             {typeof router.query.error === "string" && router.query.error in errors
-              ? // @ts-expect-error it's a key alright
-                errors[router.query.error]
+              ? errors[router.query.error as keyof typeof errors]
               : router.query.error}
           </p>
         )}

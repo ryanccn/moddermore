@@ -1,7 +1,7 @@
 import type { CurseForgeProject, CurseForgeVersion } from "~/types/curseforge";
 import type { RichMod } from "~/types/moddermore";
 
-import { fetchWithRetry } from "../fetchWithRetry";
+import { remoteFetch } from "../remoteFetch";
 
 // type Side = 'required' | 'optional' | 'unsupported';
 
@@ -9,7 +9,7 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
   if (!API_KEY) throw new Error("No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!");
 
-  const res = await fetchWithRetry(`https://api.curseforge.com/v1/mods/${id}`, {
+  const res = await remoteFetch(`https://api.curseforge.com/v1/mods/${id}`, {
     headers: { "x-api-key": API_KEY },
   });
 
@@ -34,7 +34,7 @@ export const getInfos = async (projects: { id: string; version?: string }[]): Pr
 
   if (projects.length === 0) return [];
 
-  const res = await fetchWithRetry(`https://api.curseforge.com/v1/mods`, {
+  const res = await remoteFetch(`https://api.curseforge.com/v1/mods`, {
     method: "POST",
     body: JSON.stringify({ modIds: projects.map((p) => p.id) }),
     headers: { "x-api-key": API_KEY, "Content-Type": "application/json" },
@@ -77,7 +77,7 @@ export const fetchVersions = async ({
   const modLoaderType =
     loader === "forge" || loader === "neoforge" ? 1 : loader === "fabric" ? 4 : loader === "quilt" ? 5 : -1;
 
-  const res = await fetchWithRetry(
+  const res = await remoteFetch(
     `https://api.curseforge.com/v1/mods/${projectId}/files?gameVersion=${encodeURIComponent(
       gameVersion,
     )}&modLoaderType=${modLoaderType}`,

@@ -1,7 +1,7 @@
 import type { ModrinthVersion } from "~/types/modrinth";
 import type { Download, ExportReturnData, ProviderSpecificOptions } from "./types";
 
-import { fetchWithRetry } from "~/lib/fetchWithRetry";
+import { remoteFetch } from "~/lib/remoteFetch";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 
 const getObjFromVersion = (v: ModrinthVersion, type: "direct" | "dependency"): Download => {
@@ -27,9 +27,7 @@ export const callModrinthAPI = async ({
   version,
 }: ProviderSpecificOptions): Promise<ModrinthVersion | null> => {
   if (version) {
-    const res = await fetchWithRetry(`https://api.modrinth.com/v2/version/${encodeURIComponent(version)}`, {
-      headers: { "User-Agent": "Moddermore/noversion" },
-    });
+    const res = await remoteFetch(`https://api.modrinth.com/v2/version/${encodeURIComponent(version)}`);
 
     if (!res.ok) return null;
 
@@ -38,13 +36,10 @@ export const callModrinthAPI = async ({
     return data;
   }
 
-  const res = await fetchWithRetry(
+  const res = await remoteFetch(
     `https://api.modrinth.com/v2/project/${encodeURIComponent(id)}/version?loaders=["${encodeURIComponent(
       loader,
     )}"]&game_versions=[${encodeURIComponent(gameVersions.map((a) => `"${a}"`).join(","))}]`,
-    {
-      headers: { "User-Agent": "Moddermore/noversion" },
-    },
   );
 
   if (!res.ok) return null;

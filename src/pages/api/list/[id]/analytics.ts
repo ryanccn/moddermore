@@ -37,9 +37,7 @@ const h: NextApiHandler = async (req, res) => {
   }
 
   const timeseriesData = await getListTimeseries(id);
-  res.json({
-    timeseries: timeseriesData,
-  });
+  res.json({ timeseries: timeseriesData });
 };
 
 export default h;

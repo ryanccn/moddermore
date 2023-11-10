@@ -3,7 +3,7 @@ import minecraftVersions from "~/lib/minecraftVersions.json";
 import type { RichMod } from "~/types/moddermore";
 import type { ModrinthProject, ModrinthVersion } from "~/types/modrinth";
 
-import { fetchWithRetry } from "../fetchWithRetry";
+import { remoteFetch } from "../remoteFetch";
 
 /**
  * @param id The ID of the Modrinth mod
@@ -11,9 +11,7 @@ import { fetchWithRetry } from "../fetchWithRetry";
  * @deprecated
  */
 export const getInfo = async (id: string): Promise<RichMod | null> => {
-  const res = await fetchWithRetry(`https://api.modrinth.com/v2/project/${id}`, {
-    headers: { "User-Agent": "Moddermore/noversion" },
-  });
+  const res = await remoteFetch(`https://api.modrinth.com/v2/project/${id}`);
 
   if (!res.ok) return null;
 
@@ -34,13 +32,10 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
 export const getInfos = async (projects: { id: string; version?: string }[]): Promise<RichMod[] | null> => {
   if (projects.length === 0) return [];
 
-  const res = await fetchWithRetry(
+  const res = await remoteFetch(
     `https://api.modrinth.com/v2/projects?ids=${encodeURIComponent(
       JSON.stringify(projects.map((p) => p.id)),
     )}`,
-    {
-      headers: { "User-Agent": "Moddermore/noversion" },
-    },
   );
 
   if (!res.ok) return null;
@@ -81,15 +76,12 @@ export const fetchVersions = async ({
     a.startsWith(gameVersion.split(".").slice(0, 2).join(".")),
   );
 
-  const res = await fetchWithRetry(
+  const res = await remoteFetch(
     `https://api.modrinth.com/v2/project/${encodeURIComponent(
       projectId,
     )}/version?loaders=${encodeURIComponent(
       JSON.stringify(patchedLoaders),
     )}&game_versions=${encodeURIComponent(JSON.stringify(compatGameVersions))}`,
-    {
-      headers: { "User-Agent": "Moddermore/noversion" },
-    },
   );
 
   if (!res.ok) return null;
