@@ -1,7 +1,7 @@
 import type { RichModList } from "~/types/moddermore";
 import type { ExportReturnData } from "./types";
 
-import pLimit from "p-limit";
+import { clientPLimit } from "~/lib/utils/concurrency";
 import { getCFDownload } from "./curseforge";
 import { getModrinthDownload } from "./modrinth";
 
@@ -13,7 +13,7 @@ export const getDownloadURLs = async (
 ) => {
   let ret: ExportReturnData = [];
 
-  const lim = pLimit(8);
+  const lim = clientPLimit();
 
   await Promise.all(
     list.mods.map((mod) =>

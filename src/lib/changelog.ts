@@ -34,7 +34,7 @@ const exists = async (f: string) => {
 
 export const listChangelogPosts = async () => {
   const fileList = await readdir("./changelog").then((list) => list.filter((k) => k.endsWith(".mdx")));
-  const lim = pLimit(10);
+  const lim = pLimit(12);
 
   const unsorted = await Promise.all(
     fileList.map((fileName) =>

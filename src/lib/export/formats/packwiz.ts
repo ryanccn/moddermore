@@ -9,10 +9,10 @@ import {
   getLatestQuilt,
 } from "../upstream/loaderVersions";
 
-import pLimit from "p-limit";
 import { getCFDownload } from "../upstream/curseforge";
 import { getModrinthDownload } from "../upstream/modrinth";
 
+import { clientPLimit } from "~/lib/utils/concurrency";
 import type { ModPwToml } from "~/types/packwiz";
 import type { CurseForgeDownload, ModrinthDownload, ProviderSpecificOptions } from "../upstream/types";
 
@@ -42,7 +42,7 @@ export const getIndexTOML = async (id: string) => {
 
   if (!list) return null;
 
-  const lim = pLimit(10);
+  const lim = clientPLimit();
 
   return stringify({
     "hash-format": "sha512",

@@ -5,8 +5,8 @@ import type { Mod } from "~/types/moddermore";
 import type { ModrinthVersion } from "~/types/modrinth";
 import type { SetStateFn } from "~/types/react";
 
-import pLimit from "p-limit";
-import { remoteFetch } from "../remoteFetch";
+import { clientPLimit } from "../utils/concurrency";
+import { remoteFetch } from "../utils/remoteFetch";
 import { curseforgeHash, modrinthHash } from "./hash";
 
 interface CurseForgeSpecialtyResponse {
@@ -80,7 +80,7 @@ export const parseModFolder = async ({ f, setProgress }: InputData) => {
   const ret: (Mod | null)[] = [];
   setProgress({ value: 0, max: mods.length });
 
-  const resolveLimit = pLimit(8);
+  const resolveLimit = clientPLimit();
 
   await Promise.all(
     mods.map((mod) =>

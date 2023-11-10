@@ -1,6 +1,6 @@
 import { parse } from "@iarna/toml";
 import type JSZip from "jszip";
-import pLimit from "p-limit";
+import { clientPLimit } from "../utils/concurrency";
 import toast from "react-hot-toast";
 import { parseModFolder } from "./parseModFolder";
 
@@ -69,7 +69,7 @@ export const parsePrismInstance = async ({ f, useMetadata, setProgress }: InputD
     const ret: (Mod | null)[] = [];
     setProgress({ value: 0, max: mods.length });
 
-    const resolveLimit = pLimit(8);
+    const resolveLimit = clientPLimit();
 
     await Promise.all(
       mods.map((mod) =>

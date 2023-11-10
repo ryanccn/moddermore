@@ -2,7 +2,7 @@ import type JSZip from "jszip";
 import type { SetStateFn } from "~/types/react";
 import type { ExportReturnData } from "../upstream/types";
 
-import pLimit from "p-limit";
+import { clientPLimit } from "~/lib/utils/concurrency";
 
 export const enum ExportStatus {
   Idle,
@@ -31,7 +31,7 @@ export const exportZip = async ({
     throw new Error("f");
   }
 
-  const lim = pLimit(8);
+  const lim = clientPLimit();
 
   await Promise.all(
     urls.map((downloadData) =>

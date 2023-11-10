@@ -9,7 +9,7 @@ import { getSpecificList } from "~/lib/db";
 import { getListsCollection } from "~/lib/db/client";
 import { type ModList } from "~/types/moddermore";
 
-const lim = pLimit(16);
+const lim = pLimit(12);
 
 const search = async (query: string, isAdmin?: boolean) => {
   const collection = await getListsCollection();
