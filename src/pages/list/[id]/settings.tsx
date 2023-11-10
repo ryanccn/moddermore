@@ -1,7 +1,7 @@
 import { type GetServerSideProps, type NextPage } from "next";
 
 import { useRouter } from "next/router";
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
@@ -12,55 +12,17 @@ import Link from "next/link";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { Spinner } from "~/components/partials/Spinner";
 import { Button } from "~/components/ui/Button";
+import { Select } from "~/components/ui/Select";
 
 import { toast } from "react-hot-toast";
 import { getSpecificList } from "~/lib/db";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 
 import type { ModList, ModLoader } from "~/types/moddermore";
-import { twMerge } from "tailwind-merge";
 
 interface PageProps {
   data: ModList;
 }
-
-const MMRadio = <T extends string>({
-  name,
-  value,
-  currentValue,
-  onCheck,
-  children,
-  className,
-}: {
-  name: string;
-  value: T;
-  currentValue: T;
-  onCheck?: (v: T) => void | Promise<void>;
-  className?: string;
-  children?: ReactNode | ReactNode[];
-}) => {
-  return (
-    <label
-      className={twMerge(
-        "flex w-full flex-col items-start gap-y-2 rounded-md p-4 hover:cursor-pointer",
-        value === currentValue ? "bg-indigo-500 text-white" : "bg-neutral-100 dark:bg-neutral-800",
-        className,
-      )}
-    >
-      <input
-        type="radio"
-        className="sr-only"
-        name={name}
-        value={value}
-        checked={value === currentValue}
-        onChange={(ev) => {
-          if (onCheck && ev.target.value) onCheck(ev.target.value as T);
-        }}
-      />
-      {children}
-    </label>
-  );
-};
 
 const ListSettings: NextPage<PageProps> = ({ data }) => {
   const session = useSession({ required: true });
@@ -165,7 +127,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         <div className="flex flex-col gap-y-2">
           <span className="font-display text-sm font-bold">Visibility</span>
           <div className="flex w-full flex-col gap-2 self-stretch md:flex-row">
-            <MMRadio name="visibility" value={"private"} currentValue={visibility} onCheck={setVisibility}>
+            <Select name="visibility" value={"private"} currentValue={visibility} onCheck={setVisibility}>
               <div className="flex flex-row items-center gap-x-1.5">
                 <LockIcon className="block h-4 w-4 shrink-0 opacity-75" strokeWidth={2.5} />
                 <span className="font-display text-lg font-medium">Private</span>
@@ -173,8 +135,8 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
               <span className="text-xs opacity-60">
                 Only accessible by you. Others visiting the link will see a 404.
               </span>
-            </MMRadio>
-            <MMRadio name="visibility" value={"unlisted"} currentValue={visibility} onCheck={setVisibility}>
+            </Select>
+            <Select name="visibility" value={"unlisted"} currentValue={visibility} onCheck={setVisibility}>
               <div className="flex flex-row items-center gap-x-1.5">
                 <ShieldIcon className="block h-4 w-4 shrink-0 opacity-75" strokeWidth={2.5} />
                 <span className="font-display text-lg font-medium">Unlisted</span>
@@ -183,8 +145,8 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
                 Anyone with the link will be able to see the list, and it should not be indexed by search
                 engines.
               </span>
-            </MMRadio>
-            <MMRadio name="visibility" value={"public"} currentValue={visibility} onCheck={setVisibility}>
+            </Select>
+            <Select name="visibility" value={"public"} currentValue={visibility} onCheck={setVisibility}>
               <div className="flex flex-row items-center gap-x-1.5">
                 <GlobeIcon className="block h-4 w-4 shrink-0 opacity-75" strokeWidth={2.5} />
                 <span className="font-display text-lg font-medium">Public</span>
@@ -193,7 +155,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
                 Anyone with the link will be able to see the list, and it will be available both in Search and
                 to search engines.
               </span>
-            </MMRadio>
+            </Select>
           </div>
         </div>
 

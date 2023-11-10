@@ -16,7 +16,7 @@ import { signIn, useSession } from "next-auth/react";
 import { authOptions } from "~/lib/authOptions";
 import { getSpecificList } from "~/lib/db";
 
-import { modrinthExport } from "~/lib/export/formats/mrpack";
+import { modrinthExport, CurseForgeStrategy as MrpackCurseforgeStrategy } from "~/lib/export/formats/mrpack";
 import { prismAutoUpdateExport, prismStaticExport } from "~/lib/export/formats/prism";
 import { ExportStatus } from "~/lib/export/formats/shared";
 import { zipExport } from "~/lib/export/formats/zip";
@@ -33,8 +33,10 @@ import { DonationMessage } from "~/components/partials/DonationMessage";
 import { RichModDisplay } from "~/components/partials/RichModDisplay";
 import { Search } from "~/components/partials/Search";
 import { Spinner } from "~/components/partials/Spinner";
+import { Metadata } from "~/components/partials/Metadata";
 import { ProgressOverlay } from "~/components/ProgressOverlay";
 import { Button, buttonVariants } from "~/components/ui/Button";
+import { Select } from "~/components/ui/Select";
 
 import {
   AreaChartIcon,
@@ -57,7 +59,6 @@ import { MarkdownIcon, ModrinthIcon } from "~/components/icons";
 
 import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
-import { Metadata } from "~/components/partials/Metadata";
 
 interface PageProps {
   data: ModListWithExtraData;
@@ -96,7 +97,9 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
   const [mrpackName, setMrpackName] = useState(data.title);
   const [mrpackVersion, setMrpackVersion] = useState("0.0.1");
-  const [mrpackCurseForgeStrategy, setMrpackCurseForgeStrategy] = useState("skip");
+  const [mrpackCurseForgeStrategy, setMrpackCurseForgeStrategy] = useState<MrpackCurseforgeStrategy>(
+    MrpackCurseforgeStrategy.Skip,
+  );
 
   const [progress, setProgress] = useState({ value: 0, max: 0 });
   const [result, setResult] = useState<{ success: string[]; failed: string[] }>({
@@ -711,7 +714,7 @@ ${
               }}
             >
               <label className="flex flex-col gap-y-1">
-                <span className="font-display text-sm font-medium">Name</span>
+                <span className="font-display text-sm font-semibold">Name</span>
                 <input
                   className="mm-input"
                   required
@@ -722,8 +725,9 @@ ${
                   }}
                 />
               </label>
+
               <label className="flex flex-col gap-y-1">
-                <span className="font-display text-sm font-medium">Version</span>
+                <span className="font-display text-sm font-semibold">Version</span>
 
                 <input
                   className="mm-input"
@@ -735,30 +739,48 @@ ${
                   }}
                 />
               </label>
-              <label className="flex flex-col gap-y-1">
-                <span className="font-display text-sm font-medium">CurseForge mods</span>
-                <select
-                  id="curseforge-strategy"
-                  className="mm-input"
-                  required
-                  value={mrpackCurseForgeStrategy}
-                  onChange={(e) => {
-                    setMrpackCurseForgeStrategy(e.target.value);
-                  }}
-                >
-                  <option value="embed">Embed files</option>
-                  <option value="links">Include download links</option>
-                  <option value="skip">Skip</option>
-                </select>
-              </label>
 
-              {mrpackCurseForgeStrategy !== "skip" && (
-                <div className="rounded bg-yellow-100 p-4 font-semibold text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100">
-                  {mrpackCurseForgeStrategy === "embed"
-                    ? "Make sure you have the rights to embed these files in your modpack distribution!"
-                    : "This modpack will be ineligible for publication on Modrinth."}
+              <label className="flex flex-col gap-y-2">
+                <span className="font-display text-sm font-semibold">CurseForge mods</span>
+
+                <div className="flex flex-col gap-1">
+                  <Select
+                    name="curseforge-strategy"
+                    value={MrpackCurseforgeStrategy.Skip}
+                    currentValue={mrpackCurseForgeStrategy}
+                    onCheck={setMrpackCurseForgeStrategy}
+                  >
+                    <span className="font-display text-base font-medium">Skip</span>
+                    <span className="text-xs opacity-60">
+                      CurseForge mods will be skipped and not included in the resulting Modrinth pack.
+                    </span>
+                  </Select>
+                  <Select
+                    name="curseforge-strategy"
+                    value={MrpackCurseforgeStrategy.Links}
+                    currentValue={mrpackCurseForgeStrategy}
+                    onCheck={setMrpackCurseForgeStrategy}
+                  >
+                    <span className="font-display text-base font-medium">Links</span>
+                    <span className="text-xs opacity-60">
+                      CurseForge CDN links will be used in the Modrinth pack. This will make it ineligible for
+                      publishing on Modrinth.
+                    </span>
+                  </Select>
+                  <Select
+                    name="curseforge-strategy"
+                    value={MrpackCurseforgeStrategy.Embed}
+                    currentValue={mrpackCurseForgeStrategy}
+                    onCheck={setMrpackCurseForgeStrategy}
+                  >
+                    <span className="font-display text-base font-medium">Embed</span>
+                    <span className="text-xs opacity-60">
+                      CurseForge mods will be downloaded and embedded into the Modrinth pack. This is
+                      publishable on Modrinth, but make sure you have permission to redistribute the files.
+                    </span>
+                  </Select>
                 </div>
-              )}
+              </label>
 
               <Button variant="modrinth" type="submit" className="self-start">
                 <ModrinthIcon className="block h-5 w-5" />

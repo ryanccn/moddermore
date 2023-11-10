@@ -27,10 +27,16 @@ const sha512 = async (f: ArrayBuffer) => {
   return he;
 };
 
+export const enum CurseForgeStrategy {
+  Embed = "embed",
+  Links = "links",
+  Skip = "skip",
+}
+
 const generateModrinthPack = async (
   list: RichModList,
   urls: ExportReturnData,
-  extraData: { name?: string; version?: string; cfStrategy?: string },
+  extraData: { name?: string; version?: string; cfStrategy?: CurseForgeStrategy },
 ) => {
   const mrIndex = {
     formatVersion: 1,
@@ -64,7 +70,7 @@ const generateModrinthPack = async (
 
   const mrpack = new JSZip();
 
-  if (extraData.cfStrategy === "embed") {
+  if (extraData.cfStrategy === CurseForgeStrategy.Embed) {
     const cfDownloads = urls.filter(
       (dl) => !("error" in dl) && dl.provider === "curseforge",
     ) as CurseForgeDownload[];
@@ -80,7 +86,7 @@ const generateModrinthPack = async (
 
       mrpack.file(`overrides/mods/${url.name}`, fileContents);
     }
-  } else if (extraData.cfStrategy === "links") {
+  } else if (extraData.cfStrategy === CurseForgeStrategy.Links) {
     const cfDownloads = urls.filter(
       (dl) => !("error" in dl) && dl.provider === "curseforge",
     ) as CurseForgeDownload[];
@@ -119,7 +125,7 @@ export const modrinthExport = async ({
   setStatus,
 }: {
   data: RichModList;
-  mrpackData: { name: string; version: string; cfStrategy: string };
+  mrpackData: { name: string; version: string; cfStrategy: CurseForgeStrategy };
 } & PageStateHooks) => {
   setStatus(ExportStatus.Resolving);
   setProgress({ value: 0, max: data.mods.length });
