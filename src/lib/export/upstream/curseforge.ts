@@ -1,7 +1,7 @@
 import type { CurseForgeVersion } from "~/types/curseforge";
 import type { ExportReturnData, ProviderSpecificOptions } from "./types";
 
-import { remoteFetch } from "~/lib/remoteFetch";
+import { remoteFetch } from "~/lib/utils/remoteFetch";
 
 export const callCurseForgeAPI = async ({ id, gameVersions, loader, version }: ProviderSpecificOptions) => {
   const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;

@@ -3,7 +3,7 @@ import minecraftVersions from "~/lib/minecraftVersions.json";
 import type { RichMod } from "~/types/moddermore";
 import type { ModrinthProject, ModrinthVersion } from "~/types/modrinth";
 
-import { remoteFetch } from "../remoteFetch";
+import { remoteFetch } from "../utils/remoteFetch";
 
 /**
  * @param id The ID of the Modrinth mod

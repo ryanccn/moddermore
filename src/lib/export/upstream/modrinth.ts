@@ -1,7 +1,7 @@
 import type { ModrinthVersion } from "~/types/modrinth";
 import type { Download, ExportReturnData, ProviderSpecificOptions } from "./types";
 
-import { remoteFetch } from "~/lib/remoteFetch";
+import { remoteFetch } from "~/lib/utils/remoteFetch";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 
 const getObjFromVersion = (v: ModrinthVersion, type: "direct" | "dependency"): Download => {

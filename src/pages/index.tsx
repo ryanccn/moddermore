@@ -12,7 +12,7 @@ import { ArrowDownIcon, CloudIcon, FolderArchiveIcon, HexagonIcon, PlusIcon } fr
 import { ModrinthIcon, TutanotaIcon, VercelIcon } from "~/components/icons";
 
 import { getLists, getPageviews, getUsers } from "~/lib/stats";
-import { numberFormat } from "~/lib/strings";
+import { numberFormat } from "~/lib/utils/strings";
 
 interface PageProps {
   pageviews: number | null;

@@ -18,7 +18,7 @@ import { twMerge } from "tailwind-merge";
 import { fetchVersions as fetchCurseforgeVersions } from "~/lib/metadata/curseforge";
 import { fetchVersions as fetchModrinthVersions } from "~/lib/metadata/modrinth";
 
-import { numberFormat, providerFormat } from "~/lib/strings";
+import { numberFormat, providerFormat } from "~/lib/utils/strings";
 
 import { Button } from "../ui/Button";
 import { Spinner } from "./Spinner";

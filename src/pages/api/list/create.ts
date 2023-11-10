@@ -9,7 +9,7 @@ import { createList } from "~/lib/db";
 import { ModListCreate } from "~/types/moddermore";
 
 import { RESTPostAPIWebhookWithTokenJSONBody as DiscordWebhookBody } from "discord-api-types/rest";
-import { loaderFormat } from "~/lib/strings";
+import { loaderFormat } from "~/lib/utils/strings";
 
 const logToDiscord = async ({ data, id, user }: { data: ModListCreate; id: string; user: User }) => {
   if (!process.env.DISCORD_WEBHOOK) return;

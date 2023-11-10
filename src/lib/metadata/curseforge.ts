@@ -1,7 +1,7 @@
 import type { CurseForgeProject, CurseForgeVersion } from "~/types/curseforge";
 import type { RichMod } from "~/types/moddermore";
 
-import { remoteFetch } from "../remoteFetch";
+import { remoteFetch } from "../utils/remoteFetch";
 
 // type Side = 'required' | 'optional' | 'unsupported';
 

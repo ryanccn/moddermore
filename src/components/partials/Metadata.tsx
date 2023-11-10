@@ -1,5 +1,5 @@
 import { BoxIcon, Clock10Icon, GlobeIcon, HeartIcon, LockIcon, ShieldIcon } from "lucide-react";
-import { loaderFormat } from "~/lib/strings";
+import { loaderFormat } from "~/lib/utils/strings";
 
 import type { ModList, ModListWithExtraData } from "~/types/moddermore";
 

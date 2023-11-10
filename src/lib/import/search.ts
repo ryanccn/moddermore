@@ -6,7 +6,7 @@ import type { CurseForgeSearchResult } from "~/types/curseforge";
 import { ModLoader, type RichMod } from "~/types/moddermore";
 import type { ModrinthSearchResult } from "~/types/modrinth";
 
-import { remoteFetch } from "../remoteFetch";
+import { remoteFetch } from "../utils/remoteFetch";
 
 export const optionsZ = v.object({
   platform: v.union([v.literal("modrinth"), v.literal("curseforge")]),
