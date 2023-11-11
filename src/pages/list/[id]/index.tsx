@@ -559,11 +559,7 @@ ${
         </Button>
 
         <Button onClick={duplicateList}>
-          {isDuplicating ? (
-            <Spinner className="block h-5 w-5 fill-current" />
-          ) : (
-            <CopyIcon className="block h-5 w-5" />
-          )}
+          {isDuplicating ? <Spinner className="block h-5 w-5" /> : <CopyIcon className="block h-5 w-5" />}
           <span>Duplicate</span>
         </Button>
       </div>
@@ -578,11 +574,7 @@ ${
               }}
               disabled={isSaving}
             >
-              {isSaving ? (
-                <Spinner className="block h-5 w-5 fill-current" />
-              ) : (
-                <EditIcon className="block h-5 w-5" />
-              )}
+              {isSaving ? <Spinner className="block h-5 w-5" /> : <EditIcon className="block h-5 w-5" />}
               <span>Edit</span>
             </Button>
           ) : (
