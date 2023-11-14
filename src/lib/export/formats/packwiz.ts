@@ -1,5 +1,6 @@
 import { type AnyJson, JsonMap, stringify } from "@iarna/toml";
 
+import pLimit from "p-limit";
 import { getSpecificList } from "~/lib/db";
 import { sha512 } from "~/lib/sha512";
 import {
@@ -12,7 +13,6 @@ import {
 import { getCFDownload } from "../upstream/curseforge";
 import { getModrinthDownload } from "../upstream/modrinth";
 
-import { clientPLimit } from "~/lib/utils/concurrency";
 import type { ModPwToml } from "~/types/packwiz";
 import type { CurseForgeDownload, ModrinthDownload, ProviderSpecificOptions } from "../upstream/types";
 
@@ -42,7 +42,7 @@ export const getIndexTOML = async (id: string) => {
 
   if (!list) return null;
 
-  const lim = clientPLimit();
+  const lim = pLimit(12);
 
   return stringify({
     "hash-format": "sha512",
