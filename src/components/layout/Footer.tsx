@@ -9,11 +9,7 @@ export const Footer = () => {
       <div className="mb-4 flex flex-col items-start gap-4 md:flex-row md:items-center">
         <a
           href="https://discord.gg/uf6kxSawfc"
-          className={twMerge(
-            buttonVariants({
-              className: "bg-[#5865F2] brightness-100 transition-all hover:bg-[#5865F2] hover:brightness-90",
-            }),
-          )}
+          className={twMerge(buttonVariants({ variant: "primary" }))}
           rel="noreferrer"
         >
           <svg
@@ -30,11 +26,7 @@ export const Footer = () => {
         </a>
         <a
           href="https://x.com/moddermore"
-          className={twMerge(
-            buttonVariants({
-              className: "bg-black brightness-100 transition-all hover:bg-black hover:brightness-90",
-            }),
-          )}
+          className={twMerge(buttonVariants({ variant: "danger" }))}
           rel="me noreferrer"
         >
           <svg
@@ -51,11 +43,7 @@ export const Footer = () => {
         </a>
         <a
           href="https://floss.social/@moddermore"
-          className={twMerge(
-            buttonVariants({
-              className: "bg-[#6364FF] brightness-100 transition-all hover:bg-[#6364FF] hover:brightness-90",
-            }),
-          )}
+          className={twMerge(buttonVariants({ variant: "primary" }))}
           rel="me noreferrer"
         >
           <svg

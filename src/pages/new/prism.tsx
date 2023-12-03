@@ -161,7 +161,7 @@ const PrismImportPage: NextPage = () => {
         <div className="flex items-center gap-x-2">
           <input
             type="checkbox"
-            className="rounded-sm bg-indigo-500"
+            className="bg-christmas-green rounded-sm"
             name="use-metadata"
             id="checkbox-use-metadata"
             checked={useMetadata}

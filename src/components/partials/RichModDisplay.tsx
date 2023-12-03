@@ -102,7 +102,7 @@ export const RichModDisplay = ({
     <div
       className={twMerge(
         "flex justify-between rounded-2xl border-none bg-neutral-100 p-5 dark:bg-neutral-800",
-        incompatible ? "ring-2 ring-red-400/70 hover:ring-red-400/80" : null,
+        incompatible ? "ring-christmas-red ring-2" : null,
         className,
       )}
     >
@@ -126,7 +126,7 @@ export const RichModDisplay = ({
           </div>
 
           {incompatible && (
-            <div className="font-medium text-red-500 dark:text-red-400">Incompatible with current list!</div>
+            <div className="text-christmas-red font-medium">Incompatible with current list!</div>
           )}
 
           <a
