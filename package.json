@@ -35,7 +35,7 @@
     "react-hot-toast": "^2.4.1",
     "react-markdown": "^9.0.1",
     "tailwind-merge": "^2.0.0",
-    "valibot": "^0.21.0"
+    "valibot": "^0.22.0"
   },
   "devDependencies": {
     "@headlessui/tailwindcss": "^0.2.0",
