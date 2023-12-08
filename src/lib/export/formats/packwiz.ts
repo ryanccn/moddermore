@@ -31,7 +31,7 @@ export const getPackTOML = async (id: string) => {
       ...(list.modloader === "fabric" ? { fabric: await getLatestFabric() } : {}),
       ...(list.modloader === "quilt" ? { quilt: await getLatestQuilt() } : {}),
       ...(list.modloader === "forge" ? { forge: await getLatestForge(list.gameVersion) } : {}),
-      ...(list.modloader === "neoforge" ? { forge: await getLatestNeoforge(list.gameVersion) } : {}),
+      ...(list.modloader === "neoforge" ? { neoforge: await getLatestNeoforge(list.gameVersion) } : {}),
     },
     index: { file: "index.toml", "hash-format": "sha512", hash: indexHash },
   });
