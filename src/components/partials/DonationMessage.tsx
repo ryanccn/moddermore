@@ -4,7 +4,7 @@ const LEMONSQUEEZY_URL =
   "https://moddermore.lemonsqueezy.com/checkout/buy/4c187f24-0c1f-4468-b7f1-c2a06057a318";
 const KOFI_URL = "https://ko-fi.com/RyanCaoDev";
 
-const LOCALSTORAGE_ID = "1251279C-5C7B-4EE8-AE2A-3254EE386C77";
+const LOCALSTORAGE_ID = "5075C136-C8DD-4947-BFE4-904661CA30D2";
 
 const donateButtonClassName = (bg: string) =>
   `self-start rounded-lg bg-${bg} px-6 py-3 text-lg font-medium text-white transition-shadow focus:ring-${bg}/30 font-display`;
@@ -35,19 +35,19 @@ export const DonationMessage = () => {
 
       <div className="flex flex-col gap-y-4 lg:flex-row lg:gap-x-6">
         <div className="flex flex-col gap-y-2">
-          <a className={donateButtonClassName("christmas-green")} href={LEMONSQUEEZY_URL}>
-            Donate via Lemon Squeezy
-          </a>
-          <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
-            Higher fees, more payments methods
-          </p>
-        </div>
-        <div className="flex flex-col gap-y-2">
           <a className={donateButtonClassName("christmas-red")} href={KOFI_URL}>
             Donate via Ko-Fi
           </a>
           <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
             Lower fees, only PayPal
+          </p>
+        </div>
+        <div className="flex flex-col gap-y-2">
+          <a className={donateButtonClassName("christmas-green")} href={LEMONSQUEEZY_URL}>
+            Donate via Lemon Squeezy
+          </a>
+          <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+            Higher fees, more payments methods
           </p>
         </div>
       </div>
