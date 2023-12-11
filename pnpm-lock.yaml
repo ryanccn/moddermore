@@ -78,8 +78,8 @@ dependencies:
     specifier: ^2.0.0
     version: 2.0.0
   valibot:
-    specifier: ^0.21.0
-    version: 0.21.0
+    specifier: ^0.24.1
+    version: 0.24.1
 
 devDependencies:
   '@headlessui/tailwindcss':
@@ -6135,8 +6135,8 @@ packages:
       sade: 1.8.1
     dev: false
 
-  /valibot@0.21.0:
-    resolution: {integrity: sha512-XnzpX93b1vQL7CB3fHlhpLg7OutYpc3ke8SKOvp7IXgicRfTdP/w8+bf0DjhVsySq6YdF4Opld05mj6bTobo9g==}
+  /valibot@0.24.1:
+    resolution: {integrity: sha512-Toclbuy20XsECZiueh2dkQ63he2AGaBIj/FJRDAFti2kueFldm9bjJzSYvPaL5CE1HXDMRhq7olak8at7xCz5A==}
     dev: false
 
   /validate-npm-package-license@3.0.4:
