@@ -47,10 +47,10 @@ export const getLatestNeoforge = (gameVersion: string) =>
   getFromMaven({
     url: "https://maven.neoforged.net/net/neoforged/forge/maven-metadata.xml",
     gameVersion,
-  });
+  }).then((res) => res.split("-")[1]);
 
 export const getLatestForge = (gameVersion: string) =>
   getFromMaven({
     url: "https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml",
     gameVersion,
-  });
+  }).then((res) => res.split("-")[1]);
