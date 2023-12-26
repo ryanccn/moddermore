@@ -6,8 +6,8 @@ const KOFI_URL = "https://ko-fi.com/RyanCaoDev";
 
 const LOCALSTORAGE_ID = "5075C136-C8DD-4947-BFE4-904661CA30D2";
 
-const donateButtonClassName = (bg: string) =>
-  `self-start rounded-lg bg-${bg} px-6 py-3 text-lg font-medium text-white transition-shadow focus:ring-${bg}/30 font-display`;
+const donateButtonClassName =
+  "self-start rounded-lg bg-yellow-500 px-6 py-3 text-lg font-medium text-white transition-shadow focus:ring-yellow-500/30 font-display";
 
 export const DonationMessage = () => {
   const [show, setShow] = useState(false);
@@ -35,7 +35,7 @@ export const DonationMessage = () => {
 
       <div className="flex flex-col gap-y-4 lg:flex-row lg:gap-x-6">
         <div className="flex flex-col gap-y-2">
-          <a className={donateButtonClassName("christmas-red")} href={KOFI_URL}>
+          <a className={donateButtonClassName} href={KOFI_URL}>
             Donate via Ko-Fi
           </a>
           <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
@@ -43,7 +43,7 @@ export const DonationMessage = () => {
           </p>
         </div>
         <div className="flex flex-col gap-y-2">
-          <a className={donateButtonClassName("christmas-green")} href={LEMONSQUEEZY_URL}>
+          <a className={donateButtonClassName} href={LEMONSQUEEZY_URL}>
             Donate via Lemon Squeezy
           </a>
           <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">

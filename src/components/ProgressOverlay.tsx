@@ -31,7 +31,7 @@ const ProgressOverlay = ({ value, max, label }: { value: number; max: number; la
               aria-labelledby="searching-for-mods-label"
             >
               <div
-                className="bg-christmas-green h-full w-full rounded-full transition-transform"
+                className="h-full w-full rounded-full bg-indigo-600 transition-transform"
                 style={{
                   transform: `translateX(calc(${(value / max) * 100}% - 100%))`,
                 }}

@@ -15,10 +15,10 @@ import { AlertCircleIcon, CheckCircleIcon } from "lucide-react";
 
 function CustomApp({ Component, pageProps: { session, ...pageProps } }: AppProps<{ session: Session }>) {
   return (
-    <PlausibleProvider domain="moddermore.net" taggedEvents>
+    <PlausibleProvider domain="moddermore.net">
       <SessionProvider session={session}>
         <ThemeProvider attribute="class">
-          <NextNProgress color="#386641" />
+          <NextNProgress color="#6366F1" />
           <Component {...pageProps} />
           <Toaster
             position="bottom-right"

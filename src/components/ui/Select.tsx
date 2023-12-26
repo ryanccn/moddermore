@@ -20,7 +20,7 @@ export const Select = <T extends string>({
     <label
       className={twMerge(
         "flex w-full flex-col items-start gap-y-2 rounded-md p-4 hover:cursor-pointer",
-        value === currentValue ? "bg-christmas-green text-white" : "bg-neutral-100 dark:bg-neutral-800",
+        value === currentValue ? "bg-indigo-500 text-white" : "bg-neutral-100 dark:bg-neutral-800",
         className,
       )}
     >

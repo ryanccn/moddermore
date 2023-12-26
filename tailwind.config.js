@@ -14,11 +14,6 @@ module.exports = {
         display: ["Satoshi Variable", "Satoshi", defaultTheme.fontFamily.sans],
       },
       colors: {
-        christmas: {
-          green: "#386641",
-          "light-green": "#6A994E",
-          red: "#BC4749",
-        },
         tremor: {
           brand: {
             faint: defaultColors.indigo[50],

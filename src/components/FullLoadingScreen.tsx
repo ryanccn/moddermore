@@ -13,7 +13,7 @@ export const FullLoadingScreen = ({ title, label }: { title?: string; label?: st
         </Head>
       )}
       <div className="flex flex-col items-center gap-y-6">
-        <Spinner className="stroke-christmas-green dark:stroke-christmas-light-green mb-4 block h-8 w-8" />
+        <Spinner className="mb-4 block h-8 w-8 stroke-indigo-500 dark:stroke-indigo-400" />
         <span className={!label ? "sr-only" : "text-neutral-700 dark:text-neutral-300"}>
           {label ?? "Fetching data"}
         </span>

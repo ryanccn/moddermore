@@ -5,7 +5,7 @@
 @layer base {
   html {
     @apply scroll-smooth;
-    accent-color: theme(colors.christmas.red);
+    accent-color: theme(colors.indigo.500);
     color-scheme: dark light;
   }
 
@@ -15,7 +15,7 @@
   }
 
   ::selection {
-    @apply bg-christmas-green/75 text-white;
+    @apply bg-indigo-500/75 text-white;
   }
 
   :root {
@@ -37,7 +37,7 @@
   select:not(.mm-input) {
     @apply outline-transparent focus:outline-none focus-visible:outline-none;
     @apply focus:ring-2 focus:ring-offset-2;
-    @apply dark:ring-christmas-green focus:ring-christmas-light-green focus:ring-offset-white dark:focus:ring-offset-neutral-900;
+    @apply focus:ring-indigo-400 focus:ring-offset-white dark:ring-indigo-500 dark:focus:ring-offset-neutral-900;
   }
 
   .title {
@@ -61,7 +61,7 @@
 
   select.mm-input {
     @apply form-select block rounded border-none bg-neutral-100 shadow-sm dark:bg-neutral-800;
-    @apply focus:ring-christmas-light-green/60 focus:outline-none focus:ring;
+    @apply focus:outline-none focus:ring focus:ring-indigo-400/60;
   }
 
   .moddermore-form-label {
@@ -89,8 +89,7 @@
   }
 
   .new-card {
-    @apply text-white;
-    @apply px-5 py-12;
+    @apply bg-neutral-100 px-5 py-12 dark:bg-neutral-800;
     @apply flex flex-col items-center gap-y-4 rounded;
     @apply transition-shadow;
   }

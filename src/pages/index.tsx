@@ -26,8 +26,10 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
       <div className="mb-14 flex min-h-screen flex-col justify-center p-6 lg:px-20">
         <div className="mb-20 flex flex-col">
           <h2 className="mb-10 font-display text-6xl font-extrabold tracking-tight">
-            Share the mods you use with <span className="text-christmas-green">any</span>
-            <span className="text-christmas-red">one</span>
+            Share the mods you use with{" "}
+            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text font-extrabold text-transparent">
+              anyone
+            </span>
           </h2>
           <h3 className="max-w-prose text-3xl font-medium text-neutral-700 dark:text-neutral-300">
             Modpacks, but without the hassle.
@@ -38,7 +40,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists }) => {
           href="/new"
           className={twMerge(
             buttonVariants({
-              className: "shadow-christmas-green/30 mb-16 self-start px-6 py-4 text-xl shadow-xl",
+              className: "mb-16 self-start px-6 py-4 text-xl shadow-xl shadow-indigo-500/30",
             }),
           )}
         >
