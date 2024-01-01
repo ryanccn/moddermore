@@ -57,7 +57,7 @@
     "eslint-config-next": "14.0.4",
     "eslint-plugin-unicorn": "^50.0.1",
     "gray-matter": "^4.0.3",
-    "image-size": "^1.0.2",
+    "image-size": "^1.1.0",
     "kleur": "^4.1.5",
     "mongodb": "^6.3.0",
     "node-fetch": "^3.3.2",
