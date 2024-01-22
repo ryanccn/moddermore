@@ -34,7 +34,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-markdown": "^9.0.1",
-    "tailwind-merge": "^2.2.0",
+    "tailwind-merge": "^2.2.1",
     "valibot": "^0.26.0"
   },
   "devDependencies": {
