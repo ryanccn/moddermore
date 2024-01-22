@@ -18,7 +18,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@tremor/react": "^3.13.1",
     "class-variance-authority": "^0.7.0",
-    "date-fns": "^3.2.0",
+    "date-fns": "^3.3.1",
     "fast-xml-parser": "^4.3.3",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",

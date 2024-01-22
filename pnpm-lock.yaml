@@ -27,8 +27,8 @@ dependencies:
     specifier: ^0.7.0
     version: 0.7.0
   date-fns:
-    specifier: ^3.2.0
-    version: 3.2.0
+    specifier: ^3.3.1
+    version: 3.3.1
   fast-xml-parser:
     specifier: ^4.3.3
     version: 4.3.3
@@ -2300,8 +2300,8 @@ packages:
       '@babel/runtime': 7.23.8
     dev: false
 
-  /date-fns@3.2.0:
-    resolution: {integrity: sha512-E4KWKavANzeuusPi0jUjpuI22SURAznGkx7eZV+4i6x2A+IZxAMcajgkvuDAU1bg40+xuhW1zRdVIIM/4khuIg==}
+  /date-fns@3.3.1:
+    resolution: {integrity: sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==}
     dev: false
 
   /debug@3.2.7:
