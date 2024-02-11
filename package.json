@@ -75,5 +75,10 @@
     "typescript": "^5.3.3",
     "unified": "^11.0.4"
   },
+  "pnpm": {
+    "patchedDependencies": {
+      "@next-auth/mongodb-adapter@1.1.3": "patches/@next-auth__mongodb-adapter@1.1.3.patch"
+    }
+  },
   "packageManager": "pnpm@8.14.3"
 }

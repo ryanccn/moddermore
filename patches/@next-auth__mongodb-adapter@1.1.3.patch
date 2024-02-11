@@ -1,0 +1,44 @@
+diff --git a/dist/index.js b/dist/index.js
+index cd7e11185aadf705cc34f7b558ba826013decace..17765eefb1e5f261cb2eb4d9052f9441b257acee 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -164,7 +164,7 @@ function MongoDBAdapter(client, options = {}) {
+         async updateUser(data) {
+             const { _id, ...user } = to(data);
+             const result = await (await db).U.findOneAndUpdate({ _id }, { $set: user }, { returnDocument: "after" });
+-            return from(result.value);
++            return from(result);
+         },
+         async deleteUser(id) {
+             const userId = _id(id);
+@@ -181,7 +181,7 @@ function MongoDBAdapter(client, options = {}) {
+             return account;
+         },
+         async unlinkAccount(provider_providerAccountId) {
+-            const { value: account } = await (await db).A.findOneAndDelete(provider_providerAccountId);
++            const account = await (await db).A.findOneAndDelete(provider_providerAccountId);
+             return from(account);
+         },
+         async getSessionAndUser(sessionToken) {
+@@ -204,10 +204,10 @@ function MongoDBAdapter(client, options = {}) {
+         async updateSession(data) {
+             const { _id, ...session } = to(data);
+             const result = await (await db).S.findOneAndUpdate({ sessionToken: session.sessionToken }, { $set: session }, { returnDocument: "after" });
+-            return from(result.value);
++            return from(result);
+         },
+         async deleteSession(sessionToken) {
+-            const { value: session } = await (await db).S.findOneAndDelete({
++            const session = await (await db).S.findOneAndDelete({
+                 sessionToken,
+             });
+             return from(session);
+@@ -217,7 +217,7 @@ function MongoDBAdapter(client, options = {}) {
+             return data;
+         },
+         async useVerificationToken(identifier_token) {
+-            const { value: verificationToken } = await (await db).V.findOneAndDelete(identifier_token);
++            const verificationToken = await (await db).V.findOneAndDelete(identifier_token);
+             if (!verificationToken)
+                 return null;
+             // @ts-expect-error
