@@ -39,13 +39,16 @@ name=${data.title}
     throw new Error("failed to fetch meta for minecraft");
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const parsed = await meta.json();
 
   const mmcPack = {
     components: [
       {
         dependencyOnly: true,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         uid: parsed.requires[0].uid,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         version: parsed.requires[0].suggests,
       },
       {
@@ -158,12 +161,15 @@ export const prismStaticExport = async ({
       if (!meta.ok) {
         throw new Error("failed to fetch meta for minecraft");
       }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const parsed = await meta.json();
       const mmcPack = {
         components: [
           {
             dependencyOnly: true,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
             uid: parsed.requires[0].uid,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
             version: parsed.requires[0].suggests,
           },
           {

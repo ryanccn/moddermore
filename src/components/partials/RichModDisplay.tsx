@@ -52,7 +52,7 @@ export const RichModDisplay = ({
   const [isFetchingVersions, setIsFetchingVersions] = useState(false);
 
   const versionDisplay = useMemo(
-    () => (versions !== null ? versions.find((v) => v.id === selectedVersion)?.name ?? null : null),
+    () => (versions === null ? null : versions.find((v) => v.id === selectedVersion)?.name ?? null),
     [versions, selectedVersion],
   );
 
@@ -79,14 +79,17 @@ export const RichModDisplay = ({
     setVersions(fetchedVersions);
     if (!selectedVersion) {
       setSelectedVersion(fetchedVersions[0].id);
-      if (onVersion) onVersion(fetchedVersions[0].id);
+      if (onVersion) void onVersion(fetchedVersions[0].id);
     }
 
     setIsFetchingVersions(false);
   }, [data.id, data.provider, versions, parent, selectedVersion, onVersion]);
 
   useEffect(() => {
-    if (data.version) fetchVersionsIntoState();
+    if (data.version)
+      fetchVersionsIntoState().catch((error) => {
+        console.error(error);
+      });
   }, [data.version, fetchVersionsIntoState]);
 
   useEffect(() => {
@@ -172,7 +175,11 @@ export const RichModDisplay = ({
                 <Button
                   type="button"
                   variant="primary"
-                  onClick={fetchVersionsIntoState}
+                  onClick={() => {
+                    fetchVersionsIntoState().catch((error) => {
+                      console.error(error);
+                    });
+                  }}
                   disabled={isFetchingVersions}
                 >
                   {isFetchingVersions ? (
@@ -190,7 +197,7 @@ export const RichModDisplay = ({
                     className="mm-input !bg-neutral-200 font-mono !text-sm !shadow-none dark:!bg-neutral-700"
                     onChange={(e) => {
                       setSelectedVersion(e.target.value);
-                      if (onVersion) onVersion(e.target.value);
+                      if (onVersion) void onVersion(e.target.value);
                     }}
                   >
                     {versions.map((version) => (
@@ -202,7 +209,7 @@ export const RichModDisplay = ({
                   <button
                     onClick={() => {
                       setSelectedVersion(null);
-                      if (onVersion) onVersion(null);
+                      if (onVersion) void onVersion(null);
                     }}
                   >
                     <UnplugIcon className="block h-4 w-4 text-red-500 dark:text-red-400" />
@@ -213,14 +220,26 @@ export const RichModDisplay = ({
             {onClick && (
               <>
                 {buttonType === "delete" && (
-                  <Button type="button" variant="danger" onClick={onClick}>
+                  <Button
+                    type="button"
+                    variant="danger"
+                    onClick={() => {
+                      void onClick();
+                    }}
+                  >
                     <TrashIcon className="block h-4 w-4" />
                     <span>Delete</span>
                   </Button>
                 )}
 
                 {buttonType === "add" && (
-                  <Button type="button" variant="green" onClick={onClick}>
+                  <Button
+                    type="button"
+                    variant="green"
+                    onClick={() => {
+                      void onClick();
+                    }}
+                  >
                     <PlusIcon className="block h-4 w-5" />
                     <span>Add</span>
                   </Button>

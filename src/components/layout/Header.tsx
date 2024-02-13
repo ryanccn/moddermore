@@ -71,34 +71,7 @@ const Header = () => {
         </div>
       </div>
 
-      {status !== "loading" ? (
-        data ? (
-          <div className="flex flex-row items-center gap-x-4">
-            <Link href="/new" className={buttonVariants()}>
-              <PlusIcon className="block h-5 w-5" />
-              <span>Create</span>
-            </Link>
-            <Link href="/lists" className="p-1">
-              <img
-                src={data.extraProfile.profilePicture ?? undefined}
-                width={32}
-                height={32}
-                alt="Lists"
-                className="rounded-full bg-neutral-100 dark:bg-neutral-800"
-              />
-            </Link>
-          </div>
-        ) : (
-          <Button
-            onClick={() => {
-              nextAuthSignIn();
-            }}
-          >
-            <UserIcon className="block h-5 w-5" />
-            <span>Sign in</span>
-          </Button>
-        )
-      ) : (
+      {status === "loading" ? (
         <div
           className={twMerge(
             buttonVariants({
@@ -108,6 +81,33 @@ const Header = () => {
         >
           &nbsp;
         </div>
+      ) : data ? (
+        <div className="flex flex-row items-center gap-x-4">
+          <Link href="/new" className={buttonVariants()}>
+            <PlusIcon className="block h-5 w-5" />
+            <span>Create</span>
+          </Link>
+          <Link href="/lists" className="p-1">
+            <img
+              src={data.extraProfile.profilePicture ?? undefined}
+              width={32}
+              height={32}
+              alt="Lists"
+              className="rounded-full bg-neutral-100 dark:bg-neutral-800"
+            />
+          </Link>
+        </div>
+      ) : (
+        <Button
+          onClick={() => {
+            nextAuthSignIn().catch((error) => {
+              console.error(error);
+            });
+          }}
+        >
+          <UserIcon className="block h-5 w-5" />
+          <span>Sign in</span>
+        </Button>
       )}
     </nav>
   );

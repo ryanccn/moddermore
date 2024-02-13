@@ -21,7 +21,7 @@ export const getPackTOML = async (id: string) => {
 
   if (!list) return null;
 
-  const indexHash = await sha512((await getIndexTOML(id)) || "");
+  const indexHash = sha512((await getIndexTOML(id)) || "");
 
   return stringify({
     name: list.title,
@@ -61,7 +61,7 @@ export const getIndexTOML = async (id: string) => {
 
             return {
               file: `mods/${mod.provider}-${mod.id}.pw.toml`,
-              hash: await sha512(stringify(txt as unknown as JsonMap)),
+              hash: sha512(stringify(txt as unknown as JsonMap)),
               metafile: true,
             };
           } else if (mod.provider === "curseforge") {
@@ -76,7 +76,7 @@ export const getIndexTOML = async (id: string) => {
 
             return {
               file: `mods/${mod.provider}-${mod.id}.pw.toml`,
-              hash: await sha512(stringify(txt as unknown as JsonMap)),
+              hash: sha512(stringify(txt as unknown as JsonMap)),
               metafile: true,
             };
           }

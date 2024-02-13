@@ -41,7 +41,7 @@ export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
     };
   }
 
-  const cfHash = await curseforgeHash(file);
+  const cfHash = curseforgeHash(file);
   const cfRes = await remoteFetch("https://api.curseforge.com/v1/fingerprints", {
     method: "POST",
     body: JSON.stringify({ fingerprints: [cfHash] }),

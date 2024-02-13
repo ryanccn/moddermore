@@ -33,39 +33,42 @@ const FolderImportPage: NextPage = () => {
   const router = useRouter();
 
   const submitHandle: FormEventHandler = useCallback(
-    async (e) => {
-      e.preventDefault();
+    (e) => {
+      (async () => {
+        e.preventDefault();
 
-      if (!sess.data) return;
-      setSubmitting(true);
+        if (!sess.data) return;
+        setSubmitting(true);
 
-      const zipFileContent = await modZipFile?.arrayBuffer();
-      if (!zipFileContent) throw zipFileContent;
+        const zipFileContent = await modZipFile?.arrayBuffer();
+        if (!zipFileContent) throw zipFileContent;
 
-      const parsedMods = (await parseModFolder({
-        f: await loadAsync(new Uint8Array(zipFileContent)),
-        setProgress,
-      }).then((r) => r.filter((k) => k !== null))) as Mod[];
+        const parsedMods = (await parseModFolder({
+          f: await loadAsync(new Uint8Array(zipFileContent)),
+          setProgress,
+        }).then((r) => r.filter((k) => k !== null))) as Mod[];
 
-      const res = await fetch("/api/list/create", {
-        method: "POST",
-        body: JSON.stringify({
-          title,
-          gameVersion,
-          modloader: modLoader,
-          mods: parsedMods,
-        }),
-        headers: { "Content-Type": "application/json" },
+        const res = await fetch("/api/list/create", {
+          method: "POST",
+          body: JSON.stringify({
+            title,
+            gameVersion,
+            modloader: modLoader,
+            mods: parsedMods,
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!res.ok) {
+          toast.error("Couldn't create the list");
+          return;
+        }
+
+        const { id } = (await res.json()) as { id: string };
+        await router.push(`/list/${id}`);
+      })().catch((error) => {
+        console.error(error);
       });
-
-      if (!res.ok) {
-        toast.error("Couldn't create the list");
-        return;
-      }
-
-      const { id } = await res.json();
-
-      router.push(`/list/${id}`);
     },
     [title, gameVersion, modLoader, sess, modZipFile, router],
   );

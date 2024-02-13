@@ -31,7 +31,7 @@ export const Select = <T extends string>({
         value={value}
         checked={value === currentValue}
         onChange={(ev) => {
-          if (onCheck && ev.target.value) onCheck(ev.target.value as T);
+          if (onCheck && ev.target.value) void onCheck(ev.target.value as T);
         }}
       />
       {children}

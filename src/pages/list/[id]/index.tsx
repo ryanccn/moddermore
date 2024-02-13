@@ -128,10 +128,10 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
       const mods = [...modrinthMods, ...curseForgeMods]
         .filter((k) => k !== null)
-        .sort((a, b) => (a!.name > b!.name ? 1 : -1));
+        .sort((a, b) => (a.name > b.name ? 1 : -1));
 
-      setResolvedMods(mods as RichMod[]);
-      setOldMods(mods as RichMod[]);
+      setResolvedMods(mods);
+      setOldMods(mods);
     })().catch((error) => {
       console.error(error);
       toast.error("Failed to resolve mods");
@@ -141,15 +141,19 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   useEffect(() => {
     if (session.status !== "authenticated") return;
 
-    fetch(`/api/likes/status?id=${data.id}`).then(async (r) => {
-      if (!r.ok) {
-        toast.error("Error fetching like status");
-        return;
-      }
+    fetch(`/api/likes/status?id=${data.id}`)
+      .then(async (r) => {
+        if (!r.ok) {
+          toast.error("Error fetching like status");
+          return;
+        }
 
-      const { data: hasLikedRemote } = (await r.json()) as { data: boolean };
-      setHasLiked(hasLikedRemote);
-    });
+        const { data: hasLikedRemote } = (await r.json()) as { data: boolean };
+        setHasLiked(hasLikedRemote);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [data.id, session.status]);
 
   const showResultModal = useMemo(() => status === ExportStatus.Result, [status]);
@@ -170,36 +174,38 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   };
 
   const submitHandle: FormEventHandler = useCallback(
-    async (e) => {
-      e.preventDefault();
-      if (!session.data || !resolvedMods || !oldMods) return;
+    (e) => {
+      (async () => {
+        e.preventDefault();
+        if (!session.data || !resolvedMods || !oldMods) return;
 
-      setIsSaving(true);
+        setIsSaving(true);
 
-      const res = await fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
-        method: "POST",
-        body: JSON.stringify({
-          ...data,
-          mods: resolvedMods.map((elem) => richModToMod(elem)),
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
+        const res = await fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
+          method: "POST",
+          body: JSON.stringify({
+            ...data,
+            mods: resolvedMods.map((elem) => richModToMod(elem)),
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
 
-      if (!res.ok) {
-        toast.error("Failed to update mods!");
-        setIsSaving(false);
-        setIsEditing(false);
-        return;
-      }
+        if (!res.ok) {
+          toast.error("Failed to update mods!");
+          setIsSaving(false);
+          setIsEditing(false);
+          return;
+        }
 
-      const removedMods = oldMods.filter(
-        (oldMod) => !resolvedMods.some((k) => k.id === oldMod.id && k.provider === oldMod.provider),
-      );
-      const addedMods = resolvedMods.filter(
-        (resolvedMod) => !oldMods.some((k) => k.id === resolvedMod.id && k.provider === resolvedMod.provider),
-      );
+        const removedMods = oldMods.filter(
+          (oldMod) => !resolvedMods.some((k) => k.id === oldMod.id && k.provider === oldMod.provider),
+        );
+        const addedMods = resolvedMods.filter(
+          (resolvedMod) =>
+            !oldMods.some((k) => k.id === resolvedMod.id && k.provider === resolvedMod.provider),
+        );
 
-      const changelog = `
+        const changelog = `
 ## Added mods
 
 ${
@@ -217,24 +223,29 @@ ${
 }
       `.trim();
 
-      toast.success(
-        <div className="flex flex-col gap-y-1">
-          <span>List updated!</span>
-          <button
-            className="text-xs font-semibold text-blue-500 transition-colors hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-200"
-            onClick={() => {
-              navigator.clipboard.writeText(changelog);
-            }}
-          >
-            Copy changelog
-          </button>
-        </div>,
-        { duration: 5000 },
-      );
+        toast.success(
+          <div className="flex flex-col gap-y-1">
+            <span>List updated!</span>
+            <button
+              className="text-xs font-semibold text-blue-500 transition-colors hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-200"
+              onClick={() => {
+                navigator.clipboard.writeText(changelog).catch((error) => {
+                  console.error(error);
+                });
+              }}
+            >
+              Copy changelog
+            </button>
+          </div>,
+          { duration: 5000 },
+        );
 
-      setIsSaving(false);
-      setIsEditing(false);
-      setOldMods(resolvedMods);
+        setIsSaving(false);
+        setIsEditing(false);
+        setOldMods(resolvedMods);
+      })().catch((error) => {
+        console.error(error);
+      });
     },
     [session, resolvedMods, oldMods, data],
   );
@@ -253,9 +264,14 @@ ${
 
     const text = resolvedMods.map((k) => `- [**${k.name}**](${k.href}) - ${k.description}`).join("\n");
 
-    navigator.clipboard.writeText(text).then(() => {
-      toast.success("Copied Markdown to clipboard!");
-    });
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success("Copied Markdown to clipboard!");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [resolvedMods]);
 
   const copyJSON = useCallback(() => {
@@ -270,37 +286,52 @@ ${
       )
       .then(() => {
         toast.success("Copied JSON to clipboard!");
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }, [data]);
 
   const toggleLikeStatus = useCallback(() => {
     if (session.status !== "authenticated") {
-      signIn();
+      signIn().catch((error) => {
+        console.error(error);
+      });
       return;
     }
 
     setIsLiking(true);
 
     if (hasLiked) {
-      fetch(`/api/likes/dislike?id=${data.id}`).then((r) => {
-        if (r.ok) {
-          setHasLiked(false);
-          setIsLiking(false);
-        }
-      });
+      fetch(`/api/likes/dislike?id=${data.id}`)
+        .then((r) => {
+          if (r.ok) {
+            setHasLiked(false);
+            setIsLiking(false);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     } else {
-      fetch(`/api/likes/like?id=${data.id}`).then((r) => {
-        if (r.ok) {
-          setHasLiked(true);
-          setIsLiking(false);
-        }
-      });
+      fetch(`/api/likes/like?id=${data.id}`)
+        .then((r) => {
+          if (r.ok) {
+            setHasLiked(true);
+            setIsLiking(false);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }, [session, data.id, hasLiked]);
 
   const duplicateList = useCallback(() => {
     if (session.status !== "authenticated") {
-      signIn();
+      signIn().catch((error) => {
+        console.error(error);
+      });
       return;
     }
 
@@ -321,7 +352,7 @@ ${
         if (!res.ok) return;
 
         const { id } = (await res.json()) as { id: string };
-        router.push(`/list/${id}`);
+        await router.push(`/list/${id}`);
 
         toast.success("Duplicated list!");
       })
@@ -357,7 +388,7 @@ ${
       toast.error(`Failed to delete ${data.title} (${data.id})!`);
     }
 
-    router.push("/lists");
+    await router.push("/lists");
   }, [router, data, session, confirmDelete, confirmDeleteTimeoutID, setConfirmDelete]);
 
   const ban = useCallback(async () => {
@@ -383,7 +414,7 @@ ${
 
     if (res.ok) {
       toast.success(`Banned ${data.owner}!`);
-      router.push("/lists");
+      await router.push("/lists");
     } else {
       toast.error(`Failed to ban ${data.owner}!`);
     }
@@ -440,6 +471,8 @@ ${
                         setProgress,
                         setResult,
                         setStatus,
+                      }).catch((error) => {
+                        console.error(error);
                       });
                     }
                   }}
@@ -457,7 +490,11 @@ ${
               <DropdownMenu.Item asChild>
                 <button
                   className="radix-dropdown-button"
-                  onClick={packwizExport}
+                  onClick={() => {
+                    packwizExport().catch((error) => {
+                      console.error(error);
+                    });
+                  }}
                   disabled={data.visibility === "private"}
                 >
                   <CloudIcon className="block h-5 w-5" />
@@ -474,6 +511,8 @@ ${
                         setProgress,
                         setResult,
                         setStatus,
+                      }).catch((error) => {
+                        console.error(error);
                       });
                     }
                   }}
@@ -492,6 +531,8 @@ ${
                         setProgress,
                         setResult,
                         setStatus,
+                      }).catch((error) => {
+                        console.error(error);
                       });
                     }
                   }}
@@ -545,17 +586,17 @@ ${
         </DropdownMenu.Root>
 
         <Button onClick={toggleLikeStatus}>
-          {!isLiking ? (
+          {isLiking ? (
+            <Spinner className="block h-5 w-5" />
+          ) : (
             <HeartIcon
               className={twMerge(
                 "block h-5 w-5",
                 hasLiked ? "fill-current stroke-none" : "fill-none stroke-current",
               )}
             />
-          ) : (
-            <Spinner className="block h-5 w-5" />
           )}
-          <span>{!hasLiked ? "Like" : "Unlike"}</span>
+          <span>{hasLiked ? "Unlike" : "Like"}</span>
         </Button>
 
         <Button onClick={duplicateList}>
@@ -566,7 +607,12 @@ ${
 
       {hasElevatedPermissions && (
         <div className="mb-16 flex flex-wrap items-center gap-2">
-          {!isEditing ? (
+          {isEditing ? (
+            <Button variant="green" onClick={submitHandle} disabled={isSaving}>
+              {isSaving ? <Spinner className="block h-5 w-5" /> : <SaveIcon className="block h-5 w-5" />}
+              <span>Save</span>
+            </Button>
+          ) : (
             <Button
               variant="privileged"
               onClick={() => {
@@ -576,11 +622,6 @@ ${
             >
               {isSaving ? <Spinner className="block h-5 w-5" /> : <EditIcon className="block h-5 w-5" />}
               <span>Edit</span>
-            </Button>
-          ) : (
-            <Button variant="green" onClick={submitHandle} disabled={isSaving}>
-              {isSaving ? <Spinner className="block h-5 w-5" /> : <SaveIcon className="block h-5 w-5" />}
-              <span>Save</span>
             </Button>
           )}
 
@@ -594,13 +635,29 @@ ${
             <span>Analytics</span>
           </Link>
 
-          <Button variant="danger" onClick={deleteCurrentList} disabled={isDeleting}>
+          <Button
+            variant="danger"
+            onClick={() => {
+              deleteCurrentList().catch((error) => {
+                console.error(error);
+              });
+            }}
+            disabled={isDeleting}
+          >
             {isDeleting ? <Spinner className="block h-5 w-5" /> : <TrashIcon className="block h-5 w-5" />}
             {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
           </Button>
 
           {isAdmin && (
-            <Button variant="danger" onClick={ban} disabled={isBanning}>
+            <Button
+              variant="danger"
+              onClick={() => {
+                ban().catch((error) => {
+                  console.error(error);
+                });
+              }}
+              disabled={isBanning}
+            >
               {isBanning ? <Spinner className="block h-5 w-5" /> : <HammerIcon className="block h-5 w-5" />}
               {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
             </Button>
@@ -701,6 +758,8 @@ ${
                     setProgress,
                     setResult,
                     setStatus,
+                  }).catch((error) => {
+                    console.error(error);
                   });
                 }
               }}

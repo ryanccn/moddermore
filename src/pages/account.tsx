@@ -38,15 +38,20 @@ const AccountPage: NextPage = () => {
         profilePicture: profilePicture || null,
       }),
       headers: { "Content-Type": "application/json" },
-    }).then((res) => {
-      if (res.ok) {
-        toast.success("Profile details saved!");
-      } else {
-        toast.error("Profile details could not be saved :(");
-      }
+    })
+      .then((res) => {
+        if (res.ok) {
+          toast.success("Profile details saved!");
+        } else {
+          toast.error("Profile details could not be saved :(");
+        }
 
-      setInProgress(false);
-    });
+        setInProgress(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setInProgress(false);
+      });
   }, [name, profilePicture]);
 
   if (session.status === "loading") {
@@ -98,7 +103,9 @@ const AccountPage: NextPage = () => {
           variant="danger"
           className="self-start px-4 py-2 text-lg font-semibold"
           onClick={() => {
-            signOut({ callbackUrl: "/" });
+            signOut({ callbackUrl: "/" }).catch((error) => {
+              console.log(error);
+            });
           }}
         >
           <LogOutIcon className="block h-5 w-5" />

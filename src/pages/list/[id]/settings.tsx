@@ -46,7 +46,9 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
     if (session.status !== "authenticated") return;
     if (!hasElevatedPermissions) {
       toast.error("Unauthorized to edit list.");
-      router.push(`/list/${data.id}`);
+      router.push(`/list/${data.id}`).catch((error) => {
+        console.error(error);
+      });
     }
   }, [session.status, hasElevatedPermissions, router, data.id]);
 
@@ -63,25 +65,30 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
         modloader: modLoader,
       }),
       headers: { "Content-Type": "application/json" },
-    }).then(async (res) => {
-      if (!res.ok) {
-        const { error } = await res.json();
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          const { error } = await res.json();
 
-        toast.error(
-          <div className="flex flex-col gap-y-1">
-            <p className="font-semibold">Failed to update list settings!</p>
-            <p className="text-sm">{error}</p>
-          </div>,
-        );
+          toast.error(
+            <div className="flex flex-col gap-y-1">
+              <p className="font-semibold">Failed to update list settings!</p>
+              <p className="text-sm">{error}</p>
+            </div>,
+          );
 
+          setInProgress(false);
+          return;
+        }
+
+        toast.success("Updated list settings!");
         setInProgress(false);
-        return;
-      }
-
-      toast.success("Updated list settings!");
-      setInProgress(false);
-      router.push(`/list/${data.id}`);
-    });
+        await router.push(`/list/${data.id}`);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [data, router, title, gameVersion, modLoader, description, visibility]);
 
   return (

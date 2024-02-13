@@ -45,7 +45,7 @@ export const listChangelogPosts = async () => {
           slug: fileName.replace(".mdx", ""),
           data: {
             ...(data as { title: string; "cover-offset"?: number }),
-            date: logDataFormat(data.date),
+            date: logDataFormat(data.date as Date),
           },
           cover: await getPostCover(fileName.replace(".mdx", "")),
         };
@@ -73,7 +73,7 @@ export const getChangelogPost = async (slug: string) => {
     data: {
       ...(data as { title: string }),
       cover,
-      date: logDataFormat(data.date),
+      date: logDataFormat(data.date as Date),
     },
     mdx,
   };

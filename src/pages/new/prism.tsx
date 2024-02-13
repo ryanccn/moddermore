@@ -35,42 +35,45 @@ const PrismImportPage: NextPage = () => {
   const router = useRouter();
 
   const submitHandle: FormEventHandler = useCallback(
-    async (e) => {
-      e.preventDefault();
-      if (!sess.data) return;
+    (e) => {
+      (async () => {
+        e.preventDefault();
+        if (!sess.data) return;
 
-      setSubmitting(true);
+        setSubmitting(true);
 
-      const zipFileContent = await instanceFile?.arrayBuffer();
-      if (!zipFileContent) return;
+        const zipFileContent = await instanceFile?.arrayBuffer();
+        if (!zipFileContent) return;
 
-      const parseResponse = await parsePrismInstance({
-        f: await loadAsync(new Uint8Array(zipFileContent)),
-        useMetadata,
-        setProgress,
+        const parseResponse = await parsePrismInstance({
+          f: await loadAsync(new Uint8Array(zipFileContent)),
+          useMetadata,
+          setProgress,
+        });
+
+        if (!parseResponse) return;
+
+        const res = await fetch("/api/list/create", {
+          method: "POST",
+          body: JSON.stringify({
+            title,
+            gameVersion,
+            modloader: modLoader,
+            mods: parseResponse.filter(Boolean) as Mod[],
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!res.ok) {
+          toast.error("Couldn't create the list");
+          return;
+        }
+
+        const { id } = (await res.json()) as { id: string };
+        await router.push(`/list/${id}`);
+      })().catch((error) => {
+        console.error(error);
       });
-
-      if (!parseResponse) return;
-
-      const res = await fetch("/api/list/create", {
-        method: "POST",
-        body: JSON.stringify({
-          title,
-          gameVersion,
-          modloader: modLoader,
-          mods: parseResponse.filter(Boolean) as Mod[],
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!res.ok) {
-        toast.error("Couldn't create the list");
-        return;
-      }
-
-      const { id } = await res.json();
-
-      router.push(`/list/${id}`);
     },
     [gameVersion, instanceFile, modLoader, router, sess.data, title, useMetadata],
   );

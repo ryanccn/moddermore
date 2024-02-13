@@ -15,6 +15,7 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
 
   if (!res.ok) return null;
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
   const data = (await res.json().then((json) => json.data)) as CurseForgeProject;
 
   return {
@@ -44,6 +45,7 @@ export const getInfos = async (projects: { id: string; version?: string }[]): Pr
     return [];
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
   const data = (await res.json().then((json) => json.data)) as CurseForgeProject[];
 
   return data.map((mod) => {
@@ -88,6 +90,7 @@ export const fetchVersions = async ({
 
   if (res.status === 404) return null;
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
   const data = (await res.json().then((json) => json.data)) as CurseForgeVersion[];
 
   return data.map((v) => ({ id: `${v.id}`, name: v.displayName }));

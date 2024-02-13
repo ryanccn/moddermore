@@ -29,31 +29,34 @@ const ManualImportPage: NextPage = () => {
   const router = useRouter();
 
   const submitHandle: FormEventHandler = useCallback(
-    async (e) => {
-      e.preventDefault();
-      if (!session.data) return;
+    (e) => {
+      (async () => {
+        e.preventDefault();
+        if (!session.data) return;
 
-      setSubmitting(true);
+        setSubmitting(true);
 
-      const res = await fetch("/api/list/create", {
-        method: "POST",
-        body: JSON.stringify({
-          title,
-          gameVersion,
-          modloader: modLoader,
-          mods: inputMods.map((elem) => richModToMod(elem)),
-        }),
-        headers: { "Content-Type": "application/json" },
+        const res = await fetch("/api/list/create", {
+          method: "POST",
+          body: JSON.stringify({
+            title,
+            gameVersion,
+            modloader: modLoader,
+            mods: inputMods.map((elem) => richModToMod(elem)),
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!res.ok) {
+          toast.error("Couldn't create the list");
+          return;
+        }
+
+        const { id } = (await res.json()) as { id: string };
+        await router.push(`/list/${id}`);
+      })().catch((error) => {
+        console.error(error);
       });
-
-      if (!res.ok) {
-        toast.error("Couldn't create the list");
-        return;
-      }
-
-      const { id } = await res.json();
-
-      router.push(`/list/${id}`);
     },
     [gameVersion, inputMods, modLoader, router, session.data, title],
   );

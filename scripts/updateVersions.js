@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 import { writeFile } from "node:fs/promises";
 import { format } from "prettier";
 

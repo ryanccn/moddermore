@@ -43,6 +43,9 @@ const ListAnalytics: NextPage<PageProps> = ({ data }) => {
       .then(({ timeseries }) => {
         setTimeseriesData(timeseries);
       })
+      .catch((error) => {
+        console.error(error);
+      })
       .finally(() => {
         setLoading(false);
       });

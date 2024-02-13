@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { importMrpack } from "~/lib/import/mrpack";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 
-import type { Mod, ModLoader } from "~/types/moddermore";
+import type { ModLoader } from "~/types/moddermore";
 
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
@@ -33,41 +33,45 @@ const PrismImportPage: NextPage = () => {
   const router = useRouter();
 
   const submitHandle: FormEventHandler = useCallback(
-    async (e) => {
-      e.preventDefault();
-      if (!sess.data) return;
+    (e) => {
+      (async () => {
+        e.preventDefault();
+        if (!sess.data) return;
 
-      setSubmitting(true);
+        setSubmitting(true);
 
-      const zipFileContent = await mrpackFile?.arrayBuffer();
-      if (!zipFileContent) return;
+        const zipFileContent = await mrpackFile?.arrayBuffer();
+        if (!zipFileContent) return;
 
-      const parseResponse = await importMrpack({
-        file: new Uint8Array(zipFileContent),
-        setProgress,
+        const parseResponse = await importMrpack({
+          file: new Uint8Array(zipFileContent),
+          setProgress,
+        });
+
+        if (!parseResponse) return;
+
+        const res = await fetch("/api/list/create", {
+          method: "POST",
+          body: JSON.stringify({
+            title,
+            gameVersion,
+            modloader: modLoader,
+            mods: parseResponse.filter(Boolean),
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!res.ok) {
+          toast.error("Couldn't create the list");
+          return;
+        }
+
+        const { id } = (await res.json()) as { id: string };
+
+        await router.push(`/list/${id}`);
+      })().catch((error) => {
+        console.error(error);
       });
-
-      if (!parseResponse) return;
-
-      const res = await fetch("/api/list/create", {
-        method: "POST",
-        body: JSON.stringify({
-          title,
-          gameVersion,
-          modloader: modLoader,
-          mods: parseResponse.filter(Boolean) as Mod[],
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!res.ok) {
-        toast.error("Couldn't create the list");
-        return;
-      }
-
-      const { id } = await res.json();
-
-      router.push(`/list/${id}`);
     },
     [title, gameVersion, modLoader, mrpackFile, router, sess.data],
   );

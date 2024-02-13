@@ -1,9 +1,10 @@
 /* eslint-disable unicorn/prefer-module */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const { withPlausibleProxy } = require("next-plausible");
+import { withPlausibleProxy } from "next-plausible";
+import makeBundleAnalyzer from "@next/bundle-analyzer";
 
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
+const withBundleAnalyzer = makeBundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
   openAnalyzer: false,
 });
@@ -118,4 +119,4 @@ const nextConfig = withPlausibleProxy()(
   }),
 );
 
-module.exports = nextConfig;
+export default nextConfig;

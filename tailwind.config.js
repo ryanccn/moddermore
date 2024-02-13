@@ -1,76 +1,76 @@
 /* eslint-disable unicorn/prefer-module */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const defaultTheme = require("tailwindcss/defaultTheme");
-const defaultColors = require("tailwindcss/colors");
+import { fontFamily, borderRadius, fontSize } from "tailwindcss/defaultTheme";
+import { indigo, white, neutral, black } from "tailwindcss/colors";
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
-        display: ["Satoshi Variable", "Satoshi", defaultTheme.fontFamily.sans],
+        display: ["Satoshi Variable", "Satoshi", fontFamily.sans],
       },
       colors: {
         tremor: {
           brand: {
-            faint: defaultColors.indigo[50],
-            muted: defaultColors.indigo[200],
-            subtle: defaultColors.indigo[400],
-            DEFAULT: defaultColors.indigo[500],
-            emphasis: defaultColors.indigo[700],
-            inverted: defaultColors.white,
+            faint: indigo[50],
+            muted: indigo[200],
+            subtle: indigo[400],
+            DEFAULT: indigo[500],
+            emphasis: indigo[700],
+            inverted: white,
           },
           background: {
-            muted: defaultColors.neutral[50],
-            subtle: defaultColors.neutral[100],
-            DEFAULT: defaultColors.white,
-            emphasis: defaultColors.neutral[700],
+            muted: neutral[50],
+            subtle: neutral[100],
+            DEFAULT: white,
+            emphasis: neutral[700],
           },
           border: {
-            DEFAULT: defaultColors.neutral[200],
+            DEFAULT: neutral[200],
           },
           ring: {
-            DEFAULT: defaultColors.neutral[200],
+            DEFAULT: neutral[200],
           },
           content: {
-            subtle: defaultColors.neutral[400],
-            DEFAULT: defaultColors.neutral[500],
-            emphasis: defaultColors.neutral[700],
-            strong: defaultColors.neutral[900],
-            inverted: defaultColors.white,
+            subtle: neutral[400],
+            DEFAULT: neutral[500],
+            emphasis: neutral[700],
+            strong: neutral[900],
+            inverted: white,
           },
         },
 
         "dark-tremor": {
           brand: {
-            faint: defaultColors.indigo[950],
-            muted: defaultColors.indigo[900],
-            subtle: defaultColors.indigo[800],
-            DEFAULT: defaultColors.indigo[500],
-            emphasis: defaultColors.indigo[400],
-            inverted: defaultColors.neutral[950],
+            faint: indigo[950],
+            muted: indigo[900],
+            subtle: indigo[800],
+            DEFAULT: indigo[500],
+            emphasis: indigo[400],
+            inverted: neutral[950],
           },
           background: {
-            muted: defaultColors.neutral[900],
-            subtle: defaultColors.neutral[800],
-            DEFAULT: defaultColors.neutral[900],
-            emphasis: defaultColors.neutral[600],
+            muted: neutral[900],
+            subtle: neutral[800],
+            DEFAULT: neutral[900],
+            emphasis: neutral[600],
           },
           border: {
-            DEFAULT: defaultColors.neutral[800],
+            DEFAULT: neutral[800],
           },
           ring: {
-            DEFAULT: defaultColors.neutral[800],
+            DEFAULT: neutral[800],
           },
           content: {
-            subtle: defaultColors.neutral[700],
-            DEFAULT: defaultColors.neutral[600],
-            emphasis: defaultColors.neutral[500],
-            strong: defaultColors.neutral[400],
-            inverted: defaultColors.black,
+            subtle: neutral[700],
+            DEFAULT: neutral[600],
+            emphasis: neutral[500],
+            strong: neutral[400],
+            inverted: black,
           },
         },
       },
@@ -86,16 +86,16 @@ module.exports = {
       },
 
       borderRadius: {
-        "tremor-small": defaultTheme.borderRadius.sm,
-        "tremor-default": defaultTheme.borderRadius.DEFAULT,
-        "tremor-full": defaultTheme.borderRadius.full,
+        "tremor-small": borderRadius.sm,
+        "tremor-default": borderRadius.DEFAULT,
+        "tremor-full": borderRadius.full,
       },
 
       fontSize: {
-        "tremor-label": defaultTheme.fontSize.xs,
-        "tremor-default": defaultTheme.fontSize.sm,
-        "tremor-title": defaultTheme.fontSize.xl,
-        "tremor-metric": defaultTheme.fontSize["2xl"],
+        "tremor-label": fontSize.xs,
+        "tremor-default": fontSize.sm,
+        "tremor-title": fontSize.xl,
+        "tremor-metric": fontSize["2xl"],
       },
     },
   },

@@ -15,7 +15,9 @@ import { getProfilesCollection, getUsersCollection } from "~/lib/db/client";
   let user = await userCursor.next();
 
   while (user !== null) {
-    if (!(await profileCollection.findOne({ email: user.email }))) {
+    if (await profileCollection.findOne({ email: user.email })) {
+      console.log("Skipped", blue(user.email));
+    } else {
       await profileCollection.insertOne({
         userId: user._id.toString(),
         name: null,
@@ -23,8 +25,6 @@ import { getProfilesCollection, getUsersCollection } from "~/lib/db/client";
         likes: [],
       });
       console.log("Built profile for", blue(user.email));
-    } else {
-      console.log("Skipped", blue(user.email));
     }
 
     user = await userCursor.next();

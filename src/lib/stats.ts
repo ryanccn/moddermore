@@ -6,6 +6,7 @@ const plausibleUrl =
 export const getPageviews = async (): Promise<number | null> => {
   if (!process.env.PLAUSIBLE_TOKEN) return null;
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {
     results: {
       pageviews: { value },
@@ -20,6 +21,7 @@ export const getPageviews = async (): Promise<number | null> => {
     return r.json();
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return value;
 };
 

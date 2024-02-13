@@ -32,6 +32,9 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
       .then((res) => {
         setSearchResults(res);
       })
+      .catch((error) => {
+        console.error(error);
+      })
       .finally(() => {
         setIsSearching(false);
       });
@@ -90,7 +93,7 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
                 key={res.id}
                 buttonType="add"
                 onClick={() => {
-                  onAdd(res);
+                  void onAdd(res);
                 }}
                 onVersion={(version) => {
                   if (version) {

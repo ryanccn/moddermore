@@ -32,11 +32,11 @@ const SearchPage: NextPage = () => {
 
     if (resp.status === 429) {
       toast.error("You are being rate limited!");
-    } else if (!resp.ok) {
-      toast.error("Failed to search for lists!");
-    } else {
+    } else if (resp.ok) {
       const data = (await resp.json()) as ModListWithExtraData[];
       setLists(data);
+    } else {
+      toast.error("Failed to search for lists!");
     }
 
     setSearching(false);
@@ -61,12 +61,22 @@ const SearchPage: NextPage = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
-              updateSearch();
+              updateSearch().catch((error) => {
+                console.error(error);
+              });
             }
           }}
         />
 
-        <Button type="button" onClick={updateSearch} disabled={searching}>
+        <Button
+          type="button"
+          onClick={() => {
+            updateSearch().catch((error) => {
+              console.error(error);
+            });
+          }}
+          disabled={searching}
+        >
           {searching ? <Spinner className="block h-5 w-5" /> : <SearchIcon className="block h-5 w-5" />}
           <span>Search</span>
         </Button>

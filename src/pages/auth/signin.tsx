@@ -33,19 +33,28 @@ const SigninPage: NextPage = () => {
 
   useEffect(() => {
     if (sess.status === "authenticated") {
-      router.push("/lists");
-      toast.success("Signed in!");
+      router
+        .push("/lists")
+        .then(() => {
+          toast.success("Signed in!");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }, [sess, router]);
 
   const signin: FormEventHandler = useCallback(
-    async (e) => {
+    (e) => {
       e.preventDefault();
       setDS(true);
 
-      await signIn("email", {
+      signIn("email", {
         email,
         callbackUrl: typeof router.query.callbackUrl === "string" ? router.query.callbackUrl : undefined,
+      }).catch((error) => {
+        console.error(error);
+        setDS(false);
       });
     },
     [email, router.query.callbackUrl],
@@ -64,11 +73,14 @@ const SigninPage: NextPage = () => {
         <Button
           className="bg-black text-white hover:bg-black"
           disabled={disableSubmit}
-          onClick={async () => {
+          onClick={() => {
             setDS(true);
-            await signIn("github", {
+            signIn("github", {
               callbackUrl:
                 typeof router.query.callbackUrl === "string" ? router.query.callbackUrl : undefined,
+            }).catch((error) => {
+              console.error(error);
+              setDS(false);
             });
           }}
         >
@@ -78,11 +90,14 @@ const SigninPage: NextPage = () => {
         <Button
           className="bg-[#5865F2] text-white hover:bg-[#5865F2]"
           disabled={disableSubmit}
-          onClick={async () => {
+          onClick={() => {
             setDS(true);
-            await signIn("discord", {
+            signIn("discord", {
               callbackUrl:
                 typeof router.query.callbackUrl === "string" ? router.query.callbackUrl : undefined,
+            }).catch((error) => {
+              console.error(error);
+              setDS(false);
             });
           }}
         >
@@ -92,11 +107,14 @@ const SigninPage: NextPage = () => {
         <Button
           className="mb-4 bg-[#4285F4] text-white hover:bg-[#4285F4]"
           disabled={disableSubmit}
-          onClick={async () => {
+          onClick={() => {
             setDS(true);
-            await signIn("google", {
+            signIn("google", {
               callbackUrl:
                 typeof router.query.callbackUrl === "string" ? router.query.callbackUrl : undefined,
+            }).catch((error) => {
+              console.error(error);
+              setDS(false);
             });
           }}
         >

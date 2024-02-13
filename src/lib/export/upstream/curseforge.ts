@@ -22,6 +22,7 @@ export const callCurseForgeAPI = async ({ id, gameVersions, loader, version }: P
 
     if (res.status === 404) return null;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
     const data = (await res.json().then((json) => json.data)) as CurseForgeVersion;
 
     return [data];
@@ -38,6 +39,7 @@ export const callCurseForgeAPI = async ({ id, gameVersions, loader, version }: P
 
   if (res.status === 404) return null;
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
   const data = (await res.json().then((json) => json.data)) as CurseForgeVersion[];
 
   return data;
