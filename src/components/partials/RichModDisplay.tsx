@@ -58,29 +58,32 @@ export const RichModDisplay = ({
 
   const fetchVersionsIntoState = useCallback(async () => {
     if (!parent) return;
+    if (versions !== null) return;
 
     setIsFetchingVersions(true);
 
-    const versions = await (data.provider === "modrinth" ? fetchModrinthVersions : fetchCurseforgeVersions)({
+    const fetchedVersions = await (
+      data.provider === "modrinth" ? fetchModrinthVersions : fetchCurseforgeVersions
+    )({
       projectId: data.id,
       gameVersion: parent.gameVersion,
       loader: parent.modloader,
     });
 
-    if (!versions || versions.length === 0) {
+    if (!fetchedVersions || fetchedVersions.length === 0) {
       toast.error("Encountered an error fetching versions");
       setIsFetchingVersions(false);
       return;
     }
 
-    setVersions(versions);
+    setVersions(fetchedVersions);
     if (!selectedVersion) {
-      setSelectedVersion(versions[0].id);
-      if (onVersion) onVersion(versions[0].id);
+      setSelectedVersion(fetchedVersions[0].id);
+      if (onVersion) onVersion(fetchedVersions[0].id);
     }
 
     setIsFetchingVersions(false);
-  }, [data.id, data.provider, parent, selectedVersion, onVersion]);
+  }, [data.id, data.provider, versions, parent, selectedVersion, onVersion]);
 
   useEffect(() => {
     if (data.version) fetchVersionsIntoState();

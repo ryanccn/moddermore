@@ -59,12 +59,12 @@ const generateModrinthPack = async (
       ...(list.modloader === "forge"
         ? { forge: await getLatestForge(list.gameVersion) }
         : list.modloader === "fabric"
-        ? { "fabric-loader": await getLatestFabric() }
-        : list.modloader === "quilt"
-        ? { "quilt-loader": await getLatestQuilt() }
-        : list.modloader === "neoforge"
-        ? { neoforge: await getLatestNeoforge(list.gameVersion) }
-        : {}),
+          ? { "fabric-loader": await getLatestFabric() }
+          : list.modloader === "quilt"
+            ? { "quilt-loader": await getLatestQuilt() }
+            : list.modloader === "neoforge"
+              ? { neoforge: await getLatestNeoforge(list.gameVersion) }
+              : {}),
     },
   };
 

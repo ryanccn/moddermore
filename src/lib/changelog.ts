@@ -13,8 +13,8 @@ const getPostCover = async (slug: string) => {
   const path = (await exists(join("./public/changelog/covers", `${slug}.jpg`)))
     ? `changelog/covers/${slug}.jpg`
     : (await exists(join("./public/changelog/covers", `${slug}.png`)))
-    ? `changelog/covers/${slug}.png`
-    : null;
+      ? `changelog/covers/${slug}.png`
+      : null;
 
   if (!path) return null;
 

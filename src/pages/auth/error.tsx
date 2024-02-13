@@ -19,10 +19,10 @@ const SigninPage: NextPage = () => {
         {error === "Configuration"
           ? "There is a problem with the server configuration."
           : error === "AccessDenied"
-          ? "Access denied."
-          : error === "Verification"
-          ? "The token has expired or has already been used."
-          : "Unknown error! Please open an issue on GitHub."}
+            ? "Access denied."
+            : error === "Verification"
+              ? "The token has expired or has already been used."
+              : "Unknown error! Please open an issue on GitHub."}
       </p>
     </GlobalLayout>
   );

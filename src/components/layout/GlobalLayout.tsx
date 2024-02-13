@@ -59,8 +59,8 @@ export const GlobalLayout = ({
           wideLayout
             ? "flex flex-col"
             : isAuthPage
-            ? "layout mt-28 max-w-[45ch] items-center text-center"
-            : "layout mt-28",
+              ? "layout mt-28 max-w-[45ch] items-center text-center"
+              : "layout mt-28",
           className,
         )}
       >

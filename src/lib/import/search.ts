@@ -31,8 +31,8 @@ export const search = async ({ platform, query, loader, gameVersion }: Options):
           loader === "quilt"
             ? ["categories:fabric", "categories:quilt"]
             : loader === "neoforge"
-            ? ["categories:neoforge", "categories:forge"]
-            : [`categories:${loader}`],
+              ? ["categories:neoforge", "categories:forge"]
+              : [`categories:${loader}`],
         ]),
       )}`,
     ).then(async (r) => {

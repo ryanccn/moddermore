@@ -22,7 +22,7 @@ export const ModListInList = (props: BasicProps | ExtraProps) => {
       key={baseData.id}
       className="group flex flex-col gap-y-3 rounded-lg bg-transparent p-6 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800"
     >
-      <h2 className="font-display flex justify-between text-lg font-bold">{baseData.title}</h2>
+      <h2 className="flex justify-between font-display text-lg font-bold">{baseData.title}</h2>
 
       <Metadata data={baseData} />
 
