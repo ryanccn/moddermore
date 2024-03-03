@@ -424,7 +424,11 @@ ${
     <GlobalLayout title={data.title}>
       {data.description && (
         <div className="-mt-6 mb-8 text-lg font-medium">
-          <Markdown skipHtml disallowedElements={["h1", "h2", "h3", "h4", "h5", "h6"]}>
+          <Markdown
+            skipHtml
+            allowedElements={["p", "span", "a", "strong", "em", "b", "i", "mark"]}
+            className="[&_a]:underline [&_a]:decoration-neutral-200 dark:[&_a]:decoration-neutral-500"
+          >
             {data.description}
           </Markdown>
         </div>

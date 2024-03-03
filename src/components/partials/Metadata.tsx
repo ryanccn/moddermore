@@ -1,4 +1,6 @@
 import { BoxIcon, Clock10Icon, GlobeIcon, HeartIcon, LockIcon, ShieldIcon } from "lucide-react";
+
+import { format } from "date-fns";
 import { loaderFormat } from "~/lib/utils/strings";
 
 import type { ModList, ModListWithExtraData } from "~/types/moddermore";
@@ -13,10 +15,12 @@ export const Metadata = ({ data }: { data: ModList | ModListWithExtraData }) => 
           <strong className="font-display">{loaderFormat(data.modloader)}</strong>
         </span>
       </div>
+
       <div>
         <Clock10Icon className="block h-4 w-4" />
         <span>
-          Created <strong className="font-display">{new Date(data.created_at).toDateString()}</strong>
+          Created on{" "}
+          <strong className="font-display">{format(new Date(data.created_at), "yyyy/MM/dd")}</strong>
         </span>
       </div>
 
