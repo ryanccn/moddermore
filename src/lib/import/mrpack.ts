@@ -6,7 +6,7 @@ import { parseMod } from "./parseModFolder";
 import type { Mod } from "~/types/moddermore";
 import type { SetStateFn } from "~/types/react";
 
-const ModrinthSideType = v.union([v.literal("required"), v.literal("optional"), v.literal("unsuploged")]);
+const ModrinthSideType = v.union([v.literal("required"), v.literal("optional"), v.literal("unsupported")]);
 
 const ModrinthPackIndex = v.object({
   formatVersion: v.literal(1),
