@@ -11,7 +11,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ["Satoshi Variable", "Satoshi", fontFamily.sans],
+        sans: ["Inter", fontFamily.sans],
+        display: ["Inter", fontFamily.sans],
       },
       colors: {
         tremor: {

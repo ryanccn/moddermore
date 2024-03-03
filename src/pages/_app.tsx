@@ -1,6 +1,7 @@
 import "~/styles/tailwind.css";
-import "~/styles/satoshi.css";
+import "~/styles/inter.css";
 import "~/styles/radix.css";
+
 import type { AppProps } from "next/app";
 
 import { Session } from "next-auth";

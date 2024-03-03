@@ -5,7 +5,7 @@ import { buttonVariants } from "../ui/Button";
 
 export const Footer = () => {
   return (
-    <footer className="flex w-full flex-col items-start gap-y-4 bg-neutral-100 px-6 py-16 dark:bg-neutral-800 lg:px-20">
+    <footer className="flex w-full flex-col items-start gap-y-4 border-t-2 border-neutral-100 px-6 py-16 dark:border-neutral-800 lg:px-20">
       <div className="mb-4 flex flex-col items-start gap-4 md:flex-row md:items-center">
         <a
           href="https://discord.gg/uf6kxSawfc"
