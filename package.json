@@ -42,7 +42,7 @@
     "@eslint/js": "^9.0.0",
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
     "@next/bundle-analyzer": "^14.1.4",
-    "@next/eslint-plugin-next": "^14.1.4",
+    "@next/eslint-plugin-next": "^14.2.3",
     "@ryanccn/eslint-config": "^0.3.0",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.12",

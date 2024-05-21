@@ -97,11 +97,11 @@ devDependencies:
     specifier: ^14.1.4
     version: 14.1.4
   '@next/eslint-plugin-next':
-    specifier: ^14.1.4
-    version: 14.1.4
+    specifier: ^14.2.3
+    version: 14.2.3
   '@ryanccn/eslint-config':
     specifier: ^0.3.0
-    version: 0.3.0(@eslint/eslintrc@3.0.2)(@eslint/js@9.0.0)(@next/eslint-plugin-next@14.1.4)(eslint-config-prettier@9.1.0)(eslint-plugin-unicorn@52.0.0)(eslint@9.0.0)(typescript-eslint@7.5.0)(typescript@5.4.4)
+    version: 0.3.0(@eslint/eslintrc@3.0.2)(@eslint/js@9.0.0)(@next/eslint-plugin-next@14.2.3)(eslint-config-prettier@9.1.0)(eslint-plugin-unicorn@52.0.0)(eslint@9.0.0)(typescript-eslint@7.5.0)(typescript@5.4.4)
   '@tailwindcss/forms':
     specifier: ^0.5.7
     version: 0.5.7(tailwindcss@3.4.3)
@@ -766,6 +766,12 @@ packages:
       glob: 10.3.10
     dev: true
 
+  /@next/eslint-plugin-next@14.2.3:
+    resolution: {integrity: sha512-L3oDricIIjgj1AVnRdRor21gI7mShlSwU/1ZGHmqM3LzHhXXhdkrfeNY5zif25Bi5Dd7fiJHsbhoZCHfXYvlAw==}
+    dependencies:
+      glob: 10.3.10
+    dev: true
+
   /@next/swc-darwin-arm64@14.1.4:
     resolution: {integrity: sha512-ubmUkbmW65nIAOmoxT1IROZdmmJMmdYvXIe8211send9ZYJu+SqxSnJM4TrPj9wmL6g9Atvj0S/2cFmMSS99jg==}
     engines: {node: '>= 10'}
@@ -1384,7 +1390,7 @@ packages:
     resolution: {integrity: sha512-S3Kq8e7LqxkA9s7HKLqXGTGck1uwis5vAXan3FnU5yw1Ec5hsSGnq4s/UCaSqABPOnOTg7zASLyst7+ohgWexg==}
     dev: true
 
-  /@ryanccn/eslint-config@0.3.0(@eslint/eslintrc@3.0.2)(@eslint/js@9.0.0)(@next/eslint-plugin-next@14.1.4)(eslint-config-prettier@9.1.0)(eslint-plugin-unicorn@52.0.0)(eslint@9.0.0)(typescript-eslint@7.5.0)(typescript@5.4.4):
+  /@ryanccn/eslint-config@0.3.0(@eslint/eslintrc@3.0.2)(@eslint/js@9.0.0)(@next/eslint-plugin-next@14.2.3)(eslint-config-prettier@9.1.0)(eslint-plugin-unicorn@52.0.0)(eslint@9.0.0)(typescript-eslint@7.5.0)(typescript@5.4.4):
     resolution: {integrity: sha512-YQ/bDYdein2YrD4RJRqL3qACfzoRoowdMpGAHdA73AQ938MjQQTHgVYO479gHXMYydYUUAMyj6pvyfe4wJ2+0Q==}
     peerDependencies:
       '@eslint/eslintrc': ^3.0.1
@@ -1428,7 +1434,7 @@ packages:
     dependencies:
       '@eslint/eslintrc': 3.0.2
       '@eslint/js': 9.0.0
-      '@next/eslint-plugin-next': 14.1.4
+      '@next/eslint-plugin-next': 14.2.3
       '@typescript-eslint/utils': 7.2.0(eslint@9.0.0)(typescript@5.4.4)
       eslint: 9.0.0
       eslint-config-prettier: 9.1.0(eslint@9.0.0)
