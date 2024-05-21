@@ -5,7 +5,7 @@ import * as v from "valibot";
 import { authOptions } from "~/lib/authOptions";
 import { getListsCollection, getProfilesCollection } from "~/lib/db/client";
 
-const validate = v.object({ id: v.string([v.minLength(1)]) });
+const validate = v.object({ id: v.pipe(v.string(), v.minLength(1)) });
 
 const handler: NextApiHandler = async (req, res) => {
   const parsedBody = v.safeParse(validate, req.body);

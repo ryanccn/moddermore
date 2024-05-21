@@ -15,7 +15,7 @@ export const optionsZ = v.object({
   gameVersion: v.string(),
 });
 
-type Options = v.Input<typeof optionsZ>;
+type Options = v.InferOutput<typeof optionsZ>;
 
 export const search = async ({ platform, query, loader, gameVersion }: Options): Promise<RichMod[]> => {
   if (platform === "modrinth") {

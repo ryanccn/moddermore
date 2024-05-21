@@ -19,16 +19,19 @@ const ModrinthPackIndex = v.object({
       path: v.string(),
       hashes: v.object({ sha1: v.string(), sha512: v.string() }),
       env: v.optional(v.object({ client: ModrinthSideType, server: ModrinthSideType })),
-      downloads: v.array(v.string([v.url()]), [v.minLength(1)]),
+      downloads: v.pipe(v.array(v.pipe(v.string(), v.url())), v.minLength(1)),
       fileSize: v.number(),
     }),
   ),
-  dependencies: v.record(v.string()),
+  dependencies: v.record(v.string(), v.string()),
 });
 
-type ModrinthPackIndex = v.Input<typeof ModrinthPackIndex>;
+type ModrinthPackIndex = v.InferOutput<typeof ModrinthPackIndex>;
 
-const modrinthCdnRegex = new RegExp("^https://cdn\\.modrinth\\.com/data/([\\w]+)/versions/([\\w]+)/", "m");
+const modrinthCdnRegex = new RegExp(
+  String.raw`^https://cdn\.modrinth\.com/data/([\w]+)/versions/([\w]+)/`,
+  "m",
+);
 
 export const importMrpack = async ({
   file,

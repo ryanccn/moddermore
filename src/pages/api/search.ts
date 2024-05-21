@@ -38,7 +38,7 @@ const search = async (query: string, isAdmin?: boolean) => {
   return Promise.all(arr.map((k) => lim(() => getSpecificList(k.id)))).then((k) => k.filter(Boolean));
 };
 
-const validate = v.object({ query: v.string([v.minLength(1)]) });
+const validate = v.object({ query: v.pipe(v.string(), v.minLength(1)) });
 
 const handler: NextApiHandler = async (req, res) => {
   const parsedBody = v.safeParse(validate, req.body);

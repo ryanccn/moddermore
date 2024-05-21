@@ -1,7 +1,7 @@
 import * as v from "valibot";
 
 export const ModProvider = v.union([v.literal("modrinth"), v.literal("curseforge")]);
-export type ModProvider = v.Input<typeof ModProvider>;
+export type ModProvider = v.InferOutput<typeof ModProvider>;
 
 export const ModLoader = v.union([
   v.literal("quilt"),
@@ -9,10 +9,10 @@ export const ModLoader = v.union([
   v.literal("neoforge"),
   v.literal("forge"),
 ]);
-export type ModLoader = v.Input<typeof ModLoader>;
+export type ModLoader = v.InferOutput<typeof ModLoader>;
 
 export const ListVisibility = v.union([v.literal("private"), v.literal("unlisted"), v.literal("public")]);
-export type ListVisibility = v.Input<typeof ListVisibility>;
+export type ListVisibility = v.InferOutput<typeof ListVisibility>;
 
 export const Mod = v.object({
   id: v.string(),
@@ -20,7 +20,7 @@ export const Mod = v.object({
   version: v.optional(v.nullable(v.string())),
 });
 
-export type Mod = v.Input<typeof Mod>;
+export type Mod = v.InferOutput<typeof Mod>;
 
 export interface RichMod {
   provider: ModProvider;
@@ -35,25 +35,25 @@ export interface RichMod {
 }
 
 export const ModListCreate = v.object({
-  title: v.string([v.minLength(1)]),
-  description: v.optional(v.string([v.minLength(1)])),
-  gameVersion: v.string([v.minLength(1)]),
+  title: v.pipe(v.string(), v.minLength(1)),
+  description: v.optional(v.pipe(v.string(), v.minLength(1))),
+  gameVersion: v.pipe(v.string(), v.minLength(1)),
   modloader: ModLoader,
-  mods: v.array(Mod, [v.minLength(1), v.maxLength(500)]),
+  mods: v.pipe(v.array(Mod), v.minLength(1), v.maxLength(500)),
 });
 
-export type ModListCreate = v.Input<typeof ModListCreate>;
+export type ModListCreate = v.InferOutput<typeof ModListCreate>;
 
 export const ModListUpdate = v.object({
-  title: v.optional(v.string([v.minLength(1)])),
-  description: v.optional(v.nullable(v.string([v.minLength(1)]))),
-  gameVersion: v.optional(v.string([v.minLength(1)])),
+  title: v.optional(v.pipe(v.string(), v.minLength(1))),
+  description: v.optional(v.nullable(v.pipe(v.string(), v.minLength(1)))),
+  gameVersion: v.optional(v.pipe(v.string(), v.minLength(1))),
   modloader: ModLoader,
   visibility: ListVisibility,
-  mods: v.optional(v.array(Mod, [v.minLength(1), v.maxLength(500)])),
+  mods: v.optional(v.pipe(v.array(Mod), v.minLength(1), v.maxLength(500))),
 });
 
-export type ModListUpdate = v.Input<typeof ModListUpdate>;
+export type ModListUpdate = v.InferOutput<typeof ModListUpdate>;
 
 export interface ModList {
   id: string;
@@ -89,10 +89,10 @@ export interface RichModList {
 
 export const UserEditableProfileData = v.object({
   name: v.union([v.string(), v.null_()]),
-  profilePicture: v.union([v.string([v.url()]), v.null_()]),
+  profilePicture: v.union([v.pipe(v.string(), v.url()), v.null_()]),
 });
 
-export type UserEditableProfileData = v.Input<typeof UserEditableProfileData>;
+export type UserEditableProfileData = v.InferOutput<typeof UserEditableProfileData>;
 
 export interface UserProfileData extends UserEditableProfileData {
   likes?: string[];
