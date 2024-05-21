@@ -1,8 +1,8 @@
-/* eslint-disable unicorn/prefer-module */
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import { fontFamily, borderRadius, fontSize } from "tailwindcss/defaultTheme";
 import { indigo, white, neutral, black } from "tailwindcss/colors";
+
+import pluginForms from "@tailwindcss/forms";
+import pluginTypography from "@tailwindcss/typography";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -129,9 +129,5 @@ export default {
         /^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
     },
   ],
-  plugins: [
-    require("@tailwindcss/forms")({ strategy: "class" }),
-    require("@tailwindcss/typography"),
-    require("@headlessui/tailwindcss"),
-  ],
+  plugins: [pluginForms({ strategy: "class" }), pluginTypography()],
 };

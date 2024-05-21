@@ -13,7 +13,6 @@ export const parseFerium = (str: string) => {
       rawProvider === "Modrinth" ? "modrinth" : rawProvider === "CurseForge" ? "curseforge" : null;
 
     if (provider) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       ret.push({ id: mod.at(-1)!, provider });
     }
   }

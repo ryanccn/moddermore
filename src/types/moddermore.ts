@@ -88,8 +88,8 @@ export interface RichModList {
 }
 
 export const UserEditableProfileData = v.object({
-  name: v.union([v.string(), v.nullType()]),
-  profilePicture: v.union([v.string([v.url()]), v.nullType()]),
+  name: v.union([v.string(), v.null_()]),
+  profilePicture: v.union([v.string([v.url()]), v.null_()]),
 });
 
 export type UserEditableProfileData = v.Input<typeof UserEditableProfileData>;

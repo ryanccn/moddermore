@@ -1,6 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import { withPlausibleProxy } from "next-plausible";
 import makeBundleAnalyzer from "@next/bundle-analyzer";
 

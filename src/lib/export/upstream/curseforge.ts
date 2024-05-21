@@ -79,7 +79,6 @@ export const getCFDownload = async ({
       url: latest.downloadUrl,
       type: "direct",
       fileSize: latest.fileLength,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       sha1: latest.hashes.find((k) => k.algo === 1)!.value,
       projectId: latest.modId,
       fileId: latest.id,

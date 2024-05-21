@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import ModdermoreIcon from "../../../public/icons/moddermore-negative.png";
 
 import { LaptopIcon, MoonIcon, PlusIcon, SunIcon, UserIcon } from "lucide-react";

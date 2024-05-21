@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import type { ModList, RichMod } from "~/types/moddermore";
 
 import {

@@ -35,7 +35,7 @@ const logToDiscord = async ({ data, id, user }: { data: ModListCreate; id: strin
             })\nCurseForge (${data.mods.filter((k) => k.provider === "curseforge").length})`,
           },
         ],
-        // eslint-disable-next-line unicorn/numeric-separators-style, unicorn/number-literal-case
+        // eslint-disable-next-line unicorn/numeric-separators-style
         color: 0x4ade80,
       },
     ],

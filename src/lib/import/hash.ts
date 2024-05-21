@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/numeric-separators-style, unicorn/number-literal-case */
+/* eslint-disable unicorn/numeric-separators-style */
 
 export const curseforgeHash = (data: Uint8Array): number => {
   const treatedData = data.filter((v) => v !== 9 && v !== 10 && v !== 13 && v !== 32);

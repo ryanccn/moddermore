@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import type { GetServerSideProps, NextPage } from "next";
 
 import type { ModListCreate, ModListWithExtraData, RichMod } from "~/types/moddermore";
