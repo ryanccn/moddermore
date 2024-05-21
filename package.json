@@ -24,7 +24,7 @@
     "jszip": "^3.10.1",
     "lucide-react": "^0.365.0",
     "nanoid": "^5.0.6",
-    "next": "^14.1.4",
+    "next": "^14.2.3",
     "next-auth": "^4.24.7",
     "next-mdx-remote": "^4.4.1",
     "next-plausible": "^3.12.0",
