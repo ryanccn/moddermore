@@ -80,8 +80,8 @@ dependencies:
     specifier: ^2.3.0
     version: 2.3.0
   valibot:
-    specifier: 0.31.0-rc.0
-    version: 0.31.0-rc.0
+    specifier: 0.31.0-rc.5
+    version: 0.31.0-rc.5
 
 devDependencies:
   '@eslint/eslintrc':
@@ -6856,8 +6856,8 @@ packages:
       sade: 1.8.1
     dev: false
 
-  /valibot@0.31.0-rc.0:
-    resolution: {integrity: sha512-c8HERUa1wthubHtWn0EXJIw4itUEMq2WMZEVaV8zv0a0654aGDX+Ln1Ba5smAjFdntIn/0tDCqdeYYRibfhwtQ==}
+  /valibot@0.31.0-rc.5:
+    resolution: {integrity: sha512-yv1koEWTUIajUkMW9QVUoZFF2b8cAS6EOZpZTIme6QXXH8K+Tl+b/1yen/VIyqVOf8WAZaYdqAzzU2ccF5CJfQ==}
     dev: false
 
   /validate-npm-package-license@3.0.4:
