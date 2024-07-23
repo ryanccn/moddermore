@@ -284,9 +284,9 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
   if (process.env.NODE_ENV === "production") {
     const [pageviews, users, lists] = await Promise.all([getPageviews(), getUsers(), getLists()]);
 
-    const featuredLists = (await Promise.all(
+    const featuredLists = await Promise.all(
       ["d0f38916a6", "Hh2Tx-uNMxoh", "280ca6ba55", "gfkbMOkQ9LKK"].map((id) => getSpecificList(id)),
-    ).then((res) => res.filter((k) => k !== null))) as ModListWithExtraData[];
+    ).then((res) => res.filter((k) => k !== null));
 
     return {
       props: { pageviews, users, lists, featuredLists },

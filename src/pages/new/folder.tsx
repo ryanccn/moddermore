@@ -43,10 +43,10 @@ const FolderImportPage: NextPage = () => {
         const zipFileContent = await modZipFile?.arrayBuffer();
         if (!zipFileContent) throw zipFileContent;
 
-        const parsedMods = (await parseModFolder({
+        const parsedMods = await parseModFolder({
           f: await loadAsync(new Uint8Array(zipFileContent)),
           setProgress,
-        }).then((r) => r.filter((k) => k !== null))) as Mod[];
+        }).then((r) => r.filter((k) => k !== null));
 
         const res = await fetch("/api/list/create", {
           method: "POST",
