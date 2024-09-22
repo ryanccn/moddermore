@@ -4,7 +4,7 @@ import "~/styles/radix.css";
 
 import type { AppProps } from "next/app";
 
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import PlausibleProvider from "next-plausible";
 import { ThemeProvider } from "next-themes";

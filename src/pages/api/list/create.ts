@@ -8,7 +8,7 @@ import { createList } from "~/lib/db";
 
 import { ModListCreate } from "~/types/moddermore";
 
-import { RESTPostAPIWebhookWithTokenJSONBody as DiscordWebhookBody } from "discord-api-types/rest";
+import type { RESTPostAPIWebhookWithTokenJSONBody as DiscordWebhookBody } from "discord-api-types/rest";
 import { loaderFormat } from "~/lib/utils/strings";
 
 const logToDiscord = async ({ data, id, user }: { data: ModListCreate; id: string; user: User }) => {
@@ -19,7 +19,7 @@ const logToDiscord = async ({ data, id, user }: { data: ModListCreate; id: strin
       {
         title: data.title,
         author: {
-          name: user.name ? `${user.name} (${user.email})` : user.email ?? `id${user.id}`,
+          name: user.name ? `${user.name} (${user.email})` : (user.email ?? `id${user.id}`),
         },
         url: `https://moddermore.net/list/${id}`,
         fields: [

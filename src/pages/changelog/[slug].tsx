@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps, type NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 
 import { MDXRemote, type MDXRemoteSerializeResult } from "next-mdx-remote";
 import Head from "next/head";

@@ -1,4 +1,4 @@
-import { type AnyJson, JsonMap, stringify } from "@iarna/toml";
+import { type AnyJson, type JsonMap, stringify } from "@iarna/toml";
 
 import pLimit from "p-limit";
 import { getSpecificList } from "~/lib/db";

@@ -65,13 +65,32 @@ const nextConfig = withPlausibleProxy()(
     },
 
     async headers() {
-      if (process.env.NODE_ENV === "development") return [];
-
       return [
-        {
-          source: "/:path*",
-          headers: securityHeaders,
-        },
+        ...(process.env.NODE_ENV === "production"
+          ? [
+              {
+                source: "/:path*",
+                headers: securityHeaders,
+              },
+            ]
+          : []),
+
+        ...[
+          "/(lists|likes|account|new)",
+          "/new/(.*)",
+          "/auth/(.*)",
+          "/api/(.*)",
+          "/list/:id/analytics",
+          "/list/:id/settings",
+        ].map((source) => ({
+          source,
+          headers: [
+            {
+              key: "x-robots-tag",
+              value: "noindex",
+            },
+          ],
+        })),
       ];
     },
 

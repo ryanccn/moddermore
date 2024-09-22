@@ -18,6 +18,7 @@ export const getPageviews = async (): Promise<number | null> => {
       throw new Error(`Error fetching ${r.url}: ${r.status} ${r.statusText}\n${await r.text()}`);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return r.json();
   });
 

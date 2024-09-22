@@ -1,4 +1,4 @@
-import { NextMiddleware, NextResponse } from "next/server";
+import { type NextMiddleware, NextResponse } from "next/server";
 
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";

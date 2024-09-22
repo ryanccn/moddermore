@@ -7,7 +7,7 @@ import { getInfos as getCurseForgeInfos } from "~/lib/metadata/curseforge";
 import { getInfos as getModrinthInfos } from "~/lib/metadata/modrinth";
 
 import { useRouter } from "next/router";
-import { FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getServerSession } from "next-auth";
 import { signIn, useSession } from "next-auth/react";

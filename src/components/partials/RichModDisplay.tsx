@@ -50,7 +50,7 @@ export const RichModDisplay = ({
   const [isFetchingVersions, setIsFetchingVersions] = useState(false);
 
   const versionDisplay = useMemo(
-    () => (versions === null ? null : versions.find((v) => v.id === selectedVersion)?.name ?? null),
+    () => (versions === null ? null : (versions.find((v) => v.id === selectedVersion)?.name ?? null)),
     [versions, selectedVersion],
   );
 

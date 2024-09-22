@@ -1,4 +1,4 @@
-import { GetStaticProps, type NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 
 import Link from "next/link";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";

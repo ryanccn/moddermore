@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { loadAsync } from "jszip";
 import { parseModFolder } from "~/lib/import/parseModFolder";
 import minecraftVersions from "~/lib/minecraftVersions.json";
-import type { Mod, ModLoader } from "~/types/moddermore";
+import type { ModLoader } from "~/types/moddermore";
 
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
@@ -41,7 +41,7 @@ const FolderImportPage: NextPage = () => {
         setSubmitting(true);
 
         const zipFileContent = await modZipFile?.arrayBuffer();
-        if (!zipFileContent) throw zipFileContent;
+        if (!zipFileContent) throw new Error("could not read zip file content");
 
         const parsedMods = await parseModFolder({
           f: await loadAsync(new Uint8Array(zipFileContent)),
