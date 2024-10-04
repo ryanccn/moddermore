@@ -8,17 +8,17 @@ import type { SetStateFn } from "~/types/react";
 
 const ModrinthSideType = v.union([v.literal("required"), v.literal("optional"), v.literal("unsupported")]);
 
-const ModrinthPackIndex = v.object({
+const ModrinthPackIndex = v.strictObject({
   formatVersion: v.literal(1),
   game: v.literal("minecraft"),
   versionId: v.string(),
   name: v.string(),
   summary: v.optional(v.string()),
   files: v.array(
-    v.object({
+    v.strictObject({
       path: v.string(),
-      hashes: v.object({ sha1: v.string(), sha512: v.string() }),
-      env: v.optional(v.object({ client: ModrinthSideType, server: ModrinthSideType })),
+      hashes: v.strictObject({ sha1: v.string(), sha512: v.string() }),
+      env: v.optional(v.strictObject({ client: ModrinthSideType, server: ModrinthSideType })),
       downloads: v.pipe(v.array(v.pipe(v.string(), v.url())), v.minLength(1)),
       fileSize: v.number(),
     }),

@@ -8,7 +8,7 @@ import type { ModrinthSearchResult } from "~/types/modrinth";
 
 import { remoteFetch } from "../utils/remoteFetch";
 
-export const optionsZ = v.object({
+export const optionsZ = v.strictObject({
   platform: v.union([v.literal("modrinth"), v.literal("curseforge")]),
   query: v.string(),
   loader: ModLoader,

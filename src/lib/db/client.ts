@@ -1,4 +1,5 @@
 import { MongoClient, type MongoClientOptions, ServerApiVersion } from "mongodb";
+import { getVercelOidcToken } from "@vercel/functions/oidc";
 
 import type { ModList, UserProfile } from "~/types/moddermore";
 
@@ -10,6 +11,16 @@ declare global {
 const uri = process.env.MONGODB_URI;
 const options: MongoClientOptions = {
   serverApi: ServerApiVersion.v1,
+  authMechanismProperties:
+    process.env.NODE_ENV === "production" && process.env.MONGODB_URI.includes("authMechanism=MONGODB-OIDC")
+      ? {
+          OIDC_CALLBACK: async () => {
+            return {
+              accessToken: await getVercelOidcToken(),
+            };
+          },
+        }
+      : {},
 };
 
 let client: MongoClient;

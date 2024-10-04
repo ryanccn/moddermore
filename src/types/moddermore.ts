@@ -14,7 +14,7 @@ export type ModLoader = v.InferOutput<typeof ModLoader>;
 export const ListVisibility = v.union([v.literal("private"), v.literal("unlisted"), v.literal("public")]);
 export type ListVisibility = v.InferOutput<typeof ListVisibility>;
 
-export const Mod = v.object({
+export const Mod = v.strictObject({
   id: v.string(),
   provider: ModProvider,
   version: v.optional(v.nullable(v.string())),
@@ -34,7 +34,7 @@ export interface RichMod {
   gameVersions?: string[];
 }
 
-export const ModListCreate = v.object({
+export const ModListCreate = v.strictObject({
   title: v.pipe(v.string(), v.minLength(1)),
   description: v.optional(v.pipe(v.string(), v.minLength(1))),
   gameVersion: v.pipe(v.string(), v.minLength(1)),
@@ -44,7 +44,7 @@ export const ModListCreate = v.object({
 
 export type ModListCreate = v.InferOutput<typeof ModListCreate>;
 
-export const ModListUpdate = v.object({
+export const ModListUpdate = v.strictObject({
   title: v.optional(v.pipe(v.string(), v.minLength(1))),
   description: v.optional(v.nullable(v.pipe(v.string(), v.minLength(1)))),
   gameVersion: v.optional(v.pipe(v.string(), v.minLength(1))),
@@ -87,7 +87,7 @@ export interface RichModList {
   mods: RichMod[];
 }
 
-export const UserEditableProfileData = v.object({
+export const UserEditableProfileData = v.strictObject({
   name: v.union([v.string(), v.null_()]),
   profilePicture: v.union([v.pipe(v.string(), v.url()), v.null_()]),
 });
