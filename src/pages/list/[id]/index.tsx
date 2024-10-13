@@ -171,7 +171,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     }
   };
 
-  const submitHandle: FormEventHandler = useCallback(
+  const editHandle: FormEventHandler = useCallback(
     (e) => {
       (async () => {
         e.preventDefault();
@@ -182,7 +182,11 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
         const res = await fetch(`/api/list/${encodeURIComponent(data.id)}/update`, {
           method: "POST",
           body: JSON.stringify({
-            ...data,
+            title: data.title,
+            description: data.description,
+            gameVersion: data.gameVersion,
+            modloader: data.modloader,
+            visibility: data.visibility,
             mods: resolvedMods.map((elem) => richModToMod(elem)),
           }),
           headers: { "Content-Type": "application/json" },
@@ -610,7 +614,7 @@ ${
       {hasElevatedPermissions && (
         <div className="mb-16 flex flex-wrap items-center gap-2">
           {isEditing ? (
-            <Button variant="green" onClick={submitHandle} disabled={isSaving}>
+            <Button variant="green" onClick={editHandle} disabled={isSaving}>
               {isSaving ? <Spinner className="block h-5 w-5" /> : <SaveIcon className="block h-5 w-5" />}
               <span>Save</span>
             </Button>
