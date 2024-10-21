@@ -93,8 +93,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       '@eslint/js':
-        specifier: ^9.11.1
-        version: 9.11.1
+        specifier: ^9.13.0
+        version: 9.13.0
       '@microsoft/eslint-formatter-sarif':
         specifier: ^3.1.0
         version: 3.1.0
@@ -106,7 +106,7 @@ importers:
         version: 14.2.14
       '@ryanccn/eslint-config':
         specifier: ^0.4.1
-        version: 0.4.1(@eslint/eslintrc@3.1.0)(@eslint/js@9.11.1)(@next/eslint-plugin-next@14.2.14)(@typescript-eslint/parser@8.8.0(eslint@9.11.1(jiti@2.1.2))(typescript@5.6.2))(eslint-config-prettier@9.1.0(eslint@9.11.1(jiti@2.1.2)))(eslint-plugin-react-hooks@4.6.2(eslint@9.11.1(jiti@2.1.2)))(eslint-plugin-unicorn@56.0.0(eslint@9.11.1(jiti@2.1.2)))(eslint@9.11.1(jiti@2.1.2))(typescript-eslint@8.8.0(eslint@9.11.1(jiti@2.1.2))(typescript@5.6.2))(typescript@5.6.2)
+        version: 0.4.1(@eslint/eslintrc@3.1.0)(@eslint/js@9.13.0)(@next/eslint-plugin-next@14.2.14)(@typescript-eslint/parser@8.8.0(eslint@9.11.1(jiti@2.1.2))(typescript@5.6.2))(eslint-config-prettier@9.1.0(eslint@9.11.1(jiti@2.1.2)))(eslint-plugin-react-hooks@4.6.2(eslint@9.11.1(jiti@2.1.2)))(eslint-plugin-unicorn@56.0.0(eslint@9.11.1(jiti@2.1.2)))(eslint@9.11.1(jiti@2.1.2))(typescript-eslint@8.8.0(eslint@9.11.1(jiti@2.1.2))(typescript@5.6.2))(typescript@5.6.2)
       '@tailwindcss/forms':
         specifier: ^0.5.9
         version: 0.5.9(tailwindcss@3.4.13)
@@ -540,6 +540,10 @@ packages:
 
   '@eslint/js@9.11.1':
     resolution: {integrity: sha512-/qu+TWz8WwPWc7/HcIJKi+c+MOm46GdVaSlTTQcaqaL53+GsoA6MxWp5PtTx48qbSP7ylM1Kn7nhvkugfJvRSA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@eslint/js@9.13.0':
+    resolution: {integrity: sha512-IFLyoY4d72Z5y/6o/BazFBezupzI/taV8sGumxTAVw3lXG9A6md1Dc34T9s1FoD/an9pJH8RHbAxsaEbBed9lA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/object-schema@2.1.4':
@@ -2091,6 +2095,7 @@ packages:
   eslint@8.57.1:
     resolution: {integrity: sha512-ypowyDxpVSYpkXr9WPv2PAZCtNip1Mv5KTW0SCurXv/9iOpcrH9PaqUElksqEB6pChqHGDRCFTyrZlGhnLNGiA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   eslint@9.11.1:
@@ -2423,6 +2428,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -3529,6 +3535,7 @@ packages:
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   run-parallel@1.2.0:
@@ -4548,6 +4555,8 @@ snapshots:
 
   '@eslint/js@9.11.1': {}
 
+  '@eslint/js@9.13.0': {}
+
   '@eslint/object-schema@2.1.4': {}
 
   '@eslint/plugin-kit@0.2.0':
@@ -5015,7 +5024,7 @@ snapshots:
 
   '@rushstack/eslint-patch@1.10.4': {}
 
-  '@ryanccn/eslint-config@0.4.1(@eslint/eslintrc@3.1.0)(@eslint/js@9.11.1)(@next/eslint-plugin-next@14.2.14)(@typescript-eslint/parser@8.8.0(eslint@9.11.1(jiti@2.1.2))(typescript@5.6.2))(eslint-config-prettier@9.1.0(eslint@9.11.1(jiti@2.1.2)))(eslint-plugin-react-hooks@4.6.2(eslint@9.11.1(jiti@2.1.2)))(eslint-plugin-unicorn@56.0.0(eslint@9.11.1(jiti@2.1.2)))(eslint@9.11.1(jiti@2.1.2))(typescript-eslint@8.8.0(eslint@9.11.1(jiti@2.1.2))(typescript@5.6.2))(typescript@5.6.2)':
+  '@ryanccn/eslint-config@0.4.1(@eslint/eslintrc@3.1.0)(@eslint/js@9.13.0)(@next/eslint-plugin-next@14.2.14)(@typescript-eslint/parser@8.8.0(eslint@9.11.1(jiti@2.1.2))(typescript@5.6.2))(eslint-config-prettier@9.1.0(eslint@9.11.1(jiti@2.1.2)))(eslint-plugin-react-hooks@4.6.2(eslint@9.11.1(jiti@2.1.2)))(eslint-plugin-unicorn@56.0.0(eslint@9.11.1(jiti@2.1.2)))(eslint@9.11.1(jiti@2.1.2))(typescript-eslint@8.8.0(eslint@9.11.1(jiti@2.1.2))(typescript@5.6.2))(typescript@5.6.2)':
     dependencies:
       '@typescript-eslint/utils': 8.8.0(eslint@9.11.1(jiti@2.1.2))(typescript@5.6.2)
       eslint: 9.11.1(jiti@2.1.2)
@@ -5025,7 +5034,7 @@ snapshots:
       local-pkg: 0.5.0
     optionalDependencies:
       '@eslint/eslintrc': 3.1.0
-      '@eslint/js': 9.11.1
+      '@eslint/js': 9.13.0
       '@next/eslint-plugin-next': 14.2.14
       '@typescript-eslint/parser': 8.8.0(eslint@9.11.1(jiti@2.1.2))(typescript@5.6.2)
       eslint-config-prettier: 9.1.0(eslint@9.11.1(jiti@2.1.2))
