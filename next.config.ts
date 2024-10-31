@@ -1,5 +1,6 @@
 import { withPlausibleProxy } from "next-plausible";
 import makeBundleAnalyzer from "@next/bundle-analyzer";
+import type { NextConfig } from "next";
 
 const withBundleAnalyzer = makeBundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
@@ -52,8 +53,7 @@ const securityHeaders = [
   },
 ];
 
-/** @type {import('next').NextConfig} */
-const nextConfig = withPlausibleProxy()(
+const nextConfig: NextConfig = withPlausibleProxy()(
   withBundleAnalyzer({
     reactStrictMode: true,
     images: {
@@ -64,6 +64,7 @@ const nextConfig = withPlausibleProxy()(
       optimizePackageImports: ["lucide-react", "@tremor/react", "date-fns"],
     },
 
+    // eslint-disable-next-line @typescript-eslint/require-await
     async headers() {
       return [
         ...(process.env.NODE_ENV === "production"
@@ -94,6 +95,7 @@ const nextConfig = withPlausibleProxy()(
       ];
     },
 
+    // eslint-disable-next-line @typescript-eslint/require-await
     async redirects() {
       return [
         {
@@ -124,6 +126,7 @@ const nextConfig = withPlausibleProxy()(
       ];
     },
 
+    // eslint-disable-next-line @typescript-eslint/require-await
     async rewrites() {
       return [
         {

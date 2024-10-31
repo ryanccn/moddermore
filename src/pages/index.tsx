@@ -19,7 +19,7 @@ import {
   PlusIcon,
   ShieldIcon,
 } from "lucide-react";
-import { ModrinthIcon, TutanotaIcon, VercelIcon } from "~/components/icons";
+import { ModrinthIcon, TutanotaIcon } from "~/components/icons";
 
 import { getSpecificList } from "~/lib/db";
 import { getLists, getPageviews, getUsers } from "~/lib/stats";
@@ -262,16 +262,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists, featuredLists }) =
             <h3 className="font-display text-lg font-medium text-neutral-800 dark:text-neutral-200">Email</h3>
 
             <a href="https://tuta.com/">
-              <TutanotaIcon className="block h-8 fill-black dark:fill-white" />
-            </a>
-          </div>
-          <div className="flex flex-col gap-y-4 rounded-lg bg-neutral-100 px-8 py-6 dark:bg-neutral-800">
-            <h3 className="font-display text-lg font-medium text-neutral-800 dark:text-neutral-200">
-              Hosting
-            </h3>
-
-            <a href="https://vercel.com/?utm_source=moddermore&utm_campaign=oss">
-              <VercelIcon className="block h-8 fill-black dark:fill-white" />
+              <TutanotaIcon className="block h-12 w-auto fill-black dark:fill-white" />
             </a>
           </div>
         </div>

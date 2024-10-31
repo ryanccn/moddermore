@@ -1,10 +1,12 @@
 import { config } from "@ryanccn/eslint-config";
 
 export default config({
-  globals: ["es2021", "node"],
+  globals: ["es2024", "node"],
   reactHooks: true,
-  next: false /* this currently doesn't work */,
+  next: true,
   rules: {
     "unicorn/import-style": "off",
+    "unicorn/prefer-global-this": "off",
+    "@next/next/no-img-element": "off",
   },
 });

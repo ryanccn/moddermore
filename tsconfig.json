@@ -20,5 +20,5 @@
     }
   },
   "include": ["**/*.js", "**/*.cjs", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules/*", "**/node_modules/*"]
+  "exclude": ["node_modules/*", "**/node_modules/*", ".next/*"]
 }
