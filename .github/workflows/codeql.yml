@@ -6,20 +6,23 @@ on:
   pull_request:
     branches: ["main"]
 
+permissions: {}
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
     permissions:
-      actions: read
       contents: read
       security-events: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # ratchet:actions/checkout@v4.1.7
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@5618c9fc1e675841ca52c1c6b1304f5255a905a0 # ratchet:github/codeql-action/init@codeql-bundle-v2.19.0
+        uses: github/codeql-action/init@45775bd8235c68ba998cffa5171334d58593da47 # ratchet:github/codeql-action/init@v3
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@5618c9fc1e675841ca52c1c6b1304f5255a905a0 # ratchet:github/codeql-action/analyze@codeql-bundle-v2.19.0
+        uses: github/codeql-action/analyze@45775bd8235c68ba998cffa5171334d58593da47 # ratchet:github/codeql-action/analyze@v3

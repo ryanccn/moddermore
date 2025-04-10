@@ -425,12 +425,8 @@ ${
   return (
     <GlobalLayout title={data.title}>
       {data.description && (
-        <div className="-mt-6 mb-8 text-lg font-medium">
-          <Markdown
-            skipHtml
-            allowedElements={["p", "span", "a", "strong", "em", "b", "i", "mark"]}
-            className="[&_a]:underline [&_a]:decoration-neutral-200 dark:[&_a]:decoration-neutral-500"
-          >
+        <div className="-mt-6 mb-8 text-lg font-medium [&_a]:underline [&_a]:decoration-neutral-200 dark:[&_a]:decoration-neutral-500">
+          <Markdown skipHtml allowedElements={["p", "span", "a", "strong", "em", "b", "i", "mark"]}>
             {data.description}
           </Markdown>
         </div>

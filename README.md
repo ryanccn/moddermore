@@ -1,7 +1,5 @@
 # [Moddermore](https://moddermore.net/)
 
-[![Powered by Vercel](/.github/vercel.svg)](https://vercel.com/?utm_source=moddermore&utm_campaign=oss)
-
 Share the mods you use with anyone.
 
 ## Features

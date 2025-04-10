@@ -25,7 +25,7 @@ const PrivacyPolicy: NextPage<PageProps> = ({ content }) => {
 };
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
-  const markdown = await readFile("./legal/privacy.md", { encoding: "utf8" });
+  const markdown = await readFile("docs/legal/privacy.md", { encoding: "utf8" });
 
   const html = await unified()
     .use(remarkParse)

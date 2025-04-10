@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
-import { PoweredByVercel } from "../PoweredByVercel";
 import { buttonVariants } from "../ui/Button";
 
 export const Footer = () => {
@@ -87,8 +86,6 @@ export const Footer = () => {
           Code open source under AGPLv3
         </a>
       </div>
-
-      <PoweredByVercel />
     </footer>
   );
 };

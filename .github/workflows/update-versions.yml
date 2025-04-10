@@ -1,0 +1,60 @@
+name: Update Minecraft versions
+
+on:
+  schedule:
+    - cron: 0 0 * * *
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create GitHub App token
+        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5 # ratchet:actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # ratchet:pnpm/action-setup@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # ratchet:actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Update Minecraft versions
+        run: node scripts/updateVersions.js
+
+      - name: Create pull request
+        id: pull-request
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # ratchet:peter-evans/create-pull-request@v7
+        with:
+          branch: github-actions/update-versions
+          title: "chore: update Minecraft versions"
+          body: ""
+          commit-message: "chore: update Minecraft versions"
+          reviewers: ryanccn
+          sign-commits: true
+          delete-branch: true
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Enable auto-merge
+        run: gh pr merge --auto --squash "$PULL_REQUEST_URL"
+        env:
+          PULL_REQUEST_URL: ${{ steps.pull-request.outputs.pull-request-url }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}

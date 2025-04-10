@@ -1,5 +1,5 @@
 import dorian from "gray-matter";
-import sizeOf from "image-size";
+import { imageSize } from "image-size";
 import { serialize } from "next-mdx-remote/serialize";
 
 import { format } from "date-fns";
@@ -18,7 +18,8 @@ const getPostCover = async (slug: string) => {
 
   if (!path) return null;
 
-  const { width, height } = sizeOf(join("./public", path));
+  const data = await readFile(join("./public", path));
+  const { width, height } = imageSize(data);
   return { src: "/" + path, width, height };
 };
 
@@ -33,13 +34,13 @@ const exists = async (f: string) => {
 };
 
 export const listChangelogPosts = async () => {
-  const fileList = await readdir("./changelog").then((list) => list.filter((k) => k.endsWith(".mdx")));
+  const fileList = await readdir("docs/changelog").then((list) => list.filter((k) => k.endsWith(".mdx")));
   const lim = pLimit(12);
 
   const unsorted = await Promise.all(
     fileList.map((fileName) =>
       lim(async () => {
-        const { data } = dorian(await readFile(join("./changelog", fileName), { encoding: "utf8" }));
+        const { data } = dorian(await readFile(join("docs/changelog", fileName), { encoding: "utf8" }));
 
         return {
           slug: fileName.replace(".mdx", ""),
