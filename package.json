@@ -49,7 +49,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@types/file-saver": "^2.0.7",
     "@types/node": "22.14.0",
-    "@types/react": "19.1.0",
+    "@types/react": "19.1.2",
     "@types/react-dom": "19.1.2",
     "@upstash/ratelimit": "^2.0.5",
     "@vercel/functions": "^2.0.0",
