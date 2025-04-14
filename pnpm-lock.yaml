@@ -106,7 +106,7 @@ importers:
         version: 15.3.0
       '@ryanccn/eslint-config':
         specifier: ^0.4.3
-        version: 0.4.3(@eslint/eslintrc@3.3.1)(@eslint/js@9.24.0)(@next/eslint-plugin-next@15.3.0)(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3))(eslint-config-prettier@10.1.1(eslint@9.24.0(jiti@2.1.2)))(eslint-plugin-react-hooks@5.2.0(eslint@9.24.0(jiti@2.1.2)))(eslint-plugin-unicorn@58.0.0(eslint@9.24.0(jiti@2.1.2)))(eslint@9.24.0(jiti@2.1.2))(typescript-eslint@8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3))(typescript@5.8.3)
+        version: 0.4.3(@eslint/eslintrc@3.3.1)(@eslint/js@9.24.0)(@next/eslint-plugin-next@15.3.0)(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3))(eslint-config-prettier@10.1.2(eslint@9.24.0(jiti@2.1.2)))(eslint-plugin-react-hooks@5.2.0(eslint@9.24.0(jiti@2.1.2)))(eslint-plugin-unicorn@58.0.0(eslint@9.24.0(jiti@2.1.2)))(eslint@9.24.0(jiti@2.1.2))(typescript-eslint@8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3))(typescript@5.8.3)
       '@tailwindcss/forms':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.14)
@@ -147,8 +147,8 @@ importers:
         specifier: 15.3.0
         version: 15.3.0(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3)
       eslint-config-prettier:
-        specifier: ^10.1.1
-        version: 10.1.1(eslint@9.24.0(jiti@2.1.2))
+        specifier: ^10.1.2
+        version: 10.1.2(eslint@9.24.0(jiti@2.1.2))
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
         version: 5.2.0(eslint@9.24.0(jiti@2.1.2))
@@ -2190,8 +2190,8 @@ packages:
       typescript:
         optional: true
 
-  eslint-config-prettier@10.1.1:
-    resolution: {integrity: sha512-4EQQr6wXwS+ZJSzaR5ZCrYgLxqvUjdXctaEtBqHcbkW944B1NQyO4qpdHQbXBONfwxXdkAY81HH4+LUfrg+zPw==}
+  eslint-config-prettier@10.1.2:
+    resolution: {integrity: sha512-Epgp/EofAUeEpIdZkW60MHKvPyru1ruQJxPL+WIycnaPApuseK0Zpkrh/FwL9oIpQvIhJwV7ptOy0DWUjTlCiA==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -2640,6 +2640,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -3822,6 +3823,7 @@ packages:
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   run-parallel@1.2.0:
@@ -5335,7 +5337,7 @@ snapshots:
 
   '@rushstack/eslint-patch@1.11.0': {}
 
-  '@ryanccn/eslint-config@0.4.3(@eslint/eslintrc@3.3.1)(@eslint/js@9.24.0)(@next/eslint-plugin-next@15.3.0)(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3))(eslint-config-prettier@10.1.1(eslint@9.24.0(jiti@2.1.2)))(eslint-plugin-react-hooks@5.2.0(eslint@9.24.0(jiti@2.1.2)))(eslint-plugin-unicorn@58.0.0(eslint@9.24.0(jiti@2.1.2)))(eslint@9.24.0(jiti@2.1.2))(typescript-eslint@8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3))(typescript@5.8.3)':
+  '@ryanccn/eslint-config@0.4.3(@eslint/eslintrc@3.3.1)(@eslint/js@9.24.0)(@next/eslint-plugin-next@15.3.0)(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3))(eslint-config-prettier@10.1.2(eslint@9.24.0(jiti@2.1.2)))(eslint-plugin-react-hooks@5.2.0(eslint@9.24.0(jiti@2.1.2)))(eslint-plugin-unicorn@58.0.0(eslint@9.24.0(jiti@2.1.2)))(eslint@9.24.0(jiti@2.1.2))(typescript-eslint@8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3))(typescript@5.8.3)':
     dependencies:
       '@typescript-eslint/utils': 8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3)
       eslint: 9.24.0(jiti@2.1.2)
@@ -5347,7 +5349,7 @@ snapshots:
       '@eslint/js': 9.24.0
       '@next/eslint-plugin-next': 15.3.0
       '@typescript-eslint/parser': 8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3)
-      eslint-config-prettier: 10.1.1(eslint@9.24.0(jiti@2.1.2))
+      eslint-config-prettier: 10.1.2(eslint@9.24.0(jiti@2.1.2))
       eslint-plugin-react-hooks: 5.2.0(eslint@9.24.0(jiti@2.1.2))
       eslint-plugin-unicorn: 58.0.0(eslint@9.24.0(jiti@2.1.2))
       typescript-eslint: 8.29.1(eslint@9.24.0(jiti@2.1.2))(typescript@5.8.3)
@@ -6524,7 +6526,7 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  eslint-config-prettier@10.1.1(eslint@9.24.0(jiti@2.1.2)):
+  eslint-config-prettier@10.1.2(eslint@9.24.0(jiti@2.1.2)):
     dependencies:
       eslint: 9.24.0(jiti@2.1.2)
 
