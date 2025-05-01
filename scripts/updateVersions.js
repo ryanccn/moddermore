@@ -9,7 +9,11 @@ if (!res.ok) {
 
 const data = await res.json();
 
-const versions = data.versions.filter((v) => v.type === "release").map((v) => v.id);
+const collator = Intl.Collator("en", { numeric: true });
+const versions = data.versions
+  .filter((v) => v.type === "release")
+  .map((v) => v.id)
+  .sort((a, b) => collator.compare(b, a));
 
 const serialized = await format(JSON.stringify(versions), { parser: "json" });
 

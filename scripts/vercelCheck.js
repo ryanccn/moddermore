@@ -1,12 +1,12 @@
 /* eslint-disable unicorn/no-process-exit */
 
 const shouldDeploy = () => {
-  console.log("Should deploy!");
+  console.log("Should deploy.");
   process.exit(1);
 };
 
 const shouldntDeploy = () => {
-  console.log("Shouldn't deploy!");
+  console.log("Should not deploy.");
   process.exit(0);
 };
 
