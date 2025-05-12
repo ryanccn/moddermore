@@ -19,7 +19,7 @@
     "@tremor/react": "^3.18.7",
     "class-variance-authority": "^0.7.1",
     "date-fns": "^4.1.0",
-    "fast-xml-parser": "^5.2.1",
+    "fast-xml-parser": "^5.2.3",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
     "lucide-react": "^0.503.0",
