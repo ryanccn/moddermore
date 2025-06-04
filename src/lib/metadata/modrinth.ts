@@ -72,9 +72,9 @@ export const fetchVersions = async ({
   if (loader === "quilt") patchedLoaders.push("fabric");
   if (loader === "neoforge") patchedLoaders.push("forge");
 
-  const compatGameVersions = minecraftVersions.filter((a) =>
-    a.startsWith(gameVersion.split(".").slice(0, 2).join(".")),
-  );
+  const compatGameVersions = minecraftVersions.snapshots.includes(gameVersion)
+    ? []
+    : minecraftVersions.releases.filter((a) => a.startsWith(gameVersion.split(".").slice(0, 2).join(".")));
 
   const res = await remoteFetch(
     `https://api.modrinth.com/v2/project/${encodeURIComponent(

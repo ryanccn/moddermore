@@ -92,7 +92,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   }, [data, router, title, gameVersion, modLoader, description, visibility]);
 
   return (
-    <GlobalLayout title={`Settings for ${data.title}`}>
+    <GlobalLayout title={`${data.title} / Settings`}>
       <Link href={`/list/${data.id}`} className="mb-8 flex flex-row items-center gap-x-1">
         <ArrowLeftIcon className="block h-3 w-3" />
         <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Back</span>
@@ -178,7 +178,7 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
                 setGameVersion(e.target.value);
               }}
             >
-              {minecraftVersions.map((v) => (
+              {[...minecraftVersions.releases, ...minecraftVersions.snapshots].map((v) => (
                 <option value={v} key={v}>
                   {v}
                 </option>

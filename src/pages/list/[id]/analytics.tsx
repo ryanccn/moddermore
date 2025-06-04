@@ -56,7 +56,7 @@ const ListAnalytics: NextPage<PageProps> = ({ data }) => {
   }, [updateData]);
 
   return (
-    <GlobalLayout title={`Analytics for ${data.title}`} className="px-8 py-20 md:px-16" wideLayout>
+    <GlobalLayout title={`${data.title} / Analytics`} className="px-8 py-20 md:px-16" wideLayout>
       <Link href={`/list/${data.id}`} className="mb-8 flex flex-row items-center gap-x-1">
         <ArrowLeftIcon className="block h-3 w-3" />
         <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Back</span>

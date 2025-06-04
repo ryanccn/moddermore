@@ -89,7 +89,7 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists, featuredLists }) =
         )}
         <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-800">
           <span className="mb-16 font-display text-xl font-semibold text-neutral-600 dark:text-neutral-400">
-            Active users
+            Registered users
           </span>
           <span className="text-6xl font-bold tracking-tight">{numberFormat(users)}</span>
         </div>

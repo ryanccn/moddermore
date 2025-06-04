@@ -19,9 +19,9 @@ type Options = v.InferOutput<typeof optionsZ>;
 
 export const search = async ({ platform, query, loader, gameVersion }: Options): Promise<RichMod[]> => {
   if (platform === "modrinth") {
-    const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersion.split(".").slice(0, 2).join(".")),
-    );
+    const compatGameVersions = minecraftVersions.snapshots.includes(gameVersion)
+      ? []
+      : minecraftVersions.releases.filter((a) => a.startsWith(gameVersion.split(".").slice(0, 2).join(".")));
 
     const data = await remoteFetch(
       `https://api.modrinth.com/v2/search?query=${encodeURIComponent(query)}&facets=${encodeURIComponent(

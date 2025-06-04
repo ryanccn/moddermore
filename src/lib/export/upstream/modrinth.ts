@@ -88,11 +88,13 @@ export const getModrinthDownload = async ({
     });
   }
 
-  if (!latest) {
-    const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersions[0].split(".").slice(0, 2).join(".")),
-    );
+  const compatGameVersions = minecraftVersions.snapshots.includes(gameVersions[0])
+    ? []
+    : minecraftVersions.releases.filter((a) =>
+        a.startsWith(gameVersions[0].split(".").slice(0, 2).join(".")),
+      );
 
+  if (!latest) {
     latest = await callModrinthAPI({
       id,
       gameVersions: compatGameVersions,
@@ -103,10 +105,6 @@ export const getModrinthDownload = async ({
   }
 
   if (!latest && loader === "quilt") {
-    const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersions[0].split(".").slice(0, 2).join(".")),
-    );
-
     latest = await callModrinthAPI({
       id,
       gameVersions: compatGameVersions,
@@ -117,10 +115,6 @@ export const getModrinthDownload = async ({
   }
 
   if (!latest && loader === "neoforge") {
-    const compatGameVersions = minecraftVersions.filter((a) =>
-      a.startsWith(gameVersions[0].split(".").slice(0, 2).join(".")),
-    );
-
     latest = await callModrinthAPI({
       id,
       gameVersions: compatGameVersions,

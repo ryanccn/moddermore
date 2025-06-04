@@ -24,7 +24,7 @@ const PrismImportPage: NextPage = () => {
   const sess = useSession({ required: true });
 
   const [title, setTitle] = useState("");
-  const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
+  const [gameVersion, setGameVersion] = useState(minecraftVersions.releases[0]);
   const [instanceFile, setInstanceFile] = useState<File | null>(null);
   const [modLoader, setModLoader] = useState<ModLoader>("fabric");
   const [useMetadata, setUseMetadata] = useState(true);
@@ -105,7 +105,7 @@ const PrismImportPage: NextPage = () => {
               setGameVersion(e.target.value);
             }}
           >
-            {minecraftVersions.map((v) => (
+            {[...minecraftVersions.releases, ...minecraftVersions.snapshots].map((v) => (
               <option value={v} key={v}>
                 {v}
               </option>

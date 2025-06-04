@@ -701,7 +701,7 @@ ${
                 onClick={() => {
                   setResolvedMods((prev) => (prev ? prev.filter((a) => a.id !== mod.id) : []));
                 }}
-                onVersion={(version) => {
+                onVersion={(version, name) => {
                   setResolvedMods((prev) => {
                     if (!prev) return [];
 
@@ -709,9 +709,11 @@ ${
                     for (const prevMod of workingCopy) {
                       if (prevMod.id === mod.id) {
                         prevMod.version = version ?? undefined;
+                        prevMod.cachedVersionName = name ?? undefined;
                         break;
                       }
                     }
+
                     return workingCopy;
                   });
                 }}

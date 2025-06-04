@@ -1,4 +1,5 @@
 import * as v from "valibot";
+import minecraftVersions from "~/lib/minecraftVersions.json";
 
 export const ModProvider = v.union([v.literal("modrinth"), v.literal("curseforge")]);
 export type ModProvider = v.InferOutput<typeof ModProvider>;
@@ -31,13 +32,14 @@ export interface RichMod {
   href: string;
   id: string;
   version?: string;
+  cachedVersionName?: string;
   gameVersions?: string[];
 }
 
 export const ModListCreate = v.strictObject({
   title: v.pipe(v.string(), v.minLength(1)),
   description: v.optional(v.pipe(v.string(), v.minLength(1))),
-  gameVersion: v.pipe(v.string(), v.minLength(1)),
+  gameVersion: v.picklist([...minecraftVersions.releases, ...minecraftVersions.snapshots]),
   modloader: ModLoader,
   mods: v.pipe(v.array(Mod), v.minLength(1), v.maxLength(500)),
 });
@@ -47,7 +49,7 @@ export type ModListCreate = v.InferOutput<typeof ModListCreate>;
 export const ModListUpdate = v.strictObject({
   title: v.optional(v.pipe(v.string(), v.minLength(1))),
   description: v.optional(v.nullable(v.pipe(v.string(), v.minLength(1)))),
-  gameVersion: v.optional(v.pipe(v.string(), v.minLength(1))),
+  gameVersion: v.optional(v.picklist([...minecraftVersions.releases, ...minecraftVersions.snapshots])),
   modloader: ModLoader,
   visibility: ListVisibility,
   mods: v.optional(v.pipe(v.array(Mod), v.minLength(1), v.maxLength(500))),

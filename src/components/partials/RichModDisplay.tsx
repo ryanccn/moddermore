@@ -26,7 +26,7 @@ interface Props {
   buttonType?: "add" | "delete" | null;
   onClick?: () => void | Promise<void>;
   showVersionSelect?: boolean;
-  onVersion?: (version: string | null) => void | Promise<void>;
+  onVersion?: (version: string | null, name: string | null) => void | Promise<void>;
   className?: string;
   parent?: Pick<ModList, "modloader" | "gameVersion">;
 }
@@ -47,18 +47,19 @@ export const RichModDisplay = ({
 
   const [versions, setVersions] = useState<{ id: string; name: string }[] | null>(null);
   const [selectedVersion, setSelectedVersion] = useState(data.version ?? null);
-  const [isFetchingVersions, setIsFetchingVersions] = useState(false);
+  const [fetchVersionStatus, setFetchVersionStatus] = useState<"idle" | "fetching" | "error">("idle");
 
   const versionDisplay = useMemo(
-    () => (versions === null ? null : (versions.find((v) => v.id === selectedVersion)?.name ?? null)),
-    [versions, selectedVersion],
+    () =>
+      data.cachedVersionName ??
+      (versions === null ? null : (versions.find((v) => v.id === selectedVersion)?.name ?? null)),
+    [versions, selectedVersion, data.cachedVersionName],
   );
 
   const fetchVersionsIntoState = useCallback(async () => {
-    if (!parent) return;
-    if (versions !== null) return;
+    if (!parent || versions !== null || fetchVersionStatus === "error") return;
 
-    setIsFetchingVersions(true);
+    setFetchVersionStatus("fetching");
 
     const fetchedVersions = await (
       data.provider === "modrinth" ? fetchModrinthVersions : fetchCurseforgeVersions
@@ -70,18 +71,18 @@ export const RichModDisplay = ({
 
     if (!fetchedVersions || fetchedVersions.length === 0) {
       toast.error("Encountered an error fetching versions");
-      setIsFetchingVersions(false);
+      setFetchVersionStatus("error");
       return;
     }
 
     setVersions(fetchedVersions);
     if (!selectedVersion) {
       setSelectedVersion(fetchedVersions[0].id);
-      if (onVersion) void onVersion(fetchedVersions[0].id);
+      if (onVersion) void onVersion(fetchedVersions[0].id, fetchedVersions[0].name);
     }
 
-    setIsFetchingVersions(false);
-  }, [data.id, data.provider, versions, parent, selectedVersion, onVersion]);
+    setFetchVersionStatus("idle");
+  }, [data.id, data.provider, versions, parent, selectedVersion, onVersion, fetchVersionStatus]);
 
   useEffect(() => {
     if (data.version)
@@ -160,7 +161,7 @@ export const RichModDisplay = ({
                 <p className="font-medium">{versionDisplay}</p>
               </div>
             ) : (
-              <div className="flex items-center gap-x-2 sm:justify-end">
+              <div className="flex items-center gap-x-2 opacity-50 sm:justify-end">
                 <ShieldCheckIcon className="block h-4 w-4" />
                 <p className="font-medium">Latest</p>
               </div>
@@ -178,9 +179,9 @@ export const RichModDisplay = ({
                       console.error(error);
                     });
                   }}
-                  disabled={isFetchingVersions}
+                  disabled={fetchVersionStatus !== "idle"}
                 >
-                  {isFetchingVersions ? (
+                  {fetchVersionStatus === "fetching" ? (
                     <Spinner className="block h-4 w-4" />
                   ) : (
                     <PinIcon className="block h-4 w-4" />
@@ -195,7 +196,8 @@ export const RichModDisplay = ({
                     className="mm-input !bg-neutral-200 font-mono !text-sm !shadow-none dark:!bg-neutral-700"
                     onChange={(e) => {
                       setSelectedVersion(e.target.value);
-                      if (onVersion) void onVersion(e.target.value);
+                      if (onVersion)
+                        void onVersion(e.target.value, versions.find((v) => v.id === e.target.value)!.name);
                     }}
                   >
                     {versions.map((version) => (
@@ -207,7 +209,7 @@ export const RichModDisplay = ({
                   <button
                     onClick={() => {
                       setSelectedVersion(null);
-                      if (onVersion) void onVersion(null);
+                      if (onVersion) void onVersion(null, null);
                     }}
                   >
                     <UnplugIcon className="block h-4 w-4 text-red-500 dark:text-red-400" />

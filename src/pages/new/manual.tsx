@@ -19,7 +19,7 @@ const ManualImportPage: NextPage = () => {
   const session = useSession({ required: true });
 
   const [title, setTitle] = useState("");
-  const [gameVersion, setGameVersion] = useState(minecraftVersions[0]);
+  const [gameVersion, setGameVersion] = useState(minecraftVersions.releases[0]);
   const [modLoader, setModLoader] = useState<ModLoader>("fabric");
 
   const [inputMods, setInputMods] = useState<RichMod[]>([]);
@@ -88,7 +88,7 @@ const ManualImportPage: NextPage = () => {
               setGameVersion(e.target.value);
             }}
           >
-            {minecraftVersions.map((v) => (
+            {[...minecraftVersions.releases, ...minecraftVersions.snapshots].map((v) => (
               <option value={v} key={v}>
                 {v}
               </option>

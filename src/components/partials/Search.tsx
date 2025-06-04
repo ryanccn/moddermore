@@ -95,10 +95,11 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
                 onClick={() => {
                   void onAdd(res);
                 }}
-                onVersion={(version) => {
+                onVersion={(version, name) => {
                   if (version) {
                     const workingCopy = [...searchResults];
                     workingCopy[idx].version = version;
+                    if (name) workingCopy[idx].cachedVersionName = name;
                     setSearchResults(workingCopy);
                   }
                 }}

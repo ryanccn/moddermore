@@ -10,7 +10,7 @@ export const remoteFetch = async (url: string | URL, init: RequestInit = {}): Pr
     await new Promise<void>((resolve) => {
       window.setTimeout(() => {
         resolve();
-      }, 30_000);
+      }, 5000);
     });
 
     return remoteFetch(url, init);
