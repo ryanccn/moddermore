@@ -9,17 +9,15 @@ if (!res.ok) {
 
 const data = await res.json();
 
-const collator = Intl.Collator("en", { numeric: true });
-
 const releases = data.versions
   .filter((v) => v.type === "release")
-  .map((v) => v.id)
-  .sort((a, b) => collator.compare(b, a));
+  .toSorted((a, b) => new Date(b.releaseTime) - new Date(a.releaseTime))
+  .map((v) => v.id);
 
 const snapshots = data.versions
   .filter((v) => v.type === "snapshot")
-  .map((v) => v.id)
-  .sort((a, b) => collator.compare(b, a));
+  .toSorted((a, b) => new Date(b.releaseTime) - new Date(a.releaseTime))
+  .map((v) => v.id);
 
 const serialized = await format(JSON.stringify({ releases, snapshots }), { parser: "json" });
 
