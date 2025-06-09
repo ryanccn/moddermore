@@ -50,7 +50,7 @@
     "@types/file-saver": "^2.0.7",
     "@types/node": "22.15.29",
     "@types/react": "19.1.6",
-    "@types/react-dom": "19.1.5",
+    "@types/react-dom": "19.1.6",
     "@upstash/ratelimit": "^2.0.5",
     "@vercel/functions": "^2.1.0",
     "@vercel/kv": "^3.0.0",
