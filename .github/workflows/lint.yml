@@ -41,7 +41,7 @@ jobs:
         run: pnpm dlx @ryanccn/sarif-strip-suppressed /tmp/lint.sarif
 
       - name: Upload results
-        uses: github/codeql-action/upload-sarif@ff0a06e83cb2de871e5a09832bc6a81e7276941f # ratchet:github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@181d5eefc20863364f96762470ba6f862bdef56b # ratchet:github/codeql-action/upload-sarif@v3
         with:
           sarif_file: /tmp/lint.sarif
           wait-for-processing: true
