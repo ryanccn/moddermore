@@ -4,7 +4,6 @@ import { getVercelOidcToken } from "@vercel/functions/oidc";
 import type { ModList, UserProfile } from "~/types/moddermore";
 
 declare global {
-  // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 

@@ -52,7 +52,7 @@ export const curseforgeHash = (data: Uint8Array): number => {
 };
 
 export const modrinthHash = async (f: Uint8Array): Promise<string> => {
-  const ha = await window.crypto.subtle.digest("SHA-512", f);
+  const ha = await window.crypto.subtle.digest("SHA-512", f as BufferSource);
   const he = [...new Uint8Array(ha)].map((x) => x.toString(16).padStart(2, "0")).join("");
 
   return he;

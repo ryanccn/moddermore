@@ -54,7 +54,7 @@ export const listChangelogPosts = async () => {
     ),
   );
 
-  return unsorted.sort((a, b) => (new Date(a.data.date) > new Date(b.data.date) ? -1 : 1));
+  return unsorted.toSorted((a, b) => (new Date(a.data.date) > new Date(b.data.date) ? -1 : 1));
 };
 
 export const getChangelogPost = async (slug: string) => {

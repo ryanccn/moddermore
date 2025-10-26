@@ -14,7 +14,7 @@
     "noEmit": true,
     "incremental": true,
     "lib": ["esnext", "dom", "dom.iterable"],
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "paths": {
       "~/*": ["./src/*"]
     }

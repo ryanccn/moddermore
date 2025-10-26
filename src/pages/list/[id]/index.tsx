@@ -126,7 +126,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
 
       const mods = [...modrinthMods, ...curseForgeMods]
         .filter((k) => k !== null)
-        .sort((a, b) => (a.name > b.name ? 1 : -1));
+        .toSorted((a, b) => (a.name > b.name ? 1 : -1));
 
       setResolvedMods(mods);
       setOldMods(mods);

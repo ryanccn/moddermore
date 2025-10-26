@@ -3,10 +3,15 @@ export const remoteFetch = async (url: string | URL, init: RequestInit = {}): Pr
   patchedHeaders.set("user-agent", "Moddermore/noversion");
   init.headers = patchedHeaders;
 
-  const resp = await fetch(url, init);
-  const respClone = resp.clone();
+  let savedResp: Response | undefined;
 
-  if (resp.status === 429) {
+  try {
+    savedResp = await fetch(url, init);
+  } catch {
+    /* empty */
+  }
+
+  if (!savedResp || savedResp.status === 429) {
     await new Promise<void>((resolve) => {
       window.setTimeout(() => {
         resolve();
@@ -16,5 +21,5 @@ export const remoteFetch = async (url: string | URL, init: RequestInit = {}): Pr
     return remoteFetch(url, init);
   }
 
-  return respClone;
+  return savedResp;
 };

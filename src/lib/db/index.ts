@@ -10,7 +10,7 @@ export const getUserLists = async (userId: string): Promise<ModList[]> => {
   const collection = await getListsCollection();
   const lists = await collection.find({ owner: userId }).toArray();
 
-  return lists.sort((a, b) => (new Date(a.created_at) > new Date(b.created_at) ? -1 : 1));
+  return lists.toSorted((a, b) => (new Date(a.created_at) > new Date(b.created_at) ? -1 : 1));
 };
 
 export const getSpecificListByID = async (trueId: string) => {
