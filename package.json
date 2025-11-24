@@ -40,7 +40,7 @@
   "devDependencies": {
     "@aws-sdk/credential-provider-web-identity": "^3.916.0",
     "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.38.0",
+    "@eslint/js": "^9.39.1",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@next/bundle-analyzer": "^16.0.0",
     "@ryanccn/eslint-config": "^0.5.0",
