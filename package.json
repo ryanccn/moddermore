@@ -54,7 +54,7 @@
     "@upstash/ratelimit": "^2.0.7",
     "@vercel/functions": "^3.3.4",
     "@vercel/kv": "^3.0.0",
-    "autoprefixer": "^10.4.22",
+    "autoprefixer": "^10.4.23",
     "discord-api-types": "^0.38.36",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
