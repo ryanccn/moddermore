@@ -55,7 +55,7 @@
     "@vercel/functions": "^3.3.4",
     "@vercel/kv": "^3.0.0",
     "autoprefixer": "^10.4.22",
-    "discord-api-types": "^0.38.36",
+    "discord-api-types": "^0.38.37",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.0.1",
