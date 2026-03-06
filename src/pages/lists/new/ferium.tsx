@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { type FormEventHandler, useCallback, useState } from "react";
+import { type SubmitEventHandler, useCallback, useState } from "react";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -9,8 +9,27 @@ import { parseFerium } from "~/lib/import/ferium";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 import type { ModLoader } from "~/types/moddermore";
 
-import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { DashboardLayout } from "~/components/layout/DashboardLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
+
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "~/components/shadcn/combobox";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/shadcn/select";
+import { loaderFormValues } from "~/lib/utils/strings";
+import { Textarea } from "~/components/shadcn/textarea";
 
 const FeriumImportPage: NextPage = () => {
   const sess = useSession({ required: true });
@@ -23,7 +42,7 @@ const FeriumImportPage: NextPage = () => {
 
   const router = useRouter();
 
-  const submitHandle: FormEventHandler = useCallback(
+  const submitHandle: SubmitEventHandler = useCallback(
     (e) => {
       (async () => {
         e.preventDefault();
@@ -57,7 +76,7 @@ const FeriumImportPage: NextPage = () => {
   );
 
   return (
-    <GlobalLayout title="Ferium import" displayTitle={false}>
+    <DashboardLayout title="Ferium import">
       <form className="flex flex-col items-start gap-y-6" onSubmit={submitHandle}>
         <input
           name="title"
@@ -73,45 +92,56 @@ const FeriumImportPage: NextPage = () => {
         />
 
         <div className="flex items-center gap-x-4">
-          <select
+          <Combobox
             name="game-version"
-            value={gameVersion}
-            className="mm-input"
-            aria-label="Game version"
             required
-            onChange={(e) => {
-              setGameVersion(e.target.value);
+            value={gameVersion}
+            onValueChange={(value) => {
+              if (value) setGameVersion(value);
             }}
+            items={[...minecraftVersions.releases, ...minecraftVersions.snapshots]}
           >
-            {[...minecraftVersions.releases, ...minecraftVersions.snapshots].map((v) => (
-              <option value={v} key={v}>
-                {v}
-              </option>
-            ))}
-          </select>
+            <ComboboxInput placeholder="Select a game version" />
+            <ComboboxContent>
+              <ComboboxEmpty>No versions found.</ComboboxEmpty>
+              <ComboboxList>
+                {(item: string) => (
+                  <ComboboxItem key={item} value={item}>
+                    {item}
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
 
-          <select
+          <Select
+            required
             name="modloader"
             value={modLoader}
-            className="mm-input"
-            aria-label="Mod loader"
-            onChange={(e) => {
-              setModLoader(e.target.value as ModLoader);
+            onValueChange={(value) => {
+              if (value) setModLoader(value as ModLoader);
             }}
           >
-            <option value="quilt">Quilt</option>
-            <option value="fabric">Fabric</option>
-            <option value="forge">Forge</option>
-            <option value="neoforge">NeoForge</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue placeholder="Loader" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {loaderFormValues.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
 
-        <textarea
+        <Textarea
           name="ferium-copy-paste"
           value={feriumCopyPaste}
-          className="mm-input min-h-[10rem] w-full resize-y font-mono"
+          className="min-h-[10rem] resize-y"
           placeholder="Paste the output of `ferium list` here."
-          aria-label="The output of `ferium list`"
           required
           onChange={(e) => {
             setFeriumCopyPaste(e.target.value);
@@ -120,7 +150,7 @@ const FeriumImportPage: NextPage = () => {
 
         <NewSubmitButton submitting={submitting} disabled={sess.status === "loading" || submitting} />
       </form>
-    </GlobalLayout>
+    </DashboardLayout>
   );
 };
 

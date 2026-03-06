@@ -26,7 +26,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
-import { DonationMessage } from "~/components/partials/DonationMessage";
+
 import { RichModDisplay } from "~/components/partials/RichModDisplay";
 import { Search } from "~/components/partials/Search";
 import { Metadata } from "~/components/partials/Metadata";
@@ -652,15 +652,13 @@ ${
             }}
           />
           <div className="flex flex-row flex-wrap justify-end gap-x-2">
-            <Button variant="danger" onClick={unpinAll}>
-              <UnplugIcon className="block h-4 w-4" />
+            <Button1 variant="destructive" onClick={unpinAll}>
+              <UnplugIcon />
               <span>Unpin all</span>
-            </Button>
+            </Button1>
           </div>
         </>
       )}
-
-      <DonationMessage />
 
       <ul className="mt-8 flex flex-col gap-y-4">
         {resolvedMods ? (

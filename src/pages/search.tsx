@@ -6,11 +6,13 @@ import { useCallback, useMemo, useState } from "react";
 import { SearchIcon } from "lucide-react";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { ModListInList } from "~/components/partials/ModListInList";
-import { Spinner } from "~/components/partials/Spinner";
-import { Button } from "~/components/ui/Button";
 
 import { toast } from "sonner";
 import type { ModListWithExtraData } from "~/types/moddermore";
+
+import { Input } from "~/components/shadcn/input";
+import { Spinner } from "~/components/shadcn/spinner";
+import { Button } from "~/components/shadcn/button";
 
 const SearchPage: NextPage = () => {
   const session = useSession();
@@ -45,10 +47,9 @@ const SearchPage: NextPage = () => {
   return (
     <GlobalLayout title="Search" className="min-h-screen">
       <div className="mb-12 flex w-full items-center justify-start gap-x-2">
-        <input
+        <Input
           type="text"
           name="search-bar"
-          className="mm-input flex-grow"
           placeholder={isAdmin ? "Search all lists" : "Search for public lists"}
           role="search"
           aria-label={isAdmin ? "Search all lists" : "Search for public lists"}
@@ -77,7 +78,7 @@ const SearchPage: NextPage = () => {
           }}
           disabled={searching}
         >
-          {searching ? <Spinner className="block h-5 w-5" /> : <SearchIcon className="block h-5 w-5" />}
+          {searching ? <Spinner /> : <SearchIcon />}
           <span>Search</span>
         </Button>
       </div>

@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { type FormEventHandler, useCallback, useState } from "react";
+import { type SubmitEventHandler, useCallback, useState } from "react";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -9,15 +9,33 @@ import { parseModFolder } from "~/lib/import/parseModFolder";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 import type { ModLoader } from "~/types/moddermore";
 
-import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { DashboardLayout } from "~/components/layout/DashboardLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
 import { ProgressOverlay } from "~/components/ProgressOverlay";
-import { buttonVariants } from "~/components/ui/Button";
 
 import { UploadIcon } from "lucide-react";
 
 import { toast } from "sonner";
-import { twMerge } from "tailwind-merge";
+
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "~/components/shadcn/combobox";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/shadcn/select";
+import { Field, FieldDescription, FieldLabel } from "~/components/shadcn/field";
+import { Button } from "~/components/shadcn/button";
+import { loaderFormValues } from "~/lib/utils/strings";
 
 const FolderImportPage: NextPage = () => {
   const sess = useSession({ required: true });
@@ -32,7 +50,7 @@ const FolderImportPage: NextPage = () => {
 
   const router = useRouter();
 
-  const submitHandle: FormEventHandler = useCallback(
+  const submitHandle: SubmitEventHandler = useCallback(
     (e) => {
       (async () => {
         e.preventDefault();
@@ -74,7 +92,7 @@ const FolderImportPage: NextPage = () => {
   );
 
   return (
-    <GlobalLayout title="Import from folder" displayTitle={false}>
+    <DashboardLayout title="Import from folder">
       <form className="flex flex-col items-start gap-y-6" onSubmit={submitHandle}>
         <input
           name="title"
@@ -90,56 +108,61 @@ const FolderImportPage: NextPage = () => {
         />
 
         <div className="flex items-center gap-x-4">
-          <select
+          <Combobox
             name="game-version"
-            value={gameVersion}
-            className="mm-input"
-            aria-label="Game version"
             required
-            onChange={(e) => {
-              setGameVersion(e.target.value);
+            value={gameVersion}
+            onValueChange={(value) => {
+              if (value) setGameVersion(value);
             }}
+            items={[...minecraftVersions.releases, ...minecraftVersions.snapshots]}
           >
-            {[...minecraftVersions.releases, ...minecraftVersions.snapshots].map((v) => (
-              <option value={v} key={v}>
-                {v}
-              </option>
-            ))}
-          </select>
+            <ComboboxInput placeholder="Select a game version" />
+            <ComboboxContent>
+              <ComboboxEmpty>No versions found.</ComboboxEmpty>
+              <ComboboxList>
+                {(item: string) => (
+                  <ComboboxItem key={item} value={item}>
+                    {item}
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
 
-          <select
+          <Select
+            required
             name="modloader"
             value={modLoader}
-            className="mm-input"
-            aria-label="Mod loader"
-            onChange={(e) => {
-              setModLoader(e.target.value as ModLoader);
+            onValueChange={(value) => {
+              if (value) setModLoader(value as ModLoader);
             }}
           >
-            <option value="quilt">Quilt</option>
-            <option value="fabric">Fabric</option>
-            <option value="forge">Forge</option>
-            <option value="neoforge">NeoForge</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue placeholder="Loader" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {loaderFormValues.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
 
-        <h2 className="mt-12 text-sm font-bold uppercase text-neutral-800 dark:text-neutral-200">
-          .zip file containing mods
-        </h2>
+        <Field orientation="vertical">
+          <FieldLabel>.zip file containing mods</FieldLabel>
 
-        <div className="mt-3 flex items-center gap-x-4">
           <label>
-            <div
-              role="button"
-              className={twMerge(
-                buttonVariants({
-                  className: "flex cursor-auto hover:cursor-pointer",
-                }),
-              )}
-            >
-              <UploadIcon className="block h-5 w-5" />
-              <span>Choose file</span>
-            </div>
+            <Button asChild>
+              <div className="flex cursor-auto hover:cursor-pointer">
+                <UploadIcon />
+                <span>Choose file</span>
+              </div>
+            </Button>
 
             <input
               name="mod-zip"
@@ -153,14 +176,14 @@ const FolderImportPage: NextPage = () => {
             />
           </label>
 
-          {modZipFile && <span className="text-lg font-medium">{modZipFile.name}</span>}
-        </div>
+          {modZipFile && <FieldDescription>{modZipFile.name}</FieldDescription>}
+        </Field>
 
         <NewSubmitButton submitting={submitting} disabled={sess.status === "loading" || submitting} />
       </form>
 
       {submitting && <ProgressOverlay label="Searching for mods..." {...progress} />}
-    </GlobalLayout>
+    </DashboardLayout>
   );
 };
 

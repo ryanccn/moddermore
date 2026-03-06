@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { type FormEventHandler, useCallback, useState } from "react";
+import { type SubmitEventHandler, useCallback, useState } from "react";
 import type { ModLoader, RichMod } from "~/types/moddermore";
 
 import { richModToMod } from "~/lib/db/conversions";
@@ -8,12 +8,30 @@ import minecraftVersions from "~/lib/minecraftVersions.json";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-import { GlobalLayout } from "~/components/layout/GlobalLayout";
+import { DashboardLayout } from "~/components/layout/DashboardLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
 import { RichModDisplay } from "~/components/partials/RichModDisplay";
 
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "~/components/shadcn/combobox";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/shadcn/select";
+
 import { toast } from "sonner";
 import { Search } from "~/components/partials/Search";
+import { loaderFormValues } from "~/lib/utils/strings";
 
 const ManualImportPage: NextPage = () => {
   const session = useSession({ required: true });
@@ -28,7 +46,7 @@ const ManualImportPage: NextPage = () => {
 
   const router = useRouter();
 
-  const submitHandle: FormEventHandler = useCallback(
+  const submitHandle: SubmitEventHandler = useCallback(
     (e) => {
       (async () => {
         e.preventDefault();
@@ -62,7 +80,7 @@ const ManualImportPage: NextPage = () => {
   );
 
   return (
-    <GlobalLayout title="Manual creation" displayTitle={false}>
+    <DashboardLayout title="Manual creation">
       <form className="flex flex-col items-start gap-y-6" onSubmit={submitHandle}>
         <input
           name="title"
@@ -78,37 +96,49 @@ const ManualImportPage: NextPage = () => {
         />
 
         <div className="flex items-center gap-x-4">
-          <select
+          <Combobox
             name="game-version"
-            value={gameVersion}
-            className="mm-input"
-            aria-label="Game version"
             required
-            onChange={(e) => {
-              setGameVersion(e.target.value);
+            value={gameVersion}
+            onValueChange={(value) => {
+              if (value) setGameVersion(value);
             }}
+            items={[...minecraftVersions.releases, ...minecraftVersions.snapshots]}
           >
-            {[...minecraftVersions.releases, ...minecraftVersions.snapshots].map((v) => (
-              <option value={v} key={v}>
-                {v}
-              </option>
-            ))}
-          </select>
+            <ComboboxInput placeholder="Select a game version" />
+            <ComboboxContent>
+              <ComboboxEmpty>No versions found.</ComboboxEmpty>
+              <ComboboxList>
+                {(item: string) => (
+                  <ComboboxItem key={item} value={item}>
+                    {item}
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
 
-          <select
+          <Select
+            required
             name="modloader"
             value={modLoader}
-            className="mm-input"
-            aria-label="Mod loader"
-            onChange={(e) => {
-              setModLoader(e.target.value as ModLoader);
+            onValueChange={(value) => {
+              if (value) setModLoader(value as ModLoader);
             }}
           >
-            <option value="quilt">Quilt</option>
-            <option value="fabric">Fabric</option>
-            <option value="forge">Forge</option>
-            <option value="neoforge">NeoForge</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue placeholder="Loader" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {loaderFormValues.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
 
         <Search
@@ -140,7 +170,7 @@ const ManualImportPage: NextPage = () => {
 
         <NewSubmitButton submitting={submitting} disabled={session.status === "loading" || submitting} />
       </form>
-    </GlobalLayout>
+    </DashboardLayout>
   );
 };
 

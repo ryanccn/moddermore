@@ -37,3 +37,10 @@ export const loaderFormat = (loader: ModLoader) => {
     }
   }
 };
+
+export const loaderFormValues = [
+  { label: "Fabric", value: "fabric" },
+  { label: "Neoforge", value: "neoforge" },
+  { label: "Forge", value: "forge" },
+  { label: "Quilt", value: "quilt" },
+];

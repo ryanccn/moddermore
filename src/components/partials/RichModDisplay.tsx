@@ -18,8 +18,10 @@ import { fetchVersions as fetchModrinthVersions } from "~/lib/metadata/modrinth"
 
 import { numberFormat, providerFormat } from "~/lib/utils/strings";
 
-import { Button } from "../ui/Button";
-import { Spinner } from "./Spinner";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../shadcn/select";
+import { Button } from "../shadcn/button";
+import { Spinner } from "../shadcn/spinner";
+import { ButtonGroup } from "../shadcn/button-group";
 
 interface Props {
   data: RichMod;
@@ -106,7 +108,7 @@ export const RichModDisplay = ({
   return (
     <div
       className={twMerge(
-        "flex justify-between rounded-2xl border-none bg-neutral-100 p-5 dark:bg-neutral-800",
+        "flex justify-between rounded-2xl border-none bg-neutral-50 p-5 dark:bg-neutral-900",
         incompatible ? "ring-2 ring-red-400/70 hover:ring-red-400/80" : null,
         className,
       )}
@@ -125,9 +127,9 @@ export const RichModDisplay = ({
 
       <div className="flex grow flex-col gap-x-4 gap-y-2 sm:flex-row sm:justify-between">
         <div className="flex flex-col justify-between gap-y-2">
-          <div className="flex flex-col gap-y-1">
-            <h2 className="mr-2 font-display text-xl font-bold">{data.name}</h2>
-            <p className="my-0.5">{data.description}</p>
+          <div className="mb-4 flex flex-col gap-y-1">
+            <h2 className="mr-2 font-display text-xl font-bold tracking-tight">{data.name}</h2>
+            <p className="my-0.5 text-sm text-neutral-700 dark:text-neutral-300">{data.description}</p>
           </div>
 
           {incompatible && (
@@ -167,13 +169,13 @@ export const RichModDisplay = ({
               </div>
             ))}
 
-          <div className="mt-2 flex flex-col gap-y-2 sm:items-end">
+          <ButtonGroup className="mt-12 self-end sm:items-end">
             {!!buttonType &&
               showVersionSelect !== false &&
               (!selectedVersion || versions === null ? (
                 <Button
                   type="button"
-                  variant="primary"
+                  variant="secondary"
                   onClick={() => {
                     fetchVersionsIntoState().catch((error) => {
                       console.error(error);
@@ -189,32 +191,40 @@ export const RichModDisplay = ({
                   <span>Select a version</span>
                 </Button>
               ) : (
-                <div className="flex flex-row items-center gap-x-3">
-                  <select
+                <>
+                  <Select
                     name={`${data.id}-version`}
                     value={selectedVersion ?? undefined}
-                    className="mm-input !bg-neutral-200 font-mono !text-sm !shadow-none dark:!bg-neutral-700"
-                    onChange={(e) => {
-                      setSelectedVersion(e.target.value);
-                      if (onVersion)
-                        void onVersion(e.target.value, versions.find((v) => v.id === e.target.value)!.name);
+                    onValueChange={(value) => {
+                      setSelectedVersion(value);
+                      if (onVersion) void onVersion(value, versions.find((v) => v.id === value)!.name);
                     }}
                   >
-                    {versions.map((version) => (
-                      <option key={version.id} value={version.id}>
-                        {version.name}
-                      </option>
-                    ))}
-                  </select>
-                  <button
+                    <SelectTrigger className="w-40 flex-grow-0">
+                      <SelectValue placeholder="Search provider" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {versions.map((item) => (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+
+                  <Button
+                    size="icon"
+                    variant="destructive"
                     onClick={() => {
                       setSelectedVersion(null);
                       if (onVersion) void onVersion(null, null);
                     }}
                   >
-                    <UnplugIcon className="block h-4 w-4 text-red-500 dark:text-red-400" />
-                  </button>
-                </div>
+                    <UnplugIcon />
+                  </Button>
+                </>
               ))}
 
             {onClick && (
@@ -222,12 +232,12 @@ export const RichModDisplay = ({
                 {buttonType === "delete" && (
                   <Button
                     type="button"
-                    variant="danger"
+                    variant="destructive"
                     onClick={() => {
                       void onClick();
                     }}
                   >
-                    <TrashIcon className="block h-4 w-4" />
+                    <TrashIcon />
                     <span>Delete</span>
                   </Button>
                 )}
@@ -235,18 +245,17 @@ export const RichModDisplay = ({
                 {buttonType === "add" && (
                   <Button
                     type="button"
-                    variant="green"
                     onClick={() => {
                       void onClick();
                     }}
                   >
-                    <PlusIcon className="block h-4 w-5" />
+                    <PlusIcon />
                     <span>Add</span>
                   </Button>
                 )}
               </>
             )}
-          </div>
+          </ButtonGroup>
         </div>
       </div>
     </div>

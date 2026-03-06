@@ -79,7 +79,7 @@ export const GlobalLayout = ({
         {children}
       </main>
 
-      <Footer />
+      {!!displayHeader && <Footer />}
     </>
   );
 };

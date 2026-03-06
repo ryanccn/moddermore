@@ -1,5 +1,5 @@
 import { UploadIcon } from "lucide-react";
-import { Button } from "../ui/Button";
+import { Button } from "../shadcn/button";
 import { Spinner } from "./Spinner";
 
 interface Props {
@@ -9,8 +9,8 @@ interface Props {
 
 export const NewSubmitButton = ({ submitting, disabled }: Props) => {
   return (
-    <Button type="submit" className="mt-14" disabled={disabled}>
-      {submitting ? <Spinner className="block h-5 w-5" /> : <UploadIcon className="block h-5 w-5" />}
+    <Button type="submit" variant="default" size="lg" className="mt-14" disabled={disabled || submitting}>
+      {submitting ? <Spinner /> : <UploadIcon />}
       <span>Submit</span>
     </Button>
   );

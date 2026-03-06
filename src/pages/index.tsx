@@ -65,7 +65,7 @@ const Home: NextPage<PageProps> = ({ users, lists, featuredLists }) => {
         </div>
 
         <Link
-          href="/new"
+          href="/lists/new"
           className={twMerge(
             buttonVariants({
               className: "mb-16 px-6 py-4 text-xl shadow-xl shadow-indigo-500/30",

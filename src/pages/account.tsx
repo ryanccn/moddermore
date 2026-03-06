@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 
 import { signOut, useSession } from "next-auth/react";
 
-import { FullLoadingScreen } from "~/components/FullLoadingScreen";
 import { DashboardLayout } from "~/components/layout/DashboardLayout";
 
 import { Button } from "~/components/shadcn/button";
@@ -65,10 +64,6 @@ const AccountPage: NextPage = () => {
         setStatus("ready");
       });
   }, [name, profilePicture]);
-
-  if (session.status === "loading") {
-    return <FullLoadingScreen />;
-  }
 
   return (
     <DashboardLayout title="Account">

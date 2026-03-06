@@ -18,7 +18,7 @@ import {
 } from "~/components/shadcn/empty";
 import { Button } from "~/components/shadcn/button";
 import { Skeleton } from "~/components/shadcn/skeleton";
-import { ListIcon } from "lucide-react";
+import { ListIcon, PlusIcon } from "lucide-react";
 
 import { toast } from "sonner";
 import type { ModList } from "~/types/moddermore";
@@ -46,6 +46,17 @@ const Dashboard: NextPage = () => {
             {lists.map((list) => (
               <ModListInList list={list} key={list.id} />
             ))}
+            <Button
+              className="size-full border border-dashed border-neutral-200 dark:border-neutral-800"
+              size="lg"
+              variant="ghost"
+              asChild
+            >
+              <Link href="/lists/new">
+                <PlusIcon />
+                Create new list
+              </Link>
+            </Button>
           </ul>
         ) : (
           <Empty>
@@ -58,7 +69,7 @@ const Dashboard: NextPage = () => {
             </EmptyHeader>
             <EmptyContent>
               <Button asChild>
-                <Link href="/new">Create new list</Link>
+                <Link href="/lists/new">Create new list</Link>
               </Button>
             </EmptyContent>
           </Empty>

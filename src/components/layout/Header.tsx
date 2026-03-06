@@ -81,7 +81,7 @@ const Header = () => {
         </div>
       ) : data ? (
         <div className="flex flex-row items-center gap-x-4">
-          <Link href="/new" className={buttonVariants()}>
+          <Link href="/lists/new" className={buttonVariants()}>
             <PlusIcon className="block h-5 w-5" />
             <span>Create</span>
           </Link>

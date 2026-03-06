@@ -16,6 +16,8 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenuButton,
+  SidebarRail,
+  SidebarTrigger,
 } from "~/components/shadcn/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/shadcn/avatar";
 import { Badge } from "~/components/shadcn/badge";
@@ -35,8 +37,8 @@ export const DashboardLayout = ({ title, children }: Props) => {
     <GlobalLayout title={title} displayTitle={false} displayHeader={false} wideLayout>
       <SidebarProvider>
         <div className="flex w-full flex-col md:flex-row">
-          <Sidebar collapsible="none" className="p-4">
-            <SidebarHeader className="mb-4">
+          <Sidebar>
+            <SidebarHeader className="p-4">
               <Link href="/" className="flex items-center gap-x-2">
                 <Image src={ModdermoreIcon} width="24" height="24" className="rounded-full" alt="" />
                 <span className="font-display text-lg font-bold tracking-tight text-neutral-800 dark:text-neutral-200">
@@ -46,7 +48,7 @@ export const DashboardLayout = ({ title, children }: Props) => {
               </Link>
             </SidebarHeader>
 
-            <SidebarContent>
+            <SidebarContent className="p-4">
               <SidebarMenuButton asChild isActive={router.pathname.startsWith("/lists")}>
                 <Link href="/lists">
                   <ListIcon /> Lists
@@ -59,15 +61,15 @@ export const DashboardLayout = ({ title, children }: Props) => {
               </SidebarMenuButton>
             </SidebarContent>
 
-            <SidebarFooter>
-              <Link href="/account" className="flex flex-row items-center gap-x-2">
-                <Avatar>
+            <SidebarFooter className="p-4">
+              <Link href="/account" className="flex flex-row items-center gap-x-2.5">
+                <Avatar className="size-8">
                   <AvatarImage
                     src={data?.extraProfile.profilePicture ?? ""}
                     alt={data?.extraProfile.name ?? ""}
                   />
 
-                  <AvatarFallback>
+                  <AvatarFallback className="tracking-tight">
                     {data?.extraProfile.name
                       ?.split(" ")
                       .map((c) => c[0].toUpperCase())
@@ -81,9 +83,14 @@ export const DashboardLayout = ({ title, children }: Props) => {
                 </span>
               </Link>
             </SidebarFooter>
+
+            <SidebarRail />
           </Sidebar>
 
-          <div className="w-full px-6 py-12">{children}</div>
+          <div className="relative w-full px-16 py-24">
+            {children}
+            <SidebarTrigger className="absolute left-0 top-0 m-2 opacity-50 hover:opacity-100" />
+          </div>
         </div>
       </SidebarProvider>
     </GlobalLayout>

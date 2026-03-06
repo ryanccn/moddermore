@@ -98,6 +98,7 @@
   .title {
     @apply mb-16 font-display text-5xl font-extrabold tracking-tight;
     text-wrap: pretty;
+    @apply placeholder:text-neutral-400 dark:placeholder:text-neutral-600;
   }
 
   .layout {
@@ -144,13 +145,12 @@
   }
 
   .new-card {
-    @apply bg-neutral-100 px-5 py-12 dark:bg-neutral-800;
-    @apply flex flex-col items-center gap-y-4 rounded;
-    @apply transition-shadow;
+    @apply bg-neutral-100 p-8 dark:bg-neutral-900;
+    @apply flex flex-col items-start gap-y-1.5 rounded;
   }
 
   .new-card > span {
-    @apply text-xl font-bold tracking-tight;
+    @apply text-lg font-medium tracking-tight;
   }
 
   .results-list {
