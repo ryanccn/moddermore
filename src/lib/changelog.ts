@@ -58,7 +58,7 @@ export const listChangelogPosts = async () => {
 };
 
 export const getChangelogPost = async (slug: string) => {
-  const srcPath = join("./changelog", `${slug}.mdx`);
+  const srcPath = join("./docs/changelog", `${slug}.mdx`);
   if (!(await exists(srcPath))) return null;
 
   const rawMarkdown = await readFile(srcPath, {

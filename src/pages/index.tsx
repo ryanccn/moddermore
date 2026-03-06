@@ -51,13 +51,10 @@ const Home: NextPage<PageProps> = ({ users, lists, featuredLists }) => {
 
   return (
     <GlobalLayout title="Moddermore" titleSuffix={false} displayTitle={false} wideLayout>
-      <div className="mb-14 flex min-h-screen flex-col items-center justify-center p-6 lg:px-20">
+      <div className="-mt-24 mb-14 flex min-h-screen flex-col items-center justify-center lg:px-12">
         <div className="mb-16 flex flex-col items-center">
           <h2 className="mb-8 font-display text-6xl font-bold tracking-tight">
-            Share the mods you use with{" "}
-            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text font-extrabold text-transparent">
-              anyone
-            </span>
+            Share the mods you use with anyone.
           </h2>
           <p className="max-w-prose text-3xl font-light text-neutral-600 dark:text-neutral-400">
             Modpacks, but without the hassle.

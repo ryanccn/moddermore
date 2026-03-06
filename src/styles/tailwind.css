@@ -7,6 +7,13 @@
 }
 
 @layer base {
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+    border: 0 solid transparent;
+  }
+
   html {
     @apply scroll-smooth;
     color-scheme: dark light;
@@ -83,7 +90,7 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
+    --sidebar-background: 240 5.9% 7.5%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -106,7 +113,7 @@
   }
 
   :not(select).mm-input {
-    @apply w-full rounded bg-neutral-50 px-3 py-2 shadow-sm dark:bg-neutral-800;
+    @apply w-full rounded bg-neutral-50 px-3 py-2 shadow-sm dark:bg-neutral-900;
     @apply border-2 border-transparent;
   }
 

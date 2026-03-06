@@ -18,7 +18,7 @@ export const ModListInList = (props: BasicProps | ExtraProps) => {
     <Link
       href={`/list/${baseData.id}`}
       key={baseData.id}
-      className="group flex flex-col gap-y-3 rounded-lg bg-transparent p-6 hover:bg-neutral-50 dark:hover:bg-neutral-800"
+      className="group flex flex-col gap-y-3 rounded-lg bg-transparent p-6 hover:bg-neutral-50 dark:hover:bg-neutral-900"
     >
       <h2 className="flex justify-between font-display text-lg font-bold">{baseData.title}</h2>
 

@@ -10,7 +10,7 @@ import minecraftVersions from "~/lib/minecraftVersions.json";
 
 import type { Mod, ModLoader } from "~/types/moddermore";
 
-import { DashboardLayout } from "~/components/layout/DashboardLayout";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
 import { ProgressOverlay } from "~/components/ProgressOverlay";
 
@@ -98,7 +98,7 @@ const PrismImportPage: NextPage = () => {
   );
 
   return (
-    <DashboardLayout title="Import from MultiMC/Prism">
+    <GlobalLayout title="Import from MultiMC/Prism" displayTitle={false}>
       <form className="flex flex-col items-start gap-y-6" onSubmit={submitHandle}>
         <input
           name="title"
@@ -201,7 +201,7 @@ const PrismImportPage: NextPage = () => {
       </form>
 
       {submitting && <ProgressOverlay label="Searching for mods..." {...progress} />}
-    </DashboardLayout>
+    </GlobalLayout>
   );
 };
 

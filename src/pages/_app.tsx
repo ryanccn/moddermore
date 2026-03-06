@@ -10,7 +10,6 @@ import { ThemeProvider } from "next-themes";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import NextNProgress from "nextjs-progressbar";
 import { Toaster } from "~/components/shadcn/sonner";
 
 import { Inter } from "next/font/google";
@@ -23,7 +22,6 @@ function CustomApp({ Component, pageProps: { session, ...pageProps } }: AppProps
   return (
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">
-        <NextNProgress color="#6366F1" />
         <div className={inters.className} style={{ display: "contents" }}>
           <Component {...pageProps} />
         </div>

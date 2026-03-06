@@ -8,7 +8,7 @@ import minecraftVersions from "~/lib/minecraftVersions.json";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-import { DashboardLayout } from "~/components/layout/DashboardLayout";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
 import { RichModDisplay } from "~/components/partials/RichModDisplay";
 
@@ -80,7 +80,7 @@ const ManualImportPage: NextPage = () => {
   );
 
   return (
-    <DashboardLayout title="Manual creation">
+    <GlobalLayout title="Manual creation" displayTitle={false}>
       <form className="flex flex-col items-start gap-y-6" onSubmit={submitHandle}>
         <input
           name="title"
@@ -170,7 +170,7 @@ const ManualImportPage: NextPage = () => {
 
         <NewSubmitButton submitting={submitting} disabled={session.status === "loading" || submitting} />
       </form>
-    </DashboardLayout>
+    </GlobalLayout>
   );
 };
 

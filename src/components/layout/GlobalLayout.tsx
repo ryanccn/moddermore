@@ -57,7 +57,7 @@ export const GlobalLayout = ({
       <main
         className={twMerge(
           wideLayout
-            ? "flex flex-col"
+            ? "flex min-h-screen flex-col p-28"
             : isAuthPage
               ? "layout mt-28 max-w-[45ch] items-center text-center"
               : "layout mt-28",

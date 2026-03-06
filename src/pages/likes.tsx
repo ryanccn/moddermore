@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useSession } from "next-auth/react";
 
-import { DashboardLayout } from "~/components/layout/DashboardLayout";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { ModListInList } from "~/components/partials/ModListInList";
 
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "~/components/shadcn/empty";
@@ -30,7 +30,7 @@ const LikesPage: NextPage = () => {
   }, [session]);
 
   return (
-    <DashboardLayout title="Lists">
+    <GlobalLayout title="Likes" wideLayout>
       {lists ? (
         lists.length > 0 ? (
           <ul className="grid h-fit w-full grid-cols-1 gap-4 lg:grid-cols-3">
@@ -59,7 +59,7 @@ const LikesPage: NextPage = () => {
           <Skeleton style={{ height: "10rem" }} />
         </ul>
       )}
-    </DashboardLayout>
+    </GlobalLayout>
   );
 };
 

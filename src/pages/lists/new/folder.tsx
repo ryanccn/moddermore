@@ -9,7 +9,7 @@ import { parseModFolder } from "~/lib/import/parseModFolder";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 import type { ModLoader } from "~/types/moddermore";
 
-import { DashboardLayout } from "~/components/layout/DashboardLayout";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
 import { ProgressOverlay } from "~/components/ProgressOverlay";
 
@@ -92,7 +92,7 @@ const FolderImportPage: NextPage = () => {
   );
 
   return (
-    <DashboardLayout title="Import from folder">
+    <GlobalLayout title="Import from folder" displayTitle={false}>
       <form className="flex flex-col items-start gap-y-6" onSubmit={submitHandle}>
         <input
           name="title"
@@ -183,7 +183,7 @@ const FolderImportPage: NextPage = () => {
       </form>
 
       {submitting && <ProgressOverlay label="Searching for mods..." {...progress} />}
-    </DashboardLayout>
+    </GlobalLayout>
   );
 };
 

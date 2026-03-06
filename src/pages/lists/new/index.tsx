@@ -4,16 +4,14 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 import { CircleIcon, FolderIcon, HexagonIcon, SearchCheckIcon, TerminalIcon } from "lucide-react";
-import { DashboardLayout } from "~/components/layout/DashboardLayout";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
 
 const NewIndex: NextPage = () => {
   useSession({ required: true });
 
   return (
-    <DashboardLayout title="Create a new list">
-      <h1 className="title">Create a new list</h1>
-
-      <div className="grid w-fit grid-cols-1 gap-4 md:grid-cols-2">
+    <GlobalLayout title="Create a new list">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Link href="/lists/new/prism" className="new-card">
           <HexagonIcon className="block size-6" />
           <span>MultiMC/Prism Instance</span>
@@ -35,7 +33,7 @@ const NewIndex: NextPage = () => {
           <span>Manual</span>
         </Link>
       </div>
-    </DashboardLayout>
+    </GlobalLayout>
   );
 };
 

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { signOut, useSession } from "next-auth/react";
 
-import { DashboardLayout } from "~/components/layout/DashboardLayout";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
 
 import { Button } from "~/components/shadcn/button";
 import {
@@ -66,7 +66,7 @@ const AccountPage: NextPage = () => {
   }, [name, profilePicture]);
 
   return (
-    <DashboardLayout title="Account">
+    <GlobalLayout title="Account" displayTitle={false}>
       <div className="flex w-full flex-col px-6">
         <form
           className="mb-16 flex flex-col gap-y-2"
@@ -126,7 +126,7 @@ const AccountPage: NextPage = () => {
           <span>Sign out</span>
         </Button>
       </div>
-    </DashboardLayout>
+    </GlobalLayout>
   );
 };
 

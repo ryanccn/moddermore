@@ -443,7 +443,7 @@ ${
               src={data.ownerProfile.profilePicture}
               width={32}
               height={32}
-              className="rounded-full"
+              className="size-[32px] rounded-full"
               alt=""
             />
           ) : (

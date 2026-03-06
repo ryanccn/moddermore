@@ -9,7 +9,7 @@ import { parseFerium } from "~/lib/import/ferium";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 import type { ModLoader } from "~/types/moddermore";
 
-import { DashboardLayout } from "~/components/layout/DashboardLayout";
+import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
 
 import {
@@ -76,7 +76,7 @@ const FeriumImportPage: NextPage = () => {
   );
 
   return (
-    <DashboardLayout title="Ferium import">
+    <GlobalLayout title="Ferium import" displayTitle={false}>
       <form className="flex flex-col items-start gap-y-6" onSubmit={submitHandle}>
         <input
           name="title"
@@ -150,7 +150,7 @@ const FeriumImportPage: NextPage = () => {
 
         <NewSubmitButton submitting={submitting} disabled={sess.status === "loading" || submitting} />
       </form>
-    </DashboardLayout>
+    </GlobalLayout>
   );
 };
 
