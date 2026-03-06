@@ -7,8 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc -noEmit && eslint .",
+    "lint": "eslint .",
+    "check": "tsc -noEmit",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "utils:minecraftVersions": "node scripts/updateVersions.js"
   },
   "dependencies": {
