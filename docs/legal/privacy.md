@@ -45,8 +45,6 @@ We utilize [AWS SES](https://aws.amazon.com/ses/) to send transactional emails. 
 
 This site and its preview deploys are hosted on [Vercel](https://vercel.com/). They have a pre-signed [Data Processing Agreement](https://vercel.com/legal/dpa) you can view on their website.
 
-We use [Plausible](https://plausible.io/) to anonymously count visits to our website. No cookies are used and no personally identifiable data—not even an IP address or browser user agent—is stored. For more information, see the [Plausible Data Policy](https://plausible.io/data-policy).
-
 ## GDPR compliance
 
 Moddermore is a Data Controller of your information.

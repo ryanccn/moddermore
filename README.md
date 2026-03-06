@@ -33,7 +33,6 @@ Share the mods you use with anyone.
 - [dprint](https://dprint.dev/) & [Prettier](https://prettier.io/)
 - [ESLint](https://eslint.org/) & [TypeScript ESLint](https://typescript-eslint.io/)
 - [pnpm](https://pnpm.dev/)
-- [Plausible](https://plausible.io/)
 - and a ton of other open source libraries and services!
 
 Big thanks to all of the contributors to those projects who have made this project possible.

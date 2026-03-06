@@ -37,7 +37,6 @@ import { Button, buttonVariants } from "~/components/ui/Button";
 import { Select } from "~/components/ui/Select";
 
 import {
-  AreaChartIcon,
   ClipboardIcon,
   CloudIcon,
   CodeIcon,
@@ -630,11 +629,6 @@ ${
           <Link className={buttonVariants({ variant: "privileged" })} href={`/list/${data.id}/settings`}>
             <SettingsIcon className="block h-5 w-5" />
             <span>Settings</span>
-          </Link>
-
-          <Link className={buttonVariants({ variant: "privileged" })} href={`/list/${data.id}/analytics`}>
-            <AreaChartIcon className="block h-5 w-5" />
-            <span>Analytics</span>
           </Link>
 
           <Button

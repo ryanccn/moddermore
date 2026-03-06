@@ -22,20 +22,19 @@ import {
 import { ModrinthIcon, TutanotaIcon } from "~/components/icons";
 
 import { getSpecificList } from "~/lib/db";
-import { getLists, getPageviews, getUsers } from "~/lib/stats";
+import { getLists, getUsers } from "~/lib/stats";
 
 import { numberFormat } from "~/lib/utils/strings";
 import type { ListVisibility, ModListWithExtraData } from "~/types/moddermore";
 import { ModListInList } from "~/components/partials/ModListInList";
 
 interface PageProps {
-  pageviews: number | null;
   users: number;
   lists: number;
   featuredLists: ModListWithExtraData[];
 }
 
-const Home: NextPage<PageProps> = ({ pageviews, users, lists, featuredLists }) => {
+const Home: NextPage<PageProps> = ({ users, lists, featuredLists }) => {
   const [mockVisibility, setMockVisibility] = useState<ListVisibility>("private");
 
   useEffect(() => {
@@ -79,14 +78,6 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists, featuredLists }) =
       </div>
 
       <div className="mb-20 grid w-full grid-cols-1 gap-5 self-start p-8 lg:grid-cols-3 lg:px-20">
-        {pageviews && (
-          <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-800">
-            <span className="mb-16 font-display text-xl font-semibold text-neutral-600 dark:text-neutral-400">
-              Monthly pageviews
-            </span>
-            <span className="text-6xl font-bold tracking-tight">{numberFormat(pageviews)}</span>
-          </div>
-        )}
         <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-800">
           <span className="mb-16 font-display text-xl font-semibold text-neutral-600 dark:text-neutral-400">
             Registered users
@@ -273,21 +264,20 @@ const Home: NextPage<PageProps> = ({ pageviews, users, lists, featuredLists }) =
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
   if (process.env.NODE_ENV === "production") {
-    const [pageviews, users, lists] = await Promise.all([getPageviews(), getUsers(), getLists()]);
+    const [users, lists] = await Promise.all([getUsers(), getLists()]);
 
     const featuredLists = await Promise.all(
       ["d0f38916a6", "Hh2Tx-uNMxoh", "280ca6ba55", "gfkbMOkQ9LKK"].map((id) => getSpecificList(id)),
     ).then((res) => res.filter((k) => k !== null));
 
     return {
-      props: { pageviews, users, lists, featuredLists },
+      props: { users, lists, featuredLists },
       revalidate: 5 * 60,
     };
   }
 
   return {
     props: {
-      pageviews: 1_234_567_890,
       users: 1_200_000,
       lists: 1_400_000,
       featuredLists: [
