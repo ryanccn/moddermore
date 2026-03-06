@@ -12,10 +12,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Toaster } from "~/components/shadcn/sonner";
 
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 
-const inters = Inter({
+const inters = Outfit({
   subsets: ["latin"],
+  weight: "variable",
 });
 
 function CustomApp({ Component, pageProps: { session, ...pageProps } }: AppProps<{ session: Session }>) {

@@ -463,7 +463,7 @@ ${
         </div>
       )}
 
-      <ButtonGroup className="mb-2">
+      <div className="flex flex-row flex-wrap gap-2">
         <ButtonGroup>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -472,7 +472,7 @@ ${
                 Export
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={() => {
                   if (resolvedMods) {
@@ -553,7 +553,7 @@ ${
                 Copy
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent align="start">
               <DropdownMenuItem onClick={copyMarkdownList} disabled={data.mods.length === 0}>
                 <MarkdownIcon />
                 Markdown list
@@ -646,7 +646,7 @@ ${
             )}
           </ButtonGroup>
         )}
-      </ButtonGroup>
+      </div>
 
       {isEditing && resolvedMods && (
         <>

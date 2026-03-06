@@ -12,11 +12,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../shadcn/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../shadcn/avatar";
 
 import { signIn as nextAuthSignIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../shadcn/avatar";
 
 const ThemeButton = () => {
   const { theme, setTheme } = useTheme();
@@ -40,13 +41,17 @@ const ThemeButton = () => {
 };
 
 const Header = () => {
+  const router = useRouter();
   const { data, status } = useSession();
   const isAdmin = useMemo(() => data?.extraProfile.isAdmin === true, [data]);
 
   return (
     <nav className="flex w-full flex-col gap-8 border-b border-b-neutral-200 px-6 py-4 dark:border-b-neutral-800 md:flex-row md:items-center md:justify-between">
       <div className="flex flex-col gap-8 md:flex-row md:items-center">
-        <Link href={data ? "/lists" : "/"} className="flex items-center gap-x-2 px-2 py-1">
+        <Link
+          href={data && router.pathname !== "/lists" ? "/lists" : "/"}
+          className="flex items-center gap-x-2 px-2 py-1"
+        >
           <Image src={ModdermoreIcon} width="32" height="32" className="rounded-full" alt="" />
           <span className="font-display text-xl font-extrabold tracking-tight text-neutral-800 dark:text-neutral-200">
             Moddermore
@@ -59,10 +64,16 @@ const Header = () => {
         </Link>
 
         <div className="flex flex-row flex-wrap items-center gap-x-2 font-display font-semibold">
-          <Link className="px-2 py-1" href="/search">
+          <Link
+            className="rounded-sm px-4 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+            href="/search"
+          >
             Search
           </Link>
-          <Link className="px-2 py-1" href="/changelog">
+          <Link
+            className="rounded-sm px-4 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+            href="/changelog"
+          >
             Changelog
           </Link>
 
@@ -101,7 +112,7 @@ const Header = () => {
               </Avatar>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent>
+            <DropdownMenuContent align="end">
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
                   <Link href="/lists">

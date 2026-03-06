@@ -22,7 +22,7 @@ import {
 import { ModrinthIcon, TutanotaIcon } from "~/components/icons";
 
 import { getSpecificList } from "~/lib/db";
-import { getLists, getUsers } from "~/lib/stats";
+import { getLists, getMods, getUsers } from "~/lib/stats";
 
 import { numberFormat } from "~/lib/utils/strings";
 import type { ListVisibility, ModListWithExtraData } from "~/types/moddermore";
@@ -31,10 +31,11 @@ import { ModListInList } from "~/components/partials/ModListInList";
 interface PageProps {
   users: number;
   lists: number;
+  mods: number;
   featuredLists: ModListWithExtraData[];
 }
 
-const Home: NextPage<PageProps> = ({ users, lists, featuredLists }) => {
+const Home: NextPage<PageProps> = ({ users, lists, mods, featuredLists }) => {
   const [mockVisibility, setMockVisibility] = useState<ListVisibility>("private");
 
   useEffect(() => {
@@ -75,17 +76,23 @@ const Home: NextPage<PageProps> = ({ users, lists, featuredLists }) => {
       </div>
 
       <div className="mb-20 grid w-full grid-cols-1 gap-5 self-start p-8 lg:grid-cols-3 lg:px-20">
-        <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-800">
+        <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-900">
           <span className="mb-16 font-display text-xl font-semibold text-neutral-600 dark:text-neutral-400">
             Registered users
           </span>
           <span className="text-6xl font-bold tracking-tight">{numberFormat(users)}</span>
         </div>
-        <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-800">
+        <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-900">
           <span className="mb-16 font-display text-xl font-semibold text-neutral-600 dark:text-neutral-400">
             Lists created
           </span>
           <span className="text-6xl font-bold tracking-tight">{numberFormat(lists)}</span>
+        </div>
+        <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-900">
+          <span className="mb-16 font-display text-xl font-semibold text-neutral-600 dark:text-neutral-400">
+            Mods listed
+          </span>
+          <span className="text-6xl font-bold tracking-tight">{numberFormat(mods)}</span>
         </div>
       </div>
 
@@ -246,7 +253,7 @@ const Home: NextPage<PageProps> = ({ users, lists, featuredLists }) => {
         <h2 className="font-display text-4xl font-bold">Our sponsors</h2>
 
         <div className="flex flex-col gap-4 lg:flex-row">
-          <div className="flex flex-col gap-y-4 rounded-lg bg-neutral-100 px-8 py-6 dark:bg-neutral-800">
+          <div className="flex flex-col gap-y-4">
             <h3 className="font-display text-lg font-medium text-neutral-800 dark:text-neutral-200">Email</h3>
 
             <a href="https://tuta.com/">
@@ -260,23 +267,24 @@ const Home: NextPage<PageProps> = ({ users, lists, featuredLists }) => {
 };
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
-  if (process.env.NODE_ENV === "production") {
-    const [users, lists] = await Promise.all([getUsers(), getLists()]);
+  const [users, lists, mods] = await Promise.all([getUsers(), getLists(), getMods()]);
 
+  if (process.env.NODE_ENV === "production") {
     const featuredLists = await Promise.all(
       ["d0f38916a6", "Hh2Tx-uNMxoh", "280ca6ba55", "gfkbMOkQ9LKK"].map((id) => getSpecificList(id)),
     ).then((res) => res.filter((k) => k !== null));
 
     return {
-      props: { users, lists, featuredLists },
+      props: { users, lists, mods, featuredLists },
       revalidate: 5 * 60,
     };
   }
 
   return {
     props: {
-      users: 1_200_000,
-      lists: 1_400_000,
+      users,
+      lists,
+      mods,
       featuredLists: [
         {
           title: "Demo 1",

@@ -4,7 +4,7 @@ import { buttonVariants } from "../ui/Button";
 
 export const Footer = () => {
   return (
-    <footer className="flex w-full flex-col items-start gap-y-4 border-t-2 border-neutral-100 px-6 py-16 dark:border-neutral-800 lg:px-20">
+    <footer className="flex w-full flex-col items-start gap-y-4 border-t-2 bg-neutral-900 px-6 py-16 text-neutral-100 lg:px-20">
       <div className="mb-4 flex flex-col items-start gap-4 md:flex-row md:items-center">
         <a
           href="https://discord.gg/uf6kxSawfc"
@@ -73,14 +73,14 @@ export const Footer = () => {
 
       <div className="mb-4 flex flex-col gap-y-2">
         <Link
-          className="text-sm font-normal text-neutral-500 transition-colors hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+          className="text-sm font-normal text-neutral-300 transition-colors hover:text-neutral-100"
           href="/legal/privacy"
         >
           Privacy Policy
         </Link>
         <a
           href="https://github.com/ryanccn/moddermore"
-          className="text-sm font-normal text-neutral-500 transition-colors hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+          className="text-sm font-normal text-neutral-300 transition-colors hover:text-neutral-100"
           rel="noreferrer"
         >
           Code open source under AGPLv3

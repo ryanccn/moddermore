@@ -47,7 +47,7 @@ const Dashboard: NextPage = () => {
               <ModListInList list={list} key={list.id} />
             ))}
             <Button
-              className="size-full border border-dashed border-neutral-200 dark:border-neutral-800"
+              className="size-full min-h-48 border border-dashed border-neutral-200 dark:border-neutral-800"
               size="lg"
               variant="ghost"
               asChild

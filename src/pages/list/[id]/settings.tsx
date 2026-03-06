@@ -1,29 +1,38 @@
 import { type GetServerSideProps, type NextPage } from "next";
 
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { authOptions } from "~/lib/authOptions";
 
-import { ArrowLeftIcon, GlobeIcon, LockIcon, SaveIcon, ShieldIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  GlobeIcon,
+  LockIcon,
+  SaveIcon,
+  SettingsIcon,
+  ShieldIcon,
+  TrashIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { Select as Select1 } from "~/components/ui/Select";
+import Markdown from "react-markdown";
 
 import { toast } from "sonner";
 import { getSpecificList } from "~/lib/db";
 import minecraftVersions from "~/lib/minecraftVersions.json";
+import { loaderFormValues } from "~/lib/utils/strings";
 
-import type { ModList, ModLoader } from "~/types/moddermore";
+import type { ModListWithExtraData, ModLoader } from "~/types/moddermore";
 
 import { Button } from "~/components/shadcn/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "~/components/shadcn/field";
 import { Input } from "~/components/shadcn/input";
 import { Textarea } from "~/components/shadcn/textarea";
 import { Spinner } from "~/components/shadcn/spinner";
-import { loaderFormValues } from "~/lib/utils/strings";
 import {
   Combobox,
   ComboboxContent,
@@ -40,9 +49,11 @@ import {
   SelectValue,
   SelectGroup,
 } from "~/components/shadcn/select";
+import { ButtonGroup } from "~/components/shadcn/button-group";
+import { Metadata } from "~/components/partials/Metadata";
 
 interface PageProps {
-  data: ModList;
+  data: ModListWithExtraData;
 }
 
 const ListSettings: NextPage<PageProps> = ({ data }) => {
@@ -72,6 +83,37 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
       });
     }
   }, [session.status, hasElevatedPermissions, router, data.id]);
+
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const confirmDeleteTimeoutID = useRef<number | null>(null);
+
+  const deleteCurrentList = useCallback(async () => {
+    if (!data || !session.data) return;
+
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      confirmDeleteTimeoutID.current = window.setTimeout(() => {
+        setConfirmDelete(false);
+      }, 3000);
+
+      return;
+    }
+
+    if (confirmDeleteTimeoutID.current) window.clearTimeout(confirmDeleteTimeoutID.current);
+
+    setIsDeleting(true);
+
+    const res = await fetch(`/api/list/${data.id}/delete`);
+
+    if (res.ok) {
+      toast.success(`Deleted ${data.title} (${data.id})!`);
+    } else {
+      toast.error(`Failed to delete ${data.title} (${data.id})!`);
+    }
+
+    await router.push("/lists");
+  }, [router, data, session, confirmDelete, confirmDeleteTimeoutID, setConfirmDelete]);
 
   const saveSettings = useCallback(() => {
     setInProgress(true);
@@ -113,11 +155,64 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
   }, [data, router, title, gameVersion, modLoader, description, visibility]);
 
   return (
-    <GlobalLayout title={`${data.title} / Settings`}>
-      <Link href={`/list/${data.id}`} className="mb-8 flex flex-row items-center gap-x-1">
-        <ArrowLeftIcon className="block h-3 w-3" />
-        <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Back</span>
-      </Link>
+    <GlobalLayout title={data.title}>
+      {data.description && (
+        <div className="-mt-6 mb-8 text-lg font-medium [&_a]:underline [&_a]:decoration-neutral-200 dark:[&_a]:decoration-neutral-500">
+          <Markdown skipHtml allowedElements={["p", "span", "a", "strong", "em", "b", "i", "mark"]}>
+            {data.description}
+          </Markdown>
+        </div>
+      )}
+
+      <Metadata data={data} />
+
+      {data.ownerProfile && (
+        <div className="mb-8 mt-6 flex flex-row items-center gap-x-3">
+          {data.ownerProfile.profilePicture ? (
+            <img
+              src={data.ownerProfile.profilePicture}
+              width={32}
+              height={32}
+              className="size-[32px] rounded-full"
+              alt=""
+            />
+          ) : (
+            <div className="h-[32px] w-[32px] rounded-full bg-neutral-100 dark:bg-neutral-700" />
+          )}
+
+          <strong className="font-semibold">{data.ownerProfile.name}</strong>
+        </div>
+      )}
+
+      <ButtonGroup className="mb-8">
+        <Button size="default" variant="outline" asChild>
+          <Link href={`/list/${data.id}`}>
+            <ArrowLeftIcon />
+            Back
+          </Link>
+        </Button>
+
+        <Button size="default" variant="default" asChild>
+          <Link href={`/list/${data.id}/settings`}>
+            <SettingsIcon />
+            Settings
+          </Link>
+        </Button>
+
+        <Button
+          size="default"
+          variant="destructive"
+          onClick={() => {
+            deleteCurrentList().catch((error) => {
+              console.error(error);
+            });
+          }}
+          disabled={isDeleting}
+        >
+          {isDeleting ? <Spinner /> : <TrashIcon />}
+          {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
+        </Button>
+      </ButtonGroup>
 
       <form
         className="mb-16 flex flex-col gap-y-4"
