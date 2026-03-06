@@ -7,7 +7,7 @@ import { getInfos as getCurseForgeInfos } from "~/lib/metadata/curseforge";
 import { getInfos as getModrinthInfos } from "~/lib/metadata/modrinth";
 
 import { useRouter } from "next/router";
-import { type FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getServerSession } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
@@ -19,7 +19,6 @@ import { prismAutoUpdateExport, prismStaticExport } from "~/lib/export/formats/p
 import { ExportStatus } from "~/lib/export/formats/shared";
 import { zipExport } from "~/lib/export/formats/zip";
 
-import * as Dialog from "@radix-ui/react-dialog";
 import Markdown from "react-markdown";
 
 import Head from "next/head";
@@ -31,10 +30,9 @@ import { RichModDisplay } from "~/components/partials/RichModDisplay";
 import { Search } from "~/components/partials/Search";
 import { Metadata } from "~/components/partials/Metadata";
 import { ProgressOverlay } from "~/components/ProgressOverlay";
-import { Button } from "~/components/ui/Button";
 import { Select } from "~/components/ui/Select";
 
-import { Button as Button1 } from "~/components/shadcn/button";
+import { Button } from "~/components/shadcn/button";
 import { ButtonGroup, ButtonGroupSeparator } from "~/components/shadcn/button-group";
 import { Spinner } from "~/components/shadcn/spinner";
 import {
@@ -44,6 +42,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/shadcn/dropdown-menu";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/shadcn/dialog";
 
 import {
   ClipboardIcon,
@@ -64,6 +70,9 @@ import {
 import { MarkdownIcon, ModrinthIcon } from "~/components/icons";
 
 import { toast } from "sonner";
+import { Field, FieldGroup, FieldLabel } from "~/components/shadcn/field";
+import { Input } from "~/components/shadcn/input";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/shadcn/accordion";
 
 interface PageProps {
   data: ModListWithExtraData;
@@ -178,7 +187,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     }
   };
 
-  const editHandle: FormEventHandler = useCallback(
+  const editHandle: MouseEventHandler = useCallback(
     (e) => {
       (async () => {
         e.preventDefault();
@@ -458,10 +467,10 @@ ${
         <ButtonGroup>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button1 variant="default" size="default" disabled={!resolvedMods}>
+              <Button variant="default" size="default" disabled={!resolvedMods}>
                 <DownloadIcon />
                 Export
-              </Button1>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-44">
               <DropdownMenuItem
@@ -539,10 +548,10 @@ ${
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button1 variant="default" size="default" disabled={!resolvedMods}>
+              <Button variant="default" size="default" disabled={!resolvedMods}>
                 <ClipboardIcon />
                 Copy
-              </Button1>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem onClick={copyMarkdownList} disabled={data.mods.length === 0}>
@@ -558,25 +567,25 @@ ${
         </ButtonGroup>
 
         <ButtonGroup>
-          <Button1 variant="secondary" size="default" onClick={toggleLikeStatus} disabled={isLiking}>
+          <Button variant="secondary" size="default" onClick={toggleLikeStatus} disabled={isLiking}>
             {isLiking ? (
               <Spinner />
             ) : (
               <HeartIcon className={hasLiked ? "fill-current stroke-none" : "fill-none stroke-current"} />
             )}
             {hasLiked ? "Unlike" : "Like"}
-          </Button1>
+          </Button>
 
-          <Button1 variant="secondary" size="default" onClick={duplicateList} disabled={isDuplicating}>
+          <Button variant="secondary" size="default" onClick={duplicateList} disabled={isDuplicating}>
             {isDuplicating ? <Spinner /> : <CopyIcon />}
             Duplicate
-          </Button1>
+          </Button>
         </ButtonGroup>
 
         {hasElevatedPermissions && (
           <ButtonGroup>
             {isEditing ? (
-              <Button1
+              <Button
                 variant={isEditing ? "default" : "outline"}
                 size="default"
                 onClick={editHandle}
@@ -584,9 +593,9 @@ ${
               >
                 {isSaving ? <Spinner /> : <SaveIcon />}
                 Save
-              </Button1>
+              </Button>
             ) : (
-              <Button1
+              <Button
                 variant="outline"
                 size="default"
                 onClick={() => {
@@ -596,17 +605,17 @@ ${
               >
                 {isSaving ? <Spinner /> : <EditIcon />}
                 Edit
-              </Button1>
+              </Button>
             )}
 
-            <Button1 size="default" variant="outline" asChild>
+            <Button size="default" variant="outline" asChild>
               <Link href={`/list/${data.id}/settings`}>
                 <SettingsIcon />
                 Settings
               </Link>
-            </Button1>
+            </Button>
 
-            <Button1
+            <Button
               size="default"
               variant="destructive"
               onClick={() => {
@@ -618,11 +627,12 @@ ${
             >
               {isDeleting ? <Spinner /> : <TrashIcon />}
               {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
-            </Button1>
+            </Button>
 
             {isAdmin && (
               <Button
-                variant="danger"
+                size="default"
+                variant="destructive"
                 onClick={() => {
                   ban().catch((error) => {
                     console.error(error);
@@ -652,10 +662,10 @@ ${
             }}
           />
           <div className="flex flex-row flex-wrap justify-end gap-x-2">
-            <Button1 variant="destructive" onClick={unpinAll}>
+            <Button variant="destructive" onClick={unpinAll}>
               <UnplugIcon />
               <span>Unpin all</span>
-            </Button1>
+            </Button>
           </div>
         </>
       )}
@@ -707,40 +717,42 @@ ${
         <ProgressOverlay label="Getting the .zip file ready..." {...progress} />
       ) : null}
 
-      <Dialog.Root
+      <Dialog
         open={status === ExportStatus.ModrinthForm}
         onOpenChange={(open) => {
           if (!open) setStatus(ExportStatus.Idle);
         }}
       >
-        <Dialog.Portal>
-          <Dialog.Overlay className="dialog overlay" />
-          <Dialog.Content className="dialog content">
-            <form
-              className="flex flex-col gap-y-8"
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (resolvedMods) {
-                  modrinthExport({
-                    data: { ...data, mods: resolvedMods },
-                    mrpackData: {
-                      name: mrpackName,
-                      version: mrpackVersion,
-                      cfStrategy: mrpackCurseForgeStrategy,
-                    },
-                    setProgress,
-                    setResult,
-                    setStatus,
-                  }).catch((error) => {
-                    console.error(error);
-                  });
-                }
-              }}
-            >
-              <label className="flex flex-col gap-y-1">
-                <span className="font-display text-sm font-semibold">Name</span>
-                <input
-                  className="mm-input"
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Modrinth export</DialogTitle>
+          </DialogHeader>
+
+          <form
+            className="flex flex-col gap-y-8"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (resolvedMods) {
+                modrinthExport({
+                  data: { ...data, mods: resolvedMods },
+                  mrpackData: {
+                    name: mrpackName,
+                    version: mrpackVersion,
+                    cfStrategy: mrpackCurseForgeStrategy,
+                  },
+                  setProgress,
+                  setResult,
+                  setStatus,
+                }).catch((error) => {
+                  console.error(error);
+                });
+              }
+            }}
+          >
+            <FieldGroup>
+              <Field>
+                <FieldLabel>Name</FieldLabel>
+                <Input
                   required
                   minLength={1}
                   value={mrpackName}
@@ -748,13 +760,11 @@ ${
                     setMrpackName(e.target.value);
                   }}
                 />
-              </label>
+              </Field>
 
-              <label className="flex flex-col gap-y-1">
-                <span className="font-display text-sm font-semibold">Version</span>
-
-                <input
-                  className="mm-input"
+              <Field>
+                <FieldLabel className="font-display text-sm font-semibold">Version</FieldLabel>
+                <Input
                   required
                   minLength={1}
                   value={mrpackVersion}
@@ -762,10 +772,10 @@ ${
                     setMrpackVersion(e.target.value);
                   }}
                 />
-              </label>
+              </Field>
 
-              <label className="flex flex-col gap-y-2">
-                <span className="font-display text-sm font-semibold">CurseForge mods</span>
+              <Field>
+                <FieldLabel>CurseForge mods</FieldLabel>
 
                 <div className="flex flex-col gap-1">
                   <Select
@@ -804,59 +814,59 @@ ${
                     </span>
                   </Select>
                 </div>
-              </label>
+              </Field>
 
-              <Button variant="modrinth" type="submit" className="self-start">
-                <ModrinthIcon className="block h-5 w-5" />
-                <span>Start export</span>
-              </Button>
-            </form>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button size="lg" variant="outline">
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button size="lg" type="submit" className="self-start">
+                  <ModrinthIcon />
+                  <span>Start export</span>
+                </Button>
+              </DialogFooter>
+            </FieldGroup>
+          </form>
+        </DialogContent>
+      </Dialog>
 
-      <Dialog.Root
+      <Dialog
         open={showResultModal}
         onOpenChange={(open) => {
           if (!open) setStatus(ExportStatus.Idle);
         }}
       >
-        <Dialog.Portal>
-          <Dialog.Overlay className="dialog overlay" />
-          <Dialog.Content className="dialog content">
-            <div className="flex flex-col gap-y-4">
-              <div className="results-list">
-                <details>
-                  <summary className="text-green-400">{result.success.length} successful downloads</summary>
-                  <ul>
-                    {result.success.map((a) => (
-                      <li key={a}>{a}</li>
-                    ))}
-                  </ul>
-                </details>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Exported!</DialogTitle>
+          </DialogHeader>
 
-                <details>
-                  <summary className="text-red-400">{result.failed.length} failed</summary>
-                  <ul>
-                    {result.failed.map((a) => (
-                      <li key={a}>{a}</li>
-                    ))}
-                  </ul>
-                </details>
-              </div>
-
-              <Button
-                className="self-center"
-                onClick={() => {
-                  setStatus(ExportStatus.Idle);
-                }}
-              >
-                Close
-              </Button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+          <Accordion type="single" collapsible>
+            <AccordionItem value="s">
+              <AccordionTrigger>{result.success.length} successful downloads</AccordionTrigger>
+              <AccordionContent className="max-h-32 overflow-y-scroll">
+                <ul>
+                  {result.success.map((a) => (
+                    <li key={a}>{a}</li>
+                  ))}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="f">
+              <AccordionTrigger>{result.failed.length} failed downloads</AccordionTrigger>
+              <AccordionContent className="max-h-32 overflow-y-scroll">
+                <ul>
+                  {result.failed.map((a) => (
+                    <li key={a}>{a}</li>
+                  ))}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </DialogContent>
+      </Dialog>
     </GlobalLayout>
   );
 };

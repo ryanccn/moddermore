@@ -171,7 +171,7 @@ const PrismImportPage: NextPage = () => {
               name="mod-zip"
               type="file"
               className="sr-only"
-              accept=".zip"
+              accept=".mrpack"
               required
               onChange={(e) => {
                 setMrpackFile(e.target.files?.item(0) ?? null);
