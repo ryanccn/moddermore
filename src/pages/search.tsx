@@ -9,7 +9,7 @@ import { ModListInList } from "~/components/partials/ModListInList";
 import { Spinner } from "~/components/partials/Spinner";
 import { Button } from "~/components/ui/Button";
 
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import type { ModListWithExtraData } from "~/types/moddermore";
 
 const SearchPage: NextPage = () => {

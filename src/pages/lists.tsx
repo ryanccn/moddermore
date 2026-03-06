@@ -6,8 +6,21 @@ import { useSession } from "next-auth/react";
 
 import { DashboardLayout } from "~/components/layout/DashboardLayout";
 import { ModListInList } from "~/components/partials/ModListInList";
+import Link from "next/link";
 
-import toast from "react-hot-toast";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "~/components/shadcn/empty";
+import { Button } from "~/components/shadcn/button";
+import { Skeleton } from "~/components/shadcn/skeleton";
+import { ListIcon } from "lucide-react";
+
+import { toast } from "sonner";
 import type { ModList } from "~/types/moddermore";
 
 const Dashboard: NextPage = () => {
@@ -35,18 +48,29 @@ const Dashboard: NextPage = () => {
             ))}
           </ul>
         ) : (
-          <div className="rounded bg-neutral-50 px-2 py-24 text-center font-display text-lg font-medium text-black/50 shadow dark:bg-neutral-800 dark:text-white/50">
-            No lists yet!
-          </div>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <ListIcon />
+              </EmptyMedia>
+              <EmptyTitle>No lists</EmptyTitle>
+              <EmptyDescription>No lists found!</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button asChild>
+                <Link href="/new">Create new list</Link>
+              </Button>
+            </EmptyContent>
+          </Empty>
         )
       ) : (
         <ul className="grid h-fit grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="skeleton" style={{ height: "10rem" }} />
-          <div className="skeleton" style={{ height: "10rem" }} />
-          <div className="skeleton" style={{ height: "10rem" }} />
-          <div className="skeleton" style={{ height: "10rem" }} />
-          <div className="skeleton" style={{ height: "10rem" }} />
-          <div className="skeleton" style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
         </ul>
       )}
     </DashboardLayout>

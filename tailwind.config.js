@@ -1,8 +1,8 @@
-import { fontFamily, borderRadius, fontSize } from "tailwindcss/defaultTheme";
-import { indigo, white, neutral, black } from "tailwindcss/colors";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 import pluginForms from "@tailwindcss/forms";
 import pluginTypography from "@tailwindcss/typography";
+import pluginAnimate from "tailwindcss-animate";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -11,92 +11,65 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", fontFamily.sans],
-        display: ["Inter", fontFamily.sans],
+        sans: ["Inter", ...fontFamily.sans],
+        display: ["Inter", ...fontFamily.sans],
       },
       colors: {
-        tremor: {
-          brand: {
-            faint: indigo[50],
-            muted: indigo[200],
-            subtle: indigo[400],
-            DEFAULT: indigo[500],
-            emphasis: indigo[700],
-            inverted: white,
-          },
-          background: {
-            muted: neutral[50],
-            subtle: neutral[100],
-            DEFAULT: white,
-            emphasis: neutral[700],
-          },
-          border: {
-            DEFAULT: neutral[200],
-          },
-          ring: {
-            DEFAULT: neutral[200],
-          },
-          content: {
-            subtle: neutral[400],
-            DEFAULT: neutral[500],
-            emphasis: neutral[700],
-            strong: neutral[900],
-            inverted: white,
-          },
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
         },
-
-        "dark-tremor": {
-          brand: {
-            faint: indigo[950],
-            muted: indigo[900],
-            subtle: indigo[800],
-            DEFAULT: indigo[500],
-            emphasis: indigo[400],
-            inverted: neutral[950],
-          },
-          background: {
-            muted: neutral[900],
-            subtle: neutral[800],
-            DEFAULT: neutral[900],
-            emphasis: neutral[600],
-          },
-          border: {
-            DEFAULT: neutral[800],
-          },
-          ring: {
-            DEFAULT: neutral[800],
-          },
-          content: {
-            subtle: neutral[700],
-            DEFAULT: neutral[600],
-            emphasis: neutral[500],
-            strong: neutral[400],
-            inverted: black,
-          },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
+        },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
         },
       },
-
-      boxShadow: {
-        "tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        "tremor-card": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-        "tremor-dropdown": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-
-        "dark-tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        "dark-tremor-card": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-        "dark-tremor-dropdown": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-      },
-
       borderRadius: {
-        "tremor-small": borderRadius.sm,
-        "tremor-default": borderRadius.DEFAULT,
-        "tremor-full": borderRadius.full,
-      },
-
-      fontSize: {
-        "tremor-label": fontSize.xs,
-        "tremor-default": fontSize.sm,
-        "tremor-title": fontSize.xl,
-        "tremor-metric": fontSize["2xl"],
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },
@@ -129,5 +102,5 @@ export default {
         /^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
     },
   ],
-  plugins: [pluginForms({ strategy: "class" }), pluginTypography()],
+  plugins: [pluginForms({ strategy: "class" }), pluginTypography(), pluginAnimate],
 };

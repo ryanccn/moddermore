@@ -1,73 +1,91 @@
-import { type ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
-import { HeartIcon, ListIcon, UserIcon } from "lucide-react";
-import { buttonVariants } from "../ui/Button";
+import { HeartIcon, ListIcon } from "lucide-react";
 import { GlobalLayout } from "./GlobalLayout";
+import ModdermoreIcon from "../../../public/icons/moddermore-negative.png";
+
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenuButton,
+} from "~/components/shadcn/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/shadcn/avatar";
+import { Badge } from "~/components/shadcn/badge";
 
 interface Props {
   title: string;
   children: ReactNode;
 }
 
-const DashboardLink = ({ title, href, icon }: { title: string; href: string; icon: ReactNode }) => {
+export const DashboardLayout = ({ title, children }: Props) => {
   const router = useRouter();
 
+  const { data } = useSession({ required: true });
+  const isAdmin = useMemo(() => data?.extraProfile.isAdmin === true, [data]);
+
   return (
-    <Link
-      href={href}
-      className={buttonVariants({
-        variant: router.pathname.startsWith(href) ? "primary" : "secondary",
-      })}
-    >
-      {icon}
-      <span>{title}</span>
-    </Link>
-  );
-};
+    <GlobalLayout title={title} displayTitle={false} displayHeader={false} wideLayout>
+      <SidebarProvider>
+        <div className="flex w-full flex-col md:flex-row">
+          <Sidebar collapsible="none" className="p-4">
+            <SidebarHeader className="mb-4">
+              <Link href="/" className="flex items-center gap-x-2">
+                <Image src={ModdermoreIcon} width="24" height="24" className="rounded-full" alt="" />
+                <span className="font-display text-lg font-bold tracking-tight text-neutral-800 dark:text-neutral-200">
+                  Moddermore
+                </span>
+                {isAdmin && <Badge>Admin</Badge>}
+              </Link>
+            </SidebarHeader>
 
-// const FEEDBACK_LINK = "https://tally.so/r/mRM6AJ";
+            <SidebarContent>
+              <SidebarMenuButton asChild isActive={router.pathname.startsWith("/lists")}>
+                <Link href="/lists">
+                  <ListIcon /> Lists
+                </Link>
+              </SidebarMenuButton>
+              <SidebarMenuButton asChild isActive={router.pathname.startsWith("/likes")}>
+                <Link href="/likes">
+                  <HeartIcon /> Likes
+                </Link>
+              </SidebarMenuButton>
+            </SidebarContent>
 
-// const FeedbackPopup = () => {
-//   const [show, setShow] = useState(false);
+            <SidebarFooter>
+              <Link href="/account" className="flex flex-row items-center gap-x-2">
+                <Avatar>
+                  <AvatarImage
+                    src={data?.extraProfile.profilePicture ?? ""}
+                    alt={data?.extraProfile.name ?? ""}
+                  />
 
-//   useEffect(() => {
-//     const hideSetting = localStorage.getItem("hide-feedback-popup-v1");
-//     if (hideSetting !== "true") setShow(true);
-//   }, []);
+                  <AvatarFallback>
+                    {data?.extraProfile.name
+                      ?.split(" ")
+                      .map((c) => c[0].toUpperCase())
+                      .slice(0, 2)
+                      .join("") ?? "?"}
+                  </AvatarFallback>
+                </Avatar>
 
-//   const setToHide = useCallback(() => {
-//     localStorage.setItem("hide-feedback-popup-v1", "true");
-//     setShow(false);
-//   }, []);
+                <span className="font-semibold">
+                  {data?.extraProfile.name ?? data?.user.name ?? data?.user.email}
+                </span>
+              </Link>
+            </SidebarFooter>
+          </Sidebar>
 
-//   if (!show) return null;
-
-//   return (
-//     <div className="fixed bottom-0 right-0 m-2 flex flex-row items-center gap-x-2 rounded-sm bg-pink-500 px-2 py-1 text-white">
-//       <a href={FEEDBACK_LINK} className="absolute inset-0 z-10" />
-//       <span className="text-sm font-medium">We&apos;re collecting feedback!</span>
-//       <button onClick={setToHide} className="z-20 p-0.5">
-//         <XIcon className="block h-3 w-3" />
-//       </button>
-//     </div>
-//   );
-// };
-
-export const DashboardLayout = ({ title, children }: Props) => {
-  return (
-    <GlobalLayout title={title} displayTitle={false} wideLayout>
-      <div className="flex w-full flex-col md:flex-row">
-        <div className="flex flex-col gap-y-2 border-neutral-100 p-4 dark:border-neutral-800 md:min-h-screen md:w-72 md:shrink-0 md:grow-0 md:border-r">
-          <DashboardLink title="Lists" href="/lists" icon={<ListIcon className="block h-5 w-5" />} />
-          <DashboardLink title="Likes" href="/likes" icon={<HeartIcon className="block h-5 w-5" />} />
-          <DashboardLink title="Account" href="/account" icon={<UserIcon className="block h-5 w-5" />} />
+          <div className="w-full px-6 py-12">{children}</div>
         </div>
-        <div className="w-full p-6">{children}</div>
-      </div>
-      {/* <FeedbackPopup /> */}
+      </SidebarProvider>
     </GlobalLayout>
   );
 };

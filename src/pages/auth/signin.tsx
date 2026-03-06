@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { type FormEventHandler, useCallback, useEffect, useState } from "react";
 
 import { signIn, useSession } from "next-auth/react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { DiscordIcon, GitHubIcon, GoogleIcon } from "~/components/icons";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";

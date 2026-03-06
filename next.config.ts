@@ -59,7 +59,7 @@ const nextConfig: NextConfig = withBundleAnalyzer({
   },
 
   experimental: {
-    optimizePackageImports: ["lucide-react", "@tremor/react", "date-fns"],
+    optimizePackageImports: ["lucide-react", "date-fns"],
   },
 
   // eslint-disable-next-line @typescript-eslint/require-await

@@ -20,7 +20,6 @@ import { ExportStatus } from "~/lib/export/formats/shared";
 import { zipExport } from "~/lib/export/formats/zip";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Markdown from "react-markdown";
 
 import Head from "next/head";
@@ -30,11 +29,21 @@ import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { DonationMessage } from "~/components/partials/DonationMessage";
 import { RichModDisplay } from "~/components/partials/RichModDisplay";
 import { Search } from "~/components/partials/Search";
-import { Spinner } from "~/components/partials/Spinner";
 import { Metadata } from "~/components/partials/Metadata";
 import { ProgressOverlay } from "~/components/ProgressOverlay";
-import { Button, buttonVariants } from "~/components/ui/Button";
+import { Button } from "~/components/ui/Button";
 import { Select } from "~/components/ui/Select";
+
+import { Button as Button1 } from "~/components/shadcn/button";
+import { ButtonGroup, ButtonGroupSeparator } from "~/components/shadcn/button-group";
+import { Spinner } from "~/components/shadcn/spinner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/shadcn/dropdown-menu";
 
 import {
   ClipboardIcon,
@@ -54,8 +63,7 @@ import {
 } from "lucide-react";
 import { MarkdownIcon, ModrinthIcon } from "~/components/icons";
 
-import toast from "react-hot-toast";
-import { twMerge } from "tailwind-merge";
+import { toast } from "sonner";
 
 interface PageProps {
   data: ModListWithExtraData;
@@ -224,22 +232,17 @@ ${
 }
       `.trim();
 
-        toast.success(
-          <div className="flex flex-col gap-y-1">
-            <span>List updated!</span>
-            <button
-              className="text-xs font-semibold text-blue-500 transition-colors hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-200"
-              onClick={() => {
-                navigator.clipboard.writeText(changelog).catch((error) => {
-                  console.error(error);
-                });
-              }}
-            >
-              Copy changelog
-            </button>
-          </div>,
-          { duration: 5000 },
-        );
+        toast.success("List updated!", {
+          duration: 5000,
+          action: {
+            label: "Copy changelog",
+            onClick: () => {
+              navigator.clipboard.writeText(changelog).catch((error) => {
+                console.error(error);
+              });
+            },
+          },
+        });
 
         setIsSaving(false);
         setIsEditing(false);
@@ -451,215 +454,189 @@ ${
         </div>
       )}
 
-      <div className="mb-2 flex flex-wrap items-center gap-2">
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild disabled={!resolvedMods}>
-            <Button>
-              <DownloadIcon className="block h-5 w-5" />
-              <span>Export as...</span>
-            </Button>
-          </DropdownMenu.Trigger>
-
-          <DropdownMenu.Portal>
-            <DropdownMenu.Content align="start" className="radix-dropdown-menu-content">
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={() => {
-                    if (resolvedMods) {
-                      zipExport({
-                        data: { ...data, mods: resolvedMods },
-                        setProgress,
-                        setResult,
-                        setStatus,
-                      }).catch((error) => {
-                        console.error(error);
-                      });
-                    }
-                  }}
-                >
-                  <FolderArchiveIcon className="block h-5 w-5" />
-                  <span>Zip archive</span>
-                </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <button className="radix-dropdown-button" onClick={modrinthExportInit}>
-                  <ModrinthIcon className="block h-5 w-5" />
-                  <span>Modrinth pack</span>
-                </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={() => {
-                    packwizExport().catch((error) => {
+      <ButtonGroup className="mb-2">
+        <ButtonGroup>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button1 variant="default" size="default" disabled={!resolvedMods}>
+                <DownloadIcon />
+                Export
+              </Button1>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-44">
+              <DropdownMenuItem
+                onClick={() => {
+                  if (resolvedMods) {
+                    zipExport({
+                      data: { ...data, mods: resolvedMods },
+                      setProgress,
+                      setResult,
+                      setStatus,
+                    }).catch((error) => {
                       console.error(error);
                     });
-                  }}
-                  disabled={data.visibility === "private"}
-                >
-                  <CloudIcon className="block h-5 w-5" />
-                  <span>Copy packwiz link</span>
-                </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={() => {
-                    if (resolvedMods) {
-                      prismStaticExport({
-                        data: { ...data, mods: resolvedMods },
-                        setProgress,
-                        setResult,
-                        setStatus,
-                      }).catch((error) => {
-                        console.error(error);
-                      });
-                    }
-                  }}
-                >
-                  <HexagonIcon className="block h-5 w-5" />
-                  <span>MultiMC</span>
-                </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={() => {
-                    if (resolvedMods) {
-                      prismAutoUpdateExport({
-                        data: { ...data, mods: resolvedMods },
-                        setProgress,
-                        setResult,
-                        setStatus,
-                      }).catch((error) => {
-                        console.error(error);
-                      });
-                    }
-                  }}
-                  disabled={data.visibility === "private"}
-                >
-                  <div className="relative">
-                    <HexagonIcon className="block h-5 w-5 fill-current" />
-                  </div>
-                  <span>MultiMC (auto-updating)</span>
-                </button>
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+                  }
+                }}
+              >
+                <FolderArchiveIcon />
+                ZIP archive
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={modrinthExportInit}>
+                <ModrinthIcon />
+                Modrinth pack
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  packwizExport().catch((error) => {
+                    console.error(error);
+                  });
+                }}
+                disabled={data.visibility === "private"}
+              >
+                <CloudIcon />
+                Copy packwiz link
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  if (resolvedMods) {
+                    prismStaticExport({
+                      data: { ...data, mods: resolvedMods },
+                      setProgress,
+                      setResult,
+                      setStatus,
+                    }).catch((error) => {
+                      console.error(error);
+                    });
+                  }
+                }}
+              >
+                <HexagonIcon />
+                MultiMC
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  if (resolvedMods) {
+                    prismAutoUpdateExport({
+                      data: { ...data, mods: resolvedMods },
+                      setProgress,
+                      setResult,
+                      setStatus,
+                    }).catch((error) => {
+                      console.error(error);
+                    });
+                  }
+                }}
+                disabled={data.visibility === "private"}
+              >
+                <HexagonIcon className="fill-current" />
+                MultiMC (auto-update)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild>
-            <Button disabled={!resolvedMods}>
-              <ClipboardIcon className="block h-5 w-5" />
-              <span>Copy as...</span>
-            </Button>
-          </DropdownMenu.Trigger>
+          <ButtonGroupSeparator />
 
-          <DropdownMenu.Portal>
-            <DropdownMenu.Content
-              align="start"
-              className="radix-dropdown-menu-content z-40 mt-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800"
-            >
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={copyMarkdownList}
-                  disabled={data.mods.length === 0}
-                >
-                  <MarkdownIcon className="block h-5 w-5" />
-                  <span>Markdown list</span>
-                </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={copyJSON}
-                  disabled={data.mods.length === 0}
-                >
-                  <CodeIcon className="block h-5 w-5" />
-                  <span>JSON</span>
-                </button>
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button1 variant="default" size="default" disabled={!resolvedMods}>
+                <ClipboardIcon />
+                Copy
+              </Button1>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={copyMarkdownList} disabled={data.mods.length === 0}>
+                <MarkdownIcon />
+                Markdown list
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={copyJSON} disabled={data.mods.length === 0}>
+                <CodeIcon />
+                JSON
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </ButtonGroup>
 
-        <Button onClick={toggleLikeStatus}>
-          {isLiking ? (
-            <Spinner className="block h-5 w-5" />
-          ) : (
-            <HeartIcon
-              className={twMerge(
-                "block h-5 w-5",
-                hasLiked ? "fill-current stroke-none" : "fill-none stroke-current",
-              )}
-            />
-          )}
-          <span>{hasLiked ? "Unlike" : "Like"}</span>
-        </Button>
+        <ButtonGroup>
+          <Button1 variant="secondary" size="default" onClick={toggleLikeStatus} disabled={isLiking}>
+            {isLiking ? (
+              <Spinner />
+            ) : (
+              <HeartIcon className={hasLiked ? "fill-current stroke-none" : "fill-none stroke-current"} />
+            )}
+            {hasLiked ? "Unlike" : "Like"}
+          </Button1>
 
-        <Button onClick={duplicateList}>
-          {isDuplicating ? <Spinner className="block h-5 w-5" /> : <CopyIcon className="block h-5 w-5" />}
-          <span>Duplicate</span>
-        </Button>
-      </div>
+          <Button1 variant="secondary" size="default" onClick={duplicateList} disabled={isDuplicating}>
+            {isDuplicating ? <Spinner /> : <CopyIcon />}
+            Duplicate
+          </Button1>
+        </ButtonGroup>
 
-      {hasElevatedPermissions && (
-        <div className="mb-16 flex flex-wrap items-center gap-2">
-          {isEditing ? (
-            <Button variant="green" onClick={editHandle} disabled={isSaving}>
-              {isSaving ? <Spinner className="block h-5 w-5" /> : <SaveIcon className="block h-5 w-5" />}
-              <span>Save</span>
-            </Button>
-          ) : (
-            <Button
-              variant="privileged"
+        {hasElevatedPermissions && (
+          <ButtonGroup>
+            {isEditing ? (
+              <Button1
+                variant={isEditing ? "default" : "outline"}
+                size="default"
+                onClick={editHandle}
+                disabled={isSaving}
+              >
+                {isSaving ? <Spinner /> : <SaveIcon />}
+                Save
+              </Button1>
+            ) : (
+              <Button1
+                variant="outline"
+                size="default"
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+                disabled={isSaving}
+              >
+                {isSaving ? <Spinner /> : <EditIcon />}
+                Edit
+              </Button1>
+            )}
+
+            <Button1 size="default" variant="outline" asChild>
+              <Link href={`/list/${data.id}/settings`}>
+                <SettingsIcon />
+                Settings
+              </Link>
+            </Button1>
+
+            <Button1
+              size="default"
+              variant="destructive"
               onClick={() => {
-                setIsEditing(true);
-              }}
-              disabled={isSaving}
-            >
-              {isSaving ? <Spinner className="block h-5 w-5" /> : <EditIcon className="block h-5 w-5" />}
-              <span>Edit</span>
-            </Button>
-          )}
-
-          <Link className={buttonVariants({ variant: "privileged" })} href={`/list/${data.id}/settings`}>
-            <SettingsIcon className="block h-5 w-5" />
-            <span>Settings</span>
-          </Link>
-
-          <Button
-            variant="danger"
-            onClick={() => {
-              deleteCurrentList().catch((error) => {
-                console.error(error);
-              });
-            }}
-            disabled={isDeleting}
-          >
-            {isDeleting ? <Spinner className="block h-5 w-5" /> : <TrashIcon className="block h-5 w-5" />}
-            {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
-          </Button>
-
-          {isAdmin && (
-            <Button
-              variant="danger"
-              onClick={() => {
-                ban().catch((error) => {
+                deleteCurrentList().catch((error) => {
                   console.error(error);
                 });
               }}
-              disabled={isBanning}
+              disabled={isDeleting}
             >
-              {isBanning ? <Spinner className="block h-5 w-5" /> : <HammerIcon className="block h-5 w-5" />}
-              {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
-            </Button>
-          )}
-        </div>
-      )}
+              {isDeleting ? <Spinner /> : <TrashIcon />}
+              {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
+            </Button1>
+
+            {isAdmin && (
+              <Button
+                variant="danger"
+                onClick={() => {
+                  ban().catch((error) => {
+                    console.error(error);
+                  });
+                }}
+                disabled={isBanning}
+              >
+                {isBanning ? <Spinner className="block h-5 w-5" /> : <HammerIcon className="block h-5 w-5" />}
+                {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
+              </Button>
+            )}
+          </ButtonGroup>
+        )}
+      </ButtonGroup>
 
       {isEditing && resolvedMods && (
         <>

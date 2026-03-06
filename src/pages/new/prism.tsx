@@ -17,7 +17,7 @@ import { buttonVariants } from "~/components/ui/Button";
 
 import { PaperclipIcon } from "lucide-react";
 
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
 const PrismImportPage: NextPage = () => {

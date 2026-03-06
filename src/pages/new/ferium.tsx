@@ -3,7 +3,7 @@ import { type FormEventHandler, useCallback, useState } from "react";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { parseFerium } from "~/lib/import/ferium";
 import minecraftVersions from "~/lib/minecraftVersions.json";

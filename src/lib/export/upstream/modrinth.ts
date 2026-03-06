@@ -64,6 +64,7 @@ export const getModrinthDownload = async ({
   name,
   version,
 }: ProviderSpecificOptions): Promise<ExportReturnData> => {
+  // eslint-disable-next-line no-useless-assignment
   let latest: ModrinthVersion | null = null;
 
   latest = await callModrinthAPI({ id, gameVersions, loader, name, version });

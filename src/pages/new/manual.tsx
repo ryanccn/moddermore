@@ -12,7 +12,7 @@ import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
 import { RichModDisplay } from "~/components/partials/RichModDisplay";
 
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Search } from "~/components/partials/Search";
 
 const ManualImportPage: NextPage = () => {

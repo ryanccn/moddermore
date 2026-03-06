@@ -10,7 +10,7 @@ import {
   UnplugIcon,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
 import { fetchVersions as fetchCurseforgeVersions } from "~/lib/metadata/curseforge";

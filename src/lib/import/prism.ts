@@ -1,7 +1,7 @@
 import { parse } from "@iarna/toml";
 import type JSZip from "jszip";
 import { clientPLimit } from "../utils/concurrency";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { parseModFolder } from "./parseModFolder";
 
 import type { Mod } from "~/types/moddermore";

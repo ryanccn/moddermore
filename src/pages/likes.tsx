@@ -7,7 +7,11 @@ import { useSession } from "next-auth/react";
 import { DashboardLayout } from "~/components/layout/DashboardLayout";
 import { ModListInList } from "~/components/partials/ModListInList";
 
-import toast from "react-hot-toast";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "~/components/shadcn/empty";
+import { Skeleton } from "~/components/shadcn/skeleton";
+import { HeartIcon } from "lucide-react";
+
+import { toast } from "sonner";
 import type { ModList } from "~/types/moddermore";
 
 const LikesPage: NextPage = () => {
@@ -35,18 +39,24 @@ const LikesPage: NextPage = () => {
             ))}
           </ul>
         ) : (
-          <div className="rounded bg-neutral-50 px-2 py-24 text-center font-display text-lg font-medium text-black/50 shadow dark:bg-neutral-800 dark:text-white/50">
-            No liked lists yet!
-          </div>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <HeartIcon />
+              </EmptyMedia>
+              <EmptyTitle>No liked lists</EmptyTitle>
+              <EmptyDescription>No liked lists yet!</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         )
       ) : (
         <ul className="grid h-fit grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="skeleton" style={{ height: "10rem" }} />
-          <div className="skeleton" style={{ height: "10rem" }} />
-          <div className="skeleton" style={{ height: "10rem" }} />
-          <div className="skeleton" style={{ height: "10rem" }} />
-          <div className="skeleton" style={{ height: "10rem" }} />
-          <div className="skeleton" style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
+          <Skeleton style={{ height: "10rem" }} />
         </ul>
       )}
     </DashboardLayout>

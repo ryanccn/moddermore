@@ -14,7 +14,7 @@ import { Spinner } from "~/components/partials/Spinner";
 import { Button } from "~/components/ui/Button";
 import { Select } from "~/components/ui/Select";
 
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { getSpecificList } from "~/lib/db";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 
