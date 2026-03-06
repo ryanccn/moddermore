@@ -1,14 +1,16 @@
 import { type NextPage } from "next";
 
 import { useRouter } from "next/router";
-import { type FormEventHandler, useCallback, useEffect, useState } from "react";
+import { type SubmitEventHandler, useCallback, useEffect, useState } from "react";
 
 import { signIn, useSession } from "next-auth/react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { DiscordIcon, GitHubIcon, GoogleIcon } from "~/components/icons";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
-import { Button } from "~/components/ui/Button";
+
+import { Button } from "~/components/shadcn/button";
+import { Input } from "~/components/shadcn/input";
 
 const errors = {
   Signin: "Try signing in with a different account.",
@@ -44,7 +46,7 @@ const SigninPage: NextPage = () => {
     }
   }, [sess, router]);
 
-  const signin: FormEventHandler = useCallback(
+  const signin: SubmitEventHandler = useCallback(
     (e) => {
       e.preventDefault();
       setDS(true);
@@ -64,14 +66,16 @@ const SigninPage: NextPage = () => {
     <GlobalLayout title="Sign in" isAuthPage>
       <div className="flex w-full flex-col gap-y-4">
         {router.query.error && (
-          <p className="rounded bg-red-500 px-4 py-3 font-semibold text-white">
+          <p className="mb-8 rounded bg-red-500 px-4 py-3 font-semibold text-white">
             {typeof router.query.error === "string" && router.query.error in errors
               ? errors[router.query.error as keyof typeof errors]
               : router.query.error}
           </p>
         )}
+
         <Button
           className="bg-black text-white hover:bg-black"
+          size="lg"
           disabled={disableSubmit}
           onClick={() => {
             setDS(true);
@@ -89,6 +93,7 @@ const SigninPage: NextPage = () => {
         </Button>
         <Button
           className="bg-[#5865F2] text-white hover:bg-[#5865F2]"
+          size="lg"
           disabled={disableSubmit}
           onClick={() => {
             setDS(true);
@@ -105,7 +110,8 @@ const SigninPage: NextPage = () => {
           <span>Sign in with Discord</span>
         </Button>
         <Button
-          className="mb-4 bg-[#4285F4] text-white hover:bg-[#4285F4]"
+          className="mb-8 bg-[#4285F4] text-white hover:bg-[#4285F4]"
+          size="lg"
           disabled={disableSubmit}
           onClick={() => {
             setDS(true);
@@ -123,12 +129,11 @@ const SigninPage: NextPage = () => {
         </Button>
 
         <form className="flex items-center gap-x-2" onSubmit={signin}>
-          <input
+          <Input
             type="email"
             id="email"
             name="email"
             aria-label="Email"
-            className="mm-input"
             placeholder="hello@moddermore.net"
             value={email}
             onChange={(e) => {

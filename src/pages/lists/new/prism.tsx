@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { type FormEventHandler, useCallback, useState } from "react";
+import { type SubmitEventHandler, useCallback, useState } from "react";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -13,12 +13,31 @@ import type { Mod, ModLoader } from "~/types/moddermore";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
 import { NewSubmitButton } from "~/components/partials/NewSubmitButton";
 import { ProgressOverlay } from "~/components/ProgressOverlay";
-import { buttonVariants } from "~/components/ui/Button";
+
+import { Checkbox } from "~/components/shadcn/checkbox";
+import { Button } from "~/components/shadcn/button";
+import { Field, FieldDescription, FieldLabel } from "~/components/shadcn/field";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "~/components/shadcn/combobox";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/shadcn/select";
 
 import { PaperclipIcon } from "lucide-react";
 
-import toast from "react-hot-toast";
-import { twMerge } from "tailwind-merge";
+import { toast } from "sonner";
+import { loaderFormValues } from "~/lib/utils/strings";
 
 const PrismImportPage: NextPage = () => {
   const sess = useSession({ required: true });
@@ -34,7 +53,7 @@ const PrismImportPage: NextPage = () => {
 
   const router = useRouter();
 
-  const submitHandle: FormEventHandler = useCallback(
+  const submitHandle: SubmitEventHandler = useCallback(
     (e) => {
       (async () => {
         e.preventDefault();
@@ -95,56 +114,61 @@ const PrismImportPage: NextPage = () => {
         />
 
         <div className="flex items-center gap-x-4">
-          <select
+          <Combobox
             name="game-version"
-            value={gameVersion}
-            className="mm-input"
-            aria-label="Game version"
             required
-            onChange={(e) => {
-              setGameVersion(e.target.value);
+            value={gameVersion}
+            onValueChange={(value) => {
+              if (value) setGameVersion(value);
             }}
+            items={[...minecraftVersions.releases, ...minecraftVersions.snapshots]}
           >
-            {[...minecraftVersions.releases, ...minecraftVersions.snapshots].map((v) => (
-              <option value={v} key={v}>
-                {v}
-              </option>
-            ))}
-          </select>
+            <ComboboxInput placeholder="Select a game version" />
+            <ComboboxContent>
+              <ComboboxEmpty>No versions found.</ComboboxEmpty>
+              <ComboboxList>
+                {(item: string) => (
+                  <ComboboxItem key={item} value={item}>
+                    {item}
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
 
-          <select
+          <Select
+            required
             name="modloader"
             value={modLoader}
-            className="mm-input"
-            aria-label="Mod loader"
-            onChange={(e) => {
-              setModLoader(e.target.value as ModLoader);
+            onValueChange={(value) => {
+              if (value) setModLoader(value as ModLoader);
             }}
           >
-            <option value="quilt">Quilt</option>
-            <option value="fabric">Fabric</option>
-            <option value="forge">Forge</option>
-            <option value="neoforge">NeoForge</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue placeholder="Loader" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {loaderFormValues.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
 
-        <h2 className="mt-12 text-sm font-bold tracking-tight text-neutral-700 dark:text-neutral-300">
-          Exported instance from MultiMC / Prism Launcher
-        </h2>
+        <Field orientation="vertical">
+          <FieldLabel>Exported instance from MultiMC / Prism Launcher</FieldLabel>
 
-        <div className="-mt-2 flex items-center gap-x-4">
           <label>
-            <div
-              role="button"
-              className={twMerge(
-                buttonVariants({
-                  className: "flex cursor-auto hover:cursor-pointer",
-                }),
-              )}
-            >
-              <PaperclipIcon className="block h-5 w-5" />
-              <span>Choose file</span>
-            </div>
+            <Button asChild>
+              <div className="flex cursor-auto hover:cursor-pointer">
+                <PaperclipIcon />
+                <span>Choose file</span>
+              </div>
+            </Button>
 
             <input
               name="mod-zip"
@@ -158,22 +182,20 @@ const PrismImportPage: NextPage = () => {
             />
           </label>
 
-          {instanceFile && <span className="text-lg font-medium">{instanceFile.name}</span>}
-        </div>
+          {instanceFile && <FieldDescription>{instanceFile.name}</FieldDescription>}
+        </Field>
 
-        <div className="flex items-center gap-x-2">
-          <input
-            type="checkbox"
-            className="rounded-sm bg-indigo-500"
+        <Field orientation="horizontal">
+          <Checkbox
             name="use-metadata"
             id="checkbox-use-metadata"
             checked={useMetadata}
-            onChange={(e) => {
-              setUseMetadata(e.target.checked);
+            onCheckedChange={(checked) => {
+              setUseMetadata(!!checked);
             }}
           />
-          <label htmlFor="checkbox-use-metadata">Use metadata generated by Prism?</label>
-        </div>
+          <FieldLabel htmlFor="checkbox-use-metadata">Use metadata generated by Prism</FieldLabel>
+        </Field>
 
         <NewSubmitButton submitting={submitting} disabled={sess.status === "loading" || submitting} />
       </form>

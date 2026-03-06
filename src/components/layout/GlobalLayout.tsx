@@ -12,6 +12,7 @@ interface Props {
   titleIcon?: ReactNode;
   className?: string;
   displayTitle?: boolean | string;
+  displayHeader?: boolean;
   wideLayout?: boolean;
   isAuthPage?: boolean;
   children: ReactNode | ReactNode[];
@@ -22,6 +23,7 @@ export const GlobalLayout = ({
   titleSuffix = true,
   titleIcon,
   displayTitle = true,
+  displayHeader = true,
   wideLayout = false,
   isAuthPage = false,
   className,
@@ -50,12 +52,12 @@ export const GlobalLayout = ({
         <meta name="twitter:image" content="https://moddermore.net/cover.png" />
       </Head>
 
-      <Header />
+      {!!displayHeader && <Header />}
 
       <main
         className={twMerge(
           wideLayout
-            ? "flex flex-col"
+            ? "flex min-h-screen flex-col p-28"
             : isAuthPage
               ? "layout mt-28 max-w-[45ch] items-center text-center"
               : "layout mt-28",
@@ -77,7 +79,7 @@ export const GlobalLayout = ({
         {children}
       </main>
 
-      <Footer />
+      {!!displayHeader && <Footer />}
     </>
   );
 };

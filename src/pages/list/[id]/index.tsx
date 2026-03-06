@@ -7,7 +7,7 @@ import { getInfos as getCurseForgeInfos } from "~/lib/metadata/curseforge";
 import { getInfos as getModrinthInfos } from "~/lib/metadata/modrinth";
 
 import { useRouter } from "next/router";
-import { type FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getServerSession } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
@@ -19,22 +19,37 @@ import { prismAutoUpdateExport, prismStaticExport } from "~/lib/export/formats/p
 import { ExportStatus } from "~/lib/export/formats/shared";
 import { zipExport } from "~/lib/export/formats/zip";
 
-import * as Dialog from "@radix-ui/react-dialog";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Markdown from "react-markdown";
 
 import Head from "next/head";
 import Link from "next/link";
 
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
-import { DonationMessage } from "~/components/partials/DonationMessage";
+
 import { RichModDisplay } from "~/components/partials/RichModDisplay";
 import { Search } from "~/components/partials/Search";
-import { Spinner } from "~/components/partials/Spinner";
 import { Metadata } from "~/components/partials/Metadata";
 import { ProgressOverlay } from "~/components/ProgressOverlay";
-import { Button, buttonVariants } from "~/components/ui/Button";
 import { Select } from "~/components/ui/Select";
+
+import { Button } from "~/components/shadcn/button";
+import { ButtonGroup, ButtonGroupSeparator } from "~/components/shadcn/button-group";
+import { Spinner } from "~/components/shadcn/spinner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/shadcn/dropdown-menu";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/shadcn/dialog";
 
 import {
   ClipboardIcon,
@@ -54,8 +69,10 @@ import {
 } from "lucide-react";
 import { MarkdownIcon, ModrinthIcon } from "~/components/icons";
 
-import toast from "react-hot-toast";
-import { twMerge } from "tailwind-merge";
+import { toast } from "sonner";
+import { Field, FieldGroup, FieldLabel } from "~/components/shadcn/field";
+import { Input } from "~/components/shadcn/input";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/shadcn/accordion";
 
 interface PageProps {
   data: ModListWithExtraData;
@@ -170,7 +187,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
     }
   };
 
-  const editHandle: FormEventHandler = useCallback(
+  const editHandle: MouseEventHandler = useCallback(
     (e) => {
       (async () => {
         e.preventDefault();
@@ -224,22 +241,17 @@ ${
 }
       `.trim();
 
-        toast.success(
-          <div className="flex flex-col gap-y-1">
-            <span>List updated!</span>
-            <button
-              className="text-xs font-semibold text-blue-500 transition-colors hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-200"
-              onClick={() => {
-                navigator.clipboard.writeText(changelog).catch((error) => {
-                  console.error(error);
-                });
-              }}
-            >
-              Copy changelog
-            </button>
-          </div>,
-          { duration: 5000 },
-        );
+        toast.success("List updated!", {
+          duration: 5000,
+          action: {
+            label: "Copy changelog",
+            onClick: () => {
+              navigator.clipboard.writeText(changelog).catch((error) => {
+                console.error(error);
+              });
+            },
+          },
+        });
 
         setIsSaving(false);
         setIsEditing(false);
@@ -440,7 +452,7 @@ ${
               src={data.ownerProfile.profilePicture}
               width={32}
               height={32}
-              className="rounded-full"
+              className="size-[32px] rounded-full"
               alt=""
             />
           ) : (
@@ -451,215 +463,190 @@ ${
         </div>
       )}
 
-      <div className="mb-2 flex flex-wrap items-center gap-2">
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild disabled={!resolvedMods}>
-            <Button>
-              <DownloadIcon className="block h-5 w-5" />
-              <span>Export as...</span>
-            </Button>
-          </DropdownMenu.Trigger>
-
-          <DropdownMenu.Portal>
-            <DropdownMenu.Content align="start" className="radix-dropdown-menu-content">
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={() => {
-                    if (resolvedMods) {
-                      zipExport({
-                        data: { ...data, mods: resolvedMods },
-                        setProgress,
-                        setResult,
-                        setStatus,
-                      }).catch((error) => {
-                        console.error(error);
-                      });
-                    }
-                  }}
-                >
-                  <FolderArchiveIcon className="block h-5 w-5" />
-                  <span>Zip archive</span>
-                </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <button className="radix-dropdown-button" onClick={modrinthExportInit}>
-                  <ModrinthIcon className="block h-5 w-5" />
-                  <span>Modrinth pack</span>
-                </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={() => {
-                    packwizExport().catch((error) => {
+      <ButtonGroup className="mb-2">
+        <ButtonGroup>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="default" size="default" disabled={!resolvedMods}>
+                <DownloadIcon />
+                Export
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-44">
+              <DropdownMenuItem
+                onClick={() => {
+                  if (resolvedMods) {
+                    zipExport({
+                      data: { ...data, mods: resolvedMods },
+                      setProgress,
+                      setResult,
+                      setStatus,
+                    }).catch((error) => {
                       console.error(error);
                     });
-                  }}
-                  disabled={data.visibility === "private"}
-                >
-                  <CloudIcon className="block h-5 w-5" />
-                  <span>Copy packwiz link</span>
-                </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={() => {
-                    if (resolvedMods) {
-                      prismStaticExport({
-                        data: { ...data, mods: resolvedMods },
-                        setProgress,
-                        setResult,
-                        setStatus,
-                      }).catch((error) => {
-                        console.error(error);
-                      });
-                    }
-                  }}
-                >
-                  <HexagonIcon className="block h-5 w-5" />
-                  <span>MultiMC</span>
-                </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={() => {
-                    if (resolvedMods) {
-                      prismAutoUpdateExport({
-                        data: { ...data, mods: resolvedMods },
-                        setProgress,
-                        setResult,
-                        setStatus,
-                      }).catch((error) => {
-                        console.error(error);
-                      });
-                    }
-                  }}
-                  disabled={data.visibility === "private"}
-                >
-                  <div className="relative">
-                    <HexagonIcon className="block h-5 w-5 fill-current" />
-                  </div>
-                  <span>MultiMC (auto-updating)</span>
-                </button>
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+                  }
+                }}
+              >
+                <FolderArchiveIcon />
+                ZIP archive
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={modrinthExportInit}>
+                <ModrinthIcon />
+                Modrinth pack
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  packwizExport().catch((error) => {
+                    console.error(error);
+                  });
+                }}
+                disabled={data.visibility === "private"}
+              >
+                <CloudIcon />
+                Copy packwiz link
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  if (resolvedMods) {
+                    prismStaticExport({
+                      data: { ...data, mods: resolvedMods },
+                      setProgress,
+                      setResult,
+                      setStatus,
+                    }).catch((error) => {
+                      console.error(error);
+                    });
+                  }
+                }}
+              >
+                <HexagonIcon />
+                MultiMC
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  if (resolvedMods) {
+                    prismAutoUpdateExport({
+                      data: { ...data, mods: resolvedMods },
+                      setProgress,
+                      setResult,
+                      setStatus,
+                    }).catch((error) => {
+                      console.error(error);
+                    });
+                  }
+                }}
+                disabled={data.visibility === "private"}
+              >
+                <HexagonIcon className="fill-current" />
+                MultiMC (auto-update)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild>
-            <Button disabled={!resolvedMods}>
-              <ClipboardIcon className="block h-5 w-5" />
-              <span>Copy as...</span>
-            </Button>
-          </DropdownMenu.Trigger>
+          <ButtonGroupSeparator />
 
-          <DropdownMenu.Portal>
-            <DropdownMenu.Content
-              align="start"
-              className="radix-dropdown-menu-content z-40 mt-2 overflow-hidden rounded bg-neutral-50 shadow dark:bg-neutral-800"
-            >
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={copyMarkdownList}
-                  disabled={data.mods.length === 0}
-                >
-                  <MarkdownIcon className="block h-5 w-5" />
-                  <span>Markdown list</span>
-                </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <button
-                  className="radix-dropdown-button"
-                  onClick={copyJSON}
-                  disabled={data.mods.length === 0}
-                >
-                  <CodeIcon className="block h-5 w-5" />
-                  <span>JSON</span>
-                </button>
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="default" size="default" disabled={!resolvedMods}>
+                <ClipboardIcon />
+                Copy
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={copyMarkdownList} disabled={data.mods.length === 0}>
+                <MarkdownIcon />
+                Markdown list
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={copyJSON} disabled={data.mods.length === 0}>
+                <CodeIcon />
+                JSON
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </ButtonGroup>
 
-        <Button onClick={toggleLikeStatus}>
-          {isLiking ? (
-            <Spinner className="block h-5 w-5" />
-          ) : (
-            <HeartIcon
-              className={twMerge(
-                "block h-5 w-5",
-                hasLiked ? "fill-current stroke-none" : "fill-none stroke-current",
-              )}
-            />
-          )}
-          <span>{hasLiked ? "Unlike" : "Like"}</span>
-        </Button>
-
-        <Button onClick={duplicateList}>
-          {isDuplicating ? <Spinner className="block h-5 w-5" /> : <CopyIcon className="block h-5 w-5" />}
-          <span>Duplicate</span>
-        </Button>
-      </div>
-
-      {hasElevatedPermissions && (
-        <div className="mb-16 flex flex-wrap items-center gap-2">
-          {isEditing ? (
-            <Button variant="green" onClick={editHandle} disabled={isSaving}>
-              {isSaving ? <Spinner className="block h-5 w-5" /> : <SaveIcon className="block h-5 w-5" />}
-              <span>Save</span>
-            </Button>
-          ) : (
-            <Button
-              variant="privileged"
-              onClick={() => {
-                setIsEditing(true);
-              }}
-              disabled={isSaving}
-            >
-              {isSaving ? <Spinner className="block h-5 w-5" /> : <EditIcon className="block h-5 w-5" />}
-              <span>Edit</span>
-            </Button>
-          )}
-
-          <Link className={buttonVariants({ variant: "privileged" })} href={`/list/${data.id}/settings`}>
-            <SettingsIcon className="block h-5 w-5" />
-            <span>Settings</span>
-          </Link>
-
-          <Button
-            variant="danger"
-            onClick={() => {
-              deleteCurrentList().catch((error) => {
-                console.error(error);
-              });
-            }}
-            disabled={isDeleting}
-          >
-            {isDeleting ? <Spinner className="block h-5 w-5" /> : <TrashIcon className="block h-5 w-5" />}
-            {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
+        <ButtonGroup>
+          <Button variant="secondary" size="default" onClick={toggleLikeStatus} disabled={isLiking}>
+            {isLiking ? (
+              <Spinner />
+            ) : (
+              <HeartIcon className={hasLiked ? "fill-current stroke-none" : "fill-none stroke-current"} />
+            )}
+            {hasLiked ? "Unlike" : "Like"}
           </Button>
 
-          {isAdmin && (
+          <Button variant="secondary" size="default" onClick={duplicateList} disabled={isDuplicating}>
+            {isDuplicating ? <Spinner /> : <CopyIcon />}
+            Duplicate
+          </Button>
+        </ButtonGroup>
+
+        {hasElevatedPermissions && (
+          <ButtonGroup>
+            {isEditing ? (
+              <Button
+                variant={isEditing ? "default" : "outline"}
+                size="default"
+                onClick={editHandle}
+                disabled={isSaving}
+              >
+                {isSaving ? <Spinner /> : <SaveIcon />}
+                Save
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="default"
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+                disabled={isSaving}
+              >
+                {isSaving ? <Spinner /> : <EditIcon />}
+                Edit
+              </Button>
+            )}
+
+            <Button size="default" variant="outline" asChild>
+              <Link href={`/list/${data.id}/settings`}>
+                <SettingsIcon />
+                Settings
+              </Link>
+            </Button>
+
             <Button
-              variant="danger"
+              size="default"
+              variant="destructive"
               onClick={() => {
-                ban().catch((error) => {
+                deleteCurrentList().catch((error) => {
                   console.error(error);
                 });
               }}
-              disabled={isBanning}
+              disabled={isDeleting}
             >
-              {isBanning ? <Spinner className="block h-5 w-5" /> : <HammerIcon className="block h-5 w-5" />}
-              {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
+              {isDeleting ? <Spinner /> : <TrashIcon />}
+              {confirmDelete ? <span>Confirm deletion?</span> : <span>Delete</span>}
             </Button>
-          )}
-        </div>
-      )}
+
+            {isAdmin && (
+              <Button
+                size="default"
+                variant="destructive"
+                onClick={() => {
+                  ban().catch((error) => {
+                    console.error(error);
+                  });
+                }}
+                disabled={isBanning}
+              >
+                {isBanning ? <Spinner className="block h-5 w-5" /> : <HammerIcon className="block h-5 w-5" />}
+                {confirmBan ? <span>Confirm ban?</span> : <span>Ban</span>}
+              </Button>
+            )}
+          </ButtonGroup>
+        )}
+      </ButtonGroup>
 
       {isEditing && resolvedMods && (
         <>
@@ -675,15 +662,13 @@ ${
             }}
           />
           <div className="flex flex-row flex-wrap justify-end gap-x-2">
-            <Button variant="danger" onClick={unpinAll}>
-              <UnplugIcon className="block h-4 w-4" />
+            <Button variant="destructive" onClick={unpinAll}>
+              <UnplugIcon />
               <span>Unpin all</span>
             </Button>
           </div>
         </>
       )}
-
-      <DonationMessage />
 
       <ul className="mt-8 flex flex-col gap-y-4">
         {resolvedMods ? (
@@ -732,40 +717,42 @@ ${
         <ProgressOverlay label="Getting the .zip file ready..." {...progress} />
       ) : null}
 
-      <Dialog.Root
+      <Dialog
         open={status === ExportStatus.ModrinthForm}
         onOpenChange={(open) => {
           if (!open) setStatus(ExportStatus.Idle);
         }}
       >
-        <Dialog.Portal>
-          <Dialog.Overlay className="dialog overlay" />
-          <Dialog.Content className="dialog content">
-            <form
-              className="flex flex-col gap-y-8"
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (resolvedMods) {
-                  modrinthExport({
-                    data: { ...data, mods: resolvedMods },
-                    mrpackData: {
-                      name: mrpackName,
-                      version: mrpackVersion,
-                      cfStrategy: mrpackCurseForgeStrategy,
-                    },
-                    setProgress,
-                    setResult,
-                    setStatus,
-                  }).catch((error) => {
-                    console.error(error);
-                  });
-                }
-              }}
-            >
-              <label className="flex flex-col gap-y-1">
-                <span className="font-display text-sm font-semibold">Name</span>
-                <input
-                  className="mm-input"
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Modrinth export</DialogTitle>
+          </DialogHeader>
+
+          <form
+            className="flex flex-col gap-y-8"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (resolvedMods) {
+                modrinthExport({
+                  data: { ...data, mods: resolvedMods },
+                  mrpackData: {
+                    name: mrpackName,
+                    version: mrpackVersion,
+                    cfStrategy: mrpackCurseForgeStrategy,
+                  },
+                  setProgress,
+                  setResult,
+                  setStatus,
+                }).catch((error) => {
+                  console.error(error);
+                });
+              }
+            }}
+          >
+            <FieldGroup>
+              <Field>
+                <FieldLabel>Name</FieldLabel>
+                <Input
                   required
                   minLength={1}
                   value={mrpackName}
@@ -773,13 +760,11 @@ ${
                     setMrpackName(e.target.value);
                   }}
                 />
-              </label>
+              </Field>
 
-              <label className="flex flex-col gap-y-1">
-                <span className="font-display text-sm font-semibold">Version</span>
-
-                <input
-                  className="mm-input"
+              <Field>
+                <FieldLabel className="font-display text-sm font-semibold">Version</FieldLabel>
+                <Input
                   required
                   minLength={1}
                   value={mrpackVersion}
@@ -787,10 +772,10 @@ ${
                     setMrpackVersion(e.target.value);
                   }}
                 />
-              </label>
+              </Field>
 
-              <label className="flex flex-col gap-y-2">
-                <span className="font-display text-sm font-semibold">CurseForge mods</span>
+              <Field>
+                <FieldLabel>CurseForge mods</FieldLabel>
 
                 <div className="flex flex-col gap-1">
                   <Select
@@ -829,59 +814,59 @@ ${
                     </span>
                   </Select>
                 </div>
-              </label>
+              </Field>
 
-              <Button variant="modrinth" type="submit" className="self-start">
-                <ModrinthIcon className="block h-5 w-5" />
-                <span>Start export</span>
-              </Button>
-            </form>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button size="lg" variant="outline">
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button size="lg" type="submit" className="self-start">
+                  <ModrinthIcon />
+                  <span>Start export</span>
+                </Button>
+              </DialogFooter>
+            </FieldGroup>
+          </form>
+        </DialogContent>
+      </Dialog>
 
-      <Dialog.Root
+      <Dialog
         open={showResultModal}
         onOpenChange={(open) => {
           if (!open) setStatus(ExportStatus.Idle);
         }}
       >
-        <Dialog.Portal>
-          <Dialog.Overlay className="dialog overlay" />
-          <Dialog.Content className="dialog content">
-            <div className="flex flex-col gap-y-4">
-              <div className="results-list">
-                <details>
-                  <summary className="text-green-400">{result.success.length} successful downloads</summary>
-                  <ul>
-                    {result.success.map((a) => (
-                      <li key={a}>{a}</li>
-                    ))}
-                  </ul>
-                </details>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Exported!</DialogTitle>
+          </DialogHeader>
 
-                <details>
-                  <summary className="text-red-400">{result.failed.length} failed</summary>
-                  <ul>
-                    {result.failed.map((a) => (
-                      <li key={a}>{a}</li>
-                    ))}
-                  </ul>
-                </details>
-              </div>
-
-              <Button
-                className="self-center"
-                onClick={() => {
-                  setStatus(ExportStatus.Idle);
-                }}
-              >
-                Close
-              </Button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+          <Accordion type="single" collapsible>
+            <AccordionItem value="s">
+              <AccordionTrigger>{result.success.length} successful downloads</AccordionTrigger>
+              <AccordionContent className="max-h-32 overflow-y-scroll">
+                <ul>
+                  {result.success.map((a) => (
+                    <li key={a}>{a}</li>
+                  ))}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="f">
+              <AccordionTrigger>{result.failed.length} failed downloads</AccordionTrigger>
+              <AccordionContent className="max-h-32 overflow-y-scroll">
+                <ul>
+                  {result.failed.map((a) => (
+                    <li key={a}>{a}</li>
+                  ))}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </DialogContent>
+      </Dialog>
     </GlobalLayout>
   );
 };

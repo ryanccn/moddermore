@@ -59,7 +59,7 @@ const nextConfig: NextConfig = withBundleAnalyzer({
   },
 
   experimental: {
-    optimizePackageImports: ["lucide-react", "@tremor/react", "date-fns"],
+    optimizePackageImports: ["lucide-react", "date-fns"],
   },
 
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -77,6 +77,7 @@ const nextConfig: NextConfig = withBundleAnalyzer({
       ...[
         "/(lists|likes|account|new)",
         "/new/(.*)",
+        "/list/new/(.*)",
         "/auth/(.*)",
         "/api/(.*)",
         "/list/:id/analytics",
@@ -103,7 +104,7 @@ const nextConfig: NextConfig = withBundleAnalyzer({
       },
       {
         source: "/new/polymc",
-        destination: "/new/prism",
+        destination: "/lists/new/prism",
         permanent: true,
       },
       {
@@ -119,6 +120,11 @@ const nextConfig: NextConfig = withBundleAnalyzer({
       {
         source: "/blog/:match*",
         destination: "/changelog/:match*",
+        permanent: false,
+      },
+      {
+        source: "/new/:match*",
+        destination: "/lists/new/:match*",
         permanent: false,
       },
     ];

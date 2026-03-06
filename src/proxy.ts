@@ -1,4 +1,4 @@
-import { type NextMiddleware, NextResponse } from "next/server";
+import { type NextProxy, NextResponse } from "next/server";
 
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
@@ -12,7 +12,7 @@ export const config = {
   matcher: "/api/search",
 };
 
-const middleware: NextMiddleware = async (request, event) => {
+const proxy: NextProxy = async (request, event) => {
   const ip = request.headers.get("x-real-ip") ?? "127.0.0.1";
 
   const { success, pending, limit, reset, remaining } = await ratelimit.limit(ip);
@@ -28,4 +28,4 @@ const middleware: NextMiddleware = async (request, event) => {
     : new Response(null, { status: 429, headers: rateLimitHeaders });
 };
 
-export default middleware;
+export default proxy;

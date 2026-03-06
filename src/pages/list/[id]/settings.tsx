@@ -10,15 +10,36 @@ import { authOptions } from "~/lib/authOptions";
 import { ArrowLeftIcon, GlobeIcon, LockIcon, SaveIcon, ShieldIcon } from "lucide-react";
 import Link from "next/link";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
-import { Spinner } from "~/components/partials/Spinner";
-import { Button } from "~/components/ui/Button";
-import { Select } from "~/components/ui/Select";
+import { Select as Select1 } from "~/components/ui/Select";
 
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { getSpecificList } from "~/lib/db";
 import minecraftVersions from "~/lib/minecraftVersions.json";
 
 import type { ModList, ModLoader } from "~/types/moddermore";
+
+import { Button } from "~/components/shadcn/button";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "~/components/shadcn/field";
+import { Input } from "~/components/shadcn/input";
+import { Textarea } from "~/components/shadcn/textarea";
+import { Spinner } from "~/components/shadcn/spinner";
+import { loaderFormValues } from "~/lib/utils/strings";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "~/components/shadcn/combobox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectGroup,
+} from "~/components/shadcn/select";
 
 interface PageProps {
   data: ModList;
@@ -105,110 +126,125 @@ const ListSettings: NextPage<PageProps> = ({ data }) => {
           saveSettings();
         }}
       >
-        <label className="moddermore-form-label">
-          <span>Title</span>
-          <input
-            className="mm-input"
-            type="text"
-            value={title}
-            required
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-            disabled={inProgress}
-          />
-        </label>
+        <FieldGroup>
+          <Field>
+            <FieldLabel>Title</FieldLabel>
+            <Input
+              type="text"
+              value={title}
+              required
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+              disabled={inProgress}
+            />
+          </Field>
 
-        <label className="moddermore-form-label">
-          <span>Description</span>
-          <textarea
-            className="mm-input min-h-[12rem]"
-            value={description || ""}
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
-            disabled={inProgress}
-          />
-        </label>
+          <Field>
+            <FieldLabel>Description</FieldLabel>
+            <Textarea
+              value={description || ""}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+              disabled={inProgress}
+            />
+            <FieldDescription>You can use a restricted subset of Markdown here.</FieldDescription>
+          </Field>
 
-        <div className="flex flex-col gap-y-2">
-          <span className="font-display text-sm font-bold">Visibility</span>
-          <div className="flex w-full flex-col gap-2 self-stretch md:flex-row">
-            <Select name="visibility" value={"private"} currentValue={visibility} onCheck={setVisibility}>
-              <div className="flex flex-row items-center gap-x-1.5">
-                <LockIcon className="block h-4 w-4 shrink-0 opacity-75" strokeWidth={2.5} />
-                <span className="font-display text-lg font-medium">Private</span>
-              </div>
-              <span className="text-xs opacity-60">
-                Only accessible by you. Others visiting the link will see a 404.
-              </span>
-            </Select>
-            <Select name="visibility" value={"unlisted"} currentValue={visibility} onCheck={setVisibility}>
-              <div className="flex flex-row items-center gap-x-1.5">
-                <ShieldIcon className="block h-4 w-4 shrink-0 opacity-75" strokeWidth={2.5} />
-                <span className="font-display text-lg font-medium">Unlisted</span>
-              </div>
-              <span className="text-xs opacity-60">
-                Anyone with the link will be able to see the list, and it should not be indexed by search
-                engines.
-              </span>
-            </Select>
-            <Select name="visibility" value={"public"} currentValue={visibility} onCheck={setVisibility}>
-              <div className="flex flex-row items-center gap-x-1.5">
-                <GlobeIcon className="block h-4 w-4 shrink-0 opacity-75" strokeWidth={2.5} />
-                <span className="font-display text-lg font-medium">Public</span>
-              </div>
-              <span className="text-xs opacity-60">
-                Anyone with the link will be able to see the list, and it will be available both in Search and
-                to search engines.
-              </span>
-            </Select>
+          <Field>
+            <FieldLabel>Visibility</FieldLabel>
+
+            <div className="flex w-full flex-col gap-2 self-stretch md:flex-row">
+              <Select1 name="visibility" value={"private"} currentValue={visibility} onCheck={setVisibility}>
+                <div className="flex flex-row items-center gap-x-1.5">
+                  <LockIcon className="block h-4 w-4 shrink-0 opacity-75" strokeWidth={2.5} />
+                  <span className="font-display text-lg font-medium">Private</span>
+                </div>
+                <span className="text-xs opacity-60">
+                  Only accessible by you. Others visiting the link will see a 404.
+                </span>
+              </Select1>
+              <Select1 name="visibility" value={"unlisted"} currentValue={visibility} onCheck={setVisibility}>
+                <div className="flex flex-row items-center gap-x-1.5">
+                  <ShieldIcon className="block h-4 w-4 shrink-0 opacity-75" strokeWidth={2.5} />
+                  <span className="font-display text-lg font-medium">Unlisted</span>
+                </div>
+                <span className="text-xs opacity-60">
+                  Anyone with the link will be able to see the list, and it should not be indexed by search
+                  engines.
+                </span>
+              </Select1>
+              <Select1 name="visibility" value={"public"} currentValue={visibility} onCheck={setVisibility}>
+                <div className="flex flex-row items-center gap-x-1.5">
+                  <GlobeIcon className="block h-4 w-4 shrink-0 opacity-75" strokeWidth={2.5} />
+                  <span className="font-display text-lg font-medium">Public</span>
+                </div>
+                <span className="text-xs opacity-60">
+                  Anyone with the link will be able to see the list, and it will be available both in Search
+                  and to search engines.
+                </span>
+              </Select1>
+            </div>
+          </Field>
+
+          <div className="flex flex-col gap-4 md:flex-row">
+            <Field>
+              <FieldLabel>Game version</FieldLabel>
+              <Combobox
+                name="game-version"
+                required
+                value={gameVersion}
+                onValueChange={(value) => {
+                  if (value) setGameVersion(value);
+                }}
+                items={[...minecraftVersions.releases, ...minecraftVersions.snapshots]}
+              >
+                <ComboboxInput placeholder="Select a game version" />
+                <ComboboxContent>
+                  <ComboboxEmpty>No versions found.</ComboboxEmpty>
+                  <ComboboxList>
+                    {(item: string) => (
+                      <ComboboxItem key={item} value={item}>
+                        {item}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+            </Field>
+
+            <Field>
+              <FieldLabel>Loader</FieldLabel>
+              <Select
+                required
+                name="modloader"
+                value={modLoader}
+                onValueChange={(value) => {
+                  if (value) setModLoader(value as ModLoader);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Loader" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {loaderFormValues.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </Field>
           </div>
-        </div>
 
-        <div className="flex flex-col gap-4 md:flex-row">
-          <label className="moddermore-form-label md:w-1/2">
-            <span>Game version</span>
-            <select
-              name="game-version"
-              value={gameVersion}
-              aria-label="Game version"
-              required
-              onChange={(e) => {
-                setGameVersion(e.target.value);
-              }}
-            >
-              {[...minecraftVersions.releases, ...minecraftVersions.snapshots].map((v) => (
-                <option value={v} key={v}>
-                  {v}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="moddermore-form-label md:w-1/2">
-            <span>Mod loader</span>
-            <select
-              name="modloader"
-              value={modLoader}
-              aria-label="Mod loader"
-              required
-              onChange={(e) => {
-                setModLoader(e.target.value as ModLoader);
-              }}
-            >
-              <option value="quilt">Quilt</option>
-              <option value="fabric">Fabric</option>
-              <option value="forge">Forge</option>
-              <option value="neoforge">NeoForge</option>
-            </select>
-          </label>
-        </div>
-
-        <Button type="submit" className="mt-4 self-start" disabled={inProgress}>
-          {inProgress ? <Spinner className="block h-5 w-5" /> : <SaveIcon className="block h-5 w-5" />}
-          <span>Save</span>
-        </Button>
+          <Button type="submit" size="lg" className="mt-4 self-start" disabled={inProgress}>
+            {inProgress ? <Spinner /> : <SaveIcon />}
+            <span>Save</span>
+          </Button>
+        </FieldGroup>
       </form>
     </GlobalLayout>
   );
