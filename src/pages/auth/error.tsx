@@ -13,7 +13,9 @@ const SigninPage: NextPage = () => {
     <GlobalLayout
       title="An error occurred!"
       isAuthPage
-      titleIcon={<AlertTriangleIcon className="mb-2 block h-12 w-12 text-red-400" />}
+      titleIcon={
+        <AlertTriangleIcon className="mb-8 block size-12 place-self-center text-red-500 dark:text-red-400" />
+      }
     >
       <p className="text-lg">
         {error === "Configuration"

@@ -8,7 +8,7 @@ const withBundleAnalyzer = makeBundleAnalyzer({
 
 const csp = `
   default-src 'self';
-  script-src 'self' umami.ryanccn.dev 'unsafe-inline' 'unsafe-eval';
+  script-src 'self' 'unsafe-inline' 'unsafe-eval';
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
   child-src 'none' www.youtube-nocookie.com;

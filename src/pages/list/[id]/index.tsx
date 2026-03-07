@@ -59,9 +59,11 @@ import {
   DownloadIcon,
   EditIcon,
   FolderArchiveIcon,
+  Grid2x2Icon,
   HammerIcon,
   HeartIcon,
   HexagonIcon,
+  Rows2Icon,
   SaveIcon,
   SettingsIcon,
   TrashIcon,
@@ -73,6 +75,7 @@ import { toast } from "sonner";
 import { Field, FieldGroup, FieldLabel } from "~/components/shadcn/field";
 import { Input } from "~/components/shadcn/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/shadcn/accordion";
+import { twMerge } from "tailwind-merge";
 
 interface PageProps {
   data: ModListWithExtraData;
@@ -93,6 +96,7 @@ const ListPage: NextPage<PageProps> = ({ data }) => {
   const [oldMods, setOldMods] = useState<RichMod[] | null>(null);
 
   const [status, setStatus] = useState<ExportStatus>(ExportStatus.Idle);
+  const [wideLayout, setWideLayout] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -434,7 +438,7 @@ ${
   }, [router, data, session, confirmBan, confirmBanTimeoutID, setConfirmBan]);
 
   return (
-    <GlobalLayout title={data.title}>
+    <GlobalLayout title={data.title} wideLayout={wideLayout}>
       {data.description && (
         <div className="-mt-6 mb-8 text-lg font-medium [&_a]:underline [&_a]:decoration-neutral-200 dark:[&_a]:decoration-neutral-500">
           <Markdown skipHtml allowedElements={["p", "span", "a", "strong", "em", "b", "i", "mark"]}>
@@ -580,6 +584,16 @@ ${
             {isDuplicating ? <Spinner /> : <CopyIcon />}
             Duplicate
           </Button>
+
+          <Button
+            variant="secondary"
+            size="default"
+            onClick={() => {
+              setWideLayout(!wideLayout);
+            }}
+          >
+            {wideLayout ? <Grid2x2Icon /> : <Rows2Icon />}
+          </Button>
         </ButtonGroup>
 
         {hasElevatedPermissions && (
@@ -670,7 +684,12 @@ ${
         </>
       )}
 
-      <ul className="mt-8 flex flex-col gap-y-4">
+      <ul
+        className={twMerge(
+          "mt-8 grid grid-cols-1 gap-4 md:grid-cols-2",
+          wideLayout ? null : "md:grid-cols-1",
+        )}
+      >
         {resolvedMods ? (
           resolvedMods.map((mod) => (
             <li className="w-full" key={mod.id}>

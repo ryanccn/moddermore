@@ -1,6 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 
-import { MDXRemote, type MDXRemoteSerializeResult } from "next-mdx-remote";
 import Head from "next/head";
 import { GlobalLayout } from "~/components/layout/GlobalLayout";
 
@@ -16,10 +15,10 @@ interface PageProps {
     } | null;
     date: string;
   };
-  mdx: MDXRemoteSerializeResult;
+  html: string;
 }
 
-const ChangelogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
+const ChangelogPostPage: NextPage<PageProps> = ({ data, html }) => {
   const absoluteCoverURL = data.cover ? new URL(data.cover.src, "https://moddermore.net").toString() : null;
 
   return (
@@ -32,19 +31,22 @@ const ChangelogPostPage: NextPage<PageProps> = ({ mdx, data }) => {
           </>
         )}
       </Head>
-      <article className="prose prose-neutral max-w-none dark:prose-invert">
-        <div
-          className="not-prose mb-12 flex flex-col gap-y-3 rounded-2xl bg-cover p-8 pt-40 text-white"
-          style={{
-            backgroundImage: data.cover ? `url('${data.cover.src}')` : undefined,
-            backgroundPosition: "center",
-          }}
-        >
-          <h1 className="font-display text-4xl font-bold [text-wrap:_balance;]">{data.title}</h1>
-          <p className="text-lg font-medium">{data.date}</p>
-        </div>
-        <MDXRemote {...mdx} />
-      </article>
+
+      <div
+        className="mb-12 flex flex-col gap-y-3 rounded-2xl bg-cover p-8 pt-40 text-white"
+        style={{
+          backgroundImage: data.cover ? `url('${data.cover.src}')` : undefined,
+          backgroundPosition: "center",
+        }}
+      >
+        <h1 className="font-display text-4xl font-bold [text-wrap:_balance;]">{data.title}</h1>
+        <p className="text-lg font-medium">{data.date}</p>
+      </div>
+
+      <article
+        className="prose prose-neutral max-w-none dark:prose-invert"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </GlobalLayout>
   );
 };
@@ -54,7 +56,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
   if (typeof slug !== "string") throw new Error("oof");
 
   const data = await getChangelogPost(slug);
-
   if (!data) return { notFound: true };
 
   return {

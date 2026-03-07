@@ -1,6 +1,11 @@
 import dorian from "gray-matter";
 import { imageSize } from "image-size";
-import { serialize } from "next-mdx-remote/serialize";
+
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeSanitize from "rehype-sanitize";
+import rehypeStringify from "rehype-stringify";
 
 import { format } from "date-fns";
 import { readdir, readFile, stat } from "node:fs/promises";
@@ -34,7 +39,7 @@ const exists = async (f: string) => {
 };
 
 export const listChangelogPosts = async () => {
-  const fileList = await readdir("docs/changelog").then((list) => list.filter((k) => k.endsWith(".mdx")));
+  const fileList = await readdir("docs/changelog").then((list) => list.filter((k) => k.endsWith(".md")));
   const lim = pLimit(12);
 
   const unsorted = await Promise.all(
@@ -43,12 +48,12 @@ export const listChangelogPosts = async () => {
         const { data } = dorian(await readFile(join("docs/changelog", fileName), { encoding: "utf8" }));
 
         return {
-          slug: fileName.replace(".mdx", ""),
+          slug: fileName.replace(".md", ""),
           data: {
             ...(data as { title: string; "cover-offset"?: number }),
             date: logDataFormat(data.date as Date),
           },
-          cover: await getPostCover(fileName.replace(".mdx", "")),
+          cover: await getPostCover(fileName.replace(".md", "")),
         };
       }),
     ),
@@ -58,7 +63,7 @@ export const listChangelogPosts = async () => {
 };
 
 export const getChangelogPost = async (slug: string) => {
-  const srcPath = join("./docs/changelog", `${slug}.mdx`);
+  const srcPath = join("./docs/changelog", `${slug}.md`);
   if (!(await exists(srcPath))) return null;
 
   const rawMarkdown = await readFile(srcPath, {
@@ -66,7 +71,13 @@ export const getChangelogPost = async (slug: string) => {
   });
 
   const { data, content } = dorian(rawMarkdown);
-  const mdx = await serialize(content);
+  const html = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeSanitize)
+    .use(rehypeStringify)
+    .process(content)
+    .then((vfile) => vfile.toString());
 
   const cover = await getPostCover(slug);
 
@@ -76,6 +87,6 @@ export const getChangelogPost = async (slug: string) => {
       cover,
       date: logDataFormat(data.date as Date),
     },
-    mdx,
+    html,
   };
 };

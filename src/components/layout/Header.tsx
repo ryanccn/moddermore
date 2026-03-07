@@ -63,7 +63,7 @@ const Header = () => {
           )}
         </Link>
 
-        <div className="flex flex-row flex-wrap items-center gap-x-2 font-display font-semibold">
+        <div className="flex flex-row flex-wrap items-center gap-x-2 font-display font-medium">
           <Link
             className="rounded-sm px-4 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-900"
             href="/search"

@@ -108,7 +108,7 @@ export const RichModDisplay = ({
   return (
     <div
       className={twMerge(
-        "flex justify-between rounded-2xl border-none bg-neutral-50 p-5 dark:bg-neutral-900",
+        "flex size-full justify-between rounded-2xl border-none bg-neutral-50 p-5 dark:bg-neutral-900",
         incompatible ? "ring-2 ring-red-400 hover:ring-red-400" : null,
         className,
       )}

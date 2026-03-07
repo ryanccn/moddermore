@@ -52,7 +52,7 @@ const Home: NextPage<PageProps> = ({ users, lists, mods, featuredLists }) => {
 
   return (
     <GlobalLayout title="Moddermore" titleSuffix={false} displayTitle={false} wideLayout>
-      <div className="-mt-24 mb-14 flex min-h-screen flex-col items-center justify-center lg:px-12">
+      <div className="-mt-32 mb-14 flex min-h-screen flex-col items-center justify-center lg:px-12">
         <div className="mb-16 flex flex-col items-center">
           <h2 className="mb-8 font-display text-6xl font-bold tracking-tight">
             Share the mods you use with anyone.
