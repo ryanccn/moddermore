@@ -38,8 +38,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       fast-xml-parser:
-        specifier: ^5.4.2
-        version: 5.4.2
+        specifier: ^5.5.6
+        version: 5.5.6
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -2515,18 +2515,15 @@ packages:
   fast-levenshtein@2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
 
-  fast-xml-builder@1.0.0:
-    resolution: {integrity: sha512-fpZuDogrAgnyt9oDDz+5DBz0zgPdPZz6D4IR7iESxRXElrlGTRkHJ9eEt+SACRJwT0FNFrt71DFQIUFBJfX/uQ==}
-
-  fast-xml-builder@1.1.2:
-    resolution: {integrity: sha512-NJAmiuVaJEjVa7TjLZKlYd7RqmzOC91EtPFXHvlTcqBVo50Qh7XV5IwvXi1c7NRz2Q/majGX9YLcwJtWgHjtkA==}
+  fast-xml-builder@1.1.4:
+    resolution: {integrity: sha512-f2jhpN4Eccy0/Uz9csxh3Nu6q4ErKxf0XIsasomfOihuSUa3/xw6w8dnOtCDgEItQFJG8KyXPzQXzcODDrrbOg==}
 
   fast-xml-parser@5.4.1:
     resolution: {integrity: sha512-BQ30U1mKkvXQXXkAGcuyUA/GA26oEB7NzOtsxCDtyu62sjGw5QraKFhx2Em3WQNjPw9PG6MQ9yuIIgkSDfGu5A==}
     hasBin: true
 
-  fast-xml-parser@5.4.2:
-    resolution: {integrity: sha512-pw/6pIl4k0CSpElPEJhDppLzaixDEuWui2CUQQBH/ECDf7+y6YwA4Gf7Tyb0Rfe4DIMuZipYj4AEL0nACKglvQ==}
+  fast-xml-parser@5.5.6:
+    resolution: {integrity: sha512-3+fdZyBRVg29n4rXP0joHthhcHdPUHaIC16cuyyd1iLsuaO6Vea36MPrxgAzbZna8lhvZeRL8Bc9GP56/J9xEw==}
     hasBin: true
 
   fastq@1.20.1:
@@ -6395,20 +6392,19 @@ snapshots:
 
   fast-levenshtein@2.0.6: {}
 
-  fast-xml-builder@1.0.0: {}
-
-  fast-xml-builder@1.1.2:
+  fast-xml-builder@1.1.4:
     dependencies:
       path-expression-matcher: 1.1.3
 
   fast-xml-parser@5.4.1:
     dependencies:
-      fast-xml-builder: 1.1.2
+      fast-xml-builder: 1.1.4
       strnum: 2.2.0
 
-  fast-xml-parser@5.4.2:
+  fast-xml-parser@5.5.6:
     dependencies:
-      fast-xml-builder: 1.0.0
+      fast-xml-builder: 1.1.4
+      path-expression-matcher: 1.1.3
       strnum: 2.2.0
 
   fastq@1.20.1:
