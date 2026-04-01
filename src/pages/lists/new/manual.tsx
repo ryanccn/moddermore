@@ -86,7 +86,7 @@ const ManualImportPage: NextPage = () => {
           name="title"
           value={title}
           type="text"
-          className="title w-full bg-transparent focus:outline-none focus:ring-0"
+          className="title w-full bg-transparent focus:ring-0 focus:outline-none"
           placeholder="Enter the title..."
           aria-label="Title of the mod list"
           required
@@ -150,7 +150,7 @@ const ManualImportPage: NextPage = () => {
           }}
         />
 
-        <h2 className="mt-12 text-sm font-bold uppercase text-neutral-800 dark:text-neutral-200">
+        <h2 className="mt-12 text-sm font-bold text-neutral-800 uppercase dark:text-neutral-200">
           Added mods
         </h2>
         <ul className="flex w-full flex-col gap-y-2">

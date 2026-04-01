@@ -104,7 +104,7 @@ const PrismImportPage: NextPage = () => {
           name="title"
           value={title}
           type="text"
-          className="title w-full bg-transparent focus:outline-none focus:ring-0"
+          className="title w-full bg-transparent focus:ring-0 focus:outline-none"
           placeholder="Enter the title..."
           aria-label="Title of the mod list"
           required

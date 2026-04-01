@@ -39,12 +39,12 @@ const ChangelogPostPage: NextPage<PageProps> = ({ data, html }) => {
           backgroundPosition: "center",
         }}
       >
-        <h1 className="font-display text-4xl font-bold [text-wrap:_balance;]">{data.title}</h1>
+        <h1 className="font-display [text-wrap:_balance;] text-4xl font-bold">{data.title}</h1>
         <p className="text-lg font-medium">{data.date}</p>
       </div>
 
       <article
-        className="prose prose-neutral max-w-none dark:prose-invert"
+        className="prose prose-neutral dark:prose-invert max-w-none"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </GlobalLayout>

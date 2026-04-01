@@ -8,11 +8,12 @@ import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 
 import { format } from "date-fns";
+import { utc } from "@date-fns/utc";
 import { readdir, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 import pLimit from "p-limit";
 
-const logDataFormat = (d: Date) => format(d, "yyyy-MM-dd");
+const logDataFormat = (d: Date) => format(d, "yyyy-MM-dd", { in: utc });
 
 const getPostCover = async (slug: string) => {
   const path = (await exists(join("./public/changelog/covers", `${slug}.jpg`)))

@@ -450,7 +450,7 @@ ${
       <Metadata data={data} />
 
       {data.ownerProfile && (
-        <div className="mb-8 mt-6 flex flex-row items-center gap-x-3">
+        <div className="mt-6 mb-8 flex flex-row items-center gap-x-3">
           {data.ownerProfile.profilePicture ? (
             <img
               src={data.ownerProfile.profilePicture}

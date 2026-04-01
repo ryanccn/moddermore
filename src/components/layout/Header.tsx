@@ -46,7 +46,7 @@ const Header = () => {
   const isAdmin = useMemo(() => data?.extraProfile.isAdmin === true, [data]);
 
   return (
-    <nav className="flex w-full flex-col gap-8 border-b border-b-neutral-200 px-6 py-4 dark:border-b-neutral-800 md:flex-row md:items-center md:justify-between">
+    <nav className="flex w-full flex-col gap-8 border-b border-b-neutral-200 px-6 py-4 md:flex-row md:items-center md:justify-between dark:border-b-neutral-800">
       <div className="flex flex-col gap-8 md:flex-row md:items-center">
         <Link
           href={data && router.pathname !== "/lists" ? "/lists" : "/"}
@@ -63,7 +63,7 @@ const Header = () => {
           )}
         </Link>
 
-        <div className="flex flex-row flex-wrap items-center gap-x-2 font-display font-medium">
+        <div className="font-display flex flex-row flex-wrap items-center gap-x-2 font-medium">
           <Link
             className="rounded-sm px-4 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-900"
             href="/search"

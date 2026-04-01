@@ -54,7 +54,7 @@ const Home: NextPage<PageProps> = ({ users, lists, mods, featuredLists }) => {
     <GlobalLayout title="Moddermore" titleSuffix={false} displayTitle={false} wideLayout>
       <div className="-mt-32 mb-14 flex min-h-screen flex-col items-center justify-center lg:px-12">
         <div className="mb-16 flex flex-col items-center">
-          <h2 className="mb-8 font-display text-6xl font-bold tracking-tight">
+          <h2 className="font-display mb-8 text-6xl font-bold tracking-tight">
             Share the mods you use with anyone.
           </h2>
           <p className="max-w-prose text-3xl font-light text-neutral-600 dark:text-neutral-400">
@@ -77,19 +77,19 @@ const Home: NextPage<PageProps> = ({ users, lists, mods, featuredLists }) => {
 
       <div className="mb-20 grid w-full grid-cols-1 gap-5 self-start p-8 lg:grid-cols-3 lg:px-20">
         <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-900">
-          <span className="mb-16 font-display text-xl font-semibold text-neutral-600 dark:text-neutral-400">
+          <span className="font-display mb-16 text-xl font-semibold text-neutral-600 dark:text-neutral-400">
             Registered users
           </span>
           <span className="text-6xl font-bold tracking-tight">{numberFormat(users)}</span>
         </div>
         <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-900">
-          <span className="mb-16 font-display text-xl font-semibold text-neutral-600 dark:text-neutral-400">
+          <span className="font-display mb-16 text-xl font-semibold text-neutral-600 dark:text-neutral-400">
             Lists created
           </span>
           <span className="text-6xl font-bold tracking-tight">{numberFormat(lists)}</span>
         </div>
         <div className="flex flex-col items-start gap-y-4 rounded-lg bg-neutral-100 p-8 dark:bg-neutral-900">
-          <span className="mb-16 font-display text-xl font-semibold text-neutral-600 dark:text-neutral-400">
+          <span className="font-display mb-16 text-xl font-semibold text-neutral-600 dark:text-neutral-400">
             Mods listed
           </span>
           <span className="text-6xl font-bold tracking-tight">{numberFormat(mods)}</span>
@@ -98,7 +98,7 @@ const Home: NextPage<PageProps> = ({ users, lists, mods, featuredLists }) => {
 
       <div className="mb-24 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="font-display text-4xl font-bold">Mods from many providers</h2>
-        <h3 className="mb-6 font-display text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+        <h3 className="font-display mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           All of your mods, but in the same place.
         </h3>
 
@@ -154,7 +154,7 @@ const Home: NextPage<PageProps> = ({ users, lists, mods, featuredLists }) => {
 
       <div className="mb-24 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="font-display text-4xl font-bold">A town square for Minecraft modding</h2>
-        <h3 className="mb-6 font-display text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+        <h3 className="font-display mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Has it ever been easier to share what mods you use?
         </h3>
 
@@ -167,7 +167,7 @@ const Home: NextPage<PageProps> = ({ users, lists, mods, featuredLists }) => {
 
       <div className="mb-10 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="font-display text-4xl font-bold">Share with your friends</h2>
-        <h3 className="mb-6 font-display text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+        <h3 className="font-display mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Or just publish the link publicly anywhere you want!
         </h3>
 
@@ -219,9 +219,9 @@ const Home: NextPage<PageProps> = ({ users, lists, mods, featuredLists }) => {
         </div>
       </div>
 
-      <div className="mb-24 mt-16 flex flex-col items-start gap-y-4 p-6 lg:px-20">
+      <div className="mt-16 mb-24 flex flex-col items-start gap-y-4 p-6 lg:px-20">
         <h2 className="font-display text-4xl font-bold">Export to anywhere</h2>
-        <h3 className="mb-6 font-display text-2xl font-medium text-neutral-600 dark:text-neutral-400">
+        <h3 className="font-display mb-6 text-2xl font-medium text-neutral-600 dark:text-neutral-400">
           Publishing to Modrinth? Importing to Prism Launcher? We{"'"}ve got you covered.
         </h3>
         <div className="flex flex-col gap-6 lg:flex-row">

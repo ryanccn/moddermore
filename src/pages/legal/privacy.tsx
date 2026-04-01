@@ -17,7 +17,7 @@ const PrivacyPolicy: NextPage<PageProps> = ({ content }) => {
   return (
     <GlobalLayout title="Privacy Policy" displayTitle={false}>
       <article
-        className="prose max-w-none dark:prose-invert prose-headings:font-display"
+        className="prose dark:prose-invert prose-headings:font-display max-w-none"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     </GlobalLayout>

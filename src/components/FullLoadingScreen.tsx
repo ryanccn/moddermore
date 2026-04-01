@@ -6,7 +6,7 @@ export const FullLoadingScreen = ({ title, label }: { title?: string; label?: st
   const { isFallback } = useRouter();
 
   return (
-    <div className="min-w-screen grid min-h-screen place-items-center">
+    <div className="grid min-h-screen min-w-screen place-items-center">
       {(isFallback || title) && (
         <Head>
           <title>{title ? `${title} / Moddermore` : "Fetching data..."}</title>
