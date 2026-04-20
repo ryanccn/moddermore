@@ -22,7 +22,12 @@ export const HomeVisibilityDemo = () => {
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-      <Select name="visibility" value={"private"} currentValue={mockVisibility} className="p-6 transition-colors">
+      <Select
+        name="visibility"
+        value={"private"}
+        currentValue={mockVisibility}
+        className="p-6 transition-colors"
+      >
         <div className="flex flex-row items-center gap-x-2">
           <LockIcon className="block h-6 w-6 shrink-0 opacity-75" strokeWidth={2.5} />
           <span className="font-display text-xl font-medium">Private</span>
@@ -31,7 +36,12 @@ export const HomeVisibilityDemo = () => {
           Only accessible by you. Others visiting the link will see a 404.
         </span>
       </Select>
-      <Select name="visibility" value={"unlisted"} currentValue={mockVisibility} className="p-6 transition-colors">
+      <Select
+        name="visibility"
+        value={"unlisted"}
+        currentValue={mockVisibility}
+        className="p-6 transition-colors"
+      >
         <div className="flex flex-row items-center gap-x-2">
           <ShieldIcon className="block h-6 w-6 shrink-0 opacity-75" strokeWidth={2.5} />
           <span className="font-display text-xl font-medium">Unlisted</span>
@@ -40,7 +50,12 @@ export const HomeVisibilityDemo = () => {
           Anyone with the link will be able to see the list, and it should not be indexed by search engines.
         </span>
       </Select>
-      <Select name="visibility" value={"public"} currentValue={mockVisibility} className="p-6 transition-colors">
+      <Select
+        name="visibility"
+        value={"public"}
+        currentValue={mockVisibility}
+        className="p-6 transition-colors"
+      >
         <div className="flex flex-row items-center gap-x-2">
           <GlobeIcon className="block h-6 w-6 shrink-0 opacity-75" strokeWidth={2.5} />
           <span className="font-display text-xl font-medium">Public</span>

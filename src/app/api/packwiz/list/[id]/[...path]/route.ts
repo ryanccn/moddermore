@@ -1,11 +1,6 @@
 import { type JsonMap, stringify } from "@iarna/toml";
 import { getSpecificList } from "~/lib/db";
-import {
-  getCurseForgeTOML,
-  getIndexTOML,
-  getModrinthTOML,
-  getPackTOML,
-} from "~/lib/export/formats/packwiz";
+import { getCurseForgeTOML, getIndexTOML, getModrinthTOML, getPackTOML } from "~/lib/export/formats/packwiz";
 
 const tomlResponse = (body: string) =>
   new Response(body, {
@@ -15,7 +10,10 @@ const tomlResponse = (body: string) =>
     },
   });
 
-export async function GET(_request: Request, { params }: { params: Promise<{ id: string; path: string[] }> }) {
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ id: string; path: string[] }> },
+) {
   const { id, path } = await params;
 
   const list = await getSpecificList(id);
