@@ -11,7 +11,7 @@ const uri = process.env.MONGODB_URI;
 const options: MongoClientOptions = {
   serverApi: ServerApiVersion.v1,
   authMechanismProperties:
-    process.env.NODE_ENV === "production" && process.env.MONGODB_URI.includes("authMechanism=MONGODB-OIDC")
+    process.env.NODE_ENV === "production" && uri?.includes("authMechanism=MONGODB-OIDC")
       ? {
           OIDC_CALLBACK: async () => {
             return {

@@ -13,12 +13,34 @@
     "module": "preserve",
     "noEmit": true,
     "incremental": true,
-    "lib": ["esnext", "dom", "dom.iterable"],
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ],
     "jsx": "react-jsx",
     "paths": {
-      "~/*": ["./src/*"]
-    }
+      "~/*": [
+        "./src/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["**/*.js", "**/*.cjs", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules/*", "**/node_modules/*", ".next/*"]
+  "include": [
+    "**/*.js",
+    "**/*.cjs",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules/*",
+    "**/node_modules/*",
+    ".next/*"
+  ]
 }

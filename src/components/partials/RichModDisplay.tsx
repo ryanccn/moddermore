@@ -1,3 +1,5 @@
+"use client";
+
 import type { ModList, RichMod } from "~/types/moddermore";
 
 import {

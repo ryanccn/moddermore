@@ -1,3 +1,5 @@
+"use client";
+
 import ModdermoreIcon from "../../../public/icons/moddermore-negative.png";
 
 import { HeartIcon, LaptopIcon, ListIcon, MoonIcon, PlusIcon, SunIcon, UserIcon } from "lucide-react";
@@ -15,7 +17,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../shadcn/avatar";
 
 import { signIn as nextAuthSignIn, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -41,7 +43,7 @@ const ThemeButton = () => {
 };
 
 const Header = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const { data, status } = useSession();
   const isAdmin = useMemo(() => data?.extraProfile.isAdmin === true, [data]);
 
@@ -49,7 +51,7 @@ const Header = () => {
     <nav className="flex w-full flex-col gap-8 border-b border-b-neutral-200 px-6 py-4 md:flex-row md:items-center md:justify-between dark:border-b-neutral-800">
       <div className="flex flex-col gap-8 md:flex-row md:items-center">
         <Link
-          href={data && router.pathname !== "/lists" ? "/lists" : "/"}
+          href={data && pathname !== "/lists" ? "/lists" : "/"}
           className="flex items-center gap-x-2 px-2 py-1"
         >
           <Image src={ModdermoreIcon} width="32" height="32" className="rounded-full" alt="" />
