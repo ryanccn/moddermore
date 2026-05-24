@@ -22,7 +22,7 @@ jobs:
           persist-credentials: false
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@03e4368ac7daa2bd82b3e85262f3bf87ee112f57 # ratchet:github/codeql-action/init@v3
+        uses: github/codeql-action/init@9e0d7b8d25671d64c341c19c0152d693099fb5ba # ratchet:github/codeql-action/init@v4.35.5
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@03e4368ac7daa2bd82b3e85262f3bf87ee112f57 # ratchet:github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@9e0d7b8d25671d64c341c19c0152d693099fb5ba # ratchet:github/codeql-action/analyze@v4.35.5
