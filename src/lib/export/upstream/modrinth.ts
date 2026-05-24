@@ -20,6 +20,18 @@ const getObjFromVersion = (v: ModrinthVersion, type: "direct" | "dependency"): D
   };
 };
 
+const getLatestVersion = (versions: ModrinthVersion[]): ModrinthVersion | null => {
+  let latest: ModrinthVersion | null = null;
+
+  for (const version of versions) {
+    if (!latest || Date.parse(version.date_published) > Date.parse(latest.date_published)) {
+      latest = version;
+    }
+  }
+
+  return latest;
+};
+
 export const callModrinthAPI = async ({
   id,
   gameVersions,
@@ -46,15 +58,7 @@ export const callModrinthAPI = async ({
 
   const data = (await res.json()) as ModrinthVersion[];
 
-  let latest = data.find((v) => v.version_type === "release");
-  if (!latest) {
-    latest = data.find((v) => v.version_type === "beta");
-  }
-  if (!latest) {
-    latest = data.find((v) => v.version_type === "alpha");
-  }
-
-  return latest ?? null;
+  return getLatestVersion(data);
 };
 
 export const getModrinthDownload = async ({
