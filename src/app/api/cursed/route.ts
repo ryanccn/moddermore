@@ -4,23 +4,17 @@ export async function GET(request: Request) {
   const originalURL = new URL(request.url).searchParams.get("url");
 
   if (!originalURL) {
-    return new Response("didn't provide anything", {
-      status: 404,
-      headers: { "content-type": "text/plain" },
-    });
+    return new Response(null, { status: 404 });
   }
 
   if (!new URL(originalURL).hostname.endsWith("forgecdn.net")) {
-    return new Response("only forgecdn.net links work", {
-      status: 400,
-      headers: { "content-type": "text/plain" },
-    });
+    return new Response(null, { status: 400 });
   }
 
   const proxiedResp = await fetch(originalURL, {
     headers: {
-      "User-Agent": request.headers.get("User-Agent") ?? "",
-      Referer: request.headers.get("Referer") ?? "",
+      "user-agent": request.headers.get("user-agent") ?? "",
+      "x-api-key": process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY,
     },
   });
 
