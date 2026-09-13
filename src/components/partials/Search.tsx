@@ -88,10 +88,12 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
             setSearchQuery(e.target.value);
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              updateSearch();
+            if (e.key !== "Enter") {
+              return;
             }
+
+            e.preventDefault();
+            updateSearch();
           }}
         />
 
@@ -113,12 +115,14 @@ const Search = ({ modLoader, gameVersion, existing, onAdd }: Props) => {
                   void onAdd(res);
                 }}
                 onVersion={(version, name) => {
-                  if (version) {
-                    const workingCopy = [...searchResults];
-                    workingCopy[idx].version = version;
-                    if (name) workingCopy[idx].cachedVersionName = name;
-                    setSearchResults(workingCopy);
+                  if (!version) {
+                    return;
                   }
+
+                  const workingCopy = [...searchResults];
+                  workingCopy[idx].version = version;
+                  if (name) workingCopy[idx].cachedVersionName = name;
+                  setSearchResults(workingCopy);
                 }}
                 parent={{
                   gameVersion,

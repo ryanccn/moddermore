@@ -1,6 +1,7 @@
 import pLimit from "p-limit";
 
 export const autoClientConcurrency = () => {
+  // eslint-disable-next-line unicorn/no-optional-chaining-on-undeclared-variable
   switch (window.navigator?.connection?.effectiveType) {
     case "4g": {
       return 10;

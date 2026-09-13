@@ -49,8 +49,9 @@ export default function ManualImportPage() {
 
   const submitHandle: SubmitEventHandler = useCallback(
     (e) => {
+      e.preventDefault();
+
       (async () => {
-        e.preventDefault();
         if (!session.data) return;
 
         setSubmitting(true);

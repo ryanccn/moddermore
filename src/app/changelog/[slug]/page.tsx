@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!data) return {};
 
   const absoluteCoverURL = data.data.cover
-    ? new URL(data.data.cover.src, "https://moddermore.net").toString()
+    ? new URL(data.data.cover.src, "https://moddermore.net").href
     : null;
 
   return {

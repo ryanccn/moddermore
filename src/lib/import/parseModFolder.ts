@@ -58,9 +58,9 @@ export const parseMod = async (file: Uint8Array): Promise<Mod | null> => {
     const file = cfData.data.exactMatches[0].file;
 
     return {
-      id: `${file.modId}`,
+      id: String(file.modId),
       provider: "curseforge",
-      version: `${file.id}`,
+      version: String(file.id),
     };
   }
 

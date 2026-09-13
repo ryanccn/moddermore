@@ -49,17 +49,17 @@ export const getInfos = async (projects: { id: string; version?: string }[]): Pr
   const data = (await res.json().then((json) => json.data)) as CurseForgeProject[];
 
   return data.map((mod) => {
-    const version = projects.find((p) => p.id === `${mod.id}`)!.version;
+    const version = projects.find((p) => p.id === String(mod.id))!.version;
 
     return {
-      id: `${mod.id}`,
+      id: String(mod.id),
       href: `https://curseforge.com/minecraft/mc-mods/${mod.slug}`,
       iconUrl: mod.logo.thumbnailUrl ?? undefined,
       provider: "curseforge",
       name: mod.name,
       description: mod.summary,
       downloads: mod.downloadCount,
-      ...(version ? { version } : {}),
+      ...(version && { version }),
     };
   });
 };
@@ -93,5 +93,5 @@ export const fetchVersions = async ({
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
   const data = (await res.json().then((json) => json.data)) as CurseForgeVersion[];
 
-  return data.map((v) => ({ id: `${v.id}`, name: v.displayName }));
+  return data.map((v) => ({ id: String(v.id), name: v.displayName }));
 };

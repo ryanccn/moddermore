@@ -5,9 +5,10 @@ export default config({
   reactHooks: true,
   next: true,
   rules: {
-    "unicorn/import-style": "off",
     "unicorn/prefer-global-this": "off",
     "unicorn/require-module-specifiers": "off",
+    "unicorn/max-nested-calls": "off",
+    "unicorn/no-non-function-verb-prefix": "off",
     "@next/next/no-img-element": "off",
     "react-hooks/set-state-in-effect": "off",
     "react-hooks/immutability": "off",

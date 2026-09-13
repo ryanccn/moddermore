@@ -19,9 +19,9 @@ const proxy: NextProxy = async (request, event) => {
   event.waitUntil(pending);
 
   const rateLimitHeaders = new Headers();
-  rateLimitHeaders.set("x-rate-limit-limit", `${limit}`);
-  rateLimitHeaders.set("x-rate-limit-reset", `${reset}`);
-  rateLimitHeaders.set("x-rate-limit-remaining", `${remaining}`);
+  rateLimitHeaders.set("x-rate-limit-limit", limit.toString());
+  rateLimitHeaders.set("x-rate-limit-reset", reset.toString());
+  rateLimitHeaders.set("x-rate-limit-remaining", remaining.toString());
 
   return success
     ? NextResponse.next({ headers: rateLimitHeaders })

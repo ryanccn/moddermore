@@ -38,10 +38,12 @@ export default function SigninPage() {
   const error = searchParams.get("error");
 
   useEffect(() => {
-    if (sess.status === "authenticated") {
-      router.push("/lists");
-      toast.success("Signed in!");
+    if (sess.status !== "authenticated") {
+      return;
     }
+
+    router.push("/lists");
+    toast.success("Signed in!");
   }, [sess, router]);
 
   const signin: SubmitEventHandler = useCallback(
@@ -62,7 +64,7 @@ export default function SigninPage() {
       <div className="flex w-full flex-col gap-y-4">
         {error && (
           <p className="mb-8 rounded bg-red-500 px-4 py-3 font-semibold text-white">
-            {error in errors ? errors[error as keyof typeof errors] : error}
+            {Object.hasOwn(errors, error) ? errors[error as keyof typeof errors] : error}
           </p>
         )}
 

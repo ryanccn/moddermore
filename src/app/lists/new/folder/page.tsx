@@ -53,9 +53,9 @@ export default function FolderImportPage() {
 
   const submitHandle: SubmitEventHandler = useCallback(
     (e) => {
-      (async () => {
-        e.preventDefault();
+      e.preventDefault();
 
+      (async () => {
         if (!sess.data) return;
         setSubmitting(true);
 

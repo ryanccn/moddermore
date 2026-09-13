@@ -97,10 +97,12 @@ export const RichModDisplay = ({
 
   useEffect(() => {
     const listener = () => {
-      if (!data.version) {
-        setSelectedVersion(null);
-        setVersions(null);
+      if (data.version) {
+        return;
       }
+
+      setSelectedVersion(null);
+      setVersions(null);
     };
 
     window.addEventListener("moddermoreUnpinAll", listener);

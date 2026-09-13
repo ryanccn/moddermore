@@ -49,7 +49,9 @@ export const search = async ({ platform, query, loader, gameVersion }: Options):
       downloads: rawMod.downloads,
       iconUrl: rawMod.icon_url,
     }));
-  } else if (platform === "curseforge") {
+  }
+
+  if (platform === "curseforge") {
     const API_KEY = process.env.NEXT_PUBLIC_CURSEFORGE_API_KEY;
     if (!API_KEY) throw new Error("No NEXT_PUBLIC_CURSEFORGE_API_KEY defined!");
 
@@ -67,7 +69,7 @@ export const search = async ({ platform, query, loader, gameVersion }: Options):
     });
 
     return data.data.map((rawMod) => ({
-      id: `${rawMod.id}`,
+      id: String(rawMod.id),
       href: `https://curseforge.com/minecraft/mc-mods/${rawMod.slug}`,
       iconUrl: rawMod.logo.thumbnailUrl ?? undefined,
       provider: "curseforge",

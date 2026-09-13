@@ -8,15 +8,7 @@ declare interface NavigatorNetworkInformation {
 }
 
 type ConnectionType =
-  | "bluetooth"
-  | "cellular"
-  | "ethernet"
-  | "mixed"
-  | "none"
-  | "wifi"
-  | "wimax"
-  | "other"
-  | "unknown";
+  "bluetooth" | "cellular" | "ethernet" | "mixed" | "none" | "wifi" | "wimax" | "other" | "unknown";
 
 type EffectiveConnectionType = "2g" | "3g" | "4g" | "slow-2g";
 

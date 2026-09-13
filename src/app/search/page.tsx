@@ -60,12 +60,14 @@ export default function SearchPage() {
             setQuery(e.target.value);
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              updateSearch().catch((error) => {
-                console.error(error);
-              });
+            if (e.key !== "Enter") {
+              return;
             }
+
+            e.preventDefault();
+            updateSearch().catch((error) => {
+              console.error(error);
+            });
           }}
         />
 

@@ -44,7 +44,7 @@ export async function GET(
     path[1].endsWith(".pw.toml")
   ) {
     const modId = path[1].replace(".pw.toml", "");
-    const [provider, rawId] = modId.split("-");
+    const [provider, rawId] = modId.split("-", 2);
 
     let data = null;
 

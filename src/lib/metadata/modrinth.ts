@@ -25,7 +25,7 @@ export const getInfo = async (id: string): Promise<RichMod | null> => {
     name: data.title,
     description: data.description,
     downloads: data.downloads,
-    ...(data.game_versions ? { gameVersions: data.game_versions } : {}),
+    ...(data.game_versions && { gameVersions: data.game_versions }),
   };
 };
 
@@ -53,8 +53,8 @@ export const getInfos = async (projects: { id: string; version?: string }[]): Pr
       name: mod.title,
       description: mod.description,
       downloads: mod.downloads,
-      ...(mod.game_versions ? { gameVersions: mod.game_versions } : {}),
-      ...(version ? { version } : {}),
+      ...(mod.game_versions && { gameVersions: mod.game_versions }),
+      ...(version && { version }),
     };
   });
 };
@@ -70,7 +70,7 @@ export const fetchVersions = async ({
 }) => {
   const patchedLoaders = [loader];
   if (loader === "quilt") patchedLoaders.push("fabric");
-  if (loader === "neoforge") patchedLoaders.push("forge");
+  else if (loader === "neoforge") patchedLoaders.push("forge");
 
   const compatGameVersions = minecraftVersions.snapshots.includes(gameVersion)
     ? []

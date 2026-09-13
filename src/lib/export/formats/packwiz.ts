@@ -28,10 +28,10 @@ export const getPackTOML = async (id: string) => {
     "pack-format": "packwiz:1.1.0",
     versions: {
       minecraft: list.gameVersion,
-      ...(list.modloader === "fabric" ? { fabric: await getLatestFabric() } : {}),
-      ...(list.modloader === "quilt" ? { quilt: await getLatestQuilt() } : {}),
-      ...(list.modloader === "forge" ? { forge: await getLatestForge(list.gameVersion) } : {}),
-      ...(list.modloader === "neoforge" ? { neoforge: await getLatestNeoforge(list.gameVersion) } : {}),
+      ...(list.modloader === "fabric" && { fabric: await getLatestFabric() }),
+      ...(list.modloader === "quilt" && { quilt: await getLatestQuilt() }),
+      ...(list.modloader === "forge" && { forge: await getLatestForge(list.gameVersion) }),
+      ...(list.modloader === "neoforge" && { neoforge: await getLatestNeoforge(list.gameVersion) }),
     },
     index: { file: "index.toml", "hash-format": "sha512", hash: indexHash },
   });
@@ -64,7 +64,9 @@ export const getIndexTOML = async (id: string) => {
               hash: sha512(stringify(txt as unknown as JsonMap)),
               metafile: true,
             };
-          } else if (mod.provider === "curseforge") {
+          }
+
+          if (mod.provider === "curseforge") {
             const txt = await getCurseForgeTOML({
               id: mod.id,
               gameVersions: [list.gameVersion],

@@ -146,6 +146,7 @@ export const ListPageClient = ({ data }: Props) => {
 
       const mods = [...modrinthMods, ...curseForgeMods]
         .filter((k) => k !== null)
+        // eslint-disable-next-line unicorn/prefer-simple-sort-comparator
         .toSorted((a, b) => (a.name > b.name ? 1 : -1));
 
       setResolvedMods(mods);
@@ -182,9 +183,7 @@ export const ListPageClient = ({ data }: Props) => {
 
   const packwizExport = async () => {
     try {
-      await navigator.clipboard.writeText(
-        new URL(`/list/${data.id}/packwiz/pack.toml`, location.href).toString(),
-      );
+      await navigator.clipboard.writeText(new URL(`/list/${data.id}/packwiz/pack.toml`, location.href).href);
       toast.success("Copied link to clipboard");
     } catch {
       toast.error("Failed to copy link to clipboard");
@@ -193,9 +192,10 @@ export const ListPageClient = ({ data }: Props) => {
 
   const editHandle: MouseEventHandler = useCallback(
     (e) => {
+      e.preventDefault();
+
       (async () => {
-        e.preventDefault();
-        if (!session.data || !resolvedMods || !oldMods) return;
+        if (!resolvedMods || !oldMods || !session.data) return;
 
         setIsSaving(true);
 
@@ -219,12 +219,11 @@ export const ListPageClient = ({ data }: Props) => {
           return;
         }
 
-        const removedMods = oldMods.filter(
-          (oldMod) => !resolvedMods.some((k) => k.id === oldMod.id && k.provider === oldMod.provider),
+        const removedMods = oldMods.filter((oldMod) =>
+          resolvedMods.every((k) => !(k.id === oldMod.id && k.provider === oldMod.provider)),
         );
-        const addedMods = resolvedMods.filter(
-          (resolvedMod) =>
-            !oldMods.some((k) => k.id === resolvedMod.id && k.provider === resolvedMod.provider),
+        const addedMods = resolvedMods.filter((resolvedMod) =>
+          oldMods.every((k) => !(k.id === resolvedMod.id && k.provider === resolvedMod.provider)),
         );
 
         const changelog = `
@@ -322,10 +321,12 @@ ${
     if (hasLiked) {
       fetch(`/api/likes/dislike?id=${data.id}`)
         .then((r) => {
-          if (r.ok) {
-            setHasLiked(false);
-            setIsLiking(false);
+          if (!r.ok) {
+            return;
           }
+
+          setHasLiked(false);
+          setIsLiking(false);
         })
         .catch((error) => {
           console.error(error);
@@ -333,10 +334,12 @@ ${
     } else {
       fetch(`/api/likes/like?id=${data.id}`)
         .then((r) => {
-          if (r.ok) {
-            setHasLiked(true);
-            setIsLiking(false);
+          if (!r.ok) {
+            return;
           }
+
+          setHasLiked(true);
+          setIsLiking(false);
         })
         .catch((error) => {
           console.error(error);

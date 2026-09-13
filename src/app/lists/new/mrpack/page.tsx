@@ -53,8 +53,9 @@ export default function MrpackImportPage() {
 
   const submitHandle: SubmitEventHandler = useCallback(
     (e) => {
+      e.preventDefault();
+
       (async () => {
-        e.preventDefault();
         if (!sess.data) return;
 
         setSubmitting(true);

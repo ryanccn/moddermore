@@ -31,11 +31,13 @@ const parsePackwizTOML = (toml: string): Mod | null => {
       provider: "modrinth",
       version: updateInfo.modrinth.version,
     };
-  } else if (updateInfo.curseforge) {
+  }
+
+  if (updateInfo.curseforge) {
     return {
-      id: `${updateInfo.curseforge["project-id"]}`,
+      id: String(updateInfo.curseforge["project-id"]),
       provider: "curseforge",
-      version: `${updateInfo.curseforge["file-id"]}`,
+      version: String(updateInfo.curseforge["file-id"]),
     };
   }
 

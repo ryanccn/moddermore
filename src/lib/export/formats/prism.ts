@@ -22,7 +22,7 @@ export const prismAutoUpdateExport = async ({
 
   const zipfile = new JSZip();
 
-  const packwizURL = new URL(`/list/${data.id}/packwiz/pack.toml`, location.href).toString();
+  const packwizURL = new URL(`/list/${data.id}/packwiz/pack.toml`, location.href).href;
 
   zipfile.file(
     "instance.cfg",
